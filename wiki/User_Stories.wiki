@@ -21,6 +21,7 @@ User stories for Vandopoly.
     * Players can buy, mortgage and sell Vandy properties
     * Players can roll dice to determine how many spaces to move
     * Players can choose playing pieces to move around the board
+    * Players can save a profile and keep track of their win-loss record.
 
 = Completed =
 
