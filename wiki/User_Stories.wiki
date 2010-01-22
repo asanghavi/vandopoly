@@ -4,9 +4,11 @@
 
 User stories for Vandopoly.
 
-= Details =
+= TODO =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+* blah..
+
+= Completed =
+
+* Created the ohloh page, https://www.ohloh.net/p/vandopoly
+* Google Code project Vandopoly created
