@@ -12,7 +12,12 @@ User stories for Vandopoly.
 
 = Long-term Objectives =
 
-    * blah..
+    * Multiple players are able to move around the Vandopoly board
+    * Players can play across the network
+    * Players can purchase Vandy properties and renovate them
+    * Players can accumulate commodore cash
+    * Players can get chance cards and community chest cards
+    * 
 
 = Completed =
 
