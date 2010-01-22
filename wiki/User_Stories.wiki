@@ -6,18 +6,21 @@ User stories for Vandopoly.
  
 
 = Week 1 User Stories =
-
+    * Users can see the home screen (Allie, James, Matt)
+    * Users can see the "Start Game," "Load Game," "Rules," and "Quit" buttons (Allie, James, Matt)
 
 ----
 
 = Long-term Objectives =
 
-    * Multiple players are able to move around the Vandopoly board
-    * Players can play across the network
-    * Players can purchase Vandy properties and renovate them
+    * Multiple players are able to move around the Vandopoly board, performing actions specific to the spaces that they land on
+    * Players can play across the network and type in a chat window to other players
+    * Players can purchase Vandy properties and buy renovations/upgrades
     * Players can accumulate commodore cash
-    * Players can get chance cards and community chest cards
-    * 
+    * Players can draw "chance" cards and "community chest" cards after landing on specified spaces
+    * Players can buy, mortgage and sell Vandy properties
+    * Players can roll dice to determine how many spaces to move
+    * Players can choose playing pieces to move around the board
 
 = Completed =
 
