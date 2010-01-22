@@ -3,8 +3,14 @@
 = Introduction =
 
 User stories for Vandopoly.
+  *
+----
+= Week 1 User Stories =
+*
+*
 
-= TODO =
+----
+= Long-term Objectives =
 
     * blah..
 
