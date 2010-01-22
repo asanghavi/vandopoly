@@ -6,9 +6,9 @@ User stories for Vandopoly.
 
 = TODO =
 
-* blah..
+    * blah..
 
 = Completed =
 
-* Created the ohloh page, https://www.ohloh.net/p/vandopoly
-* Google Code project Vandopoly created
+    * Created the ohloh page, https://www.ohloh.net/p/vandopoly
+    * Google Code project Vandopoly created
