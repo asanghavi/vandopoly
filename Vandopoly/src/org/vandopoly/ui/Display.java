@@ -20,15 +20,17 @@ package org.vandopoly.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Toolkit;
 
-import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
-
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+/*
+ * Main JFrame from which Vandopoly is built into
+ * 
+ * @author James Kasten
+ */
 public class Display extends JFrame {
 	
 	private JDesktopPane board_;
@@ -37,7 +39,6 @@ public class Display extends JFrame {
 	public Display () {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setSize(screen.width, screen.height);
-		this.getContentPane().setBackground(Color.black);
 		
 		// Soon to be replaced by the specific JDesktopPane Board
 		JDesktopPane board_ = new JDesktopPane();
