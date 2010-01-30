@@ -22,7 +22,16 @@ import java.awt.Point;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
-
+/*
+ * The DisplayAssembler class is a Singleton intended to allow developers access
+ * to the underlying DesktopPane.  Any JComponent can be added to the JDesktopPane
+ * by using DisplayAssembler.getInstance().addComponent(JComponent,Point,layer)
+ * The layer is meant to be one of 5 JLayeredPane layers, JLayeredPane.DEFAULT_LAYER,
+ * JLayeredPane.PALETTE_LAYER,JLayeredPane.MODAL_LAYER, JLayeredPane.POPUP_LAYER, 
+ * and finally JLayeredPane.DRAG_LAYER.
+ * 
+ * @author James Kasten
+ */
 public class DisplayAssembler {
 
 	private static DisplayAssembler INSTANCE;
@@ -52,7 +61,7 @@ public class DisplayAssembler {
 	}
 	
 	public void removeComponent(JComponent component) {
-		// Needs to be implemented
+		desktopPane_.remove(component);
 	}
 
 }
