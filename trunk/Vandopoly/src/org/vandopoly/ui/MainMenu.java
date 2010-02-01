@@ -19,6 +19,7 @@
 // Import the swing and AWT classes needed
 package org.vandopoly.ui;
 
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -54,7 +55,7 @@ public class MainMenu extends JPanel {
 
 		Point location = new Point((int)(screen.getWidth() - frameWidth) / 2, (int)(screen.getHeight() - frameHeight) / 2);
 		
-		// Setup the title bar along with positioning and size
+		// Set up the title bar along with positioning and size
 		JLabel titleBar = new JLabel();
 		ImageIcon title = new ImageIcon("images/Vandopoly2.jpg");
 		titleBar.setIcon(title);
@@ -70,11 +71,10 @@ public class MainMenu extends JPanel {
 		newGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 removePanels();
-                //new GameOptions();
+                new GameOptions();
             }
 
         });
-
 
 		loadGame_ = new JButton("Load Game");
 		loadGame_.setBounds(115, 400, 500, 100);
