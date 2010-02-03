@@ -1,0 +1,54 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Add your content here.
+=Models=
+Board (or Game)
+==Methods==
+==Data Members==
+array of 40 spaces
+Dice
+2 queues of cards
+playerTurn
+
+Player (state pattern)
+==Methods==
+==Data Members==
+name
+cash
+ArrayList of Properties
+getOutofJail
+positionOnBoard
+pieceImage
+
+Dice (just 2 random number generators 1-6)
+
+Space
+name
+
+TaxSpace extends Space
+fee
+percentage
+
+PropertySpace extends Space  (think about statePattern)
+Enum color
+purchasePrice
+mortgageValue
+renovationLevel
+array[5] of rentValues
+isOwned
+isMortgaged
+
+CornerSpace extends Space
+
+CardSpace extends Space
+
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
