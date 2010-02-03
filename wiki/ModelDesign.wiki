@@ -45,6 +45,8 @@ pieceImage
 
 ---Methods---
 
+abstract landOn(Player p)
+
 ---Data Members---
 
 name
@@ -52,6 +54,8 @@ name
 ===TaxSpace extends Space===
 
 ---Methods---
+
+landOn(Player p)
 
 ---Data Members---
 
@@ -64,6 +68,7 @@ percentage
 
 ---Methods---
 
+landOn(Player p)
 
 ---Data Members---
 
@@ -86,9 +91,13 @@ isMortgaged
 
 ---Methods---
 
+landOn(Player p)
+
 ===CardSpace extends Space===
 
 ---Methods---
+
+landOn(Player p)
 
 
 
