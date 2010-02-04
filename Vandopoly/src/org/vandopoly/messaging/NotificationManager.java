@@ -135,9 +135,10 @@ public class NotificationManager {
 		ArrayList<EventCallback> observerList = listsOfEventObservers_.get(event);
 
 		if (observerList != null) {
-			
 			for (int i = observerList.size() - 1; i >= 0; i--)
 				observerList.get(i).notifyObserver(updatedObject);
 		}
+		else
+			System.err.println("No Observers have ever subscribed to event "+event);
 	}
 }
