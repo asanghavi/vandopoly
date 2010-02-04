@@ -21,10 +21,12 @@ import java.awt.Point;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import org.vandopoly.messaging.Notification;
@@ -68,6 +70,7 @@ public class Display extends JFrame {
 		board_.setVisible(true);
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "showBoard");
+		showBoard();
 	}
 	
 	// show the board
@@ -140,19 +143,18 @@ public class Display extends JFrame {
 		
 		// set center of board
 		JLabel labelcenter = new JLabel();
-		labelcenter.setOpaque(true);
-		labelcenter.setBackground(new Color(235, 227, 188));
 		labelcenter.setSize(new Dimension(width_ - ((int)(width_ / scaleHeight_) * 2) - 20, 
 				height_ - (int)(width_ / scaleHeight_) * 2 - 20));
+		labelcenter.setIcon(new ImageIcon("images/boardTex.png"));
 		DisplayAssembler.getInstance().addComponent(labelcenter, new Point
 				((int)(width_ / scaleHeight_) + scaleHeight_ + 2, (int)(width_ / scaleHeight_) + scaleHeight_ + 2), JLayeredPane.FRAME_CONTENT_LAYER);
-		
+
 		int boxSize = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
 		
 		// top left corner
 		JLabel labelctl = new JLabel();
 		labelctl.setOpaque(true);
-		labelctl.setBackground(new Color(235, 227, 188));
+		labelctl.setIcon(new ImageIcon("images/boardTex.png"));
 		labelctl.setSize(new Dimension(boxSize, boxSize));
 		labelctl.setBorder(BorderFactory.createLineBorder(Color.black));
 		DisplayAssembler.getInstance().addComponent(labelctl, new Point(scaleHeight_, scaleHeight_), JLayeredPane.FRAME_CONTENT_LAYER);
@@ -160,7 +162,7 @@ public class Display extends JFrame {
 		// top right corner
 		JLabel labelctr = new JLabel();
 		labelctr.setOpaque(true);
-		labelctr.setBackground(new Color(235, 227, 188));
+		labelctr.setIcon(new ImageIcon("images/boardTex.png"));
 		labelctr.setSize(new Dimension(boxSize, boxSize));
 		labelctr.setBorder(BorderFactory.createLineBorder(Color.black));
 		DisplayAssembler.getInstance().addComponent(labelctr, new Point(height_ - scaleHeight_ * 2 - boxSize,
@@ -169,7 +171,7 @@ public class Display extends JFrame {
 		// bottom left corner
 		JLabel labelcbl = new JLabel();
 		labelcbl.setOpaque(true);
-		labelcbl.setBackground(new Color(235, 227, 188));
+		labelcbl.setIcon(new ImageIcon("images/boardTex.png"));
 		labelcbl.setSize(new Dimension(boxSize, boxSize));
 		labelcbl.setBorder(BorderFactory.createLineBorder(Color.black));
 		DisplayAssembler.getInstance().addComponent(labelcbl, new Point(scaleHeight_,
@@ -178,7 +180,7 @@ public class Display extends JFrame {
 		// bottom right corner
 		JLabel labelcbr = new JLabel();
 		labelcbr.setOpaque(true);
-		labelcbr.setBackground(new Color(235, 227, 188));
+		labelcbr.setIcon(new ImageIcon("images/boardTex.png"));
 		labelcbr.setSize(new Dimension(boxSize, boxSize));
 		labelcbr.setBorder(BorderFactory.createLineBorder(Color.black));
 		DisplayAssembler.getInstance().addComponent(labelcbr, new Point(height_ - scaleHeight_ * 2 - boxSize + 1,
@@ -193,7 +195,7 @@ public class Display extends JFrame {
 		// set the larger part of the piece
 		JLabel label1 = new JLabel();
 		label1.setOpaque(true);
-		label1.setBackground(new Color(235, 227, 188));
+		label1.setIcon(new ImageIcon("images/boardTex.png"));
 		int panelWidth;
 		
 		if (isProp)
@@ -248,7 +250,8 @@ public class Display extends JFrame {
 		// set the larger part of the piece
 		JLabel label1 = new JLabel();
 		label1.setOpaque(true);
-		label1.setBackground(new Color(235, 227, 188));
+		label1.setIcon(new ImageIcon("images/boardTex.png"));
+		
 		int panelWidth;
 
 		if (isProp)
