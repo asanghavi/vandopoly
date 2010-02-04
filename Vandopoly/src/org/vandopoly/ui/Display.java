@@ -39,7 +39,7 @@ import org.vandopoly.messaging.NotificationManager;
 /*
  * Main JFrame from which Vandopoly is built into
  * 
- * @author James Kasten
+ * @author Matt Gioia
  */
 public class Display extends JFrame {
 	
@@ -172,8 +172,8 @@ public class Display extends JFrame {
 		JButton quitGame_ = new JButton("Quit Game");
 		quitGame_.setSize(new Dimension(buttonWidth,buttonHeight));
 		quitGame_.setFont(buttonFont);
-		DisplayAssembler.getInstance().addComponent(quitGame_, new Point(screen_.width - buttonWidth - 20, 
-				height_ - buttonHeight), 
+		DisplayAssembler.getInstance().addComponent(quitGame_, 
+				new Point(screen_.width - buttonWidth - 20, height_ - buttonHeight), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
 		quitGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
