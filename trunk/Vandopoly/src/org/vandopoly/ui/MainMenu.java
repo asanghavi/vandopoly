@@ -77,7 +77,7 @@ public class MainMenu extends JPanel {
                 if (options_ == null)
                 	options_ = new GameOptions();
                 else {
-                	//options_.showFirstPagePanels();
+                	options_.showFirstPagePanels();
                 	options_.setVisible(true);
                 }
             }
