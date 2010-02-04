@@ -57,13 +57,13 @@ public class MainMenu extends JPanel {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 		Point location = new Point((int)(screen.getWidth() - frameWidth) / 2,
-				((int)(screen.getHeight() - frameHeight) / 2) - 25);
+				((int)(screen.getHeight() - frameHeight) / 2));
 		
 		// Set up the title bar along with positioning and size
 		JLabel titleBar = new JLabel();
-		ImageIcon title = new ImageIcon("images/Vandopoly3.jpg");
+		ImageIcon title = new ImageIcon("images/vandopoly-logo.gif");
 		titleBar.setIcon(title);
-		titleBar.setBounds(0, 0, frameWidth, 200);
+		titleBar.setBounds(0, 0, frameWidth, 159);
 
 		
 		// Setup and create all 3 buttons
