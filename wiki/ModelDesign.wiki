@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary A list of the models, their data members, and methods.
 
 = Introduction =
 
@@ -19,11 +19,16 @@ Dice
 
 playerTurn
 
-
+scholarshipFund (money pot in center)
 
 ===Player (state pattern)===
 
 ---Methods---
+
+movePiece()
+
+updateCash(int value)
+
 
 ---Data Members---
 
@@ -40,6 +45,10 @@ positionOnBoard
 pieceImage
 
 ===Dice (just 2 random number generators 1-6)===
+
+---Methods---
+
+int roll()
 
 ===Space===
 
@@ -70,6 +79,12 @@ percentage
 
 landOn(Player p)
 
+mortgageProperty()
+
+renovate()
+
+sellRenovation()
+
 ---Data Members---
 
 Enum color
@@ -98,12 +113,3 @@ landOn(Player p)
 ---Methods---
 
 landOn(Player p)
-
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
