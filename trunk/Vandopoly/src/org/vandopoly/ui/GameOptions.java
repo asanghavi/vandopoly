@@ -606,7 +606,7 @@ public class GameOptions extends JPanel{
 			nameFour_.setText(null);
 			numberOfPlayers_ = 2;
 			
-			mainMenu_.setVisible(true);
+			mainMenu_.showMenu();
 			this.setVisible(false);
 		}
 		

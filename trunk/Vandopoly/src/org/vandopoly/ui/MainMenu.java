@@ -38,16 +38,16 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class MainMenu extends JPanel {
 	
-	private JButton newGame_, loadGame_, quitGame_;
+	private JButton newGame_, loadGame_, rules_, quitGame_;
 	private GameOptions options_;
 	
 	public MainMenu() {
 		
-		int frameWidth = 529, frameHeight = 500;
+		int frameWidth = 529, frameHeight = 560;
 		int buttonWidth = 350, buttonHeight = 75;
 		
 		// Space between buttons and the Y component of first button
-		int betweenSpace = 35, buttonStart = 180;
+		int betweenSpace = 20, buttonStart = 180;
 
 		// Set size of window
 		this.setSize(frameWidth, frameHeight);
@@ -91,10 +91,15 @@ public class MainMenu extends JPanel {
 		loadGame_.setBounds(((frameWidth - buttonWidth) / 2), 
 				(buttonStart + betweenSpace + buttonHeight), buttonWidth, buttonHeight);
 		loadGame_.setFont(buttonFont);
-
+		
+		rules_ = new JButton("Rules");
+		rules_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
+				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
+		rules_.setFont(buttonFont);
+		
 		quitGame_ = new JButton("Quit Game");
 		quitGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
-				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
+				(betweenSpace + buttonHeight) * 3, buttonWidth, buttonHeight);
 		quitGame_.setFont(buttonFont);
 		
 		quitGame_.addActionListener(new ActionListener() {
@@ -107,6 +112,7 @@ public class MainMenu extends JPanel {
 		add(titleBar);
 		add(newGame_);
 		add(loadGame_);
+		add(rules_);
 		add(quitGame_);
 		
 		// Add the Panel to the display
@@ -125,6 +131,7 @@ public class MainMenu extends JPanel {
 	public void hidePanels() {
 		newGame_.setVisible(false);
         loadGame_.setVisible(false);
+        rules_.setVisible(false);
         quitGame_.setVisible(false);
 	}
 	
@@ -132,6 +139,9 @@ public class MainMenu extends JPanel {
 		setVisible(false);
 	}
 	
+	public void showMenu() {
+		setVisible(true);
+	}
 	
 	public static void main(String[] args) {
 		new Display();
