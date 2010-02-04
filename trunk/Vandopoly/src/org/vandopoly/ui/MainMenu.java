@@ -1,20 +1,17 @@
-/**
- *  Vandopoly
- *  http://code.google.com/p/vandopoly/
- * 
- * @author James Kasten
- * @date Jan 28, 2009
- * 
- *  Copyright 2010 Vandopoly Team
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License. 
- *  You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
- *  Unless required by applicable law or agreed to in writing, software 
- *  distributed under the License is distributed on an "AS IS" BASIS, 
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or 
- *  implied. See the License for the specific language governing 
- *  permissions and limitations under the License. 
- */
+/*****************************************************************************
+ *   Copyright 2010 Vandopoly Team                                           *
+ *   Licensed under the Apache License, Version 2.0 (the "License");         *
+ *   you may not use this file except in compliance with the License.        *
+ *   You may obtain a copy of the License at                                 *
+ *                                                                           *
+ *   http://www.apache.org/licenses/LICENSE-2.0                              *
+ *                                                                           *
+ *   Unless required by applicable law or agreed to in writing, software     *
+ *   distributed under the License is distributed on an "AS IS" BASIS,       *
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.*
+ *   See the License for the specific language governing permissions and     *
+ *   limitations under the License.                                          *
+ ****************************************************************************/
 
 // Import the swing and AWT classes needed
 package org.vandopoly.ui;
@@ -33,6 +30,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /**
  * Main Menu for Vandopoly
  */
@@ -45,6 +45,8 @@ public class MainMenu extends JPanel {
 		
 		int frameWidth = 529, frameHeight = 500;
 		int buttonWidth = 350, buttonHeight = 75;
+		
+		// Space between buttons and the Y component of first button
 		int betweenSpace = 35, buttonStart = 180;
 
 		// Set size of window
@@ -75,11 +77,12 @@ public class MainMenu extends JPanel {
 		newGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 if (options_ == null)
-                	options_ = new GameOptions();
+                	options_ = new GameOptions(MainMenu.this);
                 else {
                 	options_.showFirstPagePanels();
                 	options_.setVisible(true);
                 }
+                hideMenu();
             }
 
         });
@@ -94,7 +97,6 @@ public class MainMenu extends JPanel {
 				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
 		quitGame_.setFont(buttonFont);
 		
-		// May need to be changed, but shows ActionListeners
 		quitGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
                 System.exit(0);
@@ -113,6 +115,10 @@ public class MainMenu extends JPanel {
 
 		// Set the visibility as true, thereby displaying it
 		setVisible(true);
+		
+		// Add "this" to necessary event observer lists
+		NotificationManager.getInstance().addObserver(Notification.START_GAME,
+				this, "hideMenu");
 	}
 	
 	// Can be used to remove all Buttons within the MainMenu class
@@ -120,6 +126,10 @@ public class MainMenu extends JPanel {
 		newGame_.setVisible(false);
         loadGame_.setVisible(false);
         quitGame_.setVisible(false);
+	}
+	
+	public void hideMenu() {
+		setVisible(false);
 	}
 	
 	
