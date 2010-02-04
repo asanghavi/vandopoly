@@ -38,10 +38,12 @@ public class Display extends JFrame {
 	Dimension screen_ = Toolkit.getDefaultToolkit().getScreenSize();
 	int width_ = screen_.height - 100;
 	int height_ = screen_.height - 100;
-
+	int scaleWidth_=13, scaleHeight_=7;
+	
 	// Constructor effectively creates JFrame
 	public Display () {
 		this.setSize(screen_.width, screen_.height);
+		this.setTitle("Vandopoly");
 		
 		// Soon to be replaced by the specific JDesktopPane Board
 		JDesktopPane board_ = new JDesktopPane();
@@ -51,7 +53,7 @@ public class Display extends JFrame {
 		
 		// JDesktopBoard should take care of the above remarks
 		
-		// Set the default close operation for the window, or else the
+		// Set the default closse operation for the window, or else the
 		// program won't exit when clicking close button
 		// (The default is HIDE_ON_CLOSE, which just makes the window
 		// invisible, and thus doesn't exit the app)
@@ -59,67 +61,109 @@ public class Display extends JFrame {
 		
 		// Setup the DisplayAssembler
 		DisplayAssembler.getInstance().setDesktopPane(board_);
-
+		
+		int spaceWidth=(int)(height_ / scaleWidth_);
+		int start=2;
+		
 		//prop 1
 		Color c = new Color(228, 108, 12);
-		addSmall(0, (int)(height_ / 13) * 2, c, true, false);
-		addSmall(0, (int)(height_ / 13) * 3, c, true, false);
-		addSmall(0, (int)(height_ / 13) * 4, new Color(0, 0, 0), false, false);
-		addSmall(0, (int)(height_ / 13) * 5, c, true, false);
-		addSmall(0, (int)(height_ / 13) * 6, new Color(0, 0, 0), false, false);
+		addSmall(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmall(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmall(0, spaceWidth * start, new Color(0, 0, 0), false, false);
+		start++;
+		addSmall(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmall(0, spaceWidth * start, new Color(0, 0, 0), false, false);
+		start++;
 		
 		//prop 2
 		c = new Color(148, 55, 53);
-		addSmall(0, (int)(height_ / 13) * 7, c, true, false);
-		addSmall(0, (int)(height_ / 13) * 8, c, true, false);
-		addSmall(0, (int)(height_ / 13) * 9, new Color(0, 0, 0), false, false);
-		addSmall(0, (int)(height_ / 13) * 10, c, true, false);
+		addSmall(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmall(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmall(0, spaceWidth * start, new Color(0, 0, 0), false, false);
+		start++;
+		addSmall(0, spaceWidth * start, c, true, false);
+		start++;
 		
 		//prop 3
 		c = new Color(255, 0, 0);
-		addSmall((int)(height_ / 13) * 2, 0, c, true, true);
-		addSmall((int)(height_ / 13) * 3, 0, c, false, true);
-		addSmall((int)(height_ / 13) * 4, 0, new Color(0, 0, 0), false, true);
-		addSmall((int)(height_ / 13) * 5, 0, c, true, true);
-		addSmall((int)(height_ / 13) * 6, 0, new Color(0, 0, 0), false, true);
+		start=2;
+		addSmall(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmall(spaceWidth * start, 0, c, false, true);
+		start++;
+		addSmall(spaceWidth * start, 0, new Color(0, 0, 0), false, true);
+		start++;
+		addSmall(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmall(spaceWidth * start, 0, new Color(0, 0, 0), false, true);
+		start++;
 		
 		//prop 4
 		c = new Color(255, 255, 0);
-		addSmall((int)(height_ / 13) * 7, 0, c, true, true);
-		addSmall((int)(height_ / 13) * 8, 0, c, true, true);
-		addSmall((int)(height_ / 13) * 9, 0, new Color(0, 0, 0), false, true);
-		addSmall((int)(height_ / 13) * 10, 0, c, true, true);
+		addSmall(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmall(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmall(spaceWidth * start, 0, new Color(0, 0, 0), false, true);
+		start++;
+		addSmall(spaceWidth * start, 0, c, true, true);
+		start++;
 		
 		
 		//prop 5
 		c = new Color(79, 99, 40);
-		addSmallOp(0, (int)(height_ / 13) * 2, c, true, false);
-		addSmallOp(0, (int)(height_ / 13) * 3, c, true, false);
-		addSmallOp(0, (int)(height_ / 13) * 4, new Color(0, 0, 0), false, false);
-		addSmallOp(0, (int)(height_ / 13) * 5, c, true, false);
-		addSmallOp(0, (int)(height_ / 13) * 6, new Color(0, 0, 0), false, false);
+		start=2;
+		addSmallOp(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, new Color(0, 0, 0), false, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, new Color(0, 0, 0), false, false);
+		start++;
 		
 		//prop 6
 		c = new Color(39, 63, 97);
-		addSmallOp(0, (int)(height_ / 13) * 7, c, true, false);
-		addSmallOp(0, (int)(height_ / 13) * 8, c, true, false);
-		addSmallOp(0, (int)(height_ / 13) * 9, new Color(0, 0, 0), false, false);
-		addSmallOp(0, (int)(height_ / 13) * 10, c, true, false);
+		addSmallOp(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, c, true, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, new Color(0, 0, 0), false, false);
+		start++;
+		addSmallOp(0, spaceWidth * start, c, true, false);
+		start++;
 		
 		//prop 7
 		c = new Color(97, 73, 121);
-		addSmallOp((int)(height_ / 13) * 2, 0, c, true, true);
-		addSmallOp((int)(height_ / 13) * 3, 0, c, false, true);
-		addSmallOp((int)(height_ / 13) * 4, 0, new Color(0, 0, 0), false, true);
-		addSmallOp((int)(height_ / 13) * 5, 0, c, true, true);
-		addSmallOp((int)(height_ / 13) * 6, 0, new Color(0,0,0), false, true);
+		start=2;
+		addSmallOp(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, c, false, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, new Color(0, 0, 0), false, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, new Color(0,0,0), false, true);
+		start++;
 		
 		//prop 8
 		c = new Color(85, 141, 215);
-		addSmallOp((int)(height_ / 13) * 7, 0, c, true, true);
-		addSmallOp((int)(height_ / 13) * 8, 0, c, true, true);
-		addSmallOp((int)(height_ / 13) * 9, 0, new Color(0, 0, 0), false, true);
-		addSmallOp((int)(height_ / 13) * 10, 0, c, true, true);
+		addSmallOp(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, c, true, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, new Color(0, 0, 0), false, true);
+		start++;
+		addSmallOp(spaceWidth * start, 0, c, true, true);
+		start++;
 		
 		//set center of board
 		JLabel labelcenter = new JLabel();
@@ -155,10 +199,10 @@ public class Display extends JFrame {
 		
 		if (isVert) {
 			panelHeight = panelWidth;
-			panelWidth = height_ / 13;
+			panelWidth = height_ / scaleWidth_;
 		}
 		else 
-			panelHeight = height_ / 13;
+			panelHeight = height_ / scaleWidth_;
 		
 		label1.setSize(new Dimension(panelWidth, panelHeight));
 		label1.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -171,21 +215,21 @@ public class Display extends JFrame {
 			label.setOpaque(true);
 			label.setBackground(c);
 			
-			panelWidth = (int)((width_ / 7) * .15);
+			panelWidth = (int)((width_ / scaleHeight_) * .15);
 			if (isVert) {
 				panelHeight = panelWidth;
-				panelWidth = height_ / 13;
+				panelWidth = height_ / scaleWidth_;
 			}
 			label.setSize(new Dimension(panelWidth, panelHeight));
 			label.setBorder(BorderFactory.createLineBorder(Color.black));
 			
 			if (isVert)
 				DisplayAssembler.getInstance().addComponent
-					(label, new Point(x, y + (int)((width_ / 7) * .85)), 
+					(label, new Point(x, y + (int)((width_ / scaleHeight_) * .85)), 
 							JLayeredPane.FRAME_CONTENT_LAYER);
 			else
 				DisplayAssembler.getInstance().addComponent
-					(label, new Point(x + (int)((width_ / 7) * .85), y), 
+					(label, new Point(x + (int)((width_ / scaleHeight_) * .85), y), 
 							JLayeredPane.FRAME_CONTENT_LAYER);
 		}
 	}
@@ -200,17 +244,17 @@ public class Display extends JFrame {
 		int panelWidth;
 		
 		if (isProp)
-			panelWidth = (int)((width_ / 7) * .85);
+			panelWidth = (int)((width_ / scaleHeight_) * .85);
 		else
-			panelWidth = (int)((width_ / 7));
+			panelWidth = (int)((width_ / scaleHeight_));
 		
 		int panelHeight;
 		if (isVert) {
 			panelHeight = panelWidth;
-			panelWidth = height_ / 13;
+			panelWidth = height_ / scaleWidth_;
 		}
 		else
-			panelHeight = height_ / 13;
+			panelHeight = height_ / scaleWidth_;
 		
 		x = width_ - x - panelWidth;
 		y = height_ - y - panelHeight;
@@ -219,11 +263,11 @@ public class Display extends JFrame {
 		label1.setBorder(BorderFactory.createLineBorder(Color.black));
 		if (isVert)
 			DisplayAssembler.getInstance().addComponent
-				(label1, new Point(x, y + (int)((width_ / 7) * .15)), 
+				(label1, new Point(x, y + (int)((width_ / scaleHeight_) * .15)), 
 						JLayeredPane.FRAME_CONTENT_LAYER);
 		else
 			DisplayAssembler.getInstance().addComponent
-				(label1, new Point(x + (int)((width_ / 7) * .15), y), 
+				(label1, new Point(x + (int)((width_ / scaleHeight_) * .15), y), 
 						JLayeredPane.FRAME_CONTENT_LAYER);
 		
 		//set the smaller colored part of the piece
@@ -232,10 +276,10 @@ public class Display extends JFrame {
 			label.setOpaque(true);
 			label.setBackground(c);
 			
-			panelWidth = (int)((width_ / 7) * .15);
+			panelWidth = (int)((width_ / scaleHeight_) * .15);
 			if (isVert) {
 				panelHeight = panelWidth;
-				panelWidth = height_ / 13;
+				panelWidth = height_ / scaleWidth_;
 			}
 			label.setSize(new Dimension(panelWidth, panelHeight));
 			label.setBorder(BorderFactory.createLineBorder(Color.black));
