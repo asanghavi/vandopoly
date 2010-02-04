@@ -43,9 +43,9 @@ public class MainMenu extends JPanel {
 	
 	public MainMenu() {
 		
-		int frameWidth = 625, frameHeight = 650;
-		int buttonWidth = 400, buttonHeight = 80;
-		int betweenSpace = 50, buttonStart = 225;
+		int frameWidth = 529, frameHeight = 500;
+		int buttonWidth = 350, buttonHeight = 75;
+		int betweenSpace = 35, buttonStart = 180;
 
 		// Set size of window
 		this.setSize(frameWidth, frameHeight);
@@ -70,7 +70,7 @@ public class MainMenu extends JPanel {
 		Font buttonFont = new Font("broadway", Font.BOLD, 32);
 
 		newGame_ = new JButton("New Game");
-		newGame_.setBounds(((frameWidth - 400) / 2), buttonStart, buttonWidth, buttonHeight);
+		newGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart, buttonWidth, buttonHeight);
 		newGame_.setFont(buttonFont);
 		newGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -85,12 +85,12 @@ public class MainMenu extends JPanel {
         });
 		
 		loadGame_ = new JButton("Load Game");
-		loadGame_.setBounds(((frameWidth - 400) / 2), (buttonStart + betweenSpace + buttonHeight),
-				buttonWidth, buttonHeight);
+		loadGame_.setBounds(((frameWidth - buttonWidth) / 2), 
+				(buttonStart + betweenSpace + buttonHeight), buttonWidth, buttonHeight);
 		loadGame_.setFont(buttonFont);
 
 		quitGame_ = new JButton("Quit Game");
-		quitGame_.setBounds(((frameWidth - 400) / 2), buttonStart + 
+		quitGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
 				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
 		quitGame_.setFont(buttonFont);
 		
