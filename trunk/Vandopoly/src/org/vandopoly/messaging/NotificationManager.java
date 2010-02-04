@@ -48,21 +48,21 @@ public class NotificationManager {
 	}
 	
 	public static NotificationManager getInstance() {
-		if(INSTANCE == null)
+		if (INSTANCE == null)
 			INSTANCE = new NotificationManager();
 		
 		return INSTANCE;		
 	}
 	
 	private void addObserver(String event, Object subscriber, Method callBackMethod) {
-		//Check if an ArrayList doesnt exist yet for key value
-		if(!listsOfEventObservers_.containsKey(event))
+		//Check if an ArrayList doesn't exist yet for key value
+		if (!listsOfEventObservers_.containsKey(event))
 			listsOfEventObservers_.put(event, new ArrayList<EventCallback>());
 		
 		EventCallback observer = new EventCallback(subscriber, callBackMethod);
 		ArrayList<EventCallback> list = listsOfEventObservers_.get(event);
 		
-		if(!list.contains(observer))
+		if (!list.contains(observer))
 			list.add(observer);
 		else
 			System.err.println(observer+" multiple attempts to subscribe to "+event);
@@ -80,8 +80,7 @@ public class NotificationManager {
 		}
 		
 		// If the previous try didn't work, look for a method that does not have any parameters
-		if(callbackMethod == null)
-		{
+		if (callbackMethod == null) {
 			try {
 				callbackMethod = subscriber.getClass().getMethod(callbackMethodName);
 			}

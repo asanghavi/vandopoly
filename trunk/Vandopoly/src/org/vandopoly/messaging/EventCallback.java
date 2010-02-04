@@ -37,28 +37,28 @@ public class EventCallback {
 	
 	public void notifyObserver(Object updatedObject) {
 		try {
-			if(method_.getParameterTypes().length == 1)
+			if (method_.getParameterTypes().length == 1)
 				method_.invoke(object_, updatedObject);
-			else if(method_.getParameterTypes().length == 0)
+			else if (method_.getParameterTypes().length == 0)
 				method_.invoke(object_);
 			else
 				System.err.println(this+" does not contain 0 or 1 parameter");
 		}
-		catch(IllegalAccessException e) {
+		catch (IllegalAccessException e) {
 			String error = "An IllegalAccessException has occured while trying to" +
 			"notify "+object_.getClass()+" with method "+method_.getName();
 			System.err.println(error);
 		}
-		catch(InvocationTargetException e) {
+		catch (InvocationTargetException e) {
 			String error = "An InvocationTargetException has occured while trying to" +
 			"notify "+object_.getClass()+" with method "+method_.getName();
 			System.err.println(error);
 		}
-		catch(IllegalArgumentException e) {
+		catch (IllegalArgumentException e) {
 			String error = "An IllegalArgumentException has occured while trying to" +
 			"notify "+object_.getClass()+" with method "+method_.getName()+
 			"\n Remember all methods that are updated are expected to have either"+
-			"an object parameter (the updated object) or no parameters at all";
+			" an object parameter (the updated object) or no parameters at all";
 			System.err.println(error);
 		}
 		
@@ -83,8 +83,7 @@ public class EventCallback {
 		return method_;
 	}
 	
-	public String toString()
-	{
+	public String toString(){
 		return "Class: "+object_.getClass()+", Method: "+method_.getName();
 	}
 }
