@@ -56,8 +56,15 @@ public class GameOptions extends JPanel{
 		piece3_3_, piece4_3_, piece1_4_, piece2_4_, piece3_4_, piece4_4_;
 	private JLabel selectPieces_, playerOne_2_, playerTwo_2_, playerThree_2_,
 		playerFour_2_;
+	
+	// Represents the choose icon options panel
+	private JPanel secondPanel_;
+	
+	private MainMenu menu_;
 				
-		public GameOptions() {
+		public GameOptions(MainMenu menu) {
+			
+			menu_ = menu;
 			
 			int frameWidth = 730, frameHeight = 750;
 
@@ -70,7 +77,8 @@ public class GameOptions extends JPanel{
 			// Center the frame on the user's screen
 			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-			Point location = new Point((int)(screen.getWidth() - frameWidth) / 2, (int)(screen.getHeight() - frameHeight) / 2);
+			Point location = new Point((int)(screen.getWidth() - frameWidth) / 2, 
+					(int)(screen.getHeight() - frameHeight) / 2);
 			
 			// Set up the fonts used on this panel
 			Font subTitleFont = new Font("broadway", Font.PLAIN, 36);
@@ -391,7 +399,7 @@ public class GameOptions extends JPanel{
 	            	NotificationManager.getInstance().notifyObservers
 	            		(Notification.START_GAME, null);
 	            	GameOptions.this.hideSecondPagePanels();
-	            	GameOptions.this.backToMain();
+	            	GameOptions.this.setVisible(false);
 	            	
 	            }
 	        });	
@@ -414,36 +422,60 @@ public class GameOptions extends JPanel{
 			this.add(nameFour_);
 			this.add(continue_);	
 			this.add(back_);
-			this.add(playGame_);
-			this.add(piece1_1_);
-			this.add(piece2_1_);
-			this.add(piece3_1_);
-			this.add(piece4_1_);
 			
-			this.add(piece1_2_);
-			this.add(piece2_2_);
-			this.add(piece3_2_);
-			this.add(piece4_2_);
+			// Here is the screen to select the players' desired pieces
+			secondPanel_ = new JPanel();
 			
-			this.add(piece1_3_);
-			this.add(piece2_3_);
-			this.add(piece3_3_);
-			this.add(piece4_3_);
+			secondPanel_.setSize(frameWidth, frameHeight - 170);
 			
-			this.add(piece1_4_);
-			this.add(piece2_4_);
-			this.add(piece3_4_);
-			this.add(piece4_4_);
+			// Recreate the titlebar
+			JLabel titleBar2 = new JLabel();
+			titleBar2.setIcon(title);
+			titleBar2.setBounds((frameWidth - 529) / 2, 0, frameWidth, 159);
 			
-			this.add(selectPieces_);
-			this.add(playerOne_2_);
-			this.add(playerTwo_2_);
-			this.add(playerThree_2_);
-			this.add(playerFour_2_);
+			// Recreate the subTitleBar header along with positioning and size
+			JLabel subTitleBar2 = new JLabel("Game Options");
+			subTitleBar2.setFont(subTitleFont);
+			subTitleBar2.setBounds(240, 160, 500, 90);
+			
+			secondPanel_.setLayout(null);
+			
+			secondPanel_.add(titleBar2);
+			secondPanel_.add(subTitleBar2);
+			secondPanel_.add(playGame_);
+			secondPanel_.add(piece1_1_);
+			secondPanel_.add(piece2_1_);
+			secondPanel_.add(piece3_1_);
+			secondPanel_.add(piece4_1_);
+			
+			secondPanel_.add(piece1_2_);
+			secondPanel_.add(piece2_2_);
+			secondPanel_.add(piece3_2_);
+			secondPanel_.add(piece4_2_);
+			
+			secondPanel_.add(piece1_3_);
+			secondPanel_.add(piece2_3_);
+			secondPanel_.add(piece3_3_);
+			secondPanel_.add(piece4_3_);
+			
+			secondPanel_.add(piece1_4_);
+			secondPanel_.add(piece2_4_);
+			secondPanel_.add(piece3_4_);
+			secondPanel_.add(piece4_4_);
+			
+			secondPanel_.add(selectPieces_);
+			secondPanel_.add(playerOne_2_);
+			secondPanel_.add(playerTwo_2_);
+			secondPanel_.add(playerThree_2_);
+			secondPanel_.add(playerFour_2_);
+			
+			this.add(secondPanel_);
 			
 			// Add the Panel to the display
 			display = DisplayAssembler.getInstance();
-			display.addComponent(this, location, JLayeredPane.POPUP_LAYER);
+			display.addComponent(this, location, JLayeredPane.MODAL_LAYER);
+			
+			display.addComponent(secondPanel_, location, JLayeredPane.POPUP_LAYER);
 	
 			// Set the visibility as true, thereby displaying it
 			this.setVisible(true);
@@ -528,6 +560,8 @@ public class GameOptions extends JPanel{
 					piece4_4_.setVisible(true);
 				}
 			}
+			
+			secondPanel_.setVisible(true);
 		}
 		
 		public void hideSecondPagePanels() {
@@ -563,6 +597,8 @@ public class GameOptions extends JPanel{
 			playerFour_2_.setVisible(false);
 			
 			playGame_.setVisible(false);
+			
+			secondPanel_.setVisible(false);
 		}
 
 		// Methods to display the appropriate number of text boxes	on the
@@ -602,6 +638,7 @@ public class GameOptions extends JPanel{
 			nameFour_.setText(null);
 			numberOfPlayers_ = 2;
 			
+			menu_.setVisible(true);
 			this.setVisible(false);
 		}
 		
