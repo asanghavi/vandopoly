@@ -39,10 +39,13 @@ import javax.swing.JPanel;
 public class MainMenu extends JPanel {
 	
 	private JButton newGame_, loadGame_, quitGame_;
+	private GameOptions options_;
 	
 	public MainMenu() {
 		
-		int frameWidth = 730, frameHeight = 750;
+		int frameWidth = 625, frameHeight = 650;
+		int buttonWidth = 400, buttonHeight = 80;
+		int betweenSpace = 50, buttonStart = 225;
 
 		// Set size of window
 		this.setSize(frameWidth, frameHeight);
@@ -53,35 +56,42 @@ public class MainMenu extends JPanel {
 		// Center the frame on the user's screen
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-		Point location = new Point((int)(screen.getWidth() - frameWidth) / 2, (int)(screen.getHeight() - frameHeight) / 2);
+		Point location = new Point((int)(screen.getWidth() - frameWidth) / 2,
+				((int)(screen.getHeight() - frameHeight) / 2) - 25);
 		
 		// Set up the title bar along with positioning and size
 		JLabel titleBar = new JLabel();
-		ImageIcon title = new ImageIcon("images/Vandopoly2.jpg");
+		ImageIcon title = new ImageIcon("images/Vandopoly3.jpg");
 		titleBar.setIcon(title);
-		titleBar.setBounds(0, 0, 730, 200);
+		titleBar.setBounds(0, 0, frameWidth, 200);
 
 		
 		// Setup and create all 3 buttons
 		Font buttonFont = new Font("broadway", Font.BOLD, 32);
 
 		newGame_ = new JButton("New Game");
-		newGame_.setBounds(115, 250, 500, 100);
+		newGame_.setBounds(((frameWidth - 400) / 2), buttonStart, buttonWidth, buttonHeight);
 		newGame_.setFont(buttonFont);
 		newGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-                removePanels();
-                new GameOptions();
+                if (options_ == null)
+                	options_ = new GameOptions();
+                else {
+                	//options_.showFirstPagePanels();
+                	options_.setVisible(true);
+                }
             }
 
         });
-
+		
 		loadGame_ = new JButton("Load Game");
-		loadGame_.setBounds(115, 400, 500, 100);
+		loadGame_.setBounds(((frameWidth - 400) / 2), (buttonStart + betweenSpace + buttonHeight),
+				buttonWidth, buttonHeight);
 		loadGame_.setFont(buttonFont);
 
 		quitGame_ = new JButton("Quit Game");
-		quitGame_.setBounds(115, 550, 500, 100);
+		quitGame_.setBounds(((frameWidth - 400) / 2), buttonStart + 
+				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
 		quitGame_.setFont(buttonFont);
 		
 		// May need to be changed, but shows ActionListeners
@@ -99,14 +109,14 @@ public class MainMenu extends JPanel {
 		
 		// Add the Panel to the display
 		DisplayAssembler display = DisplayAssembler.getInstance();
-		display.addComponent(this, location, JLayeredPane.FRAME_CONTENT_LAYER);
+		display.addComponent(this, location, JLayeredPane.PALETTE_LAYER);
 
 		// Set the visibility as true, thereby displaying it
 		setVisible(true);
 	}
 	
 	// Can be used to remove all Buttons within the MainMenu class
-	public void removePanels() {
+	public void hidePanels() {
 		newGame_.setVisible(false);
         loadGame_.setVisible(false);
         quitGame_.setVisible(false);
