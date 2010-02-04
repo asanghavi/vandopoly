@@ -193,9 +193,6 @@ public class Display extends JFrame {
 	// horizontally
 	void addSmall(int x, int y, Color c, boolean isProp, boolean isVert) {
 		// set the larger part of the piece
-		JLabel label1 = new JLabel();
-		label1.setOpaque(true);
-		label1.setIcon(new ImageIcon("images/boardTex.png"));
 		int panelWidth;
 		
 		if (isProp)
@@ -215,43 +212,45 @@ public class Display extends JFrame {
 			x+=scaleHeight_;
 		}
 		
-		label1.setSize(new Dimension(panelWidth, panelHeight));
-		label1.setBorder(BorderFactory.createLineBorder(Color.black));
-		DisplayAssembler.getInstance().addComponent(label1, new Point(x,y), 
-				JLayeredPane.FRAME_CONTENT_LAYER);
+		addLabel(x,y,panelWidth,panelHeight,c,true);
 		
 		// set the smaller colored part of the piece
 		if (isProp) {
-			JLabel label = new JLabel();
-			label.setOpaque(true);
-			label.setBackground(c);
-			
 			panelWidth = (int)((width_ / scaleHeight_) * .15);
 			if (isVert) {
 				panelHeight = panelWidth;
 				panelWidth = height_ / scaleWidth_;
 			}
-			label.setSize(new Dimension(panelWidth, panelHeight));
-			label.setBorder(BorderFactory.createLineBorder(Color.black));
-			
+	
 			if (isVert)
-				DisplayAssembler.getInstance().addComponent
-					(label, new Point(x, y + (int)((width_ / scaleHeight_) * .85)), 
-							JLayeredPane.FRAME_CONTENT_LAYER);
+				addLabel(x,y + (int)((width_ / scaleHeight_) * .85),panelWidth,panelHeight,c,false);
 			else
-				DisplayAssembler.getInstance().addComponent
-					(label, new Point(x + (int)((width_ / scaleHeight_) * .85), y), 
-							JLayeredPane.FRAME_CONTENT_LAYER);
+				addLabel(x + (int)((width_ / scaleHeight_) * .85),y,panelWidth,panelHeight,c,false);	
 		}
+	}
+	
+	// make a label and add it to the board
+	void addLabel(int x, int y, int width, int height, Color c, boolean useTex)
+	{
+		JLabel label = new JLabel();
+		label.setOpaque(true);
+		
+		if (useTex)
+			label.setIcon(new ImageIcon("images/boardTex.png"));
+		else {
+			label.setOpaque(true);
+			label.setBackground(c);
+		}
+		
+		label.setSize(new Dimension(width, height));
+		label.setBorder(BorderFactory.createLineBorder(Color.black));
+		DisplayAssembler.getInstance().addComponent(label, new Point(x,y), 
+				JLayeredPane.FRAME_CONTENT_LAYER);
 	}
 	
 	// same as addSmall, but used for bottom and right side of board
 	void addSmallOp(int x, int y, Color c, boolean isProp, boolean isVert) {
-		// set the larger part of the piece
-		JLabel label1 = new JLabel();
-		label1.setOpaque(true);
-		label1.setIcon(new ImageIcon("images/boardTex.png"));
-		
+		// set the larger part of the piece	
 		int panelWidth;
 
 		if (isProp)
@@ -278,32 +277,20 @@ public class Display extends JFrame {
 			x-=2*scaleWidth_;
 			y-=scaleHeight_;
 		}
-		label1.setSize(new Dimension(panelWidth, panelHeight));
-		label1.setBorder(BorderFactory.createLineBorder(Color.black));
 		if (isVert)
-			DisplayAssembler.getInstance().addComponent
-				(label1, new Point(x, y + (int)((width_ / scaleHeight_) * .15)), 
-						JLayeredPane.FRAME_CONTENT_LAYER);
-		else
-			DisplayAssembler.getInstance().addComponent
-				(label1, new Point(x + (int)((width_ / scaleHeight_) * .15), y), 
-						JLayeredPane.FRAME_CONTENT_LAYER);
+			addLabel(x,y + (int)((width_ / scaleHeight_) * .15),panelWidth,panelHeight,c,true);	
 		
+		else
+			addLabel(x + (int)((width_ / scaleHeight_) * .15),y,panelWidth,panelHeight,c,true);	
+			
 		// set the smaller colored part of the piece
 		if (isProp) {
-			JLabel label = new JLabel();
-			label.setOpaque(true);
-			label.setBackground(c);
-			
 			panelWidth = (int)((width_ / scaleHeight_) * .15);
 			if (isVert) {
 				panelHeight = panelWidth;
 				panelWidth = height_ / scaleWidth_;
 			}
-			label.setSize(new Dimension(panelWidth, panelHeight));
-			label.setBorder(BorderFactory.createLineBorder(Color.black));
-			DisplayAssembler.getInstance().addComponent(label, 
-					new Point(x, y), JLayeredPane.FRAME_CONTENT_LAYER);
+			addLabel(x,y,panelWidth,panelHeight,c,false);
 		}
 	}
 	
