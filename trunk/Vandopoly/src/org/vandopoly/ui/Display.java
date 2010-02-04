@@ -70,7 +70,6 @@ public class Display extends JFrame {
 		board_.setVisible(true);
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "showBoard");
-		showBoard();
 	}
 	
 	// show the board
