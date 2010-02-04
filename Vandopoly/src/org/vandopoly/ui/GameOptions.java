@@ -32,6 +32,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
 /*
@@ -48,7 +49,6 @@ public class GameOptions extends JPanel{
 	private JButton continue_, back_, playGame_;
 	private DisplayAssembler display;
 	private int numberOfPlayers_ = 2, optionsPageNum_ = 1;
-	
 	
 	// Private data members for page 2 of options
 	private JRadioButton piece1_1_, piece2_1_, piece3_1_, piece4_1_, 
@@ -388,9 +388,10 @@ public class GameOptions extends JPanel{
 			playGame_.setFont(buttonFont);
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
-	            	NotificationManager.getInstance().notifyObservers("StartGame", null);
-	            	//GameOptions.this.hideSecondPagePanels();
-	            	//GameOptions.this.setVisible(false);
+	            	NotificationManager.getInstance().notifyObservers
+	            		(Notification.START_GAME, null);
+	            	GameOptions.this.hideSecondPagePanels();
+	            	GameOptions.this.setVisible(false);
 	            	
 	            }
 	        });	
