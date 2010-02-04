@@ -391,7 +391,7 @@ public class GameOptions extends JPanel{
 	            	NotificationManager.getInstance().notifyObservers
 	            		(Notification.START_GAME, null);
 	            	GameOptions.this.hideSecondPagePanels();
-	            	GameOptions.this.setVisible(false);
+	            	GameOptions.this.backToMain();
 	            	
 	            }
 	        });	
@@ -471,6 +471,7 @@ public class GameOptions extends JPanel{
 		}
 		
 		public void showFirstPagePanels() {
+			
 			playerOne_.setVisible(true);
 			nameOne_.setVisible(true);
 			playerTwo_.setVisible(true);
@@ -599,6 +600,7 @@ public class GameOptions extends JPanel{
 			nameTwo_.setText(null);
 			nameThree_.setText(null);
 			nameFour_.setText(null);
+			numberOfPlayers_ = 2;
 			
 			this.setVisible(false);
 		}
