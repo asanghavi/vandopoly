@@ -59,7 +59,9 @@ public class GameOptions extends JPanel{
 				
 		public GameOptions() {
 			
-			int frameWidth = 730, frameHeight = 750;
+			int frameWidth = 529, frameHeight = 500, titleBarHeight = 159,
+				labelHeight = 25;
+			
 
 			// Set size of window
 			this.setSize(frameWidth, frameHeight);
@@ -70,24 +72,25 @@ public class GameOptions extends JPanel{
 			// Center the frame on the user's screen
 			Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-			Point location = new Point((int)(screen.getWidth() - frameWidth) / 2, (int)(screen.getHeight() - frameHeight) / 2);
+			Point location = new Point((int)(screen.getWidth() - frameWidth) / 2, 
+					(int)(screen.getHeight() - frameHeight) / 2);
 			
 			// Set up the fonts used on this panel
-			Font subTitleFont = new Font("broadway", Font.BOLD, 36);
-			Font headerFont = new Font("broadway", Font.PLAIN, 20);
-			Font radioButtonFont = new Font("broadway", Font.PLAIN, 16);
-			Font buttonFont = new Font("broadway", Font.BOLD, 32);
+			Font subTitleFont = new Font("fonts/BROADW.TTF", Font.BOLD, 36);
+			Font headerFont = new Font("fonts/BROADW.TTF", Font.PLAIN, 20);
+			Font radioButtonFont = new Font("fonts/BROADW.TTF", Font.PLAIN, 16);
+			Font buttonFont = new Font("fonts/BROADW.TTF", Font.BOLD, 32);
 			
 			// Set up the title bar along with positioning and size
 			JLabel titleBar = new JLabel();
-			ImageIcon title = new ImageIcon("images/Vandopoly2.jpg");
+			ImageIcon title = new ImageIcon("images/vandopoly-logo.gif");
 			titleBar.setIcon(title);
-			titleBar.setBounds(0, 0, 730, 200);
+			titleBar.setBounds(0, 0, frameWidth, titleBarHeight);
 			
 			// Set up the Options header along with positioning and size
 			JLabel subTitleBar = new JLabel("Game Options");
 			subTitleBar.setFont(subTitleFont);
-			subTitleBar.setBounds(240, 160, 500, 90);
+			subTitleBar.setBounds((frameWidth / 2) - 90, titleBarHeight, 500, 90);
 			
 			// Set up the sub-headers & labels along with positioning and size
 			playersHeader_ = new JLabel("Number of Players:");
@@ -96,47 +99,48 @@ public class GameOptions extends JPanel{
 			
 			playerNames_ = new JLabel("Player Names:");
 			playerNames_.setFont(headerFont);
-			playerNames_.setBounds(500, 200, 300, 100);
+			playerNames_.setBounds(frameWidth - 200, 200, 300, 100);
 			
 			playerOne_ = new JLabel("Player 1: ");
 			playerOne_.setFont(radioButtonFont);
-			playerOne_.setBounds(475, 275, 100, 25);
+			playerOne_.setBounds(frameWidth - 250, 275, 100, labelHeight);
 			
 			playerTwo_ = new JLabel("Player 2: ");
 			playerTwo_.setFont(radioButtonFont);
-			playerTwo_.setBounds(475, 305, 100, 25);
+			playerTwo_.setBounds(frameWidth - 250, 305, 100, labelHeight);
 			
 			playerThree_ = new JLabel("Player 3: ");
 			playerThree_.setFont(radioButtonFont);
-			playerThree_.setBounds(475, 335, 100, 25);
+			playerThree_.setBounds(frameWidth - 250, 335, 100, labelHeight);
 			
 			playerFour_ = new JLabel("Player 4: ");
 			playerFour_.setFont(radioButtonFont);
-			playerFour_.setBounds(475, 365, 100, 25);
+			playerFour_.setBounds(frameWidth - 250, 365, 100, labelHeight);
 			
+			// Labels for page 2
 			selectPieces_ = new JLabel("Select your game piece: ");
 			selectPieces_.setFont(headerFont);
 			selectPieces_.setBounds(50, 200, 300, 100);
 			
 			playerOne_2_ = new JLabel("Player 1: ");
 			playerOne_2_.setFont(radioButtonFont);
-			playerOne_2_.setBounds(50, 270, 100, 25);
+			playerOne_2_.setBounds(50, 270, 100, labelHeight);
 			
 			playerTwo_2_ = new JLabel("Player 2: ");
 			playerTwo_2_.setFont(radioButtonFont);
-			playerTwo_2_.setBounds(200, 270, 100, 25);
+			playerTwo_2_.setBounds(200, 270, 100, labelHeight);
 			
 			playerThree_2_ = new JLabel("Player 3: ");
 			playerThree_2_.setFont(radioButtonFont);
-			playerThree_2_.setBounds(350, 270, 100, 25);
+			playerThree_2_.setBounds(350, 270, 100, labelHeight);
 			
 			playerFour_2_ = new JLabel("Player 4: ");
 			playerFour_2_.setFont(radioButtonFont);
-			playerFour_2_.setBounds(500, 270, 100, 25);
+			playerFour_2_.setBounds(500, 270, 100, labelHeight);
 			
 			// Set up and create radio buttons and text fields
 			two_ = new JRadioButton("2");
-			two_.setBounds(100, 280, 50, 25);
+			two_.setBounds(100, 280, 50, labelHeight);
 			two_.setFont(radioButtonFont);
 			two_.setSelected(true);
 			two_.addActionListener(new ActionListener() {
@@ -147,7 +151,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			three_ = new JRadioButton("3");
-			three_.setBounds(100, 310, 50, 25);
+			three_.setBounds(100, 310, 50, labelHeight);
 			three_.setFont(radioButtonFont);
 			three_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -157,7 +161,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			four_ = new JRadioButton("4");
-			four_.setBounds(100, 340, 50, 25);
+			four_.setBounds(100, 340, 50, labelHeight);
 			four_.setFont(radioButtonFont);
 			four_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -173,7 +177,7 @@ public class GameOptions extends JPanel{
 		    players_.add(four_);
 		    
 			piece1_1_ = new JRadioButton("ICON1");
-			piece1_1_.setBounds(100, 300, 150, 25);
+			piece1_1_.setBounds(100, 300, 150, labelHeight);
 			piece1_1_.setFont(radioButtonFont);
 			piece1_1_.setSelected(true);
 			piece1_1_.addActionListener(new ActionListener() {
@@ -183,7 +187,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece2_1_ = new JRadioButton("ICON2");
-			piece2_1_.setBounds(100, 335, 150, 25);
+			piece2_1_.setBounds(100, 335, 150, labelHeight);
 			piece2_1_.setFont(radioButtonFont);
 			piece2_1_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -192,7 +196,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece3_1_ = new JRadioButton("ICON3");
-			piece3_1_.setBounds(100, 370, 150, 25);
+			piece3_1_.setBounds(100, 370, 150, labelHeight);
 			piece3_1_.setFont(radioButtonFont);
 			piece3_1_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -201,7 +205,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece4_1_ = new JRadioButton("ICON4");
-			piece4_1_.setBounds(100, 405, 150, 25);
+			piece4_1_.setBounds(100, 405, 150, labelHeight);
 			piece4_1_.setFont(radioButtonFont);
 			piece4_1_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -216,7 +220,7 @@ public class GameOptions extends JPanel{
 			icons1_.add(piece4_1_);
 		    
 			piece1_2_ = new JRadioButton("ICON1");
-			piece1_2_.setBounds(250, 300, 150, 25);
+			piece1_2_.setBounds(250, 300, 150, labelHeight);
 			piece1_2_.setFont(radioButtonFont);
 			piece1_2_.setSelected(true);
 			piece1_2_.addActionListener(new ActionListener() {
@@ -226,7 +230,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece2_2_ = new JRadioButton("ICON2");
-			piece2_2_.setBounds(250, 335, 150, 25);
+			piece2_2_.setBounds(250, 335, 150, labelHeight);
 			piece2_2_.setFont(radioButtonFont);
 			piece2_2_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -235,7 +239,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece3_2_ = new JRadioButton("ICON3");
-			piece3_2_.setBounds(250, 370, 150, 25);
+			piece3_2_.setBounds(250, 370, 150, labelHeight);
 			piece3_2_.setFont(radioButtonFont);
 			piece3_2_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -244,7 +248,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece4_2_ = new JRadioButton("ICON4");
-			piece4_2_.setBounds(250, 405, 150, 25);
+			piece4_2_.setBounds(250, 405, 150, labelHeight);
 			piece4_2_.setFont(radioButtonFont);
 			piece4_2_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -259,7 +263,7 @@ public class GameOptions extends JPanel{
 			icons2_.add(piece4_2_);
 			
 			piece1_3_ = new JRadioButton("ICON1");
-			piece1_3_.setBounds(400, 300, 150, 25);
+			piece1_3_.setBounds(400, 300, 150, labelHeight);
 			piece1_3_.setFont(radioButtonFont);
 			piece1_3_.setSelected(true);
 			piece1_3_.addActionListener(new ActionListener() {
@@ -269,7 +273,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece2_3_ = new JRadioButton("ICON2");
-			piece2_3_.setBounds(400, 335, 150, 25);
+			piece2_3_.setBounds(400, 335, 150, labelHeight);
 			piece2_3_.setFont(radioButtonFont);
 			piece2_3_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -278,7 +282,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece3_3_ = new JRadioButton("ICON3");
-			piece3_3_.setBounds(400, 370, 150, 25);
+			piece3_3_.setBounds(400, 370, 150, labelHeight);
 			piece3_3_.setFont(radioButtonFont);
 			piece3_3_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -287,7 +291,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece4_3_ = new JRadioButton("ICON4");
-			piece4_3_.setBounds(400, 405, 150, 25);
+			piece4_3_.setBounds(400, 405, 150, labelHeight);
 			piece4_3_.setFont(radioButtonFont);
 			piece4_3_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -302,7 +306,7 @@ public class GameOptions extends JPanel{
 			icons3_.add(piece4_3_);
 			
 			piece1_4_ = new JRadioButton("ICON1");
-			piece1_4_.setBounds(550, 300, 150, 25);
+			piece1_4_.setBounds(550, 300, 150, labelHeight);
 			piece1_4_.setFont(radioButtonFont);
 			piece1_4_.setSelected(true);
 			piece1_4_.addActionListener(new ActionListener() {
@@ -312,7 +316,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece2_4_ = new JRadioButton("ICON2");
-			piece2_4_.setBounds(550, 335, 150, 25);
+			piece2_4_.setBounds(550, 335, 150, labelHeight);
 			piece2_4_.setFont(radioButtonFont);
 			piece2_4_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -321,7 +325,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece3_4_ = new JRadioButton("ICON3");
-			piece3_4_.setBounds(550, 370, 150, 25);
+			piece3_4_.setBounds(550, 370, 150, labelHeight);
 			piece3_4_.setFont(radioButtonFont);
 			piece3_4_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -330,7 +334,7 @@ public class GameOptions extends JPanel{
 	        });
 			
 			piece4_4_ = new JRadioButton("ICON4");
-			piece4_4_.setBounds(550, 405, 150, 25);
+			piece4_4_.setBounds(550, 405, 150, labelHeight);
 			piece4_4_.setFont(radioButtonFont);
 			piece4_4_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
@@ -346,19 +350,19 @@ public class GameOptions extends JPanel{
 			
 		    nameOne_ = new JTextField();
 		    nameOne_.setFont(radioButtonFont);
-		    nameOne_.setBounds(565, 275, 110, 25);
+		    nameOne_.setBounds(565, 275, 110, labelHeight);
 		    
 		    nameTwo_ = new JTextField();
 		    nameTwo_.setFont(radioButtonFont);
-		    nameTwo_.setBounds(565, 305, 110, 25);
+		    nameTwo_.setBounds(565, 305, 110, labelHeight);
 		    
 		    nameThree_ = new JTextField();
 		    nameThree_.setFont(radioButtonFont);
-		    nameThree_.setBounds(565, 335, 110, 25);
+		    nameThree_.setBounds(565, 335, 110, labelHeight);
 		    
 		    nameFour_ = new JTextField();
 		    nameFour_.setFont(radioButtonFont);
-		    nameFour_.setBounds(565, 365, 110, 25);
+		    nameFour_.setBounds(565, 365, 110, labelHeight);
 		    
 			continue_ = new JButton("Continue");
 			continue_.setBounds(115, 500, 500, 75);
@@ -388,9 +392,9 @@ public class GameOptions extends JPanel{
 			playGame_.setFont(buttonFont);
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
-	            	//NotificationManager.getInstance().notifyObservers("StartGame", null);
-	            	GameOptions.this.hideSecondPagePanels();
-	            	GameOptions.this.setVisible(false);
+	            	NotificationManager.getInstance().notifyObservers("StartGame", null);
+	            	//GameOptions.this.hideSecondPagePanels();
+	            	//GameOptions.this.setVisible(false);
 	            	
 	            }
 	        });	
