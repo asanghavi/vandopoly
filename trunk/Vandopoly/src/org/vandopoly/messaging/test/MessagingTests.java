@@ -75,13 +75,19 @@ public class MessagingTests extends TestCase {
 		assertTrue(!noParameter);
 	}
 	
+	public void testNoObservers() {
+		NotificationManager.getInstance().notifyObservers("NoObservers", null);
+		System.out.println("Should Print out \"No observers have ever subscribed "+
+				"to event NoObservers\"");
+	}
+	
 	// Should produce 2 red line statements in the console window
 	public void testMultipleAddObserver() {
 		NotificationManager.getInstance().addObserver(EVENT1, this, "callbackWithParameter");
 		NotificationManager.getInstance().addObserver(EVENT1, this, "callbackWithParameter");
 		assertTrue(true);
-		System.out.println("If two red statements are printed above testMultipleAddObserver "+
-				"performed correctly");
+		System.out.println("If two red Class: class org.vandopoly... messages are printed "+
+				"above performed correctly");
 	}
 	
 	public void callbackWithParameter(Object updatedObject) {
