@@ -84,9 +84,9 @@ public class GameOptions extends JPanel{
 			
 			// Set up the title bar along with positioning and size
 			JLabel titleBar = new JLabel();
-			ImageIcon title = new ImageIcon("images/vandopoly-logo.gif");
+			ImageIcon title = new ImageIcon("images/vandopoly-logo2.gif");
 			titleBar.setIcon(title);
-			titleBar.setBounds((frameWidth - 529) / 2, 0, frameWidth, 159);
+			titleBar.setBounds(0, 0, frameWidth, 159);
 			
 			// Set up the Options header along with positioning and size
 			JLabel subTitleBar = new JLabel("Game Options");
