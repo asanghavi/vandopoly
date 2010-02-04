@@ -1,3 +1,4 @@
+#summary Download and Install Instructions
 =Install and Run=
 
 Go to the Downloads page and download the latest version of Vandopoly.
