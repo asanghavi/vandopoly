@@ -1,5 +1,3 @@
-#summary One-sentence summary of this page.
-
 =Install and Run=
 
 Go to the Downloads page and download the latest version of Vandopoly.
@@ -7,11 +5,3 @@ Go to the Downloads page and download the latest version of Vandopoly.
 Unzip the file, open the Vandopoly folder, and double click on Vandopoly.jar.
 
 The program should run as expected.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
