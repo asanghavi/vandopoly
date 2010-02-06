@@ -41,6 +41,8 @@ public class MainMenu extends JPanel {
 	private JButton newGame_, loadGame_, rules_, quitGame_;
 	private GameOptions options_;
 	
+	static final long serialVersionUID = 2;
+	
 	public MainMenu() {
 		
 		int frameWidth = 529, frameHeight = 560;

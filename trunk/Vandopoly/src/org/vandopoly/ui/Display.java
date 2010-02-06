@@ -30,7 +30,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import org.vandopoly.messaging.Notification;
@@ -43,11 +42,12 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class Display extends JFrame {
 	
-	private JDesktopPane board_;
 	Dimension screen_ = Toolkit.getDefaultToolkit().getScreenSize();
 	int width_ = screen_.height - 100;
 	int height_ = screen_.height - 100;
 	int scaleWidth_ = 13, scaleHeight_ = 7;
+	
+	static final long serialVersionUID = 1;
 	
 	// Constructor effectively creates JFrame
 	public Display () {
@@ -287,9 +287,5 @@ public class Display extends JFrame {
 		label.setBorder(BorderFactory.createLineBorder(Color.black));
 		DisplayAssembler.getInstance().addComponent(label, new Point(x,y), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
-	}
-	
-	public static void main(String[] args) {
-		new Display();
 	}
 }
