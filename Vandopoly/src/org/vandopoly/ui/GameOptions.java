@@ -57,6 +57,8 @@ public class GameOptions extends JPanel{
 	private JLabel selectPieces_, playerOne_2_, playerTwo_2_, playerThree_2_,
 		playerFour_2_;
 	
+	static final long serialVersionUID = 3;
+	
 	private MainMenu mainMenu_;
 				
 		public GameOptions(MainMenu mainMenu) {
