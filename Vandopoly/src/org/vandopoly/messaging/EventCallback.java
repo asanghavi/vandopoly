@@ -26,15 +26,15 @@ import java.lang.reflect.Method;
  * @author James Kasten
  */
 public class EventCallback {
-	
+
 	private Object object_;
 	private Method method_;
-	
+
 	public EventCallback(Object object, Method method) {
 		object_ = object;
 		method_ = method;
 	}
-	
+
 	public void notifyObserver(Object updatedObject) {
 		try {
 			if (method_.getParameterTypes().length == 1)
@@ -42,48 +42,56 @@ public class EventCallback {
 			else if (method_.getParameterTypes().length == 0)
 				method_.invoke(object_);
 			else
-				System.err.println(this+" does not contain 0 or 1 parameter");
-		}
-		catch (IllegalAccessException e) {
-			String error = "An IllegalAccessException has occured while trying to" +
-			"notify "+object_.getClass()+" with method "+method_.getName();
+				System.err.println(this + " does not contain 0 or 1 parameter");
+		} catch (IllegalAccessException e) {
+			String error = "An IllegalAccessException has occured while trying to"
+					+ "notify "
+					+ object_.getClass()
+					+ " with method "
+					+ method_.getName();
+			System.err.println(error);
+		} catch (InvocationTargetException e) {
+			String error = "An InvocationTargetException has occured while trying to"
+					+ "notify "
+					+ object_.getClass()
+					+ " with method "
+					+ method_.getName();
+			System.err.println(error);
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			String error = "An IllegalArgumentException has occured while trying to"
+					+ "notify "
+					+ object_.getClass()
+					+ " with method "
+					+ method_.getName()
+					+ "\n Remember all methods that are updated are expected to have either"
+					+ " an object parameter (the updated object) or no parameters at all";
 			System.err.println(error);
 		}
-		catch (InvocationTargetException e) {
-			String error = "An InvocationTargetException has occured while trying to" +
-			"notify "+object_.getClass()+" with method "+method_.getName();
-			System.err.println(error);
-		}
-		catch (IllegalArgumentException e) {
-			String error = "An IllegalArgumentException has occured while trying to" +
-			"notify "+object_.getClass()+" with method "+method_.getName()+
-			"\n Remember all methods that are updated are expected to have either"+
-			" an object parameter (the updated object) or no parameters at all";
-			System.err.println(error);
-		}
-		
 	}
-	
+
 	// Needed for the HashMap
 	public boolean equals(Object obj) {
-	    if (this == obj)
-	      return true;
-	    if (!(obj instanceof EventCallback))
-	      return false;
-	    EventCallback callback = (EventCallback) obj;
+		if (this == obj)
+			return true;
+		if (!(obj instanceof EventCallback))
+			return false;
+		EventCallback callback = (EventCallback) obj;
 
-	    return object_.equals(callback.object_) && method_.equals(callback.method_);
+		return object_.equals(callback.object_)
+				&& method_.equals(callback.method_);
 	}
-	
+
 	public Object getObject() {
 		return object_;
 	}
-	
+
 	public Method getMethod() {
 		return method_;
 	}
-	
-	public String toString(){
-		return "Class: "+object_.getClass()+", Method: "+method_.getName();
+
+	public String toString() {
+		return "Class: " + object_.getClass() + ", Method: "
+				+ method_.getName();
 	}
 }

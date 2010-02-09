@@ -27,4 +27,5 @@ public class Notification {
 	
 	// Game Events
 	public static final String START_GAME = "StartGame";
+	public static final String ROLL_DICE = "RollDice";
 }
