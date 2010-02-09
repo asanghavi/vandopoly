@@ -148,5 +148,6 @@ public class MainMenu extends JPanel {
 	public static void main(String[] args) {
 		new Display();
 		new MainMenu();
+		new DicePanel();
 	}
 }
