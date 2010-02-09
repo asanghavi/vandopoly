@@ -6,7 +6,7 @@ User stories for Vandopoly.
  
 
 
-= Week 2 User Stories =
+= Cycle 2 User Stories =
     * After clicking the "Start Game" button, users can see their names appear next to the board (Allie)
     * Users can see property names on the board and additional information (name, owner, purchase price) (Matt)
     * Users can see icons for pieces to be selected on the second page of the Game Options screen (James)
@@ -14,7 +14,7 @@ User stories for Vandopoly.
 
 ----
 
-= Week 1 User Stories =
+= Cycle 1 User Stories =
     * Users can see the home screen (Allie, James, Matt)
     * Users can see the "Start Game," "Load Game," "Rules," and "Quit" buttons (Allie, James, Matt)
 
