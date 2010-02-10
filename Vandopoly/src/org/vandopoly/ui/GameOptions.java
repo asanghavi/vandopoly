@@ -49,6 +49,7 @@ public class GameOptions extends JPanel{
 	private JButton continue_, back_, playGame_;
 	private DisplayAssembler display;
 	private int numberOfPlayers_ = 2, optionsPageNum_ = 1;
+	private String names_[];
 	
 	// Private data members for page 2 of options
 	private JRadioButton piece1_1_, piece2_1_, piece3_1_, piece4_1_, 
@@ -366,6 +367,7 @@ public class GameOptions extends JPanel{
 		    nameFour_.setFont(radioButtonFont);
 		    nameFour_.setBounds(565, 365, 110, 25);
 		    
+		    
 			continue_ = new JButton("Continue");
 			continue_.setBounds(115, 500, 500, 75);
 			continue_.setFont(buttonFont);
@@ -394,8 +396,16 @@ public class GameOptions extends JPanel{
 			playGame_.setFont(buttonFont);
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
+	            	names_ = new String[numberOfPlayers_];
+	            	names_[0] = nameOne_.getSelectedText();
+	            	names_[1] = nameTwo_.getSelectedText();
+	            	if (numberOfPlayers_ > 2) {
+	            		names_[2] = nameThree_.getSelectedText();
+	            		if (numberOfPlayers_ == 4)
+	            			names_[3] = nameFour_.getSelectedText();
+	            	}
 	            	NotificationManager.getInstance().notifyObservers
-	            		(Notification.START_GAME, null);
+	            		(Notification.START_GAME, names_);
 	            	GameOptions.this.hideSecondPagePanels();
 	            	GameOptions.this.setVisible(false);
 	            	
@@ -455,6 +465,8 @@ public class GameOptions extends JPanel{
 			this.setVisible(true);
 			
 			this.hideSecondPagePanels();
+			
+			NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "");
 		}
 		
 		public void hideFirstPagePanels() {
