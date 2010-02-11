@@ -466,7 +466,7 @@ public class GameOptions extends JPanel{
 			
 			this.hideSecondPagePanels();
 			
-			NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "");
+			NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "backToMain");
 		}
 		
 		public void hideFirstPagePanels() {
