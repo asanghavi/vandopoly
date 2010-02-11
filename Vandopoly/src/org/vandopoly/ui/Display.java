@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -46,7 +47,8 @@ public class Display extends JFrame {
 	int width_ = screen_.height - 100;
 	int height_ = screen_.height - 100;
 	int scaleWidth_ = 13, scaleHeight_ = 7;
-	
+	ArrayList<JLabel> spaces_ = new ArrayList<JLabel>(36);
+
 	static final long serialVersionUID = 1;
 	
 	// Constructor effectively creates JFrame
@@ -180,6 +182,7 @@ public class Display extends JFrame {
                 System.exit(0);
             }
         });
+		addStatusAll();
 	}
 	
 	// adds a smaller rectangle to the board.
@@ -285,7 +288,39 @@ public class Display extends JFrame {
 		
 		label.setSize(new Dimension(width, height));
 		label.setBorder(BorderFactory.createLineBorder(Color.black));
+		spaces_.add(label);
 		DisplayAssembler.getInstance().addComponent(label, new Point(x,y), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
+	}
+	
+	// add status text to board piece
+	void addStatus(int n)
+	{
+		String propName="Not set",propOwner="Nobody";
+		if (n <= 4) {
+			propName = "Kissam";
+		}
+		else if (n <= 8) {
+			propName = "Saratt";
+		}
+		else if (n <= 12) {
+			propName = "Butler";
+		}
+		else if (n <= 16) {
+			propName = "Wilson Hall";
+		}
+		spaces_.get(n).setToolTipText("Property Name: " + propName + ", Owned by: " + propOwner + ", On this property: Nobody");
+	}
+	
+	// add status text to all board pieces
+	void addStatusAll()
+	{
+		for(int x=1; x<=36; x++) {
+			addStatus(x);
+		}
+	}
+	
+	public static void main(String[] args) {
+		new Display();
 	}
 }
