@@ -13,20 +13,47 @@
  *   limitations under the License.                                          *
  ****************************************************************************/
 
-package org.vandopoly.messaging;
+package org.vandopoly.controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-/*  The Notification class is intended to store all known events as public
- *  static strings.  These event strings are intended to be used with the
- *  NotificationManager singleton, so that other classes can simply call
- *  NotificationManager.getInstance().addObserver(Notification.START_GAME,this,update).
- *  
+import javax.swing.JButton;
+
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.model.Dice;
+import org.vandopoly.ui.DicePanel;
+
+/*
+ * GameController is meant to handle all complex button/model interactions. 
+ * GameController should have access to all real models and control game state.
+ * 
  *  @author James Kasten
  */
-public class Notification {
+
+public class GameController {
+	Dice dice_;
+	DicePanel dicePanel_;
+	JButton endTurn_;
 	
-	// Game Events
-	public static final String START_GAME = "StartGame";
-	public static final String ROLL_DICE = "RollDice";
-	public static final String END_TURN = "EndTurn";
+	public GameController() {
+		dice_ = new Dice();
+		
+		//endTurn_ = new JButton("End Turn");
+		//endTurn_.setBounds()
+		
+		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
+	}
+	
+	public void startGame() {
+		dicePanel_ = new DicePanel();
+		
+		dicePanel_.getRollButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				dice_.roll();
+				dicePanel_.getRollButton().setVisible(false);
+			}
+		});
+	}
 }
