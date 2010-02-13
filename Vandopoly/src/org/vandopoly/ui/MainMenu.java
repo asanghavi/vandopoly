@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import org.vandopoly.controller.GameController;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -148,6 +149,6 @@ public class MainMenu extends JPanel {
 	public static void main(String[] args) {
 		new Display();
 		new MainMenu();
-		new DicePanel();
+		new GameController();
 	}
 }

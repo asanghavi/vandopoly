@@ -44,10 +44,6 @@ public class DicePanel extends JPanel {
 	// Holds all 6 pictures of the die faces
 	private ImageIcon diePic_[];
 
-	// TODO Remove and put in controller**************************
-	public Dice dice = new Dice();
-	// *********************************************************
-
 	public DicePanel() {
 		int panelWidth = 200, panelHeight = 130;
 		int rightMargin = 400, topMargin = 100;
@@ -67,19 +63,7 @@ public class DicePanel extends JPanel {
 		rollDice_ = new JButton("Roll Dice");
 		rollDice_.setBounds(0, 0, panelWidth, buttonHeight);
 		rollDice_.setFont(buttonFont);
-
-		// TODO: This should be put in a controller
-		// It has temporarily been placed here along with a fake
-		// Dice object
-		// **************************************************************
-		// **************************************************************
-		rollDice_.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				dice.roll();
-			}
-
-		});
-
+		
 		diePic_ = new ImageIcon[6];
 
 		// Upload all of the images into the array
@@ -108,8 +92,13 @@ public class DicePanel extends JPanel {
 
 		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
 				this, "updateDice");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
 	}
 
+	public JButton getRollButton() {
+		return rollDice_;
+	}
+	
 	public void updateDice(Object obj) {
 
 		if (obj instanceof Dice) {
@@ -118,5 +107,9 @@ public class DicePanel extends JPanel {
 			die1_.setIcon(diePic_[dice.getDie1() - 1]);
 			die2_.setIcon(diePic_[dice.getDie2() - 1]);
 		}
+	}
+	
+	public void endTurn() {
+		rollDice_.setVisible(true);
 	}
 }
