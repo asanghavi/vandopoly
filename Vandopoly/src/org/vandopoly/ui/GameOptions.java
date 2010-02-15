@@ -58,6 +58,9 @@ public class GameOptions extends JPanel{
 	private JLabel selectPieces_, playerOne_2_, playerTwo_2_, playerThree_2_,
 		playerFour_2_;
 	
+	private JLabel player1Piece_, player2Piece_, player3Piece_, player4Piece_;
+	private ImageIcon commodoreIcon_, dollIcon_, zepposIcon_, corneliusIcon_;
+	
 	private ButtonGroup icons1_, icons2_, icons3_, icons4_;
 	
 	static final long serialVersionUID = 3;
@@ -181,14 +184,42 @@ public class GameOptions extends JPanel{
 		    players_.add(three_);
 		    players_.add(four_);
 		    
-		    //ImageIcon commodore = new ImageIcon("images/Pieces/commodore.jpg");
-			piece1_1_ = new JRadioButton("ICON1");
+		    // Now set up all of the piece icons
+		    commodoreIcon_ = new ImageIcon("images/Piece/Commodore.jpg");
+		    dollIcon_ = new ImageIcon("images/Piece/Doll.jpg");
+		    zepposIcon_ = new ImageIcon("images/Piece/Zeppos.jpg");
+		    corneliusIcon_ = new ImageIcon("images/Piece/Cornelius.jpg");
+		    
+		    // Create the labels that will be placed underneath the player choices
+		    player1Piece_ = new JLabel();
+		    player1Piece_.setIcon(commodoreIcon_);
+		    player1Piece_.setBounds(105, 410, 100,100);
+		    this.add(player1Piece_);
+		    
+		    player2Piece_ = new JLabel();
+		    player2Piece_.setIcon(commodoreIcon_);
+		    player2Piece_.setBounds(250, 410, 100, 100);
+		    this.add(player2Piece_);
+		    
+		    player3Piece_ = new JLabel();
+		    player3Piece_.setIcon(commodoreIcon_);
+		    player3Piece_.setBounds(400, 410, 100, 100);
+		    this.add(player3Piece_);
+		    
+		    player4Piece_ = new JLabel();
+		    player4Piece_.setIcon(commodoreIcon_);
+		    player4Piece_.setBounds(550, 410, 100, 100);
+		    this.add(player4Piece_);
+		    
+		    // Now set up the radio buttons
+			piece1_1_ = new JRadioButton("Commodore");
 			piece1_1_.setBounds(100, 300, 150, 25);
 			piece1_1_.setFont(radioButtonFont);
 			piece1_1_.setSelected(true);
 			piece1_1_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player1Piece_.setIcon(commodoreIcon_);
 	            	if (piece1_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece1_3_.isSelected())
@@ -198,12 +229,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece2_1_ = new JRadioButton("ICON2");
+			piece2_1_ = new JRadioButton("Cornelius");
 			piece2_1_.setBounds(100, 335, 150, 25);
 			piece2_1_.setFont(radioButtonFont);
 			piece2_1_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player1Piece_.setIcon(corneliusIcon_);
 	            	if (piece2_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece2_3_.isSelected())
@@ -213,12 +245,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece3_1_ = new JRadioButton("ICON3");
+			piece3_1_ = new JRadioButton("Doll");
 			piece3_1_.setBounds(100, 370, 150, 25);
 			piece3_1_.setFont(radioButtonFont);
 			piece3_1_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player1Piece_.setIcon(dollIcon_);
 	            	if (piece3_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece3_3_.isSelected())
@@ -228,12 +261,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece4_1_ = new JRadioButton("ICON4");
+			piece4_1_ = new JRadioButton("Zeppos");
 			piece4_1_.setBounds(100, 405, 150, 25);
 			piece4_1_.setFont(radioButtonFont);
 			piece4_1_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player1Piece_.setIcon(zepposIcon_);
 	            	if (piece4_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece4_3_.isSelected())
@@ -249,13 +283,14 @@ public class GameOptions extends JPanel{
 			icons1_.add(piece3_1_);
 			icons1_.add(piece4_1_);
 		    
-			piece1_2_ = new JRadioButton("ICON1");
+			piece1_2_ = new JRadioButton("Commodore");
 			piece1_2_.setBounds(250, 300, 150, 25);
 			piece1_2_.setFont(radioButtonFont);
 			piece1_2_.setSelected(true);
 			piece1_2_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player2Piece_.setIcon(commodoreIcon_);
 	            	if (piece1_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece1_3_.isSelected())
@@ -265,12 +300,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece2_2_ = new JRadioButton("ICON2");
+			piece2_2_ = new JRadioButton("Cornelius");
 			piece2_2_.setBounds(250, 335, 150, 25);
 			piece2_2_.setFont(radioButtonFont);
 			piece2_2_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player2Piece_.setIcon(corneliusIcon_);
 	            	if (piece2_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece2_3_.isSelected())
@@ -280,12 +316,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece3_2_ = new JRadioButton("ICON3");
+			piece3_2_ = new JRadioButton("Doll");
 			piece3_2_.setBounds(250, 370, 150, 25);
 			piece3_2_.setFont(radioButtonFont);
 			piece3_2_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player2Piece_.setIcon(dollIcon_);
 	            	if (piece3_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece3_3_.isSelected())
@@ -295,12 +332,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece4_2_ = new JRadioButton("ICON4");
+			piece4_2_ = new JRadioButton("Zeppos");
 			piece4_2_.setBounds(250, 405, 150, 25);
 			piece4_2_.setFont(radioButtonFont);
 			piece4_2_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player2Piece_.setIcon(zepposIcon_);
 	            	if (piece4_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece4_3_.isSelected())
@@ -316,13 +354,14 @@ public class GameOptions extends JPanel{
 			icons2_.add(piece3_2_);
 			icons2_.add(piece4_2_);
 			
-			piece1_3_ = new JRadioButton("ICON1");
+			piece1_3_ = new JRadioButton("Commodore");
 			piece1_3_.setBounds(400, 300, 150, 25);
 			piece1_3_.setFont(radioButtonFont);
 			piece1_3_.setSelected(true);
 			piece1_3_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player3Piece_.setIcon(commodoreIcon_);
 	            	if (piece1_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece1_2_.isSelected())
@@ -332,12 +371,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece2_3_ = new JRadioButton("ICON2");
+			piece2_3_ = new JRadioButton("Cornelius");
 			piece2_3_.setBounds(400, 335, 150, 25);
 			piece2_3_.setFont(radioButtonFont);
 			piece2_3_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player3Piece_.setIcon(corneliusIcon_);
 	            	if (piece2_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece2_2_.isSelected())
@@ -347,12 +387,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece3_3_ = new JRadioButton("ICON3");
+			piece3_3_ = new JRadioButton("Doll");
 			piece3_3_.setBounds(400, 370, 150, 25);
 			piece3_3_.setFont(radioButtonFont);
 			piece3_3_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player3Piece_.setIcon(dollIcon_);
 	            	if (piece3_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece3_2_.isSelected())
@@ -362,12 +403,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece4_3_ = new JRadioButton("ICON4");
+			piece4_3_ = new JRadioButton("Zeppos");
 			piece4_3_.setBounds(400, 405, 150, 25);
 			piece4_3_.setFont(radioButtonFont);
 			piece4_3_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player3Piece_.setIcon(zepposIcon_);
 	            	if (piece4_1_.isSelected())
 	            		icons1_.clearSelection();
 	            	if (piece4_2_.isSelected())
@@ -383,13 +425,14 @@ public class GameOptions extends JPanel{
 			icons3_.add(piece3_3_);
 			icons3_.add(piece4_3_);
 			
-			piece1_4_ = new JRadioButton("ICON1");
+			piece1_4_ = new JRadioButton("Commodore");
 			piece1_4_.setBounds(550, 300, 150, 25);
 			piece1_4_.setFont(radioButtonFont);
 			piece1_4_.setSelected(true);
 			piece1_4_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player4Piece_.setIcon(commodoreIcon_);
 	            	if (piece1_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece1_3_.isSelected())
@@ -399,12 +442,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece2_4_ = new JRadioButton("ICON2");
+			piece2_4_ = new JRadioButton("Cornelius");
 			piece2_4_.setBounds(550, 335, 150, 25);
 			piece2_4_.setFont(radioButtonFont);
 			piece2_4_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player4Piece_.setIcon(corneliusIcon_);
 	            	if (piece2_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece2_3_.isSelected())
@@ -414,12 +458,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece3_4_ = new JRadioButton("ICON3");
+			piece3_4_ = new JRadioButton("Doll");
 			piece3_4_.setBounds(550, 370, 150, 25);
 			piece3_4_.setFont(radioButtonFont);
 			piece3_4_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player4Piece_.setIcon(dollIcon_);
 	            	if (piece3_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece3_3_.isSelected())
@@ -429,12 +474,13 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			piece4_4_ = new JRadioButton("ICON4");
+			piece4_4_ = new JRadioButton("Zeppos");
 			piece4_4_.setBounds(550, 405, 150, 25);
 			piece4_4_.setFont(radioButtonFont);
 			piece4_4_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
+	            	player4Piece_.setIcon(zepposIcon_);
 	            	if (piece4_2_.isSelected())
 	            		icons2_.clearSelection();
 	            	if (piece4_3_.isSelected())
@@ -623,12 +669,14 @@ public class GameOptions extends JPanel{
 			piece2_1_.setVisible(true);
 			piece3_1_.setVisible(true);
 			piece4_1_.setVisible(true);
+			player1Piece_.setVisible(true);
 			
 			playerTwo_2_.setVisible(true);
 			piece1_2_.setVisible(true);
 			piece2_2_.setVisible(true);
 			piece3_2_.setVisible(true);
 			piece4_2_.setVisible(true);
+			player2Piece_.setVisible(true);
 			
 			if (numberOfPlayers_ > 2) {
 				playerThree_2_.setVisible(true);
@@ -636,6 +684,7 @@ public class GameOptions extends JPanel{
 				piece2_3_.setVisible(true);
 				piece3_3_.setVisible(true);
 				piece4_3_.setVisible(true);
+				player3Piece_.setVisible(true);
 			
 				if (numberOfPlayers_ == 4) {
 					playerFour_2_.setVisible(true);
@@ -643,6 +692,7 @@ public class GameOptions extends JPanel{
 					piece2_4_.setVisible(true);
 					piece3_4_.setVisible(true);
 					piece4_4_.setVisible(true);
+					player4Piece_.setVisible(true);
 				}
 			}
 		}
@@ -657,21 +707,25 @@ public class GameOptions extends JPanel{
 			piece2_1_.setVisible(false);
 			piece3_1_.setVisible(false);
 			piece4_1_.setVisible(false);
+			player1Piece_.setVisible(false);
 		
 			piece1_2_.setVisible(false);
 			piece2_2_.setVisible(false);
 			piece3_2_.setVisible(false);
 			piece4_2_.setVisible(false);
+			player2Piece_.setVisible(false);
 			
 			piece1_3_.setVisible(false);
 			piece2_3_.setVisible(false);
 			piece3_3_.setVisible(false);
 			piece4_3_.setVisible(false);
+			player3Piece_.setVisible(false);
 			
 			piece1_4_.setVisible(false);
 			piece2_4_.setVisible(false);
 			piece3_4_.setVisible(false);
 			piece4_4_.setVisible(false);
+			player4Piece_.setVisible(false);
 			
 			selectPieces_.setVisible(false);
 			playerOne_2_.setVisible(false);
