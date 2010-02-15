@@ -37,11 +37,10 @@ public class GameController {
 	DicePanel dicePanel_;
 	JButton endTurn_;
 	
+	int buttonCounter = 0;
+	
 	public GameController() {
 		dice_ = new Dice();
-		
-		//endTurn_ = new JButton("End Turn");
-		//endTurn_.setBounds()
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
 	}
@@ -51,8 +50,15 @@ public class GameController {
 		
 		dicePanel_.getRollButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				dice_.roll();
-				dicePanel_.getRollButton().setVisible(false);
+				if (buttonCounter % 2 == 0) {
+					dice_.roll();
+					dicePanel_.getRollButton().setText("End Turn");
+				}
+				else {
+					NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
+					dicePanel_.getRollButton().setText("Roll Dice");
+				}
+				buttonCounter++;
 			}
 		});
 	}
