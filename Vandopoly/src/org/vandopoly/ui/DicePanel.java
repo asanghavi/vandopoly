@@ -92,7 +92,7 @@ public class DicePanel extends JPanel {
 
 		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
 				this, "updateDice");
-		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
+		//NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
 	}
 
 	public JButton getRollButton() {
@@ -108,8 +108,9 @@ public class DicePanel extends JPanel {
 			die2_.setIcon(diePic_[dice.getDie2() - 1]);
 		}
 	}
-	
+	/*
 	public void endTurn() {
 		rollDice_.setVisible(true);
 	}
+	*/
 }

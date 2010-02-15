@@ -58,6 +58,8 @@ public class GameOptions extends JPanel{
 	private JLabel selectPieces_, playerOne_2_, playerTwo_2_, playerThree_2_,
 		playerFour_2_;
 	
+	private ButtonGroup icons1_, icons2_, icons3_, icons4_;
+	
 	static final long serialVersionUID = 3;
 	
 	private MainMenu mainMenu_;
@@ -179,13 +181,20 @@ public class GameOptions extends JPanel{
 		    players_.add(three_);
 		    players_.add(four_);
 		    
+		    //ImageIcon commodore = new ImageIcon("images/Pieces/commodore.jpg");
 			piece1_1_ = new JRadioButton("ICON1");
 			piece1_1_.setBounds(100, 300, 150, 25);
 			piece1_1_.setFont(radioButtonFont);
 			piece1_1_.setSelected(true);
 			piece1_1_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece1_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece1_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece1_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -193,8 +202,14 @@ public class GameOptions extends JPanel{
 			piece2_1_.setBounds(100, 335, 150, 25);
 			piece2_1_.setFont(radioButtonFont);
 			piece2_1_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	              // Empty for now
+	            	if (piece2_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece2_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece2_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -202,8 +217,14 @@ public class GameOptions extends JPanel{
 			piece3_1_.setBounds(100, 370, 150, 25);
 			piece3_1_.setFont(radioButtonFont);
 			piece3_1_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	               // Empty for now
+	            	if (piece3_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece3_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece3_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -211,12 +232,18 @@ public class GameOptions extends JPanel{
 			piece4_1_.setBounds(100, 405, 150, 25);
 			piece4_1_.setFont(radioButtonFont);
 			piece4_1_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	                // Empty for now
+	            	if (piece4_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece4_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece4_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
-			ButtonGroup icons1_ = new ButtonGroup();
+			icons1_ = new ButtonGroup();
 			icons1_.add(piece1_1_);
 			icons1_.add(piece2_1_);
 			icons1_.add(piece3_1_);
@@ -227,8 +254,14 @@ public class GameOptions extends JPanel{
 			piece1_2_.setFont(radioButtonFont);
 			piece1_2_.setSelected(true);
 			piece1_2_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	               // Empty for now
+	            	if (piece1_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece1_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece1_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -236,8 +269,14 @@ public class GameOptions extends JPanel{
 			piece2_2_.setBounds(250, 335, 150, 25);
 			piece2_2_.setFont(radioButtonFont);
 			piece2_2_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece2_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece2_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece2_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -245,8 +284,14 @@ public class GameOptions extends JPanel{
 			piece3_2_.setBounds(250, 370, 150, 25);
 			piece3_2_.setFont(radioButtonFont);
 			piece3_2_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece3_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece3_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece3_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -254,12 +299,18 @@ public class GameOptions extends JPanel{
 			piece4_2_.setBounds(250, 405, 150, 25);
 			piece4_2_.setFont(radioButtonFont);
 			piece4_2_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece4_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece4_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece4_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
-			ButtonGroup icons2_ = new ButtonGroup();
+			icons2_ = new ButtonGroup();
 			icons2_.add(piece1_2_);
 			icons2_.add(piece2_2_);
 			icons2_.add(piece3_2_);
@@ -270,8 +321,14 @@ public class GameOptions extends JPanel{
 			piece1_3_.setFont(radioButtonFont);
 			piece1_3_.setSelected(true);
 			piece1_3_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece1_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece1_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece1_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -279,8 +336,14 @@ public class GameOptions extends JPanel{
 			piece2_3_.setBounds(400, 335, 150, 25);
 			piece2_3_.setFont(radioButtonFont);
 			piece2_3_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece2_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece2_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece2_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -288,8 +351,14 @@ public class GameOptions extends JPanel{
 			piece3_3_.setBounds(400, 370, 150, 25);
 			piece3_3_.setFont(radioButtonFont);
 			piece3_3_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece3_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece3_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece3_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
@@ -297,12 +366,18 @@ public class GameOptions extends JPanel{
 			piece4_3_.setBounds(400, 405, 150, 25);
 			piece4_3_.setFont(radioButtonFont);
 			piece4_3_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece4_1_.isSelected())
+	            		icons1_.clearSelection();
+	            	if (piece4_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece4_4_.isSelected())
+	            		icons4_.clearSelection();
 	            }
 	        });
 			
-			ButtonGroup icons3_ = new ButtonGroup();
+			icons3_ = new ButtonGroup();
 			icons3_.add(piece1_3_);
 			icons3_.add(piece2_3_);
 			icons3_.add(piece3_3_);
@@ -313,8 +388,14 @@ public class GameOptions extends JPanel{
 			piece1_4_.setFont(radioButtonFont);
 			piece1_4_.setSelected(true);
 			piece1_4_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece1_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece1_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece1_1_.isSelected())
+	            		icons1_.clearSelection();
 	            }
 	        });
 			
@@ -322,8 +403,14 @@ public class GameOptions extends JPanel{
 			piece2_4_.setBounds(550, 335, 150, 25);
 			piece2_4_.setFont(radioButtonFont);
 			piece2_4_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece2_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece2_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece2_1_.isSelected())
+	            		icons1_.clearSelection();
 	            }
 	        });
 			
@@ -331,8 +418,14 @@ public class GameOptions extends JPanel{
 			piece3_4_.setBounds(550, 370, 150, 25);
 			piece3_4_.setFont(radioButtonFont);
 			piece3_4_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece3_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece3_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece3_1_.isSelected())
+	            		icons1_.clearSelection();
 	            }
 	        });
 			
@@ -340,12 +433,18 @@ public class GameOptions extends JPanel{
 			piece4_4_.setBounds(550, 405, 150, 25);
 			piece4_4_.setFont(radioButtonFont);
 			piece4_4_.addActionListener(new ActionListener() {
+				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
-	            	// Empty for now
+	            	if (piece4_2_.isSelected())
+	            		icons2_.clearSelection();
+	            	if (piece4_3_.isSelected())
+	            		icons3_.clearSelection();
+	            	if (piece4_1_.isSelected())
+	            		icons1_.clearSelection();
 	            }
 	        });
 			
-			ButtonGroup icons4_ = new ButtonGroup();
+			icons4_ = new ButtonGroup();
 			icons4_.add(piece1_4_);
 			icons4_.add(piece2_4_);
 			icons4_.add(piece3_4_);
