@@ -16,6 +16,7 @@
 package org.vandopoly.ui;
 
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -61,6 +62,8 @@ public class GameOptions extends JPanel{
 	private JLabel player1Piece_, player2Piece_, player3Piece_, player4Piece_;
 	private ImageIcon commodoreIcon_, dollIcon_, zepposIcon_, corneliusIcon_;
 	
+	private JLabel repeatError_;
+	
 	private ButtonGroup icons1_, icons2_, icons3_, icons4_;
 	
 	static final long serialVersionUID = 3;
@@ -89,6 +92,7 @@ public class GameOptions extends JPanel{
 			Font headerFont = new Font("broadway", Font.PLAIN, 20);
 			Font radioButtonFont = new Font("broadway", Font.PLAIN, 16);
 			Font buttonFont = new Font("broadway", Font.PLAIN, 32);
+			Font errorFont = new Font("broadway", Font.BOLD, 20);
 			
 			// Set up the title bar along with positioning and size
 			JLabel titleBar = new JLabel();
@@ -518,9 +522,45 @@ public class GameOptions extends JPanel{
 			continue_.setFont(buttonFont);
 			continue_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
-	            	GameOptions.this.hideFirstPagePanels();
-	            	GameOptions.this.showSecondPagePanels();
-	            	optionsPageNum_ = 2;
+	            	names_ = new String[numberOfPlayers_];
+	            	
+	            	names_[0] = nameOne_.getText();
+	            	playerOne_2_.setText(names_[0]+":");
+	            	
+	            	names_[1] = nameTwo_.getText();
+	            	playerTwo_2_.setText(names_[1]+":");
+	            	
+	            	if (numberOfPlayers_ > 2) {
+	            		names_[2] = nameThree_.getText();
+	            		playerThree_2_.setText(names_[2]+":");
+	            		
+	            		if (numberOfPlayers_ == 4) {
+	            			names_[3] = nameFour_.getText();
+	            			playerFour_2_.setText(names_[3]+":");
+	            		}
+	            	}
+	            	
+	            	if (noRepeatNames()) {
+	            		GameOptions.this.hideFirstPagePanels();
+	            		GameOptions.this.showSecondPagePanels();
+	            		optionsPageNum_ = 2;
+	            	}
+	            }
+	            
+	            // Check to see if any of the names given are duplicates
+	            public boolean noRepeatNames()
+	            {
+	            	for (int i = 0; i < numberOfPlayers_; i++) {
+	            		for (int j = i+1; j < numberOfPlayers_; j++) {
+	            			if (names_[i].equals(names_[j])) {
+	            				repeatError_.setVisible(true);
+	            				return false;
+	            			}
+	            		}
+	            	}
+	            	
+	            	repeatError_.setVisible(false);
+	            	return true;
 	            }
 	        });		    
 			
@@ -541,22 +581,22 @@ public class GameOptions extends JPanel{
 			playGame_.setFont(buttonFont);
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
-	            	names_ = new String[numberOfPlayers_];
-	            	names_[0] = nameOne_.getSelectedText();
-	            	names_[1] = nameTwo_.getSelectedText();
-	            	if (numberOfPlayers_ > 2) {
-	            		names_[2] = nameThree_.getSelectedText();
-	            		if (numberOfPlayers_ == 4)
-	            			names_[3] = nameFour_.getSelectedText();
-	            	}
+	            	
 	            	NotificationManager.getInstance().notifyObservers
 	            		(Notification.START_GAME, names_);
 	            	GameOptions.this.hideSecondPagePanels();
 	            	GameOptions.this.setVisible(false);
-	            	
 	            }
+	            
 	        });	
-
+			
+			// Set up the duplicate name error message
+			repeatError_ = new JLabel("Each Player must have a unique name");
+			repeatError_.setFont(errorFont);
+			repeatError_.setForeground(Color.red);
+			repeatError_.setBounds(138, 675, 600, 40);
+			repeatError_.setVisible(false);
+			
 			// Add some Components to the panel
 			this.add(titleBar);
 			this.add(subTitleBar);
@@ -601,6 +641,8 @@ public class GameOptions extends JPanel{
 			this.add(playerTwo_2_);
 			this.add(playerThree_2_);
 			this.add(playerFour_2_);
+			
+			this.add(repeatError_);
 			
 			// Add the Panel to the display
 			display = DisplayAssembler.getInstance();
