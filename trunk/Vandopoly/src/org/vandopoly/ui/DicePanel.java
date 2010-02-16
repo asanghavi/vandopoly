@@ -46,7 +46,7 @@ public class DicePanel extends JPanel {
 
 	public DicePanel() {
 		int panelWidth = 200, panelHeight = 130;
-		int rightMargin = 400, topMargin = 100;
+		int rightMargin = 250, topMargin = 25;
 
 		int buttonHeight = 50, dieSize = 82;
 
