@@ -554,8 +554,9 @@ public class GameOptions extends JPanel{
 	            // Check to see if any of the names given are duplicates
 	            public boolean noRepeatNames()
 	            {
-	            	for (int i = 0; i < numberOfPlayers_; i++) {
-	            		for (int j = i+1; j < numberOfPlayers_; j++) {
+	            	// Had to adjust for loops to compensate for blank first name
+	            	for (int i = 1; i <= numberOfPlayers_; i++) {
+	            		for (int j = i+1; j <= numberOfPlayers_; j++) {
 	            			if (names_[i].equals(names_[j])) {
 	            				repeatError_.setVisible(true);
 	            				return false;
