@@ -24,6 +24,7 @@ import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Dice;
 import org.vandopoly.ui.DicePanel;
+import org.vandopoly.ui.PlayerPanel;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -36,6 +37,7 @@ public class GameController {
 	Dice dice_;
 	DicePanel dicePanel_;
 	JButton endTurn_;
+	PlayerPanel playerPanel_;
 	
 	int buttonCounter = 0;
 	
@@ -45,7 +47,9 @@ public class GameController {
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
 	}
 	
-	public void startGame() {
+	public void startGame(Object obj) {
+		playerPanel_ = new PlayerPanel((String[])obj);
+		
 		dicePanel_ = new DicePanel();
 		
 		dicePanel_.getRollButton().addActionListener(new ActionListener() {
