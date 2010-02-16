@@ -175,7 +175,7 @@ public class Display extends JFrame {
 		quitGame_.setSize(new Dimension(buttonWidth,buttonHeight));
 		quitGame_.setFont(buttonFont);
 		DisplayAssembler.getInstance().addComponent(quitGame_, 
-				new Point(screen_.width - buttonWidth - 20, height_ - buttonHeight), 
+				new Point(screen_.width - buttonWidth - 300, -10 + buttonHeight), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
 		quitGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {

@@ -23,14 +23,16 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import org.vandopoly.messaging.Notification;
@@ -522,21 +524,23 @@ public class GameOptions extends JPanel{
 			continue_.setFont(buttonFont);
 			continue_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
-	            	names_ = new String[numberOfPlayers_];
+	            	names_ = new String[numberOfPlayers_ + 1];
 	            	
-	            	names_[0] = nameOne_.getText();
-	            	playerOne_2_.setText(names_[0]+":");
+	            	names_[0] = "" + numberOfPlayers_;
 	            	
-	            	names_[1] = nameTwo_.getText();
-	            	playerTwo_2_.setText(names_[1]+":");
+	            	names_[1] = nameOne_.getText();
+	            	playerOne_2_.setText(names_[1]+":");
+	            	
+	            	names_[2] = nameTwo_.getText();
+	            	playerTwo_2_.setText(names_[2]+":");
 	            	
 	            	if (numberOfPlayers_ > 2) {
-	            		names_[2] = nameThree_.getText();
-	            		playerThree_2_.setText(names_[2]+":");
+	            		names_[3] = nameThree_.getText();
+	            		playerThree_2_.setText(names_[3]+":");
 	            		
 	            		if (numberOfPlayers_ == 4) {
-	            			names_[3] = nameFour_.getText();
-	            			playerFour_2_.setText(names_[3]+":");
+	            			names_[4] = nameFour_.getText();
+	            			playerFour_2_.setText(names_[4]+":");
 	            		}
 	            	}
 	            	
@@ -579,6 +583,20 @@ public class GameOptions extends JPanel{
 			playGame_ = new JButton("PLAY GAME");
 			playGame_.setBounds(115, 500, 500, 75);
 			playGame_.setFont(buttonFont);
+			playGame_.addKeyListener(new KeyListener() {
+				public void keyTyped(KeyEvent e) {
+				}
+				public void keyPressed(KeyEvent e) {					
+				}
+				public void keyReleased(KeyEvent e) {
+					if(e.getKeyCode()== KeyEvent.VK_ENTER) {
+						NotificationManager.getInstance().notifyObservers
+	            		(Notification.START_GAME, names_);
+						GameOptions.this.hideSecondPagePanels();
+						GameOptions.this.setVisible(false);
+					}
+				}
+			});
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	
