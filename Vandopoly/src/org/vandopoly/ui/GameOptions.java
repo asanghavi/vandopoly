@@ -292,7 +292,6 @@ public class GameOptions extends JPanel{
 			piece1_2_ = new JRadioButton("Commodore");
 			piece1_2_.setBounds(250, 300, 150, 25);
 			piece1_2_.setFont(radioButtonFont);
-			piece1_2_.setSelected(true);
 			piece1_2_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
@@ -363,7 +362,6 @@ public class GameOptions extends JPanel{
 			piece1_3_ = new JRadioButton("Commodore");
 			piece1_3_.setBounds(400, 300, 150, 25);
 			piece1_3_.setFont(radioButtonFont);
-			piece1_3_.setSelected(true);
 			piece1_3_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
@@ -434,7 +432,6 @@ public class GameOptions extends JPanel{
 			piece1_4_ = new JRadioButton("Commodore");
 			piece1_4_.setBounds(550, 300, 150, 25);
 			piece1_4_.setFont(radioButtonFont);
-			piece1_4_.setSelected(true);
 			piece1_4_.addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
