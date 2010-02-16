@@ -18,14 +18,13 @@ package org.vandopoly.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-
-import org.vandopoly.model.Player;
 
 /*
  * Space represents the spaces on the board and takes care of positioning,
@@ -44,7 +43,8 @@ public class Space extends JPanel {
 	boolean useTex_;
 	String spaceName_;
 	boolean isProp_;
-	Player owner_;
+	String owner_;
+	ArrayList<String> onSpace_;
 	JLabel label;
 	
 	public Space(int pos, String spaceName, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex) {
@@ -56,7 +56,9 @@ public class Space extends JPanel {
 		useTex_ = useTex;
 		spaceName_ = spaceName;
 		isProp_ = isProp;
-		position_=pos;
+		position_= pos;
+		onSpace_ = new ArrayList<String>();
+		owner_ = "";
 		addSpace();
 		addStatus();
 	}
@@ -90,14 +92,39 @@ public class Space extends JPanel {
 				JLayeredPane.FRAME_CONTENT_LAYER);
 	}
 
+	// updates the owner
+	void setOwner(String owner)
+	{
+		owner_ = owner;
+	}
+	
+	void addOnSpace(String name) {
+		onSpace_.add(name);
+	}
+	
 	// add status text to board piece
 	void addStatus()
 	{
+		String status = "";
 		if(isProp_) {
 			String owner = "Unowned";
-			if(owner_ == null)
-				owner = "";
-			label.setToolTipText("Property Name: " + spaceName_ + ", Owned by: " + owner + ", On this property: Nobody");
+			if(owner_ != "")
+				owner = owner_;
+			status += "Property Name: " + spaceName_ + ", Owned by: " + owner + ", ";
 		}
+		
+		status += "On this space: ";
+		
+		if(onSpace_.size()==0)
+			status += "Nobody";
+		else {
+			String spacelist="";
+			for (String s : onSpace_) {
+				spacelist += ", " + s;
+			}
+			status += spacelist.substring(3);
+		}
+		
+		label.setToolTipText(status);
 	}
 }
