@@ -24,12 +24,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.WindowConstants;
 
@@ -47,8 +44,9 @@ public class Display extends JFrame {
 	int width_ = screen_.height - 100;
 	int height_ = screen_.height - 100;
 	int scaleWidth_ = 13, scaleHeight_ = 7;
-	ArrayList<JLabel> spaces_ = new ArrayList<JLabel>(36);
-
+	ArrayList<Space> spaces_ = new ArrayList<Space>(36);
+	int pos_;
+	
 	static final long serialVersionUID = 1;
 	
 	// Constructor effectively creates JFrame
@@ -82,87 +80,96 @@ public class Display extends JFrame {
 	public void showBoard() {
 		int spaceWidth = (int)(height_ / scaleWidth_);
 		int start = 2;
+		pos_ = 0;
 		
 		// prop 1
 		Color c = new Color(228, 108, 12);
-		addSmall(0, spaceWidth * start++, c, true, false);
-		addSmall(0, spaceWidth * start++, c, true, false);
-		addSmall(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmall(0, spaceWidth * start++, c, true, false);
-		addSmall(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		String name = "Branscomb";
+		addSmall(name, 0, spaceWidth * start++, c, true, false);
+		addSmall(name, 0, spaceWidth * start++, c, true, false);
+		addSmall(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmall(name, 0, spaceWidth * start++, c, true, false);
+		addSmall(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
 		
 		// prop 2
 		c = new Color(148, 55, 53);
-		addSmall(0, spaceWidth * start++, c, true, false);
-		addSmall(0, spaceWidth * start++, c, true, false);
-		addSmall(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmall(0, spaceWidth * start++, c, true, false);
+		 name = "Kissam";
+		addSmall(name, 0, spaceWidth * start++, c, true, false);
+		addSmall(name, 0, spaceWidth * start++, c, true, false);
+		addSmall(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmall(name, 0, spaceWidth * start++, c, true, false);
 		
 		// prop 3
 		c = new Color(255, 0, 0);
 		start = 2;
-		addSmall(spaceWidth * start++, 0, c, true, true);
-		addSmall(spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmall(spaceWidth * start++, 0, c, false, true);
-		addSmall(spaceWidth * start++, 0, c, true, true);
-		addSmall(spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		name = "Morgan";
+		addSmall(name, spaceWidth * start++, 0, c, true, true);
+		addSmall(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		addSmall(name, spaceWidth * start++, 0, c, false, true);
+		addSmall(name, spaceWidth * start++, 0, c, true, true);
+		addSmall(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
 		
 		// prop 4
 		c = new Color(255, 255, 0);
-		addSmall(spaceWidth * start++, 0, c, true, true);
-		addSmall(spaceWidth * start++, 0, c, true, true);
-		addSmall(spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmall(spaceWidth * start++, 0, c, true, true);
+		name = "Wilson";
+		addSmall(name, spaceWidth * start++, 0, c, true, true);
+		addSmall(name, spaceWidth * start++, 0, c, true, true);
+		addSmall(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		addSmall(name, spaceWidth * start++, 0, c, true, true);
 		
 		// prop 5
 		c = new Color(79, 99, 40);
 		start=2;
-		addSmallOp(0, spaceWidth * start++, c, true, false);
-		addSmallOp(0, spaceWidth * start++, c, true, false);
-		addSmallOp(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmallOp(0, spaceWidth * start++, c, true, false);
-		addSmallOp(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		name = "Rand";
+		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
+		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
+		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
+		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
 		
 		// prop 6
 		c = new Color(39, 63, 97);
-		addSmallOp(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmallOp(0, spaceWidth * start++, c, true, false);
-		addSmallOp(0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmallOp(0, spaceWidth * start++, c, true, false);
+		name = "Sarratt";
+		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
+		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
 		
 		// prop 7
 		c = new Color(97, 73, 121);
 		start=2;
-		addSmallOp(spaceWidth * start++, 0, c, true, true);
-		addSmallOp(spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmallOp(spaceWidth * start++, 0, c, true, true);
-		addSmallOp(spaceWidth * start++, 0, new Color(0,0,0), false, true);
+		name = "Stevenson Center";
+		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
+		addSmallOp(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
+		addSmallOp(name, spaceWidth * start++, 0, new Color(0,0,0), false, true);
 		
 		// prop 8
 		c = new Color(85, 141, 215);
-		addSmallOp(spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmallOp(spaceWidth * start++, 0, c, true, true);
-		addSmallOp(spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmallOp(spaceWidth * start++, 0, c, true, true);
-		addSmallOp(spaceWidth * start++, 0, c, true, true);
+		name = "Recreation Center";
+		addSmallOp(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
+		addSmallOp(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
+		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
 		
 		// make the corners
 		int boxSize = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
 		
 		// top left corner
-		addLabel(scaleHeight_,scaleHeight_, boxSize, boxSize, c, true);
+		addLabel("", false, scaleHeight_,scaleHeight_, boxSize, boxSize, c, true);
 		
 		// top right corner
-		addLabel(height_ - scaleHeight_ * 2 - boxSize, scaleHeight_, boxSize, boxSize, c, true);
+		addLabel("", false, height_ - scaleHeight_ * 2 - boxSize, scaleHeight_, boxSize, boxSize, c, true);
 		
 		// bottom left corner
-		addLabel(scaleHeight_,height_ - scaleHeight_ * 2 - boxSize, boxSize, boxSize, c, true);
+		addLabel("", false, scaleHeight_,height_ - scaleHeight_ * 2 - boxSize, boxSize, boxSize, c, true);
 		
 		// bottom right corner
-		addLabel(height_ - scaleHeight_ * 2 - boxSize + 1,height_ - scaleHeight_ * 2 - boxSize + 1, boxSize, boxSize, c, true);
+		addLabel("", false, height_ - scaleHeight_ * 2 - boxSize + 1,height_ - scaleHeight_ * 2 - boxSize + 1, boxSize, boxSize, c, true);
 		
 		// set center of board
-		addLabel((int)(width_ / scaleHeight_) + scaleHeight_,
+		addLabel("", false, (int)(width_ / scaleHeight_) + scaleHeight_,
 				(int)(width_ / scaleHeight_) + scaleHeight_,
 				width_ - ((int)(width_ / scaleHeight_) * 2) - 15,
 				width_ - ((int)(width_ / scaleHeight_) * 2) - 15,
@@ -182,14 +189,13 @@ public class Display extends JFrame {
                 System.exit(0);
             }
         });
-		addStatusAll();
 	}
 	
 	// adds a smaller rectangle to the board.
 	// x, y specify the point to be placed on the board. c is the color of the property.
 	// isProp specifies if it is a property or not, isVert specifies weather the piece goes vertically or
 	// horizontally
-	void addSmall(int x, int y, Color c, boolean isProp, boolean isVert) {
+	void addSmall(String name, int x, int y, Color c, boolean isProp, boolean isVert) {
 		// set the larger part of the piece
 		int panelWidth;
 		
@@ -210,7 +216,7 @@ public class Display extends JFrame {
 			x+=scaleHeight_;
 		}
 		
-		addLabel(x,y,panelWidth,panelHeight,c,true);
+		addLabel(name, isProp, x,y,panelWidth,panelHeight,c,true);
 		
 		// set the smaller colored part of the piece
 		if (isProp) {
@@ -221,14 +227,14 @@ public class Display extends JFrame {
 			}
 	
 			if (isVert)
-				addLabel(x,y + (int)((width_ / scaleHeight_) * .85),panelWidth,panelHeight,c,false);
+				addLabel(name, isProp, x, y + (int)((width_ / scaleHeight_) * .85), panelWidth, panelHeight, c, false);
 			else
-				addLabel(x + (int)((width_ / scaleHeight_) * .85),y,panelWidth,panelHeight,c,false);	
+				addLabel(name, isProp, x + (int)((width_ / scaleHeight_) * .85), y, panelWidth, panelHeight, c, false);	
 		}
 	}
 	
 	// same as addSmall, but used for bottom and right side of board
-	void addSmallOp(int x, int y, Color c, boolean isProp, boolean isVert) {
+	void addSmallOp(String name, int x, int y, Color c, boolean isProp, boolean isVert) {
 		// set the larger part of the piece	
 		int panelWidth;
 
@@ -249,18 +255,18 @@ public class Display extends JFrame {
 		y = height_ - y - panelHeight;
 		
 		if(isVert) {
-			y-=2*scaleWidth_;
-			x-=scaleHeight_;
+			y -= 2 * scaleWidth_;
+			x -= scaleHeight_;
 		}
 		else {
-			x-=2*scaleWidth_;
-			y-=scaleHeight_;
+			x -= 2 * scaleWidth_;
+			y -= scaleHeight_;
 		}
 		
 		if (isVert)
-			addLabel(x,y + (int)((width_ / scaleHeight_) * .15),panelWidth,panelHeight,c,true);	
+			addLabel(name, isProp, x, y + (int)((width_ / scaleHeight_) * .15), panelWidth, panelHeight, c, true);	
 		else
-			addLabel(x + (int)((width_ / scaleHeight_) * .15),y,panelWidth,panelHeight,c,true);	
+			addLabel(name, isProp, x + (int)((width_ / scaleHeight_) * .15), y, panelWidth, panelHeight, c, true);	
 			
 		// set the smaller colored part of the piece
 		if (isProp) {
@@ -269,55 +275,15 @@ public class Display extends JFrame {
 				panelHeight = panelWidth;
 				panelWidth = height_ / scaleWidth_;
 			}
-			addLabel(x,y,panelWidth,panelHeight,c,false);
+			addLabel(name, isProp, x, y, panelWidth, panelHeight, c, false);
 		}
 	}
 
-	// make a label and add it to the board
-	void addLabel(int x, int y, int width, int height, Color c, boolean useTex)
+	// make a space and add it to the board
+	void addLabel(String name, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex)
 	{
-		JLabel label = new JLabel();
-		label.setOpaque(true);
-		
-		if (useTex)
-			label.setIcon(new ImageIcon("images/boardTex.png"));
-		else {
-			label.setOpaque(true);
-			label.setBackground(c);
-		}
-		
-		label.setSize(new Dimension(width, height));
-		label.setBorder(BorderFactory.createLineBorder(Color.black));
-		spaces_.add(label);
-		DisplayAssembler.getInstance().addComponent(label, new Point(x,y), 
-				JLayeredPane.FRAME_CONTENT_LAYER);
-	}
-	
-	// add status text to board piece
-	void addStatus(int n)
-	{
-		String propName="Not set",propOwner="Nobody";
-		if (n <= 4) {
-			propName = "Kissam";
-		}
-		else if (n <= 8) {
-			propName = "Saratt";
-		}
-		else if (n <= 12) {
-			propName = "Butler";
-		}
-		else if (n <= 16) {
-			propName = "Wilson Hall";
-		}
-		spaces_.get(n).setToolTipText("Property Name: " + propName + ", Owned by: " + propOwner + ", On this property: Nobody");
-	}
-	
-	// add status text to all board pieces
-	void addStatusAll()
-	{
-		for(int x=1; x<=36; x++) {
-			addStatus(x);
-		}
+		Space s = new Space(pos_++, name, isProp, x, y, width, height, c, useTex);
+		spaces_.add(s);
 	}
 	
 	public static void main(String[] args) {
