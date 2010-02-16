@@ -44,5 +44,12 @@ public class Player {
 		state_.updateCash(this, value);
 	}
 	
-
+	public String getName() {
+		return name_;
+	}
+	
+	public int getPosition() {
+		return positionOnBoard_;
+	}
+	
 }
