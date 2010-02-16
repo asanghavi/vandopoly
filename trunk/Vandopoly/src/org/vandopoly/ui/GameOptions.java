@@ -55,9 +55,9 @@ public class GameOptions extends JPanel{
 	private String names_[];
 	
 	// Private data members for page 2 of options
-	private JRadioButton piece1_1_, piece2_1_, piece3_1_, piece4_1_, 
-		piece1_2_, piece2_2_, piece3_2_, piece4_2_,piece1_3_, piece2_3_, 
-		piece3_3_, piece4_3_, piece1_4_, piece2_4_, piece3_4_, piece4_4_;
+	// Holds the radio buttons for pieces of each player
+	private JRadioButton player_[][];
+	
 	private JLabel selectPieces_, playerOne_2_, playerTwo_2_, playerThree_2_,
 		playerFour_2_;
 	
@@ -67,6 +67,8 @@ public class GameOptions extends JPanel{
 	private JLabel repeatError_;
 	
 	private ButtonGroup icons1_, icons2_, icons3_, icons4_;
+	
+	private int numOfPieces_, maxPlayers_;
 	
 	static final long serialVersionUID = 3;
 	
@@ -217,287 +219,206 @@ public class GameOptions extends JPanel{
 		    player4Piece_.setBounds(550, 410, 100, 100);
 		    this.add(player4Piece_);
 		    
+		    maxPlayers_ = 4;
+		    numOfPieces_ = 4;
+		    
+		    player_ = new JRadioButton[maxPlayers_][numOfPieces_];
+		    
 		    // Now set up the radio buttons
-			piece1_1_ = new JRadioButton("Commodore");
-			piece1_1_.setBounds(100, 300, 150, 25);
-			piece1_1_.setFont(radioButtonFont);
-			piece1_1_.setSelected(true);
-			piece1_1_.addActionListener(new ActionListener() {
+		    player_[0][0] = new JRadioButton("Commodore");
+		    player_[0][0].setBounds(100, 300, 150, 25);
+		    player_[0][0].setFont(radioButtonFont);
+		    player_[0][0].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player1Piece_.setIcon(commodoreIcon_);
-	            	if (piece1_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece1_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece1_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece2_1_ = new JRadioButton("Cornelius");
-			piece2_1_.setBounds(100, 335, 150, 25);
-			piece2_1_.setFont(radioButtonFont);
-			piece2_1_.addActionListener(new ActionListener() {
+		    player_[0][1] = new JRadioButton("Cornelius");
+		    player_[0][1].setBounds(100, 335, 150, 25);
+		    player_[0][1].setFont(radioButtonFont);
+		    player_[0][1].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player1Piece_.setIcon(corneliusIcon_);
-	            	if (piece2_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece2_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece2_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece3_1_ = new JRadioButton("Squirrel");
-			piece3_1_.setBounds(100, 370, 150, 25);
-			piece3_1_.setFont(radioButtonFont);
-			piece3_1_.addActionListener(new ActionListener() {
+		    player_[0][2] = new JRadioButton("Squirrel");
+		    player_[0][2].setBounds(100, 370, 150, 25);
+		    player_[0][2].setFont(radioButtonFont);
+		    player_[0][2].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player1Piece_.setIcon(squirrelIcon_);
-	            	if (piece3_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece3_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece3_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece4_1_ = new JRadioButton("Zeppos");
-			piece4_1_.setBounds(100, 405, 150, 25);
-			piece4_1_.setFont(radioButtonFont);
-			piece4_1_.addActionListener(new ActionListener() {
+		    player_[0][3] = new JRadioButton("Zeppos");
+		    player_[0][3].setBounds(100, 405, 150, 25);
+		    player_[0][3].setFont(radioButtonFont);
+		    player_[0][3].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player1Piece_.setIcon(zepposIcon_);
-	            	if (piece4_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece4_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece4_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
 			icons1_ = new ButtonGroup();
-			icons1_.add(piece1_1_);
-			icons1_.add(piece2_1_);
-			icons1_.add(piece3_1_);
-			icons1_.add(piece4_1_);
+			icons1_.add(player_[0][0]);
+			icons1_.add(player_[0][1]);
+			icons1_.add(player_[0][2]);
+			icons1_.add(player_[0][3]);
 		    
-			piece1_2_ = new JRadioButton("Commodore");
-			piece1_2_.setBounds(250, 300, 150, 25);
-			piece1_2_.setFont(radioButtonFont);
-			piece1_2_.addActionListener(new ActionListener() {
+			player_[1][0] = new JRadioButton("Commodore");
+			player_[1][0].setBounds(250, 300, 150, 25);
+			player_[1][0].setFont(radioButtonFont);
+			player_[1][0].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player2Piece_.setIcon(commodoreIcon_);
-	            	if (piece1_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece1_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece1_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece2_2_ = new JRadioButton("Cornelius");
-			piece2_2_.setBounds(250, 335, 150, 25);
-			piece2_2_.setFont(radioButtonFont);
-			piece2_2_.addActionListener(new ActionListener() {
+			player_[1][1] = new JRadioButton("Cornelius");
+			player_[1][1].setBounds(250, 335, 150, 25);
+			player_[1][1].setFont(radioButtonFont);
+			player_[1][1].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player2Piece_.setIcon(corneliusIcon_);
-	            	if (piece2_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece2_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece2_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece3_2_ = new JRadioButton("Squirrel");
-			piece3_2_.setBounds(250, 370, 150, 25);
-			piece3_2_.setFont(radioButtonFont);
-			piece3_2_.addActionListener(new ActionListener() {
+			player_[1][2] = new JRadioButton("Squirrel");
+			player_[1][2].setBounds(250, 370, 150, 25);
+			player_[1][2].setFont(radioButtonFont);
+			player_[1][2].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player2Piece_.setIcon(squirrelIcon_);
-	            	if (piece3_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece3_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece3_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece4_2_ = new JRadioButton("Zeppos");
-			piece4_2_.setBounds(250, 405, 150, 25);
-			piece4_2_.setFont(radioButtonFont);
-			piece4_2_.addActionListener(new ActionListener() {
+			player_[1][3] = new JRadioButton("Zeppos");
+			player_[1][3].setBounds(250, 405, 150, 25);
+			player_[1][3].setFont(radioButtonFont);
+			player_[1][3].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player2Piece_.setIcon(zepposIcon_);
-	            	if (piece4_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece4_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece4_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
 			icons2_ = new ButtonGroup();
-			icons2_.add(piece1_2_);
-			icons2_.add(piece2_2_);
-			icons2_.add(piece3_2_);
-			icons2_.add(piece4_2_);
+			icons2_.add(player_[1][0]);
+			icons2_.add(player_[1][1]);
+			icons2_.add(player_[1][2]);
+			icons2_.add(player_[1][3]);
 			
-			piece1_3_ = new JRadioButton("Commodore");
-			piece1_3_.setBounds(400, 300, 150, 25);
-			piece1_3_.setFont(radioButtonFont);
-			piece1_3_.addActionListener(new ActionListener() {
-				// Deselect all other player selections for the same piece
+			player_[2][0] = new JRadioButton("Commodore");
+			player_[2][0].setBounds(400, 300, 150, 25);
+			player_[2][0].setFont(radioButtonFont);
+			player_[2][0].addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	player3Piece_.setIcon(commodoreIcon_);
-	            	if (piece1_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece1_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece1_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece2_3_ = new JRadioButton("Cornelius");
-			piece2_3_.setBounds(400, 335, 150, 25);
-			piece2_3_.setFont(radioButtonFont);
-			piece2_3_.addActionListener(new ActionListener() {
-				// Deselect all other player selections for the same piece
+			player_[2][1] = new JRadioButton("Cornelius");
+			player_[2][1].setBounds(400, 335, 150, 25);
+			player_[2][1].setFont(radioButtonFont);
+			player_[2][1].addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	player3Piece_.setIcon(corneliusIcon_);
-	            	if (piece2_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece2_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece2_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece3_3_ = new JRadioButton("Squirrel");
-			piece3_3_.setBounds(400, 370, 150, 25);
-			piece3_3_.setFont(radioButtonFont);
-			piece3_3_.addActionListener(new ActionListener() {
-				// Deselect all other player selections for the same piece
+			player_[2][2] = new JRadioButton("Squirrel");
+			player_[2][2].setBounds(400, 370, 150, 25);
+			player_[2][2].setFont(radioButtonFont);
+			player_[2][2].addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	player3Piece_.setIcon(squirrelIcon_);
-	            	if (piece3_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece3_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece3_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece4_3_ = new JRadioButton("Zeppos");
-			piece4_3_.setBounds(400, 405, 150, 25);
-			piece4_3_.setFont(radioButtonFont);
-			piece4_3_.addActionListener(new ActionListener() {
-				// Deselect all other player selections for the same piece
+			player_[2][3] = new JRadioButton("Zeppos");
+			player_[2][3].setBounds(400, 405, 150, 25);
+			player_[2][3].setFont(radioButtonFont);
+			player_[2][3].addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	player3Piece_.setIcon(zepposIcon_);
-	            	if (piece4_1_.isSelected())
-	            		icons1_.clearSelection();
-	            	if (piece4_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece4_4_.isSelected())
-	            		icons4_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
 			icons3_ = new ButtonGroup();
-			icons3_.add(piece1_3_);
-			icons3_.add(piece2_3_);
-			icons3_.add(piece3_3_);
-			icons3_.add(piece4_3_);
+			icons3_.add(player_[2][0]);
+			icons3_.add(player_[2][1]);
+			icons3_.add(player_[2][2]);
+			icons3_.add(player_[2][3]);
 			
-			piece1_4_ = new JRadioButton("Commodore");
-			piece1_4_.setBounds(550, 300, 150, 25);
-			piece1_4_.setFont(radioButtonFont);
-			piece1_4_.addActionListener(new ActionListener() {
-				// Deselect all other player selections for the same piece
+			player_[3][0] = new JRadioButton("Commodore");
+			player_[3][0].setBounds(550, 300, 150, 25);
+			player_[3][0].setFont(radioButtonFont);
+			player_[3][0].addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	player4Piece_.setIcon(commodoreIcon_);
-	            	if (piece1_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece1_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece1_1_.isSelected())
-	            		icons1_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece2_4_ = new JRadioButton("Cornelius");
-			piece2_4_.setBounds(550, 335, 150, 25);
-			piece2_4_.setFont(radioButtonFont);
-			piece2_4_.addActionListener(new ActionListener() {
+			player_[3][1] = new JRadioButton("Cornelius");
+			player_[3][1].setBounds(550, 335, 150, 25);
+			player_[3][1].setFont(radioButtonFont);
+			player_[3][1].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player4Piece_.setIcon(corneliusIcon_);
-	            	if (piece2_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece2_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece2_1_.isSelected())
-	            		icons1_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece3_4_ = new JRadioButton("Squirrel");
-			piece3_4_.setBounds(550, 370, 150, 25);
-			piece3_4_.setFont(radioButtonFont);
-			piece3_4_.addActionListener(new ActionListener() {
+			player_[3][2] = new JRadioButton("Squirrel");
+			player_[3][2].setBounds(550, 370, 150, 25);
+			player_[3][2].setFont(radioButtonFont);
+			player_[3][2].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player4Piece_.setIcon(squirrelIcon_);
-	            	if (piece3_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece3_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece3_1_.isSelected())
-	            		icons1_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
-			piece4_4_ = new JRadioButton("Zeppos");
-			piece4_4_.setBounds(550, 405, 150, 25);
-			piece4_4_.setFont(radioButtonFont);
-			piece4_4_.addActionListener(new ActionListener() {
+			player_[3][3] = new JRadioButton("Zeppos");
+			player_[3][3].setBounds(550, 405, 150, 25);
+			player_[3][3].setFont(radioButtonFont);
+			player_[3][3].addActionListener(new ActionListener() {
 				// Deselect all other player selections for the same piece
 	            public void actionPerformed(ActionEvent event) {
 	            	player4Piece_.setIcon(zepposIcon_);
-	            	if (piece4_2_.isSelected())
-	            		icons2_.clearSelection();
-	            	if (piece4_3_.isSelected())
-	            		icons3_.clearSelection();
-	            	if (piece4_1_.isSelected())
-	            		icons1_.clearSelection();
+	            	GameOptions.this.refreshPieceButtons();
 	            }
 	        });
 			
 			icons4_ = new ButtonGroup();
-			icons4_.add(piece1_4_);
-			icons4_.add(piece2_4_);
-			icons4_.add(piece3_4_);
-			icons4_.add(piece4_4_);
+			icons4_.add(player_[3][0]);
+			icons4_.add(player_[3][1]);
+			icons4_.add(player_[3][2]);
+			icons4_.add(player_[3][3]);
 			
 		    nameOne_ = new JTextField();
 		    nameOne_.setFont(radioButtonFont);
@@ -632,25 +553,25 @@ public class GameOptions extends JPanel{
 			this.add(continue_);	
 			this.add(back_);
 			this.add(playGame_);
-			this.add(piece1_1_);
-			this.add(piece2_1_);
-			this.add(piece3_1_);
-			this.add(piece4_1_);
+			this.add(player_[0][0]);
+			this.add(player_[0][1]);
+			this.add(player_[0][2]);
+			this.add(player_[0][3]);
 			
-			this.add(piece1_2_);
-			this.add(piece2_2_);
-			this.add(piece3_2_);
-			this.add(piece4_2_);
+			this.add(player_[1][0]);
+			this.add(player_[1][1]);
+			this.add(player_[1][2]);
+			this.add(player_[1][3]);
 			
-			this.add(piece1_3_);
-			this.add(piece2_3_);
-			this.add(piece3_3_);
-			this.add(piece4_3_);
+			this.add(player_[2][0]);
+			this.add(player_[2][1]);
+			this.add(player_[2][2]);
+			this.add(player_[2][3]);
 			
-			this.add(piece1_4_);
-			this.add(piece2_4_);
-			this.add(piece3_4_);
-			this.add(piece4_4_);
+			this.add(player_[3][0]);
+			this.add(player_[3][1]);
+			this.add(player_[3][2]);
+			this.add(player_[3][3]);
 			
 			this.add(selectPieces_);
 			this.add(playerOne_2_);
@@ -670,6 +591,30 @@ public class GameOptions extends JPanel{
 			this.hideSecondPagePanels();
 			
 			NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "backToMain");
+		}
+		
+		// Sets all piece buttons to enabled or disabled based on current selections
+		public void refreshPieceButtons() {
+			for (int i = 0; i < maxPlayers_; i++) {
+				for (int j = 0; j < numOfPieces_; j++)
+					player_[i][j].setEnabled(true);
+			}
+			
+			System.out.println("Enable");
+			
+			for (int i = 0; i < maxPlayers_; i++) {
+				for (int j = 0; j < numOfPieces_; j++) {
+					if (player_[i][j].isSelected()) {
+						
+						for (int z = 1; z < maxPlayers_; z++) {
+							int nextPlayer = (i + z) % maxPlayers_;
+							player_[nextPlayer][j].setEnabled(false);
+						}
+						
+						break;
+					}
+				}
+			}
 		}
 		
 		public void hideFirstPagePanels() {
@@ -723,33 +668,33 @@ public class GameOptions extends JPanel{
 			playGame_.setVisible(true);
 			
 			playerOne_2_.setVisible(true);
-			piece1_1_.setVisible(true);
-			piece2_1_.setVisible(true);
-			piece3_1_.setVisible(true);
-			piece4_1_.setVisible(true);
+			player_[0][0].setVisible(true);
+			player_[0][1].setVisible(true);
+			player_[0][2].setVisible(true);
+			player_[0][3].setVisible(true);
 			player1Piece_.setVisible(true);
 			
 			playerTwo_2_.setVisible(true);
-			piece1_2_.setVisible(true);
-			piece2_2_.setVisible(true);
-			piece3_2_.setVisible(true);
-			piece4_2_.setVisible(true);
+			player_[1][0].setVisible(true);
+			player_[1][1].setVisible(true);
+			player_[1][2].setVisible(true);
+			player_[1][3].setVisible(true);
 			player2Piece_.setVisible(true);
 			
 			if (numberOfPlayers_ > 2) {
 				playerThree_2_.setVisible(true);
-				piece1_3_.setVisible(true);
-				piece2_3_.setVisible(true);
-				piece3_3_.setVisible(true);
-				piece4_3_.setVisible(true);
+				player_[2][0].setVisible(true);
+				player_[2][1].setVisible(true);
+				player_[2][2].setVisible(true);
+				player_[2][3].setVisible(true);
 				player3Piece_.setVisible(true);
 			
 				if (numberOfPlayers_ == 4) {
 					playerFour_2_.setVisible(true);
-					piece1_4_.setVisible(true);
-					piece2_4_.setVisible(true);
-					piece3_4_.setVisible(true);
-					piece4_4_.setVisible(true);
+					player_[3][0].setVisible(true);
+					player_[3][1].setVisible(true);
+					player_[3][2].setVisible(true);
+					player_[3][3].setVisible(true);
 					player4Piece_.setVisible(true);
 				}
 			}
@@ -761,28 +706,28 @@ public class GameOptions extends JPanel{
 			playerFour_.setVisible(false);
 			nameFour_.setVisible(false);	
 			
-			piece1_1_.setVisible(false);
-			piece2_1_.setVisible(false);
-			piece3_1_.setVisible(false);
-			piece4_1_.setVisible(false);
+			player_[0][0].setVisible(false);
+			player_[0][1].setVisible(false);
+			player_[0][2].setVisible(false);
+			player_[0][3].setVisible(false);
 			player1Piece_.setVisible(false);
 		
-			piece1_2_.setVisible(false);
-			piece2_2_.setVisible(false);
-			piece3_2_.setVisible(false);
-			piece4_2_.setVisible(false);
+			player_[1][0].setVisible(false);
+			player_[1][1].setVisible(false);
+			player_[1][2].setVisible(false);
+			player_[1][3].setVisible(false);
 			player2Piece_.setVisible(false);
 			
-			piece1_3_.setVisible(false);
-			piece2_3_.setVisible(false);
-			piece3_3_.setVisible(false);
-			piece4_3_.setVisible(false);
+			player_[2][0].setVisible(false);
+			player_[2][1].setVisible(false);
+			player_[2][2].setVisible(false);
+			player_[2][3].setVisible(false);
 			player3Piece_.setVisible(false);
 			
-			piece1_4_.setVisible(false);
-			piece2_4_.setVisible(false);
-			piece3_4_.setVisible(false);
-			piece4_4_.setVisible(false);
+			player_[3][0].setVisible(false);
+			player_[3][1].setVisible(false);
+			player_[3][2].setVisible(false);
+			player_[3][3].setVisible(false);
 			player4Piece_.setVisible(false);
 			
 			selectPieces_.setVisible(false);
