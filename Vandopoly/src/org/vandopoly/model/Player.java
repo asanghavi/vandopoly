@@ -29,7 +29,7 @@ public class Player {
 	private boolean getOutOfJail_;
 	
 	Player() {
-		state_ = PlayerInJail.Instance();
+		state_ = PlayerFree.Instance();
 	}
 	
 	void changeState(PlayerState newState) {
