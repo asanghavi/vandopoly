@@ -43,8 +43,13 @@ public class DicePanel extends JPanel {
 	private JLabel die1_, die2_;
 	// Holds all 6 pictures of the die faces
 	private ImageIcon diePic_[];
+	
+	private Dice dice_;
+	
+	int buttonCounter = 0;
 
-	public DicePanel() {
+	public DicePanel(Dice dice) {
+		
 		int panelWidth = 200, panelHeight = 130;
 		int rightMargin = 250, topMargin = 25;
 
@@ -52,6 +57,8 @@ public class DicePanel extends JPanel {
 
 		this.setSize(panelWidth, panelHeight);
 		this.setLayout(null);
+		
+		dice_ = dice;
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -63,6 +70,24 @@ public class DicePanel extends JPanel {
 		rollDice_ = new JButton("Roll Dice");
 		rollDice_.setBounds(0, 0, panelWidth, buttonHeight);
 		rollDice_.setFont(buttonFont);
+		
+		// Add action listener to roll dice button
+		rollDice_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				// Dice are ready to be rolled
+				if (buttonCounter % 2 == 0) {
+					dice_.roll();
+					rollDice_.setText("End Turn");
+				}
+				
+				// Button is currently in state "End Turn"
+				else {
+					NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
+					rollDice_.setText("Roll Dice");
+				}
+				buttonCounter++;
+			}
+		});
 		
 		diePic_ = new ImageIcon[6];
 
