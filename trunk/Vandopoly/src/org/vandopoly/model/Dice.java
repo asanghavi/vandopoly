@@ -26,14 +26,19 @@ import org.vandopoly.messaging.NotificationManager;
  * @author James Kasten
  */
 public class Dice {
-	private int die1_;
-	private int die2_;
+	private int die1_, die2_;
+	private int numInRowDoubles_;
 	private Random generator_ = new Random();
 	
 	// Can be used to roll both dice at once and return the total
 	public int roll() {
 		die1_ = generator_.nextInt(6) + 1;
 		die2_ = generator_.nextInt(6) + 1;
+		
+		if (die1_ == die2_)
+			numInRowDoubles_++;
+		else
+			numInRowDoubles_ = 0;
 		
 		// Notify interested parties about the change of Die state
 		NotificationManager.getInstance().notifyObservers(Notification.ROLL_DICE, this);
@@ -60,7 +65,9 @@ public class Dice {
 	public int getDie2() {
 		return die2_;
 	}
-	
+	public int getNumInRowDoubles() {
+		return numInRowDoubles_;
+	}
 	// toString method
 	public String toString() {
 		return "("+this.getDie1()+", "+this.getDie2()+")";

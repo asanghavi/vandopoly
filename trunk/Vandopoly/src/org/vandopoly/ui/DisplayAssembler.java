@@ -15,7 +15,9 @@
 
 package org.vandopoly.ui;
 
+import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
@@ -34,8 +36,10 @@ public class DisplayAssembler {
 	private static DisplayAssembler INSTANCE;
 	private JDesktopPane desktopPane_ = null;
 	
+	private static Dimension screen_;
+	
 	private DisplayAssembler() {
-		
+		 screen_ = Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
 	// Singleton method
@@ -60,5 +64,12 @@ public class DisplayAssembler {
 	public void removeComponent(JComponent component) {
 		desktopPane_.remove(component);
 	}
-
+	
+	public static int getScreenHeight() {
+		return screen_.height;
+	}
+	
+	public static int getScreenWidth() {
+		return screen_.width;
+	}
 }

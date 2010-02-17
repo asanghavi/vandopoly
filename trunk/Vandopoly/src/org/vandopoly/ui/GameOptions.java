@@ -553,25 +553,11 @@ public class GameOptions extends JPanel{
 			this.add(continue_);	
 			this.add(back_);
 			this.add(playGame_);
-			this.add(player_[0][0]);
-			this.add(player_[0][1]);
-			this.add(player_[0][2]);
-			this.add(player_[0][3]);
 			
-			this.add(player_[1][0]);
-			this.add(player_[1][1]);
-			this.add(player_[1][2]);
-			this.add(player_[1][3]);
-			
-			this.add(player_[2][0]);
-			this.add(player_[2][1]);
-			this.add(player_[2][2]);
-			this.add(player_[2][3]);
-			
-			this.add(player_[3][0]);
-			this.add(player_[3][1]);
-			this.add(player_[3][2]);
-			this.add(player_[3][3]);
+			for (int i = 0; i < maxPlayers_; i++) {
+				for (int j = 0; j < numOfPieces_; j++)
+					this.add(player_[i][j]);
+			}
 			
 			this.add(selectPieces_);
 			this.add(playerOne_2_);
@@ -595,20 +581,21 @@ public class GameOptions extends JPanel{
 		
 		// Sets all piece buttons to enabled or disabled based on current selections
 		public void refreshPieceButtons() {
+			
+			// First set all radio buttons to enabled
 			for (int i = 0; i < maxPlayers_; i++) {
 				for (int j = 0; j < numOfPieces_; j++)
 					player_[i][j].setEnabled(true);
 			}
 			
-			System.out.println("Enable");
-			
+			// Run through all radio buttons and one is found to be selected
+			// deselect all corresponding buttons.
 			for (int i = 0; i < maxPlayers_; i++) {
 				for (int j = 0; j < numOfPieces_; j++) {
 					if (player_[i][j].isSelected()) {
 						
 						for (int z = 1; z < maxPlayers_; z++) {
-							int nextPlayer = (i + z) % maxPlayers_;
-							player_[nextPlayer][j].setEnabled(false);
+							player_[(i + z) % maxPlayers_][j].setEnabled(false);
 						}
 						
 						break;
