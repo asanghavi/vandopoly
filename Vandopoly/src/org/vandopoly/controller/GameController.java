@@ -15,15 +15,19 @@
 
 package org.vandopoly.controller;
 
+import java.awt.Font;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JLayeredPane;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Dice;
 import org.vandopoly.ui.DicePanel;
+import org.vandopoly.ui.DisplayAssembler;
 import org.vandopoly.ui.PlayerPanel;
 
 /*
@@ -41,6 +45,19 @@ public class GameController {
 	
 	public GameController() {
 		dice_ = new Dice();
+		
+		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
+		endTurn_ = new JButton("End Turn");
+		endTurn_.setFont(buttonFont);
+		endTurn_.setBounds(0,0,200,50);
+		endTurn_.setVisible(true);
+		endTurn_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
+			}
+		});
+		Point location = new Point(DisplayAssembler.getScreenWidth()- 200, DisplayAssembler.getScreenHeight()-50);
+		DisplayAssembler.getInstance().addComponent(endTurn_, location, JLayeredPane.PALETTE_LAYER);
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
 	}

@@ -15,6 +15,7 @@
 
 package org.vandopoly.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
@@ -50,10 +51,10 @@ public class DicePanel extends JPanel {
 
 	public DicePanel(Dice dice) {
 		
-		int panelWidth = 200, panelHeight = 130;
 		int rightMargin = 250, topMargin = 25;
 
-		int buttonHeight = 50, dieSize = 82;
+		int buttonHeight = 50, dieSize = 83;
+		int panelWidth = 200, panelHeight = buttonHeight + dieSize;
 
 		this.setSize(panelWidth, panelHeight);
 		this.setLayout(null);
@@ -66,6 +67,7 @@ public class DicePanel extends JPanel {
 				topMargin);
 
 		Font buttonFont = new Font("broadway", Font.BOLD, 26);
+		Font messageFont = new Font("broadway", Font.PLAIN, 18);
 
 		rollDice_ = new JButton("Roll Dice");
 		rollDice_.setBounds(0, 0, panelWidth, buttonHeight);
@@ -75,17 +77,17 @@ public class DicePanel extends JPanel {
 		rollDice_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// Dice are ready to be rolled
-				if (buttonCounter % 2 == 0) {
+				//if (buttonCounter % 2 == 0) {
 					dice_.roll();
-					rollDice_.setText("End Turn");
-				}
-				
+				//}
+				/*
 				// Button is currently in state "End Turn"
 				else {
 					NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 					rollDice_.setText("Roll Dice");
 				}
 				buttonCounter++;
+				*/
 			}
 		});
 		
@@ -98,13 +100,11 @@ public class DicePanel extends JPanel {
 
 		die1_ = new JLabel();
 		die1_.setIcon(diePic_[0]);
-		die1_.setBounds(0, buttonHeight, (panelWidth / 2), panelHeight
-				- buttonHeight);
+		die1_.setBounds(0, buttonHeight, (panelWidth / 2), dieSize);
 
 		die2_ = new JLabel();
 		die2_.setIcon(diePic_[0]);
-		die2_.setBounds((panelWidth - dieSize), buttonHeight, (panelWidth / 2),
-				panelHeight - buttonHeight);
+		die2_.setBounds((panelWidth - dieSize), buttonHeight, (panelWidth / 2), dieSize);
 
 		this.add(rollDice_);
 		this.add(die1_);
@@ -117,7 +117,7 @@ public class DicePanel extends JPanel {
 
 		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
 				this, "updateDice");
-		//NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
 	}
 
 	public JButton getRollButton() {
@@ -131,11 +131,23 @@ public class DicePanel extends JPanel {
 
 			die1_.setIcon(diePic_[dice.getDie1() - 1]);
 			die2_.setIcon(diePic_[dice.getDie2() - 1]);
+			
+			if (dice.getNumInRowDoubles() == 0)
+				rollDice_.setEnabled(false);
+			else if (dice.getNumInRowDoubles() < 3) {
+				rollDice_.setForeground(Color.red);
+				rollDice_.setText("Roll Again");
+			}
+			else {
+				rollDice_.setText("Go To Jail");
+				rollDice_.setEnabled(false);
+			}
 		}
 	}
-	/*
+	
 	public void endTurn() {
-		rollDice_.setVisible(true);
+		rollDice_.setForeground(Color.black);
+		rollDice_.setText("Roll Dice");
+		rollDice_.setEnabled(true);
 	}
-	*/
 }
