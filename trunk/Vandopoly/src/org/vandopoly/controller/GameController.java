@@ -46,6 +46,14 @@ public class GameController {
 	public GameController() {
 		dice_ = new Dice();
 		
+		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
+	}
+	
+	public void startGame(Object obj) {
+		playerPanel_ = new PlayerPanel((String[])obj);
+		
+		dicePanel_ = new DicePanel(dice_);
+		
 		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
 		endTurn_ = new JButton("End Turn");
 		endTurn_.setFont(buttonFont);
@@ -58,13 +66,5 @@ public class GameController {
 		});
 		Point location = new Point(DisplayAssembler.getScreenWidth()- 200, DisplayAssembler.getScreenHeight()-50);
 		DisplayAssembler.getInstance().addComponent(endTurn_, location, JLayeredPane.PALETTE_LAYER);
-		
-		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
-	}
-	
-	public void startGame(Object obj) {
-		playerPanel_ = new PlayerPanel((String[])obj);
-		
-		dicePanel_ = new DicePanel(dice_);
 	}
 }
