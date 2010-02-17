@@ -200,22 +200,18 @@ public class GameOptions extends JPanel{
 		    
 		    // Create the labels that will be placed underneath the player choices
 		    player1Piece_ = new JLabel();
-		    player1Piece_.setIcon(commodoreIcon_);
 		    player1Piece_.setBounds(105, 410, 100,100);
 		    this.add(player1Piece_);
 		    
 		    player2Piece_ = new JLabel();
-		    player2Piece_.setIcon(commodoreIcon_);
 		    player2Piece_.setBounds(250, 410, 100, 100);
 		    this.add(player2Piece_);
 		    
 		    player3Piece_ = new JLabel();
-		    player3Piece_.setIcon(commodoreIcon_);
 		    player3Piece_.setBounds(400, 410, 100, 100);
 		    this.add(player3Piece_);
 		    
 		    player4Piece_ = new JLabel();
-		    player4Piece_.setIcon(commodoreIcon_);
 		    player4Piece_.setBounds(550, 410, 100, 100);
 		    this.add(player4Piece_);
 		    
@@ -496,6 +492,7 @@ public class GameOptions extends JPanel{
 	            		GameOptions.this.backToMain();
 	            	else
 	            		GameOptions.this.backToFirstPage();
+	            		
 	            }
 	        });		
 			
@@ -526,6 +523,7 @@ public class GameOptions extends JPanel{
 	            	}
 	            	
 	            	else {
+	            		pieceError_.setVisible(false);
 	            		NotificationManager.getInstance().notifyObservers
         					(Notification.START_GAME, names_);
 	            		GameOptions.this.hideSecondPagePanels();
@@ -568,6 +566,7 @@ public class GameOptions extends JPanel{
 			this.add(back_);
 			this.add(playGame_);
 			
+			// Add the radio buttons
 			for (int i = 0; i < maxPlayers_; i++) {
 				for (int j = 0; j < numOfPieces_; j++)
 					this.add(player_[i][j]);
@@ -603,7 +602,7 @@ public class GameOptions extends JPanel{
 					player_[i][j].setEnabled(true);
 			}
 			
-			// Run through all radio buttons and one is found to be selected
+			// Run through all radio buttons and if one is found to be selected
 			// deselect all corresponding buttons.
 			for (int i = 0; i < maxPlayers_; i++) {
 				for (int j = 0; j < numOfPieces_; j++) {
@@ -708,28 +707,15 @@ public class GameOptions extends JPanel{
 			playerFour_.setVisible(false);
 			nameFour_.setVisible(false);	
 			
-			player_[0][0].setVisible(false);
-			player_[0][1].setVisible(false);
-			player_[0][2].setVisible(false);
-			player_[0][3].setVisible(false);
+			// Set all radio buttons to false
+			for (int i = 0; i < maxPlayers_; i++) {
+				for (int j = 0; j < numOfPieces_; j++)
+					player_[i][j].setVisible(false);
+			}
+
 			player1Piece_.setVisible(false);
-		
-			player_[1][0].setVisible(false);
-			player_[1][1].setVisible(false);
-			player_[1][2].setVisible(false);
-			player_[1][3].setVisible(false);
 			player2Piece_.setVisible(false);
-			
-			player_[2][0].setVisible(false);
-			player_[2][1].setVisible(false);
-			player_[2][2].setVisible(false);
-			player_[2][3].setVisible(false);
-			player3Piece_.setVisible(false);
-			
-			player_[3][0].setVisible(false);
-			player_[3][1].setVisible(false);
-			player_[3][2].setVisible(false);
-			player_[3][3].setVisible(false);
+			player3Piece_.setVisible(false);	
 			player4Piece_.setVisible(false);
 			
 			selectPieces_.setVisible(false);
@@ -737,6 +723,19 @@ public class GameOptions extends JPanel{
 			playerTwo_2_.setVisible(false);
 			playerThree_2_.setVisible(false);
 			playerFour_2_.setVisible(false);
+			
+			icons1_.clearSelection();
+			icons2_.clearSelection();
+			icons3_.clearSelection();
+			icons4_.clearSelection();
+			refreshPieceButtons();
+			
+			player1Piece_.setIcon(null);
+			player2Piece_.setIcon(null);
+			player3Piece_.setIcon(null);
+			player4Piece_.setIcon(null);
+			
+			pieceError_.setVisible(false);
 			
 			playGame_.setVisible(false);
 		}
@@ -778,6 +777,7 @@ public class GameOptions extends JPanel{
 			nameFour_.setText(null);
 			numberOfPlayers_ = 2;
 			
+			repeatError_.setVisible(false);
 			mainMenu_.showMenu();
 			this.setVisible(false);
 		}
