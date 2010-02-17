@@ -64,7 +64,7 @@ public class GameOptions extends JPanel{
 	private JLabel player1Piece_, player2Piece_, player3Piece_, player4Piece_;
 	private ImageIcon commodoreIcon_, squirrelIcon_, zepposIcon_, corneliusIcon_;
 	
-	private JLabel repeatError_;
+	private JLabel repeatError_, pieceError_;
 	
 	private ButtonGroup icons1_, icons2_, icons3_, icons4_;
 	
@@ -519,10 +519,18 @@ public class GameOptions extends JPanel{
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	
-	            	NotificationManager.getInstance().notifyObservers
-	            		(Notification.START_GAME, names_);
-	            	GameOptions.this.hideSecondPagePanels();
-	            	GameOptions.this.setVisible(false);
+	            	if ((icons1_.getSelection() == null || icons2_.getSelection() == null) ||
+	            			(numberOfPlayers_ > 2 && icons3_.getSelection() == null) || 
+	            			(numberOfPlayers_ > 3 && icons4_.getSelection() == null)) {
+	            		pieceError_.setVisible(true);
+	            	}
+	            	
+	            	else {
+	            		NotificationManager.getInstance().notifyObservers
+        					(Notification.START_GAME, names_);
+	            		GameOptions.this.hideSecondPagePanels();
+        				GameOptions.this.setVisible(false);
+	            	}
 	            }
 	            
 	        });	
@@ -533,6 +541,12 @@ public class GameOptions extends JPanel{
 			repeatError_.setForeground(Color.red);
 			repeatError_.setBounds(138, 675, 600, 40);
 			repeatError_.setVisible(false);
+			
+			pieceError_ = new JLabel("All Players much choose a game piece");
+			pieceError_.setFont(errorFont);
+			pieceError_.setForeground(Color.red);
+			pieceError_.setBounds(143, 675, 600, 40);
+			pieceError_.setVisible(false);
 			
 			// Add some Components to the panel
 			this.add(titleBar);
@@ -566,6 +580,7 @@ public class GameOptions extends JPanel{
 			this.add(playerFour_2_);
 			
 			this.add(repeatError_);
+			this.add(pieceError_);
 			
 			// Add the Panel to the display
 			display = DisplayAssembler.getInstance();
