@@ -52,7 +52,7 @@ public class DicePanel extends JPanel {
 
 	public DicePanel(Dice dice) {
 
-		int rightMargin = 250, topMargin = 25;
+		int rightMargin = 200, bottomMargin = 200;
 
 		int buttonHeight = 50, dieSize = 83;
 		int panelWidth = 200, panelHeight = buttonHeight + dieSize;
@@ -65,7 +65,7 @@ public class DicePanel extends JPanel {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 		Point location = new Point((int) (screen.getWidth() - rightMargin),
-				topMargin);
+				((int)screen.getHeight() - bottomMargin));
 
 		Font buttonFont = new Font("broadway", Font.BOLD, 26);
 		Font messageFont = new Font("broadway", Font.PLAIN, 18);
@@ -77,16 +77,7 @@ public class DicePanel extends JPanel {
 		// Add action listener to roll dice button
 		rollDice_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// Dice are ready to be rolled
-				// if (buttonCounter % 2 == 0) {
 				dice_.roll();
-				// }
-				/*
-				 * // Button is currently in state "End Turn" else {
-				 * NotificationManager
-				 * .getInstance().notifyObservers(Notification.END_TURN, null);
-				 * rollDice_.setText("Roll Dice"); } buttonCounter++;
-				 */
 			}
 		});
 
