@@ -549,7 +549,7 @@ public class GameOptions extends JPanel{
 			repeatError_.setBounds(138, 675, 600, 40);
 			repeatError_.setVisible(false);
 			
-			pieceError_ = new JLabel("All Players much choose a game piece");
+			pieceError_ = new JLabel("All Players must choose a game piece");
 			pieceError_.setFont(errorFont);
 			pieceError_.setForeground(Color.red);
 			pieceError_.setBounds(143, 675, 600, 40);
