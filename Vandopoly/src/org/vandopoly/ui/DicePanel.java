@@ -22,7 +22,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.InvalidClassException;
+import java.util.Random;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -45,13 +45,13 @@ public class DicePanel extends JPanel {
 	private JLabel die1_, die2_;
 	// Holds all 6 pictures of the die faces
 	private ImageIcon diePic_[];
-	
+
 	private Dice dice_;
-	
+
 	int buttonCounter = 0;
 
 	public DicePanel(Dice dice) {
-		
+
 		int rightMargin = 250, topMargin = 25;
 
 		int buttonHeight = 50, dieSize = 83;
@@ -59,7 +59,7 @@ public class DicePanel extends JPanel {
 
 		this.setSize(panelWidth, panelHeight);
 		this.setLayout(null);
-		
+
 		dice_ = dice;
 
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
@@ -73,25 +73,23 @@ public class DicePanel extends JPanel {
 		rollDice_ = new JButton("Roll Dice");
 		rollDice_.setBounds(0, 0, panelWidth, buttonHeight);
 		rollDice_.setFont(buttonFont);
-		
+
 		// Add action listener to roll dice button
 		rollDice_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// Dice are ready to be rolled
-				//if (buttonCounter % 2 == 0) {
-					dice_.roll();
-				//}
+				// if (buttonCounter % 2 == 0) {
+				dice_.roll();
+				// }
 				/*
-				// Button is currently in state "End Turn"
-				else {
-					NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
-					rollDice_.setText("Roll Dice");
-				}
-				buttonCounter++;
-				*/
+				 * // Button is currently in state "End Turn" else {
+				 * NotificationManager
+				 * .getInstance().notifyObservers(Notification.END_TURN, null);
+				 * rollDice_.setText("Roll Dice"); } buttonCounter++;
+				 */
 			}
 		});
-		
+
 		diePic_ = new ImageIcon[6];
 
 		// Upload all of the images into the array
@@ -105,7 +103,8 @@ public class DicePanel extends JPanel {
 
 		die2_ = new JLabel();
 		die2_.setIcon(diePic_[0]);
-		die2_.setBounds((panelWidth - dieSize), buttonHeight, (panelWidth / 2), dieSize);
+		die2_.setBounds((panelWidth - dieSize), buttonHeight, (panelWidth / 2),
+				dieSize);
 
 		this.add(rollDice_);
 		this.add(die1_);
@@ -118,37 +117,52 @@ public class DicePanel extends JPanel {
 
 		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
 				this, "updateDice");
-		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN,
+				this, "endTurn");
 	}
 
 	public JButton getRollButton() {
 		return rollDice_;
 	}
-	
+
 	public void updateDice(Object obj) {
 
 		try {
-			Dice dice = (Dice) obj;
+			final Dice dice = (Dice) obj;
 
-			die1_.setIcon(diePic_[dice.getDie1() - 1]);
-			die2_.setIcon(diePic_[dice.getDie2() - 1]);
-			
-			if (dice.getNumInRowDoubles() == 0)
-				rollDice_.setEnabled(false);
-			else if (dice.getNumInRowDoubles() < 3) {
-				rollDice_.setForeground(Color.red);
-				rollDice_.setText("Roll Again");
-			}
-			else {
-				rollDice_.setText("Go To Jail");
-				rollDice_.setEnabled(false);
-			}
-		}
-		catch (ClassCastException e) {
+			new Thread() {
+				public void run() {
+					Random r = new Random();
+					for (int i = 0; i < 30; i++) {
+						die1_.setIcon(diePic_[r.nextInt(6)]);
+						die2_.setIcon(diePic_[r.nextInt(6)]);
+						try {
+							Thread.sleep(25);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+
+					die1_.setIcon(diePic_[dice.getDie1() - 1]);
+					die2_.setIcon(diePic_[dice.getDie2() - 1]);
+
+					if (dice.getNumInRowDoubles() == 0)
+						rollDice_.setEnabled(false);
+					else if (dice.getNumInRowDoubles() < 3) {
+						rollDice_.setForeground(Color.red);
+						rollDice_.setText("Roll Again");
+					} else {
+						rollDice_.setText("Go To Jail");
+						rollDice_.setEnabled(false);
+					}
+				}
+			}.start();
+		} catch (ClassCastException e) {
 			System.err.println("Dice expected object to method updateDice");
 		}
 	}
-	
+
 	public void endTurn() {
 		rollDice_.setForeground(Color.black);
 		rollDice_.setText("Roll Dice");
