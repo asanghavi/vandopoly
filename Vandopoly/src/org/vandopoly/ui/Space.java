@@ -17,6 +17,7 @@ package org.vandopoly.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -25,6 +26,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import org.vandopoly.messaging.NotificationManager;
 
 /*
  * Space represents the spaces on the board and takes care of positioning,
@@ -60,27 +64,23 @@ public class Space extends JPanel {
 		onSpace_ = new ArrayList<String>();
 		owner_ = "";
 		addSpace();
-		addStatus();
+		updateStatus();
+		NotificationManager.getInstance().addObserver("EndTurn", this, "updateStatus");
 	}
 	
 	// set the display properties of the space
-	public void setProperties(int x, int y, int width, int height, Color c, boolean useTex) {
-		x_=x;
-		y_=y;
-		width_=width;
-		height_=height;
-		c_=c;
-		useTex_=useTex;
-		addSpace();
+	public void setProperties(String sn) {
+		spaceName_ = sn;
+		updateStatus();
 	}
 	
-	void addSpace()
-	{
+	void addSpace() {
 		label = new JLabel();
 		label.setOpaque(true);
 		
-		if (useTex_)
+		if (useTex_) {
 			label.setIcon(new ImageIcon("images/boardTex.png"));
+		}
 		else {
 			label.setOpaque(true);
 			label.setBackground(c_);
@@ -88,6 +88,7 @@ public class Space extends JPanel {
 		
 		label.setSize(new Dimension(width_, height_));
 		label.setBorder(BorderFactory.createLineBorder(Color.black));
+
 		DisplayAssembler.getInstance().addComponent(label, new Point(x_,y_), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
 	}
@@ -103,7 +104,7 @@ public class Space extends JPanel {
 	}
 	
 	// add status text to board piece
-	void addStatus()
+	public void updateStatus()
 	{
 		String status = "";
 		if(isProp_) {
