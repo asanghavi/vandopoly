@@ -506,10 +506,19 @@ public class GameOptions extends JPanel{
 				}
 				public void keyReleased(KeyEvent e) {
 					if(e.getKeyCode()== KeyEvent.VK_ENTER) {
-						NotificationManager.getInstance().notifyObservers
-	            		(Notification.START_GAME, names_);
-						GameOptions.this.hideSecondPagePanels();
-						GameOptions.this.setVisible(false);
+						if ((icons1_.getSelection() == null || icons2_.getSelection() == null) ||
+		            			(numberOfPlayers_ > 2 && icons3_.getSelection() == null) || 
+		            			(numberOfPlayers_ > 3 && icons4_.getSelection() == null)) {
+		            		pieceError_.setVisible(true);
+		            	}
+		            	
+		            	else {
+		            		pieceError_.setVisible(false);
+		            		NotificationManager.getInstance().notifyObservers
+	        					(Notification.START_GAME, names_);
+		            		GameOptions.this.hideSecondPagePanels();
+	        				GameOptions.this.setVisible(false);
+		            	}
 					}
 				}
 			});
