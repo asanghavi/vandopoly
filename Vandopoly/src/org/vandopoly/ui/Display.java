@@ -43,7 +43,7 @@ public class Display extends JFrame {
 	Dimension screen_ = Toolkit.getDefaultToolkit().getScreenSize();
 	int width_ = screen_.height - 100;
 	int height_ = screen_.height - 100;
-	int scaleWidth_ = 13, scaleHeight_ = 7;
+	int scaleWidth_ = 12, scaleHeight_ = 7;
 	ArrayList<Space> spaces_ = new ArrayList<Space>(36);
 	int spacesAcross_ = 9;
 	int sizeAcross_ = (int)(height_ / scaleWidth_) * spacesAcross_;
@@ -77,6 +77,7 @@ public class Display extends JFrame {
 		this.add(board_);
 		this.setVisible(true);
 		board_.setVisible(true);
+		showBoard();
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "showBoard");
 	}
 	
@@ -108,7 +109,7 @@ public class Display extends JFrame {
 		name = "Morgan";
 		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
 		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, false, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
 		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
 		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
 		
@@ -180,7 +181,7 @@ public class Display extends JFrame {
 		quitGame_.setSize(new Dimension(buttonWidth,buttonHeight));
 		quitGame_.setFont(buttonFont);
 		DisplayAssembler.getInstance().addComponent(quitGame_, 
-				new Point(screen_.width - buttonWidth - 300, buttonHeight), 
+				new Point(pos_ * 2 + sizeAcross_ + buttonHeight, buttonHeight), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
 		quitGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -237,9 +238,9 @@ public class Display extends JFrame {
 		int panelWidth;
 
 		if (isProp)
-			panelWidth = (int)((width_ / scaleHeight_) * spaceScale_);
+			panelWidth = (int)(spaceScale_ * boxSize_);
 		else
-			panelWidth = (int)((width_ / scaleHeight_));
+			panelWidth = boxSize_;
 		
 		int panelHeight;
 		if (isVert) {
@@ -257,7 +258,7 @@ public class Display extends JFrame {
 		// set the smaller colored part of the piece
 		int panelWidthS = panelWidth, panelHeightS = panelHeight;
 		if (isProp) {
-			panelWidthS = (int)((width_ / scaleHeight_) * (1-spaceScale_));
+			panelWidthS = boxSize_ - Math.max(panelWidth, panelHeight);
 			if (isVert) {
 				panelHeightS = panelWidthS;
 				panelWidthS = height_ / scaleWidth_;
