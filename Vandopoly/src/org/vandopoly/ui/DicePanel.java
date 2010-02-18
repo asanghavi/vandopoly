@@ -22,6 +22,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InvalidClassException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -126,7 +127,7 @@ public class DicePanel extends JPanel {
 	
 	public void updateDice(Object obj) {
 
-		if (obj instanceof Dice) {
+		try {
 			Dice dice = (Dice) obj;
 
 			die1_.setIcon(diePic_[dice.getDie1() - 1]);
@@ -142,6 +143,9 @@ public class DicePanel extends JPanel {
 				rollDice_.setText("Go To Jail");
 				rollDice_.setEnabled(false);
 			}
+		}
+		catch (ClassCastException e) {
+			System.err.println("Dice expected object to method updateDice");
 		}
 	}
 	
