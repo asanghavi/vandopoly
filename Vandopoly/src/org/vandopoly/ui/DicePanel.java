@@ -124,11 +124,11 @@ public class DicePanel extends JPanel {
 			new Thread() {
 				public void run() {
 					Random r = new Random();
-					for (int i = 0; i < 30; i++) {
+					for (int i = 0; i < 25; i++) {
 						die1_.setIcon(diePic_[r.nextInt(6)]);
 						die2_.setIcon(diePic_[r.nextInt(6)]);
 						try {
-							Thread.sleep(25);
+							Thread.sleep(25+(i*3));
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
