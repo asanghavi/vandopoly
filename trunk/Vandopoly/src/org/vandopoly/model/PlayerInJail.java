@@ -39,15 +39,24 @@ public class PlayerInJail extends PlayerState {
 	}
 
 	@Override
-	public void movePiece(Player player) {
-		// TODO Auto-generated method stub
+	public void movePiece(Player player, int spaces) {
+		// Empty - player does not move when in jail
 
 	}
-
+	
 	@Override
-	public void updateCash(Player player, int value) {
-		// TODO Auto-generated method stub
-
+	public void collectRent(Player payee, int space, Player player) {
+		// Empty - rent is not collected when players are in jail
+	}
+	
+	@Override
+	public void goToJail(Player player) {
+		// Empty - player is already in jail
+	}
+	
+	@Override
+	public void getOutOfJail(Player player) {
+		player.changeState(PlayerFree.Instance());
 	}
 
 }

@@ -24,9 +24,13 @@ package org.vandopoly.model;
  */
 public class PlayerState {
 	
-	public void movePiece(Player player) {};
+	public void movePiece(Player player, int spaces) {};
 	
-	public void updateCash(Player player, int value) {};
+	public void collectRent(Player payee, int space, Player player) {};
+	
+	public void goToJail(Player player) {};
+	
+	public void getOutOfJail(Player player) {};
 	
 	protected void changeState(Player player, PlayerState newState) {
 		player.changeState(newState);

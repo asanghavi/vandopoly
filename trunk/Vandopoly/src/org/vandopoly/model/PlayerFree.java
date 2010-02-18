@@ -39,14 +39,25 @@ public class PlayerFree extends PlayerState{
 	}
 
 	@Override
-	public void movePiece(Player player) {
-		// TODO Auto-generated method stub
-
+	public void movePiece(Player player, int spaces) {
+		player.updatePosition(spaces);
+	}
+	
+	@Override
+	public void collectRent(Player payee, int space, Player payer) {
+		// Call to payee.updateCash(), payer.updateCash() 
+		// Temporary - for checking to make sure states are working properly
+		payee.updateCash(space);
+		payer.updateCash(-space);
 	}
 
 	@Override
-	public void updateCash(Player player, int value) {
-		// TODO Auto-generated method stub
-
+	public void goToJail(Player player) {
+		player.changeState(PlayerInJail.Instance());
+	}
+	
+	@Override
+	public void getOutOfJail(Player player) {
+		// Empty - player is not in jail
 	}
 }
