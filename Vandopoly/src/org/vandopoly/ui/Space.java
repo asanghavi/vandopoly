@@ -111,6 +111,8 @@ public class Space extends JPanel {
 			if(owner_ != "")
 				owner = owner_;
 			status += "Property Name: " + spaceName_ + ", Owned by: " + owner + ", ";
+		} else if(spaceName_ != "") {
+			status += spaceName_ + ", ";
 		}
 		
 		status += "On this space: ";
