@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.ui.Display;
+
 /*
  * Player class is a model class that represents a game player.
  * Context class for the State pattern
@@ -28,20 +30,44 @@ public class Player {
 	private int cash_, positionOnBoard_;
 	private boolean getOutOfJail_;
 	
-	Player() {
+	public Player() {
 		state_ = PlayerFree.Instance();
+		name_ = "";
+		cash_ = 0;
+		positionOnBoard_ = 0;
+		getOutOfJail_ = false;
 	}
 	
 	void changeState(PlayerState newState) {
 		state_ = newState;
 	}
 	
-	public void movePiece() {
-		state_.movePiece(this);
+	public void movePiece(int numOfSpaces) {
+		state_.movePiece(this, numOfSpaces);
+	}
+	
+	public void collectRent(int space, Player payer) {
+		state_.collectRent(this, space, payer);
+	}
+	
+	public void goToJail() {
+		state_.goToJail(this);
+	}
+	
+	public void getOutOfJail() {
+		state_.getOutOfJail(this);
+	}
+	
+	public void updatePosition(int numOfSpaces) {
+		positionOnBoard_ = numOfSpaces;
 	}
 	
 	public void updateCash(int value) {
-		state_.updateCash(this, value);
+		cash_ = cash_ + value;
+	}
+	
+	public void gainGetOutOfJail() {
+		getOutOfJail_ = true;
 	}
 	
 	public String getName() {
@@ -52,4 +78,17 @@ public class Player {
 		return positionOnBoard_;
 	}
 	
+	public int getCash() {
+		return cash_;
+	}
+	
+	public PlayerState getState() {
+		return state_;
+	}
+	
+	public boolean hasGetOutOfJail() {
+		return getOutOfJail_;
+	}
+	
 }
+
