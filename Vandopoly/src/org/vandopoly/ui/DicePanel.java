@@ -52,7 +52,7 @@ public class DicePanel extends JPanel {
 
 	public DicePanel(Dice dice) {
 
-		int rightMargin = 200, bottomMargin = 200;
+		int rightMargin = 200, topMargin = 0;
 
 		int buttonHeight = 50, dieSize = 83;
 		int panelWidth = 200, panelHeight = buttonHeight + dieSize;
@@ -65,7 +65,7 @@ public class DicePanel extends JPanel {
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 		Point location = new Point((int) (screen.getWidth() - rightMargin),
-				((int)screen.getHeight() - bottomMargin));
+				topMargin);
 
 		Font buttonFont = new Font("broadway", Font.BOLD, 26);
 		Font messageFont = new Font("broadway", Font.PLAIN, 18);
