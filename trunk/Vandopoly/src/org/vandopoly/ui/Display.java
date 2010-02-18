@@ -45,7 +45,12 @@ public class Display extends JFrame {
 	int height_ = screen_.height - 100;
 	int scaleWidth_ = 13, scaleHeight_ = 7;
 	ArrayList<Space> spaces_ = new ArrayList<Space>(36);
-	int pos_;
+	int spacesAcross_ = 9;
+	int sizeAcross_ = (int)(height_ / scaleWidth_) * spacesAcross_;
+	double spaceScale_ = .85;
+	int boxSize_ = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
+	int pos_ = boxSize_ + scaleHeight_;
+	int spacePos_=0;
 	
 	static final long serialVersionUID = 1;
 	
@@ -72,117 +77,110 @@ public class Display extends JFrame {
 		this.add(board_);
 		this.setVisible(true);
 		board_.setVisible(true);
-		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "showBoard");
 	}
 	
 	// show the board
 	public void showBoard() {
 		int spaceWidth = (int)(height_ / scaleWidth_);
-		int start = 2;
-		pos_ = 0;
-		
+		int start = 0;
+
 		// prop 1
 		Color c = new Color(228, 108, 12);
 		String name = "Branscomb";
-		addSmall(name, 0, spaceWidth * start++, c, true, false);
-		addSmall(name, 0, spaceWidth * start++, c, true, false);
-		addSmall(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmall(name, 0, spaceWidth * start++, c, true, false);
-		addSmall(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmall("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmall("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
 		
 		// prop 2
 		c = new Color(148, 55, 53);
-		 name = "Kissam";
-		addSmall(name, 0, spaceWidth * start++, c, true, false);
-		addSmall(name, 0, spaceWidth * start++, c, true, false);
-		addSmall(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmall(name, 0, spaceWidth * start++, c, true, false);
+		name = "Kissam";
+		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmall("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
 		
 		// prop 3
 		c = new Color(255, 0, 0);
-		start = 2;
+		start = 0;
 		name = "Morgan";
-		addSmall(name, spaceWidth * start++, 0, c, true, true);
-		addSmall(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmall(name, spaceWidth * start++, 0, c, false, true);
-		addSmall(name, spaceWidth * start++, 0, c, true, true);
-		addSmall(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, false, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
 		
 		// prop 4
 		c = new Color(255, 255, 0);
 		name = "Wilson";
-		addSmall(name, spaceWidth * start++, 0, c, true, true);
-		addSmall(name, spaceWidth * start++, 0, c, true, true);
-		addSmall(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmall(name, spaceWidth * start++, 0, c, true, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
 		
 		// prop 5
 		c = new Color(79, 99, 40);
-		start=2;
+		start = 0;
 		name = "Rand";
-		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
-		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
-		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
-		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
 		
 		// prop 6
 		c = new Color(39, 63, 97);
 		name = "Sarratt";
-		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
-		addSmallOp(name, 0, spaceWidth * start++, new Color(0, 0, 0), false, false);
-		addSmallOp(name, 0, spaceWidth * start++, c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
 		
 		// prop 7
 		c = new Color(97, 73, 121);
-		start=2;
+		start = 0;
 		name = "Stevenson Center";
-		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
-		addSmallOp(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
-		addSmallOp(name, spaceWidth * start++, 0, new Color(0,0,0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0,0,0), false, true);
 		
 		// prop 8
 		c = new Color(85, 141, 215);
 		name = "Recreation Center";
-		addSmallOp(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
-		addSmallOp(name, spaceWidth * start++, 0, new Color(0, 0, 0), false, true);
-		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
-		addSmallOp(name, spaceWidth * start++, 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
 		
 		// make the corners
-		int boxSize = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
 		
 		// top left corner
-		addLabel("", false, scaleHeight_,scaleHeight_, boxSize, boxSize, c, true);
+		addLabel("Community Chest", false, scaleHeight_, scaleHeight_, boxSize_, boxSize_, c, true);
 		
 		// top right corner
-		addLabel("", false, height_ - scaleHeight_ * 2 - boxSize, scaleHeight_, boxSize, boxSize, c, true);
+		addLabel("Chance", false, pos_ + sizeAcross_, scaleHeight_, boxSize_, boxSize_, c, true);
 		
 		// bottom left corner
-		addLabel("", false, scaleHeight_,height_ - scaleHeight_ * 2 - boxSize, boxSize, boxSize, c, true);
+		addLabel("Jail", false, scaleHeight_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
 		
 		// bottom right corner
-		addLabel("", false, height_ - scaleHeight_ * 2 - boxSize + 1,height_ - scaleHeight_ * 2 - boxSize + 1, boxSize, boxSize, c, true);
+		addLabel("Start", false, pos_ + sizeAcross_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
 		
 		// set center of board
-		addLabel("", false, (int)(width_ / scaleHeight_) + scaleHeight_,
-				(int)(width_ / scaleHeight_) + scaleHeight_,
-				width_ - ((int)(width_ / scaleHeight_) * 2) - 15,
-				width_ - ((int)(width_ / scaleHeight_) * 2) - 15,
-				c,true);
+		addLabel("", false, pos_, pos_, sizeAcross_, sizeAcross_, c, true);
 		
 		// quit button
 		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
-		int buttonWidth=170,buttonHeight=50;
+		int buttonWidth = 170,buttonHeight = 50;
 		JButton quitGame_ = new JButton("Quit Game");
 		quitGame_.setSize(new Dimension(buttonWidth,buttonHeight));
 		quitGame_.setFont(buttonFont);
 		DisplayAssembler.getInstance().addComponent(quitGame_, 
-				new Point(screen_.width - buttonWidth - 300, -10 + buttonHeight), 
+				new Point(screen_.width - buttonWidth - 300, buttonHeight), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
 		quitGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -200,36 +198,36 @@ public class Display extends JFrame {
 		int panelWidth;
 		
 		if (isProp)
-			panelWidth = (int)((width_ / scaleHeight_) * .85);
+			panelWidth = (int)(spaceScale_ * boxSize_);
 		else
-			panelWidth = (int)((width_ / scaleHeight_));
+			panelWidth = boxSize_;
 		
 		int panelHeight;
 		
 		if (isVert) {
 			panelHeight = panelWidth;
 			panelWidth = height_ / scaleWidth_;
-			y+=scaleHeight_;
+			y += scaleHeight_;
 		}
 		else {
 			panelHeight = height_ / scaleWidth_;
-			x+=scaleHeight_;
+			x += scaleHeight_;
 		}
 		
-		addLabel(name, isProp, x,y,panelWidth,panelHeight,c,true);
+		addLabel(name, isProp, x, y, panelWidth, panelHeight,c,true);
 		
 		// set the smaller colored part of the piece
 		if (isProp) {
-			panelWidth = (int)((width_ / scaleHeight_) * .15);
+			panelWidth = boxSize_ - Math.max(panelWidth, panelHeight);
 			if (isVert) {
 				panelHeight = panelWidth;
-				panelWidth = height_ / scaleWidth_;
+				panelWidth = (int)height_ / scaleWidth_;
 			}
 	
 			if (isVert)
-				addLabel(name, isProp, x, y + (int)((width_ / scaleHeight_) * .85), panelWidth, panelHeight, c, false);
+				addLabel(name, isProp, x, y + (int)(spaceScale_ * boxSize_), panelWidth, panelHeight, c, false);
 			else
-				addLabel(name, isProp, x + (int)((width_ / scaleHeight_) * .85), y, panelWidth, panelHeight, c, false);	
+				addLabel(name, isProp, x + (int)(spaceScale_ * boxSize_), y, panelWidth, panelHeight, c, false);	
 		}
 	}
 	
@@ -239,7 +237,7 @@ public class Display extends JFrame {
 		int panelWidth;
 
 		if (isProp)
-			panelWidth = (int)((width_ / scaleHeight_) * .85);
+			panelWidth = (int)((width_ / scaleHeight_) * spaceScale_);
 		else
 			panelWidth = (int)((width_ / scaleHeight_));
 		
@@ -251,38 +249,37 @@ public class Display extends JFrame {
 		else 
 			panelHeight = height_ / scaleWidth_;
 
-		x = width_ - x - panelWidth;
-		y = height_ - y - panelHeight;
-		
-		if(isVert) {
-			y -= 2 * scaleWidth_;
-			x -= scaleHeight_;
-		}
-		else {
-			x -= 2 * scaleWidth_;
-			y -= scaleHeight_;
-		}
-		
-		if (isVert)
-			addLabel(name, isProp, x, y + (int)((width_ / scaleHeight_) * .15), panelWidth, panelHeight, c, true);	
+		if(isVert)
+			y += pos_ + sizeAcross_;
 		else
-			addLabel(name, isProp, x + (int)((width_ / scaleHeight_) * .15), y, panelWidth, panelHeight, c, true);	
-			
+			x += pos_ + sizeAcross_;
+
 		// set the smaller colored part of the piece
+		int panelWidthS = panelWidth, panelHeightS = panelHeight;
 		if (isProp) {
-			panelWidth = (int)((width_ / scaleHeight_) * .15);
+			panelWidthS = (int)((width_ / scaleHeight_) * (1-spaceScale_));
 			if (isVert) {
-				panelHeight = panelWidth;
-				panelWidth = height_ / scaleWidth_;
+				panelHeightS = panelWidthS;
+				panelWidthS = height_ / scaleWidth_;
 			}
-			addLabel(name, isProp, x, y, panelWidth, panelHeight, c, false);
+			addLabel(name, isProp, x, y, panelWidthS, panelHeightS, c, false);
+		} else
+		{
+			panelWidthS = 0;
+			panelHeightS = 0;
 		}
+		
+		// set the larger part
+		if (isVert)
+			addLabel(name, isProp, x, y + panelHeightS, panelWidth, panelHeight, c, true);
+		else
+			addLabel(name, isProp, x + panelWidthS, y, panelWidth, panelHeight, c, true);	
 	}
 
 	// make a space and add it to the board
 	void addLabel(String name, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex)
 	{
-		Space s = new Space(pos_++, name, isProp, x, y, width, height, c, useTex);
+		Space s = new Space(spacePos_++, name, isProp, x, y, width, height, c, useTex);
 		spaces_.add(s);
 	}
 	
