@@ -121,29 +121,36 @@ public class DicePanel extends JPanel {
 		try {
 			final Dice dice = (Dice) obj;
 
+			// Thread used for animation of dice
 			new Thread() {
 				public void run() {
 					Random r = new Random();
+					
+					// Quickly flip through random dice panels
 					for (int i = 0; i < 25; i++) {
 						die1_.setIcon(diePic_[r.nextInt(6)]);
 						die2_.setIcon(diePic_[r.nextInt(6)]);
 						try {
 							Thread.sleep(25+(i*3));
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
 
+					// Set the correct icon based on the model dice
 					die1_.setIcon(diePic_[dice.getDie1() - 1]);
 					die2_.setIcon(diePic_[dice.getDie2() - 1]);
 
 					if (dice.getNumInRowDoubles() == 0)
 						rollDice_.setEnabled(false);
+					
+					// User should roll again
 					else if (dice.getNumInRowDoubles() < 3) {
 						rollDice_.setForeground(Color.red);
 						rollDice_.setText("Roll Again");
-					} else {
+					}
+					// User must go to jail for rolling too many doubles
+					else {
 						rollDice_.setText("Go To Jail");
 						rollDice_.setEnabled(false);
 					}
@@ -155,6 +162,7 @@ public class DicePanel extends JPanel {
 	}
 
 	public void endTurn() {
+		// Set the dice panel back to defaults
 		rollDice_.setForeground(Color.black);
 		rollDice_.setText("Roll Dice");
 		rollDice_.setEnabled(true);

@@ -78,6 +78,11 @@ public class GameOptions extends JPanel{
 			
 			mainMenu_ = mainMenu;
 			
+			String commodore = "Commodore";
+			String squirrel = "Squirrel";
+			String zeppos = "Zeppos";
+			String cornelius = "Cornelius";
+			
 			int frameWidth = 730, frameHeight = 750;
 
 			// Set size of window
@@ -221,7 +226,7 @@ public class GameOptions extends JPanel{
 		    player_ = new JRadioButton[maxPlayers_][numOfPieces_];
 		    
 		    // Now set up the radio buttons
-		    player_[0][0] = new JRadioButton("Commodore");
+		    player_[0][0] = new JRadioButton(commodore);
 		    player_[0][0].setBounds(100, 300, 150, 25);
 		    player_[0][0].setFont(radioButtonFont);
 		    player_[0][0].addActionListener(new ActionListener() {
@@ -232,7 +237,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-		    player_[0][1] = new JRadioButton("Cornelius");
+		    player_[0][1] = new JRadioButton(cornelius);
 		    player_[0][1].setBounds(100, 335, 150, 25);
 		    player_[0][1].setFont(radioButtonFont);
 		    player_[0][1].addActionListener(new ActionListener() {
@@ -243,7 +248,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-		    player_[0][2] = new JRadioButton("Squirrel");
+		    player_[0][2] = new JRadioButton(squirrel);
 		    player_[0][2].setBounds(100, 370, 150, 25);
 		    player_[0][2].setFont(radioButtonFont);
 		    player_[0][2].addActionListener(new ActionListener() {
@@ -254,7 +259,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-		    player_[0][3] = new JRadioButton("Zeppos");
+		    player_[0][3] = new JRadioButton(zeppos);
 		    player_[0][3].setBounds(100, 405, 150, 25);
 		    player_[0][3].setFont(radioButtonFont);
 		    player_[0][3].addActionListener(new ActionListener() {
@@ -271,7 +276,7 @@ public class GameOptions extends JPanel{
 			icons1_.add(player_[0][2]);
 			icons1_.add(player_[0][3]);
 		    
-			player_[1][0] = new JRadioButton("Commodore");
+			player_[1][0] = new JRadioButton(commodore);
 			player_[1][0].setBounds(250, 300, 150, 25);
 			player_[1][0].setFont(radioButtonFont);
 			player_[1][0].addActionListener(new ActionListener() {
@@ -282,7 +287,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[1][1] = new JRadioButton("Cornelius");
+			player_[1][1] = new JRadioButton(cornelius);
 			player_[1][1].setBounds(250, 335, 150, 25);
 			player_[1][1].setFont(radioButtonFont);
 			player_[1][1].addActionListener(new ActionListener() {
@@ -293,7 +298,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[1][2] = new JRadioButton("Squirrel");
+			player_[1][2] = new JRadioButton(squirrel);
 			player_[1][2].setBounds(250, 370, 150, 25);
 			player_[1][2].setFont(radioButtonFont);
 			player_[1][2].addActionListener(new ActionListener() {
@@ -304,7 +309,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[1][3] = new JRadioButton("Zeppos");
+			player_[1][3] = new JRadioButton(zeppos);
 			player_[1][3].setBounds(250, 405, 150, 25);
 			player_[1][3].setFont(radioButtonFont);
 			player_[1][3].addActionListener(new ActionListener() {
@@ -321,7 +326,7 @@ public class GameOptions extends JPanel{
 			icons2_.add(player_[1][2]);
 			icons2_.add(player_[1][3]);
 			
-			player_[2][0] = new JRadioButton("Commodore");
+			player_[2][0] = new JRadioButton(commodore);
 			player_[2][0].setBounds(400, 300, 150, 25);
 			player_[2][0].setFont(radioButtonFont);
 			player_[2][0].addActionListener(new ActionListener() {
@@ -331,7 +336,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[2][1] = new JRadioButton("Cornelius");
+			player_[2][1] = new JRadioButton(cornelius);
 			player_[2][1].setBounds(400, 335, 150, 25);
 			player_[2][1].setFont(radioButtonFont);
 			player_[2][1].addActionListener(new ActionListener() {
@@ -341,7 +346,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[2][2] = new JRadioButton("Squirrel");
+			player_[2][2] = new JRadioButton(squirrel);
 			player_[2][2].setBounds(400, 370, 150, 25);
 			player_[2][2].setFont(radioButtonFont);
 			player_[2][2].addActionListener(new ActionListener() {
@@ -351,7 +356,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[2][3] = new JRadioButton("Zeppos");
+			player_[2][3] = new JRadioButton(zeppos);
 			player_[2][3].setBounds(400, 405, 150, 25);
 			player_[2][3].setFont(radioButtonFont);
 			player_[2][3].addActionListener(new ActionListener() {
@@ -367,7 +372,7 @@ public class GameOptions extends JPanel{
 			icons3_.add(player_[2][2]);
 			icons3_.add(player_[2][3]);
 			
-			player_[3][0] = new JRadioButton("Commodore");
+			player_[3][0] = new JRadioButton(commodore);
 			player_[3][0].setBounds(550, 300, 150, 25);
 			player_[3][0].setFont(radioButtonFont);
 			player_[3][0].addActionListener(new ActionListener() {
@@ -377,7 +382,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[3][1] = new JRadioButton("Cornelius");
+			player_[3][1] = new JRadioButton(cornelius);
 			player_[3][1].setBounds(550, 335, 150, 25);
 			player_[3][1].setFont(radioButtonFont);
 			player_[3][1].addActionListener(new ActionListener() {
@@ -388,7 +393,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[3][2] = new JRadioButton("Squirrel");
+			player_[3][2] = new JRadioButton(squirrel);
 			player_[3][2].setBounds(550, 370, 150, 25);
 			player_[3][2].setFont(radioButtonFont);
 			player_[3][2].addActionListener(new ActionListener() {
@@ -399,7 +404,7 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			player_[3][3] = new JRadioButton("Zeppos");
+			player_[3][3] = new JRadioButton(zeppos);
 			player_[3][3].setBounds(550, 405, 150, 25);
 			player_[3][3].setFont(radioButtonFont);
 			player_[3][3].addActionListener(new ActionListener() {
