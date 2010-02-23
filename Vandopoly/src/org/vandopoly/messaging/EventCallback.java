@@ -45,25 +45,16 @@ public class EventCallback {
 				System.err.println(this + " does not contain 0 or 1 parameter");
 		} catch (IllegalAccessException e) {
 			String error = "An IllegalAccessException has occured while trying to"
-					+ "notify "
-					+ object_.getClass()
-					+ " with method "
-					+ method_.getName();
+					+ "notify "	+ object_.getClass() + " with method " + method_.getName();
 			System.err.println(error);
 		} catch (InvocationTargetException e) {
 			String error = "An InvocationTargetException has occured while trying to"
-					+ "notify "
-					+ object_.getClass()
-					+ " with method "
-					+ method_.getName();
+					+ "notify " + object_.getClass() + " with method " + method_.getName();
 			System.err.println(error);
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			String error = "An IllegalArgumentException has occured while trying to"
-					+ "notify "
-					+ object_.getClass()
-					+ " with method "
-					+ method_.getName()
+					+ "notify " + object_.getClass() + " with method " + method_.getName()
 					+ "\n Remember all methods that are updated are expected to have either"
 					+ " an object parameter (the updated object) or no parameters at all";
 			System.err.println(error);
