@@ -44,7 +44,7 @@ public class Display extends JFrame {
 	int width_ = screen_.height - 100;
 	int height_ = screen_.height - 100;
 	int scaleWidth_ = 12, scaleHeight_ = 7;
-	ArrayList<Space> spaces_ = new ArrayList<Space>(36);
+	ArrayList<SpacePanel> spaces_ = new ArrayList<SpacePanel>(36);
 	int spacesAcross_ = 9;
 	int sizeAcross_ = (int)(height_ / scaleWidth_) * spacesAcross_;
 	double spaceScale_ = .85;
@@ -279,7 +279,7 @@ public class Display extends JFrame {
 	// make a space and add it to the board
 	void addLabel(String name, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex)
 	{
-		Space s = new Space(spacePos_++, name, isProp, x, y, width, height, c, useTex);
+		SpacePanel s = new SpacePanel(spacePos_++, name, isProp, x, y, width, height, c, useTex);
 		spaces_.add(s);
 	}
 	
