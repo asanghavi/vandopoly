@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
+import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
 import org.vandopoly.messaging.Notification;
@@ -59,6 +60,8 @@ public class Display extends JFrame {
 		this.setSize(screen_.width, screen_.height);
 		this.setTitle("Vandopoly");
 		this.setUndecorated(true);
+
+		ToolTipManager.sharedInstance().setInitialDelay(0); 
 		
 		JDesktopPane board_ = new JDesktopPane();
 		board_.setBackground(Color.black);
