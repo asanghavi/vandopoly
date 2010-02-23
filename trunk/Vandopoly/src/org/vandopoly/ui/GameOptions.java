@@ -520,7 +520,7 @@ public class GameOptions extends JPanel{
 		            	else {
 		            		pieceError_.setVisible(false);
 		            		NotificationManager.getInstance().notifyObservers
-	        					(Notification.START_GAME, names_);
+	        						(Notification.START_GAME, names_);
 		            		GameOptions.this.hideSecondPagePanels();
 	        				GameOptions.this.setVisible(false);
 		            	}
@@ -539,7 +539,7 @@ public class GameOptions extends JPanel{
 	            	else {
 	            		pieceError_.setVisible(false);
 	            		NotificationManager.getInstance().notifyObservers
-        					(Notification.START_GAME, names_);
+        						(Notification.START_GAME, names_);
 	            		GameOptions.this.hideSecondPagePanels();
         				GameOptions.this.setVisible(false);
 	            	}
@@ -604,7 +604,8 @@ public class GameOptions extends JPanel{
 			
 			this.hideSecondPagePanels();
 			
-			NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "backToMain");
+			NotificationManager.getInstance().addObserver(Notification.START_GAME, this,
+					"backToMain");
 		}
 		
 		// Sets all piece buttons to enabled or disabled based on current selections

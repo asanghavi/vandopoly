@@ -65,7 +65,7 @@ public class NotificationManager {
 		if (!list.contains(observer))
 			list.add(observer);
 		else
-			System.err.println(observer+" multiple attempts to subscribe to "+event);
+			System.err.println(observer + " multiple attempts to subscribe to " + event);
 	}
 	
 	// The public interface for addObserver specifically for events.
@@ -89,9 +89,9 @@ public class NotificationManager {
 			
 			// Print error message if still cannot find an appropriate method
 			if(callbackMethod == null) {
-				String error = "Unable to find "+callbackMethodName+" in class "+
-				subscriber.getClass()+" and has therefore not been added as a "+
-				"subscriber to "+event+" Events";
+				String error = "Unable to find " + callbackMethodName + " in class " +
+						subscriber.getClass() + " and has therefore not been added as a " +
+						"subscriber to " + event + " Events";
 				System.err.println(error);
 			}
 		}

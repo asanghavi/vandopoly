@@ -94,8 +94,7 @@ public class SpacePanel extends JPanel {
 	}
 
 	// updates the owner
-	void setOwner(String owner)
-	{
+	void setOwner(String owner) {
 		owner_ = owner;
 	}
 	
@@ -104,24 +103,24 @@ public class SpacePanel extends JPanel {
 	}
 	
 	// add status text to board piece
-	public void updateStatus()
-	{
+	public void updateStatus() {
 		String status = "";
 		if(isProp_) {
 			String owner = "Unowned";
 			if(owner_ != "")
 				owner = owner_;
 			status += "Property Name: " + spaceName_ + ", Owned by: " + owner + ", ";
-		} else if(spaceName_ != "") {
+		} 
+		else if(spaceName_ != "") {
 			status += spaceName_ + ", ";
 		}
 		
 		status += "On this space: ";
 		
-		if(onSpace_.size()==0)
+		if(onSpace_.size() == 0)
 			status += "Nobody";
 		else {
-			String spacelist="";
+			String spacelist = "";
 			for (String s : onSpace_) {
 				spacelist += ", " + s;
 			}

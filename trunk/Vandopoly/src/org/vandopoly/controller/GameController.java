@@ -46,7 +46,8 @@ public class GameController {
 	public GameController() {
 		dice_ = new Dice();
 		
-		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
+		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
+				this, "startGame");
 	}
 	
 	public void startGame(Object obj) {
@@ -64,7 +65,9 @@ public class GameController {
 				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 			}
 		});
-		Point location = new Point(DisplayAssembler.getScreenWidth()- 200, DisplayAssembler.getScreenHeight()-50);
-		DisplayAssembler.getInstance().addComponent(endTurn_, location, JLayeredPane.PALETTE_LAYER);
+		Point location = new Point(DisplayAssembler.getScreenWidth()- 200, 
+				DisplayAssembler.getScreenHeight()-50);
+		DisplayAssembler.getInstance().addComponent(endTurn_, location, 
+				JLayeredPane.PALETTE_LAYER);
 	}
 }

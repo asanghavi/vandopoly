@@ -80,7 +80,8 @@ public class Display extends JFrame {
 		this.add(board_);
 		this.setVisible(true);
 		board_.setVisible(true);
-		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "showBoard");
+		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
+				this, "showBoard");
 	}
 	
 	// show the board
@@ -228,9 +229,11 @@ public class Display extends JFrame {
 			}
 	
 			if (isVert)
-				addLabel(name, isProp, x, y + (int)(spaceScale_ * boxSize_), panelWidth, panelHeight, c, false);
+				addLabel(name, isProp, x, y + (int)(spaceScale_ * boxSize_), panelWidth,
+						panelHeight, c, false);
 			else
-				addLabel(name, isProp, x + (int)(spaceScale_ * boxSize_), y, panelWidth, panelHeight, c, false);	
+				addLabel(name, isProp, x + (int)(spaceScale_ * boxSize_), y, panelWidth, 
+						panelHeight, c, false);	
 		}
 	}
 	
@@ -266,8 +269,8 @@ public class Display extends JFrame {
 				panelWidthS = height_ / scaleWidth_;
 			}
 			addLabel(name, isProp, x, y, panelWidthS, panelHeightS, c, false);
-		} else
-		{
+		} 
+		else {
 			panelWidthS = 0;
 			panelHeightS = 0;
 		}
@@ -280,8 +283,8 @@ public class Display extends JFrame {
 	}
 
 	// make a space and add it to the board
-	void addLabel(String name, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex)
-	{
+	void addLabel(String name, boolean isProp, int x, int y, int width, int height, 
+			Color c, boolean useTex) {
 		SpacePanel s = new SpacePanel(spacePos_++, name, isProp, x, y, width, height, c, useTex);
 		spaces_.add(s);
 	}
