@@ -4,7 +4,14 @@
 
 User stories for Vandopoly.
  
+= Cycle 3 User Stories =
+    * User can see a menu bar aligned on the bottom of the screen. The menu bar will contain the "Quit Game" button and a "Purchase" button (James, Allie)
+    * User sees tool tips pop up immediately (Matt)
+    * User sees more aesthetically pleasing icons on the second page of the Game Options (Matt)
 
+    * Behind the scenes: Space model implemented with the State Pattern and multiple child classes (Property, UpgradableProperty, Tax and Corner) (Allie)
+
+----
 
 = Cycle 2 User Stories =
     * After clicking the "Start Game" button, users can see their names appear next to the board (Allie)
