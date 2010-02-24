@@ -19,6 +19,7 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
@@ -26,6 +27,7 @@ import javax.swing.JLayeredPane;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Dice;
+import org.vandopoly.model.Player;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.DisplayAssembler;
 import org.vandopoly.ui.PlayerPanel;
@@ -42,6 +44,9 @@ public class GameController {
 	DicePanel dicePanel_;
 	JButton endTurn_;
 	PlayerPanel playerPanel_;
+	ArrayList<Player> players_;
+	String[] namesAndIcons_;
+	int numOfPlayers_ = 2;
 	
 	public GameController() {
 		dice_ = new Dice();
@@ -51,8 +56,10 @@ public class GameController {
 	}
 	
 	public void startGame(Object obj) {
-		playerPanel_ = new PlayerPanel((String[])obj);
+		namesAndIcons_ =(String[]) obj;
+		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
 		
+		playerPanel_ = new PlayerPanel(namesAndIcons_);
 		dicePanel_ = new DicePanel(dice_);
 		
 		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
@@ -69,5 +76,14 @@ public class GameController {
 				DisplayAssembler.getScreenHeight()-50);
 		DisplayAssembler.getInstance().addComponent(endTurn_, location, 
 				JLayeredPane.PALETTE_LAYER);
+		
+		createPlayers();
+	}
+	
+	private void createPlayers() {
+		players_ = new ArrayList<Player>();
+		for (int i = 0; i < numOfPlayers_; i++) {
+			players_.add(new Player(namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1]));
+		}
 	}
 }

@@ -52,7 +52,7 @@ public class GameOptions extends JPanel{
 	private JButton continue_, back_, playGame_;
 	private DisplayAssembler display;
 	private int numberOfPlayers_ = 2, optionsPageNum_ = 1;
-	private String names_[];
+	private String namesAndIcons_[];
 	
 	// Private data members for page 2 of options
 	// Holds the radio buttons for pieces of each player
@@ -443,23 +443,23 @@ public class GameOptions extends JPanel{
 			continue_.setFont(buttonFont);
 			continue_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
-	            	names_ = new String[numberOfPlayers_ + 1];
+	            	namesAndIcons_ = new String[(2 * numberOfPlayers_) + 1];
 	            	
-	            	names_[0] = "" + numberOfPlayers_;
+	            	namesAndIcons_[0] = "" + numberOfPlayers_;
 	            	
-	            	names_[1] = nameOne_.getText();
-	            	playerOne_2_.setText(names_[1]+":");
+	            	namesAndIcons_[1] = nameOne_.getText();
+	            	playerOne_2_.setText(namesAndIcons_[1]+":");
 	            	
-	            	names_[2] = nameTwo_.getText();
-	            	playerTwo_2_.setText(names_[2]+":");
+	            	namesAndIcons_[2] = nameTwo_.getText();
+	            	playerTwo_2_.setText(namesAndIcons_[2]+":");
 	            	
 	            	if (numberOfPlayers_ > 2) {
-	            		names_[3] = nameThree_.getText();
-	            		playerThree_2_.setText(names_[3]+":");
+	            		namesAndIcons_[3] = nameThree_.getText();
+	            		playerThree_2_.setText(namesAndIcons_[3]+":");
 	            		
 	            		if (numberOfPlayers_ == 4) {
-	            			names_[4] = nameFour_.getText();
-	            			playerFour_2_.setText(names_[4]+":");
+	            			namesAndIcons_[4] = nameFour_.getText();
+	            			playerFour_2_.setText(namesAndIcons_[4]+":");
 	            		}
 	            	}
 	            	
@@ -476,7 +476,7 @@ public class GameOptions extends JPanel{
 	            	// Had to adjust for loops to compensate for blank first name
 	            	for (int i = 1; i <= numberOfPlayers_; i++) {
 	            		for (int j = i+1; j <= numberOfPlayers_; j++) {
-	            			if (names_[i].equals(names_[j])) {
+	            			if (namesAndIcons_[i].equals(namesAndIcons_[j])) {
 	            				repeatError_.setVisible(true);
 	            				return false;
 	            			}
@@ -520,7 +520,7 @@ public class GameOptions extends JPanel{
 		            	else {
 		            		pieceError_.setVisible(false);
 		            		NotificationManager.getInstance().notifyObservers
-	        						(Notification.START_GAME, names_);
+	        						(Notification.START_GAME, namesAndIcons_);
 		            		GameOptions.this.hideSecondPagePanels();
 	        				GameOptions.this.setVisible(false);
 		            	}
@@ -538,8 +538,12 @@ public class GameOptions extends JPanel{
 	            	
 	            	else {
 	            		pieceError_.setVisible(false);
+	            		for (int i = 0; i < numberOfPlayers_; i++) {
+	            			namesAndIcons_[numberOfPlayers_ + i + 1] = "NONE";
+	            		}
+	    
 	            		NotificationManager.getInstance().notifyObservers
-        						(Notification.START_GAME, names_);
+        						(Notification.START_GAME, namesAndIcons_);
 	            		GameOptions.this.hideSecondPagePanels();
         				GameOptions.this.setVisible(false);
 	            	}
