@@ -26,13 +26,23 @@ import org.vandopoly.ui.Display;
 public class Player {
 	
 	private PlayerState state_;
-	private String name_;
+	private String name_, icon_;
 	private int cash_, positionOnBoard_;
 	private boolean getOutOfJail_;
 	
 	public Player() {
 		state_ = PlayerFree.Instance();
-		name_ = "";
+		name_ = "ANONYMOUS";
+		icon_ = "NONE";
+		cash_ = 0;
+		positionOnBoard_ = 0;
+		getOutOfJail_ = false;
+	}
+	
+	public Player(String name, String icon) {
+		state_ = PlayerFree.Instance();
+		name_ = name;
+		icon_ = icon;
 		cash_ = 0;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
@@ -40,6 +50,10 @@ public class Player {
 	
 	void changeState(PlayerState newState) {
 		state_ = newState;
+	}
+	
+	public PlayerState getState() {
+		return state_;
 	}
 	
 	public void movePiece(int numOfSpaces) {
@@ -59,35 +73,51 @@ public class Player {
 	}
 	
 	public void updatePosition(int numOfSpaces) {
+		positionOnBoard_ += numOfSpaces;
+	}
+	
+	public void setPosition(int numOfSpaces) {
 		positionOnBoard_ = numOfSpaces;
-	}
-	
-	public void updateCash(int value) {
-		cash_ = cash_ + value;
-	}
-	
-	public void gainGetOutOfJail() {
-		getOutOfJail_ = true;
-	}
-	
-	public String getName() {
-		return name_;
 	}
 	
 	public int getPosition() {
 		return positionOnBoard_;
 	}
 	
+	public void updateCash(int value) {
+		cash_ += value;
+	}
+	
+	public void setCash(int value) {
+		cash_ = value;
+	}
+	
 	public int getCash() {
 		return cash_;
 	}
 	
-	public PlayerState getState() {
-		return state_;
+	public void setGetOutOfJail(boolean hasCard) {
+		getOutOfJail_ = hasCard;
 	}
 	
 	public boolean hasGetOutOfJail() {
 		return getOutOfJail_;
+	}
+	
+	public void setName(String name) {
+		name_ = name;
+	}
+	
+	public String getName() {
+		return name_;
+	}
+
+	public void setIcon(String icon) {
+		icon_ = icon;
+	}
+
+	public String getIcon() {
+		return icon_;
 	}
 	
 }
