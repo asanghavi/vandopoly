@@ -66,7 +66,7 @@ public class GameOptions extends JPanel{
 	
 	private JLabel repeatError_, pieceError_;
 	
-	private ButtonGroup icons1_, icons2_, icons3_, icons4_;
+	private ButtonGroup icons_[];
 	
 	private int numOfPieces_, maxPlayers_;
 	
@@ -224,6 +224,7 @@ public class GameOptions extends JPanel{
 		    numOfPieces_ = 4;
 		    
 		    player_ = new JRadioButton[maxPlayers_][numOfPieces_];
+		    icons_ = new ButtonGroup[numOfPieces_];
 		    
 		    // Now set up the radio buttons
 		    player_[0][0] = new JRadioButton(commodore);
@@ -270,11 +271,11 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			icons1_ = new ButtonGroup();
-			icons1_.add(player_[0][0]);
-			icons1_.add(player_[0][1]);
-			icons1_.add(player_[0][2]);
-			icons1_.add(player_[0][3]);
+		    icons_[0] = new ButtonGroup();
+			icons_[0].add(player_[0][0]);
+			icons_[0].add(player_[0][1]);
+			icons_[0].add(player_[0][2]);
+			icons_[0].add(player_[0][3]);
 		    
 			player_[1][0] = new JRadioButton(commodore);
 			player_[1][0].setBounds(250, 300, 150, 25);
@@ -320,11 +321,11 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			icons2_ = new ButtonGroup();
-			icons2_.add(player_[1][0]);
-			icons2_.add(player_[1][1]);
-			icons2_.add(player_[1][2]);
-			icons2_.add(player_[1][3]);
+			icons_[1] = new ButtonGroup();
+			icons_[1].add(player_[1][0]);
+			icons_[1].add(player_[1][1]);
+			icons_[1].add(player_[1][2]);
+			icons_[1].add(player_[1][3]);
 			
 			player_[2][0] = new JRadioButton(commodore);
 			player_[2][0].setBounds(400, 300, 150, 25);
@@ -366,11 +367,11 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			icons3_ = new ButtonGroup();
-			icons3_.add(player_[2][0]);
-			icons3_.add(player_[2][1]);
-			icons3_.add(player_[2][2]);
-			icons3_.add(player_[2][3]);
+			icons_[2] = new ButtonGroup();
+			icons_[2].add(player_[2][0]);
+			icons_[2].add(player_[2][1]);
+			icons_[2].add(player_[2][2]);
+			icons_[2].add(player_[2][3]);
 			
 			player_[3][0] = new JRadioButton(commodore);
 			player_[3][0].setBounds(550, 300, 150, 25);
@@ -415,11 +416,20 @@ public class GameOptions extends JPanel{
 	            }
 	        });
 			
-			icons4_ = new ButtonGroup();
-			icons4_.add(player_[3][0]);
-			icons4_.add(player_[3][1]);
-			icons4_.add(player_[3][2]);
-			icons4_.add(player_[3][3]);
+			icons_[3] = new ButtonGroup();
+			icons_[3].add(player_[3][0]);
+			icons_[3].add(player_[3][1]);
+			icons_[3].add(player_[3][2]);
+			icons_[3].add(player_[3][3]);
+			
+			// Set action commands for all radio buttons
+			// Helps identify proper icon when figuring out which button was pressed
+			for (int i = 0; i < this.maxPlayers_; i++) {
+				player_[i][0].setActionCommand(commodore);
+				player_[i][1].setActionCommand(cornelius);
+				player_[i][2].setActionCommand(squirrel);
+				player_[i][3].setActionCommand(zeppos);
+			}
 			
 		    nameOne_ = new JTextField();
 		    nameOne_.setFont(radioButtonFont);
@@ -511,9 +521,9 @@ public class GameOptions extends JPanel{
 				}
 				public void keyReleased(KeyEvent e) {
 					if(e.getKeyCode()== KeyEvent.VK_ENTER) {
-						if ((icons1_.getSelection() == null || icons2_.getSelection() == null) ||
-		            			(numberOfPlayers_ > 2 && icons3_.getSelection() == null) || 
-		            			(numberOfPlayers_ > 3 && icons4_.getSelection() == null)) {
+						if ((icons_[0].getSelection() == null || icons_[1].getSelection() == null) ||
+		            			(numberOfPlayers_ > 2 && icons_[2].getSelection() == null) || 
+		            			(numberOfPlayers_ > 3 && icons_[3].getSelection() == null)) {
 		            		pieceError_.setVisible(true);
 		            	}
 		            	
@@ -530,16 +540,18 @@ public class GameOptions extends JPanel{
 			playGame_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
 	            	
-	            	if ((icons1_.getSelection() == null || icons2_.getSelection() == null) ||
-	            			(numberOfPlayers_ > 2 && icons3_.getSelection() == null) || 
-	            			(numberOfPlayers_ > 3 && icons4_.getSelection() == null)) {
+	            	if ((icons_[0].getSelection() == null || icons_[1].getSelection() == null) ||
+	            			(numberOfPlayers_ > 2 && icons_[2].getSelection() == null) || 
+	            			(numberOfPlayers_ > 3 && icons_[3].getSelection() == null)) {
 	            		pieceError_.setVisible(true);
 	            	}
 	            	
 	            	else {
 	            		pieceError_.setVisible(false);
+	            		
+	            		// Get all appropriate names for the buttons and puts them in the namesAndIcons_ array
 	            		for (int i = 0; i < numberOfPlayers_; i++) {
-	            			namesAndIcons_[numberOfPlayers_ + i + 1] = "NONE";
+	            			namesAndIcons_[numberOfPlayers_ + i + 1] = icons_[i].getSelection().getActionCommand();
 	            		}
 	    
 	            		NotificationManager.getInstance().notifyObservers
@@ -743,10 +755,10 @@ public class GameOptions extends JPanel{
 			playerThree_2_.setVisible(false);
 			playerFour_2_.setVisible(false);
 			
-			icons1_.clearSelection();
-			icons2_.clearSelection();
-			icons3_.clearSelection();
-			icons4_.clearSelection();
+			icons_[0].clearSelection();
+			icons_[1].clearSelection();
+			icons_[2].clearSelection();
+			icons_[3].clearSelection();
 			refreshPieceButtons();
 			
 			player1Piece_.setIcon(null);
