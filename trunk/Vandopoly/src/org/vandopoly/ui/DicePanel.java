@@ -49,13 +49,15 @@ public class DicePanel extends JPanel {
 	private Dice dice_;
 
 	int buttonCounter = 0;
+	
+	static final long serialVersionUID = 10;
 
 	public DicePanel(Dice dice) {
 
 		int rightMargin = 200, topMargin = 0;
 
 		int buttonHeight = 50, dieSize = 83;
-		int panelWidth = 200, panelHeight = buttonHeight + dieSize;
+		int panelWidth = 166, panelHeight = buttonHeight + dieSize;
 
 		this.setSize(panelWidth, panelHeight);
 		this.setLayout(null);
@@ -67,8 +69,7 @@ public class DicePanel extends JPanel {
 		Point location = new Point((int) (screen.getWidth() - rightMargin),
 				topMargin);
 
-		Font buttonFont = new Font("broadway", Font.BOLD, 26);
-		Font messageFont = new Font("broadway", Font.PLAIN, 18);
+		Font buttonFont = new Font("broadway", Font.BOLD, 22);
 
 		rollDice_ = new JButton("Roll Dice");
 		rollDice_.setBounds(0, 0, panelWidth, buttonHeight);
@@ -141,9 +142,10 @@ public class DicePanel extends JPanel {
 					die1_.setIcon(diePic_[dice.getDie1() - 1]);
 					die2_.setIcon(diePic_[dice.getDie2() - 1]);
 
-					if (dice.getNumInRowDoubles() == 0)
+					if (dice.getNumInRowDoubles() == 0) {
 						rollDice_.setEnabled(false);
-					
+						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
+					}
 					// User should roll again
 					else if (dice.getNumInRowDoubles() < 3) {
 						rollDice_.setForeground(Color.red);

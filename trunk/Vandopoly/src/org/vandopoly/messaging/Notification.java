@@ -26,7 +26,20 @@ package org.vandopoly.messaging;
 public class Notification {
 	
 	// Game Events
+	
+	// Start Game is sent from the GameOptions class
 	public static final String START_GAME = "StartGame";
+	
+	// Roll Dice is sent from the Dice class
 	public static final String ROLL_DICE = "RollDice";
+	
+	// Done Rolling is sent from the DicePanel Class
+	// Sent from the DicePanel because if it was sent from the Dice class, the
+	// GameButtonsPanel would be updated before the animation was complete
+	// Note: Could present a problem for networking as it effects the GameButtonPanel
+	public static final String DONE_ROLLING = "DoneRolling";
+	
+	// End Turn is sent from the GameController class method actionListener
+	// Note: Could present a problem for networking as it effects the GameButtonPanel and DicePanel
 	public static final String END_TURN = "EndTurn";
 }

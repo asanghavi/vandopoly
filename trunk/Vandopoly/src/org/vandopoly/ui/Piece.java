@@ -21,7 +21,7 @@ import org.vandopoly.messaging.NotificationManager;
 
 /*
  * Piece is designed to be the visual representation of a player's piece
- * on the board.  The Piece object listens for notfications to move the piece
+ * on the board.  The Piece object listens for notifications to move the piece
  * appropriately
  * 
  * @author James Kasten
@@ -30,6 +30,8 @@ public class Piece extends JPanel {
 	
 	int currentSpace_;
 	int player_;
+	
+	final static long serialVersionUID = 20;
 	
 	public Piece(String name, int playerNum) {
 		currentSpace_ = 0;
