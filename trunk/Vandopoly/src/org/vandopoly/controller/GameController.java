@@ -69,6 +69,7 @@ public class GameController implements ActionListener {
 		dicePanel_ = new DicePanel(dice_);
 		buttonPanel_ = new GameButtonPanel(this);
 		
+		createSpaces();
 		createPlayers();
 	}
 	
@@ -79,13 +80,17 @@ public class GameController implements ActionListener {
 		}
 	}
 	
+	private void createSpaces() {
+		// Either import a file or create each space individually
+	}
+	
 	// Represents the logic for the GameButtonPanel class
 	public void actionPerformed(ActionEvent action) {
 		if(action.getActionCommand().equals("Purchase")) {
 			int position = players_.get(currentPlayer_).getPosition();
 			
 			// TODO implement logic for purchasing property
-			// this wil probably need a purchase abstract function in Space
+			// this will probably need a purchase abstract function in Space
 		}
 		else if(action.getActionCommand().equals("Mortgage")) {
 			int position = players_.get(currentPlayer_).getPosition();

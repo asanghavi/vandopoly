@@ -529,6 +529,10 @@ public class GameOptions extends JPanel{
 		            	
 		            	else {
 		            		pieceError_.setVisible(false);
+		            		// Get all appropriate names for the buttons and puts them in the namesAndIcons_ array
+		            		for (int i = 0; i < numberOfPlayers_; i++) {
+		            			namesAndIcons_[numberOfPlayers_ + i + 1] = icons_[i].getSelection().getActionCommand();
+		            		}
 		            		NotificationManager.getInstance().notifyObservers
 	        						(Notification.START_GAME, namesAndIcons_);
 		            		GameOptions.this.hideSecondPagePanels();
@@ -548,12 +552,10 @@ public class GameOptions extends JPanel{
 	            	
 	            	else {
 	            		pieceError_.setVisible(false);
-	            		
 	            		// Get all appropriate names for the buttons and puts them in the namesAndIcons_ array
 	            		for (int i = 0; i < numberOfPlayers_; i++) {
 	            			namesAndIcons_[numberOfPlayers_ + i + 1] = icons_[i].getSelection().getActionCommand();
 	            		}
-	    
 	            		NotificationManager.getInstance().notifyObservers
         						(Notification.START_GAME, namesAndIcons_);
 	            		GameOptions.this.hideSecondPagePanels();
