@@ -27,14 +27,14 @@ public class Player {
 	
 	private PlayerState state_;
 	private String name_, icon_;
-	private int cash_, positionOnBoard_;
+	private int cash_ = 1500, positionOnBoard_;
 	private boolean getOutOfJail_;
 	
 	public Player() {
 		state_ = PlayerFree.Instance();
 		name_ = "ANONYMOUS";
 		icon_ = "NONE";
-		cash_ = 0;
+		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
 	}
@@ -43,7 +43,7 @@ public class Player {
 		state_ = PlayerFree.Instance();
 		name_ = name;
 		icon_ = icon;
-		cash_ = 0;
+		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
 	}
