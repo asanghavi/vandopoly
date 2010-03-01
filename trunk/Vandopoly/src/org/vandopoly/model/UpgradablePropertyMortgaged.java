@@ -17,26 +17,27 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyUnowned class implements the behavior associated with the 
- * upgradable property space being unowned.
+ * UpgradablePropertyMortgaged class implements the behavior associated with the 
+ * upgradable property space being owned and mortgaged.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class UpgradablePropertyUnowned extends UpgradablePropertyState {
-
-	private static UpgradablePropertyUnowned INSTANCE = null;
+public class UpgradablePropertyMortgaged extends UpgradablePropertyState {
 	
-	protected UpgradablePropertyUnowned() {
+	private static UpgradablePropertyMortgaged INSTANCE = null;
+	
+	protected UpgradablePropertyMortgaged() {
 		// Exists to disable instantiation
 	}
 	
 	public static UpgradablePropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new UpgradablePropertyUnowned();
+			INSTANCE = new UpgradablePropertyMortgaged();
 		}
 		
 		return INSTANCE;
 	}
+
 }
