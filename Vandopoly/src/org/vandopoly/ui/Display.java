@@ -49,12 +49,12 @@ public class Display extends JFrame {
 	int spacesAcross_ = 9;
 	int sizeAcross_ = (int)(height_ / scaleWidth_) * spacesAcross_;
 	double spaceScale_ = .85;
-	public int boxSize_ = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
+	int boxSize_ = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
 	int pos_ = boxSize_ + scaleHeight_;
 	int spacePos_=0;
-	public int spaceWidth_ = (int)(height_ / scaleWidth_);
-	public int TopLeftGo_ = pos_ + sizeAcross_;
-	public int RightEdge_ = pos_ + sizeAcross_ + boxSize_;
+	int spaceWidth_ = (int)(height_ / scaleWidth_);
+	int TopLeftGo_ = pos_ + sizeAcross_;
+	int RightEdge_ = pos_ + sizeAcross_ + boxSize_;
 	
 	static final long serialVersionUID = 1;
 	
@@ -294,5 +294,21 @@ public class Display extends JFrame {
 	
 	public static void main(String[] args) {
 		new Display();
+	}
+	
+	public int getRightEdge() {
+		return RightEdge_;
+	}
+	
+	public int getTopLeftGo() {
+		return TopLeftGo_;
+	}
+	
+	public int getSpaceWidth() {
+		return spaceWidth_;
+	}
+	
+	public int getBoxSize() {
+		return boxSize_;
 	}
 }
