@@ -42,8 +42,8 @@ public class GameButtonPanel extends JPanel {
 	// GameController will have to implement ActionListener
 	public GameButtonPanel(GameController controller_) {
 		int buttonX = 150, buttonY = 50;
-		int frameWidth = buttonX * 2;
-		int frameHeight = buttonY * 2;
+		int frameWidth = buttonX * 4;
+		int frameHeight = buttonY;
 		
 		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
 		
@@ -73,7 +73,7 @@ public class GameButtonPanel extends JPanel {
 		
 		// Set up the end turn button
 		endTurn_ = new JButton("End Turn");
-		endTurn_.setBounds(0, buttonY, buttonX, buttonY);
+		endTurn_.setBounds((buttonX * 2), 0, buttonX, buttonY);
 		endTurn_.setFont(buttonFont);
 		endTurn_.setActionCommand("End Turn");
 		endTurn_.addActionListener(controller_);
@@ -82,21 +82,19 @@ public class GameButtonPanel extends JPanel {
 		
 		// Set up the quit game button
 		quitGame_ = new JButton("Quit Game");
-		quitGame_.setBounds(buttonX, buttonY, buttonX, buttonY);
+		quitGame_.setBounds((buttonX * 3), 0, buttonX, buttonY);
 		quitGame_.setFont(buttonFont);
 		quitGame_.setActionCommand("Quit Game");
 		quitGame_.addActionListener(controller_);
 		quitGame_.setVisible(true);
-		
-		
+				
 		this.add(purchase_);
 		this.add(mortgage_);
 		this.add(endTurn_);
 		this.add(quitGame_);
 		
 		DisplayAssembler.getInstance().addComponent(this, 
-				new Point(((int)DisplayAssembler.getScreenWidth() - frameWidth), 
-						((int)DisplayAssembler.getScreenHeight()) - 200),
+				new Point(0, ((int)DisplayAssembler.getScreenHeight()) - 50),
 				JLayeredPane.PALETTE_LAYER);
 		
 		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
