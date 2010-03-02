@@ -39,6 +39,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Matt Gioia
  */
+
 public class Display extends JFrame {
 	
 	Dimension screen_ = Toolkit.getDefaultToolkit().getScreenSize();
@@ -179,21 +180,7 @@ public class Display extends JFrame {
 		
 		// set center of board
 		addLabel("", false, pos_, pos_, sizeAcross_, sizeAcross_, c, true);
-		
-		// quit button
-		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
-		int buttonWidth = 170,buttonHeight = 50;
-		JButton quitGame_ = new JButton("Quit Game");
-		quitGame_.setSize(new Dimension(buttonWidth,buttonHeight));
-		quitGame_.setFont(buttonFont);
-		DisplayAssembler.getInstance().addComponent(quitGame_, 
-				new Point(pos_ * 2 + sizeAcross_ + buttonHeight, buttonHeight), 
-				JLayeredPane.FRAME_CONTENT_LAYER);
-		quitGame_.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                System.exit(0);
-            }
-        });
+	
 	}
 	
 	// adds a smaller rectangle to the board.
