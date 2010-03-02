@@ -36,6 +36,8 @@ public class DisplayAssembler {
 	private static DisplayAssembler INSTANCE;
 	private JDesktopPane desktopPane_ = null;
 	
+	private int rightEdge_, boxSize_, spaceWidth_, topLeftGo_;
+	
 	private static Dimension screen_;
 	
 	private DisplayAssembler() {
@@ -48,6 +50,37 @@ public class DisplayAssembler {
 			INSTANCE = new DisplayAssembler();
 		
 		return INSTANCE;
+	}
+	public void setRightEdge(int rightEdge) {
+		rightEdge_ = rightEdge;
+	}
+	
+	public void setBoxSize(int boxSize) {
+		boxSize_ = boxSize;
+	}
+	
+	public void setSpaceWidth(int spaceWidth) {
+		spaceWidth_ = spaceWidth;
+	}
+	
+	public void setTopLeftGo(int topLeftGo) {
+		topLeftGo_ = topLeftGo;
+	}
+	
+	public int getRightEdge() {
+		return rightEdge_;
+	}
+	
+	public int getBoxSize() {
+		return boxSize_;
+	}
+	
+	public int getSpaceWidth() {
+		return spaceWidth_;
+	}
+	
+	public int getTopLeftGo() {
+		return topLeftGo_;
 	}
 	
 	// Must be used by Frame to allow access to the DesktopPane
