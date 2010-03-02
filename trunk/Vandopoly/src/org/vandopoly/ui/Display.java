@@ -80,6 +80,10 @@ public class Display extends JFrame {
 		
 		// Setup the DisplayAssembler
 		DisplayAssembler.getInstance().setDesktopPane(board_);
+		DisplayAssembler.getInstance().setBoxSize(boxSize_);
+		DisplayAssembler.getInstance().setRightEdge(RightEdge_);
+		DisplayAssembler.getInstance().setSpaceWidth(spaceWidth_);
+		DisplayAssembler.getInstance().setTopLeftGo(TopLeftGo_);
 		
 		this.add(board_);
 		this.setVisible(true);
@@ -281,21 +285,5 @@ public class Display extends JFrame {
 	
 	public static void main(String[] args) {
 		new Display();
-	}
-	
-	public int getRightEdge() {
-		return RightEdge_;
-	}
-	
-	public int getTopLeftGo() {
-		return TopLeftGo_;
-	}
-	
-	public int getSpaceWidth() {
-		return spaceWidth_;
-	}
-	
-	public int getBoxSize() {
-		return boxSize_;
 	}
 }
