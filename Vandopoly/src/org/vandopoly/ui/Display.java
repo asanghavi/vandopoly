@@ -42,8 +42,8 @@ import org.vandopoly.messaging.NotificationManager;
 public class Display extends JFrame {
 	
 	Dimension screen_ = Toolkit.getDefaultToolkit().getScreenSize();
-	int width_ = screen_.height - 100;
-	int height_ = screen_.height - 100;
+	int width_ = screen_.height - 150;
+	int height_ = screen_.height - 150;
 	int scaleWidth_ = 12, scaleHeight_ = 7;
 	ArrayList<SpacePanel> spaces_ = new ArrayList<SpacePanel>(36);
 	int spacesAcross_ = 9;
@@ -52,6 +52,9 @@ public class Display extends JFrame {
 	int boxSize_ = (int)(width_ / scaleWidth_) * 2 - scaleHeight_;
 	int pos_ = boxSize_ + scaleHeight_;
 	int spacePos_=0;
+	int spaceWidth_ = (int)(height_ / scaleWidth_);
+	int TopLeftGo_ = pos_ + sizeAcross_;
+	int RightEdge_ = pos_ + sizeAcross_ + boxSize_;
 	
 	static final long serialVersionUID = 1;
 	
@@ -86,79 +89,79 @@ public class Display extends JFrame {
 	
 	// show the board
 	public void showBoard() {
-		int spaceWidth = (int)(height_ / scaleWidth_);
+		
 		int start = 0;
 
 		// prop 1
 		Color c = new Color(228, 108, 12);
 		String name = "Branscomb";
-		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmall("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
-		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmall("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmall(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmall(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmall("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmall(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmall("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
 		
 		// prop 2
 		c = new Color(148, 55, 53);
 		name = "Kissam";
-		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmall("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
-		addSmall(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmall(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmall(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmall("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmall(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
 		
 		// prop 3
 		c = new Color(255, 0, 0);
 		start = 0;
 		name = "Morgan";
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall("", pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall("", pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
 		
 		// prop 4
 		c = new Color(255, 255, 0);
 		name = "Wilson";
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmall("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
-		addSmall(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmall(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall("", pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		
 		// prop 5
 		c = new Color(79, 99, 40);
 		start = 0;
 		name = "Rand";
-		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
-		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
 		
 		// prop 6
 		c = new Color(39, 63, 97);
 		name = "Sarratt";
-		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
-		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
-		addSmallOp("", 0, pos_ + (spaceWidth * start++), new Color(0, 0, 0), false, false);
-		addSmallOp(name, 0, pos_ + (spaceWidth * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp("", 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(name, 0, pos_ + (spaceWidth_ * start++), c, true, false);
 		
 		// prop 7
 		c = new Color(97, 73, 121);
 		start = 0;
 		name = "Stevenson Center";
-		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0,0,0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth_ * start++), 0, new Color(0,0,0), false, true);
 		
 		// prop 8
 		c = new Color(85, 141, 215);
 		name = "Recreation Center";
-		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmallOp("", pos_ + (spaceWidth * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
-		addSmallOp(name, pos_ + (spaceWidth * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmallOp("", pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmallOp(name, pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		
 		// make the corners
 		
