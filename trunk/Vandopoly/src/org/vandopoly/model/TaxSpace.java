@@ -24,6 +24,26 @@ public class TaxSpace extends Space {
 	private int fee_;
 	private double percentageFee_;
 	
+	public TaxSpace() {
+		name_ = "NONE";
+		fee_ = 0;
+		percentageFee_ = 0.0;
+	}
+
+	public TaxSpace(String name) {
+		name_ = name;
+		fee_ = 0;
+		percentageFee_ = 0.0;
+	}
+	
+	public TaxSpace(String name, int fee, double percentageFee) {
+		name_ = name;
+		fee_ = fee;
+		percentageFee_ = percentageFee;
+	}
+	
+
+
 	public void landOn(Player p) {
 		// Empty
 	}

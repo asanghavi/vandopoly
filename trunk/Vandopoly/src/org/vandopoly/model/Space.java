@@ -21,7 +21,8 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 public class Space {
-	private String name_;
+	
+	protected String name_;
 	
 	public void landOn(Player p) {}
 

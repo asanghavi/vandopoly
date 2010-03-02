@@ -20,7 +20,15 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-class CornerSpace extends Space {
+public class CornerSpace extends Space {
+	
+	public CornerSpace() {
+		name_ = "NONE";
+	}
+	
+	public CornerSpace(String name) {
+		name_ = name;
+	}
 	
 	public void landOn(Player p) {
 		// Empty
