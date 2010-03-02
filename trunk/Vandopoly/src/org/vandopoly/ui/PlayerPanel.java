@@ -39,34 +39,35 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class PlayerPanel extends JPanel {
 
+	Dimension screen_ = Toolkit.getDefaultToolkit().getScreenSize();
+	double width_ = screen_.getWidth() - DisplayAssembler.getRightEdge();
+	int height_ = screen_.height;
 	private JTabbedPane infoPanel_;
 	private JPanel panel1_, panel2_, panel3_, panel4_;
 	private JLabel properties_, cash_;
 	private String names_[];
+	private double panelScaleX_ = .80, coordScaleX_ = .1;
+	private double panelScaleY_ = .64, coordScaleY_ = .18;
 
 	public PlayerPanel(String[] names) {
 		names_ = names;
+		
 		Font nameFont = new Font("broadway", Font.PLAIN, 20);
 		Font labelFont = new Font("broadway", Font.PLAIN, 16);
 		
-		NotificationManager.getInstance().addObserver(Notification.START_GAME,
-				this, "getNames");
-		
-		int paneHeight = 500, paneWidth = 350, paneX = 0, paneY = 0;
-		int rightMargin = 400, topMargin = 200;
+		int paneX = 0, paneY = 0;
+
 		int numOfPlayers = Integer.parseInt(names_[0]);
 		
-		this.setSize(paneWidth, paneHeight);
+		this.setSize((int) (panelScaleX_ * width_), (int) (panelScaleY_ * height_));
 		this.setLayout(null);
-
-		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 		// Set up the JTabbedPane and its JPanels
 		int hGap = 10, vGap = 10;
 		GridLayout gridLayout = new GridLayout(4, 1, hGap, vGap);
-	
+		
 		infoPanel_ = new JTabbedPane();
-		infoPanel_.setBounds(paneX, paneY, paneWidth, paneHeight);
+		infoPanel_.setBounds(paneX, paneY, (int)(panelScaleX_ * width_), (int) (panelScaleY_ * height_));
 		infoPanel_.setFont(nameFont);
 
 		panel1_ = new JPanel();
@@ -95,9 +96,8 @@ public class PlayerPanel extends JPanel {
 				infoPanel_.addTab(names_[4], panel4_);
 		}
 		
-		Point location = new Point((int) (screen.getWidth() - rightMargin),
-				topMargin);
-		
+		Point location = new Point((int) (coordScaleX_ * width_) + DisplayAssembler.getRightEdge(), 
+				(int) (coordScaleY_ * height_));
 		DisplayAssembler.getInstance().addComponent(this, location,
 				JLayeredPane.PALETTE_LAYER);
 
@@ -107,9 +107,6 @@ public class PlayerPanel extends JPanel {
         this.add(infoPanel_);
 		this.setVisible(true);
 	}
-	
-	public void getNames(Object obj) {
-		// Fill in for notification manager
-	}
+
 }
 
