@@ -25,8 +25,29 @@ public class UpgradablePropertySpace extends Space {
 	private int purchasePrice_;
 	private int mortgageValue_;
 	private int[] rentValues_;
-	private int renovationLevel_ = 0;
-	private boolean isOwned_ = false, isMortgaged_ = false;
+	
+	public UpgradablePropertySpace() {
+		name_ = "NONE";
+		state_ = UpgradablePropertyUnowned.Instance();
+		purchasePrice_ = 0;
+		mortgageValue_ = 0;
+		rentValues_ = new int[6];
+	}
+	
+	public UpgradablePropertySpace(String name, int purchasePrice, int mortgageValue, int rent0, int rent1, 
+			int rent2, int rent3, int rent4, int rent5) {
+		name_ = name;
+		state_ = UpgradablePropertyUnowned.Instance();
+		purchasePrice_ = purchasePrice;
+		mortgageValue_ = mortgageValue;
+		rentValues_ = new int[6];
+		rentValues_[0] = rent0;
+		rentValues_[1] = rent1;
+		rentValues_[2] = rent2; 
+		rentValues_[3] = rent3;
+		rentValues_[4] = rent4;
+		rentValues_[5] = rent5;
+	}
 	
 	void changeState(UpgradablePropertyState newState) {
 		state_ = newState;
@@ -58,38 +79,11 @@ public class UpgradablePropertySpace extends Space {
 	}
 
 	public void setRentValues(int[] rentValues) {
-		this.rentValues_ = rentValues;
+		rentValues_ = rentValues;
 	}
 
 	public int[] getRentValues() {
 		return rentValues_;
 	}
-
-	public void setRenovationLevel(int renovationLevel) {
-		this.renovationLevel_ = renovationLevel;
-	}
-
-	public int getRenovationLevel() {
-		return renovationLevel_;
-	}
-
-	public void setOwned(boolean isOwned) {
-		isOwned_ = isOwned;
-	}
-
-	public boolean isOwned() {
-		return isOwned_;
-	}
-
-	public void setMortgaged(boolean isMortgaged) {
-		isMortgaged_ = isMortgaged;
-	}
-
-	public boolean isMortgaged() {
-		return isMortgaged_;
-	}
-
-
-	
 
 }

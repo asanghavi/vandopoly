@@ -17,11 +17,24 @@ package org.vandopoly.model;
 
 /*
  * Model class that is a descendant of Space and represents a card space on the board
+ * All cards are initialized as "Community Chest" (not Chance)
  * 
  * @author Allie Mazzia
  */
 public class CardSpace extends Space {
+	
+	private boolean isChance_;
 
+	public CardSpace() {
+		name_ = "NONE";
+		isChance_ = false;
+	}
+	
+	public CardSpace(String name, boolean isChance) {
+		name_ = name;
+		isChance_ = isChance;
+	}
+	
 	public void landOn(Player p) {
 		// Empty
 	}

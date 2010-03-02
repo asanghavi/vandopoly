@@ -21,7 +21,19 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 public class PropertySpace extends Space {
-	private int purchasePrice_;
+	private int purchasePrice_, mortgageValue_;
+	
+	public PropertySpace() {
+		name_ = "NONE";
+		purchasePrice_ = 0;
+		mortgageValue_ = 0;
+	}
+	
+	public PropertySpace(String name, int purchasePrice, int mortgageValue) {
+		name_ = name;
+		purchasePrice_ = purchasePrice;
+		mortgageValue_ = mortgageValue;
+	}
 	
 	public void landOn(Player p) {
 		// Empty
@@ -34,6 +46,14 @@ public class PropertySpace extends Space {
 
 	public int getPurchasePrice() {
 		return purchasePrice_;
+	}
+
+	public void setMortgageValue(int mortgageValue) {
+		mortgageValue_ = mortgageValue;
+	}
+
+	public int getMortgageValue() {
+		return mortgageValue_;
 	}
 
 }
