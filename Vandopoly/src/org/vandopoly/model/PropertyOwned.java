@@ -13,52 +13,31 @@
  *   limitations under the License.                                          *
  ****************************************************************************/
 
+
 package org.vandopoly.model;
 
 /*
- * Model class that is a descendant of Space and represents a property space on the board
+ * PropertyOwned class implements the behavior associated with the 
+ * property space being owned.
+ * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
-public class PropertySpace extends Space {
-	private PropertySpaceState state_;
-	private int purchasePrice_, mortgageValue_;
+
+public class PropertyOwned extends PropertySpaceState {
 	
-	public PropertySpace() {
-		name_ = "NONE";
-		purchasePrice_ = 0;
-		mortgageValue_ = 0;
-	}
+	private static PropertyOwned INSTANCE = null;
 	
-	public PropertySpace(String name, int purchasePrice, int mortgageValue) {
-		name_ = name;
-		purchasePrice_ = purchasePrice;
-		mortgageValue_ = mortgageValue;
+	protected PropertyOwned() {
+		// Exists to disable instantiation
 	}
 	
-	void changeState(PropertySpaceState newState) {
-		state_ = newState;
-	}
-	
-	public void landOn(Player p) {
-		// Empty
-	}
-
-	// Getters and setters
-	public void setPurchasePrice(int purchasePrice) {
-		purchasePrice_ = purchasePrice;
-	}
-
-	public int getPurchasePrice() {
-		return purchasePrice_;
-	}
-
-	public void setMortgageValue(int mortgageValue) {
-		mortgageValue_ = mortgageValue;
-	}
-
-	public int getMortgageValue() {
-		return mortgageValue_;
+	public static PropertyOwned Instance() {
+		if (INSTANCE == null) {
+			INSTANCE = new PropertyOwned();
+		}
+		
+		return INSTANCE;
 	}
 
 }

@@ -42,8 +42,6 @@ public class TaxSpace extends Space {
 		percentageFee_ = percentageFee;
 	}
 	
-
-
 	public void landOn(Player p) {
 		// Empty
 	}
