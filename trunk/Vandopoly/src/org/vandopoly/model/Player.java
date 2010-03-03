@@ -25,6 +25,8 @@ import org.vandopoly.ui.Display;
  */
 public class Player {
 	
+	private final int SPACES_ON_BOARD = 40;
+	
 	private PlayerState state_;
 	private String name_, icon_;
 	private int cash_ = 1500, positionOnBoard_;
@@ -60,8 +62,8 @@ public class Player {
 		state_.movePiece(this, numOfSpaces);
 	}
 	
-	public void collectRent(int space, Player payer) {
-		state_.collectRent(this, space, payer);
+	public void collectRent(int amount, Player payer) {
+		state_.collectRent(this, amount, payer);
 	}
 	
 	public void goToJail() {
@@ -73,11 +75,14 @@ public class Player {
 	}
 	
 	public void updatePosition(int numOfSpaces) {
-		positionOnBoard_ += numOfSpaces;
+		positionOnBoard_ = (positionOnBoard_ + numOfSpaces) % SPACES_ON_BOARD;
 	}
 	
-	public void setPosition(int numOfSpaces) {
-		positionOnBoard_ = numOfSpaces;
+	public void setPosition(int space) {
+		if(space > 0 && space < SPACES_ON_BOARD)
+			positionOnBoard_ = space;
+		else
+			System.err.println("Invalid space number for setPosition: "+space);
 	}
 	
 	public int getPosition() {

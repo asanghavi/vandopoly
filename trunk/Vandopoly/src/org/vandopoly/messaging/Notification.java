@@ -39,7 +39,19 @@ public class Notification {
 	// Note: Could present a problem for networking as it effects the GameButtonPanel
 	public static final String DONE_ROLLING = "DoneRolling";
 	
+	// UNOWNED_PROPERTY is sent from a property space
+	// Meant to tell the purchase button that it is available for purchase
+	public static final String UNOWNED_PROPERTY = "UnownedProperty";
+	
 	// End Turn is sent from the GameController class method actionListener
 	// Note: Could present a problem for networking as it effects the GameButtonPanel and DicePanel
 	public static final String END_TURN = "EndTurn";
+	
+	// Update Scholarship Fund sends integer amounts from which to add or subtract from the
+	// scholarship fund, used with tax and card spaces
+	public static final String UPDATE_SCHOLARSHIP_FUND = "UpdateScholarshipFund";
+	
+	// Award Scholarship Fund sends a player object who will receive the award
+	// Sent in the CornerSpace class, observed by GameControllers
+	public static final String AWARD_SCHOLARSHIP_FUND = "AwardScholarshipFund";
 }

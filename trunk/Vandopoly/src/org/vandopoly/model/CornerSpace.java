@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * Model class that is a descendant of Space and represents a corner of the board
  * 
@@ -31,7 +34,8 @@ public class CornerSpace extends Space {
 	}
 	
 	public void landOn(Player p) {
-		// Empty
+		if(this.name_.equals("Scholarship Fund"))
+			NotificationManager.getInstance().notifyObservers(Notification.AWARD_SCHOLARSHIP_FUND, p);
 	}
 
 }

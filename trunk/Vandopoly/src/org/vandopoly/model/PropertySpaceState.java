@@ -27,4 +27,8 @@ public class PropertySpaceState {
 	protected void changeState(PropertySpace space, PropertySpaceState newState) {
 		space.changeState(newState);
 	}
+	
+	protected void landOn(Player player, PropertySpace property) {
+		// Do something
+	}
 }

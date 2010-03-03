@@ -40,4 +40,7 @@ public class UpgradablePropertyMortgaged extends UpgradablePropertyState {
 		return INSTANCE;
 	}
 
+	public void landOn(Player player, UpgradablePropertySpace property) {
+		//Do nothing as the space is mortgaged
+	}
 }
