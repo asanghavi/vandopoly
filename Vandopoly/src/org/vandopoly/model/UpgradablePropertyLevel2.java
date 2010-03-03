@@ -40,4 +40,7 @@ public class UpgradablePropertyLevel2 extends UpgradablePropertyState {
 		return INSTANCE;
 	}
 
+	public void landOn(Player player, UpgradablePropertySpace property) {
+		property.getOwner().collectRent(property.getRentValues()[2], player);
+	}
 }

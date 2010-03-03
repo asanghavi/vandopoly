@@ -26,7 +26,7 @@ public class PlayerState {
 	
 	public void movePiece(Player player, int spaces) {};
 	
-	public void collectRent(Player payee, int space, Player player) {};
+	public void collectRent(Player payee, int amount, Player player) {};
 	
 	public void goToJail(Player player) {};
 	

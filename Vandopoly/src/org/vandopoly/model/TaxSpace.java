@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * Model class that is a descendant of Space and represents a tax space on the board
  * 
@@ -42,8 +45,22 @@ public class TaxSpace extends Space {
 		percentageFee_ = percentageFee;
 	}
 	
+	// TODO: should be 10% of all assets
+	
 	public void landOn(Player p) {
-		// Empty
+		int value;
+		
+		// Pay the minimum of either 10% of current money or 200 dollar fee
+		if(name_.equals("Pay Tuition"))
+			value = Math.min((int)(p.getCash() * .1), 200);
+		
+		// Represents luxury tax or Parking Ticket space
+		else
+			value = 75;
+		
+		p.updateCash(-value);
+		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
+				new Integer(value));
 	}
 
 	// Getters and setters

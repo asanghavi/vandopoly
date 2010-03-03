@@ -31,7 +31,9 @@ import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradablePropertySpace;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.GameButtonPanel;
+import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
+import org.vandopoly.ui.PropertySelectionPanel;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -44,10 +46,12 @@ public class GameController implements ActionListener {
 	Dice dice_;
 	ArrayList<Player> players_;
 	Space board_[];
+	int scholarshipFund_;
 	
 	DicePanel dicePanel_;
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
+	ArrayList<Piece> piece_;
 	
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
@@ -55,7 +59,7 @@ public class GameController implements ActionListener {
 	final int NUM_OF_SPACES = 40;
 	
 	// Suggested integer for keeping track of the state of game
-	int currentPlayer_;
+	int currentPlayerNum_;
 	
 	public GameController() {
 		dice_ = new Dice();
@@ -63,6 +67,10 @@ public class GameController implements ActionListener {
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
 				this, "startGame");
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, 
+				this, "updateFund");
+		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
+				this, "awardFund");
 	}
 	
 	// Called by the START_GAME notification
@@ -76,13 +84,39 @@ public class GameController implements ActionListener {
 		
 		createSpaces();
 		createPlayers();
+		
+		scholarshipFund_ = 0;
+	}
+	
+	public void updateFund(Object obj) {
+		Integer value = (Integer)obj;
+		
+		if((scholarshipFund_ += value.intValue()) > 0)
+			scholarshipFund_ += value.intValue();
+		else
+			System.err.println("Attempted to remove more money from scholarship than there currently is");
+	}
+	
+	public void awardFund(Object obj) {
+		Player player = (Player)obj;
+		
+		player.updateCash(scholarshipFund_);
+		scholarshipFund_ = 0;
 	}
 	
 	private void createPlayers() {
 		players_ = new ArrayList<Player>();
+		piece_ = new ArrayList<Piece>();
+		
 		for (int i = 0; i < numOfPlayers_; i++) {
 			players_.add(new Player(namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1]));
 		}
+		
+		// Create all of the appropriate pieces
+		for (int i = 0; i < numOfPlayers_; i++) {
+			//piece_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
+		}
+		
 	}
 	
 	private void createSpaces() {
@@ -132,18 +166,22 @@ public class GameController implements ActionListener {
 	// Represents the logic for the GameButtonPanel class
 	public void actionPerformed(ActionEvent action) {
 		if(action.getActionCommand().equals("Purchase")) {
-			int position = players_.get(currentPlayer_).getPosition();
+			int position = players_.get(currentPlayerNum_).getPosition();
+			
+			// This is just a test remove later
+			piece_.get(0).move(0);
 			
 			// TODO implement logic for purchasing property
 			// this will probably need a purchase abstract function in Space
 		}
 		else if(action.getActionCommand().equals("Mortgage")) {
-			int position = players_.get(currentPlayer_).getPosition();
+			int position = players_.get(currentPlayerNum_).getPosition();
 
+			new PropertySelectionPanel();
 			// TODO implement logic for mortgaging property
 		}
 		else if(action.getActionCommand().equals("End Turn")) {
-			currentPlayer_ = (currentPlayer_ + 1) % numOfPlayers_;
+			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 		}
 		else if(action.getActionCommand().equals("Quit Game")) {

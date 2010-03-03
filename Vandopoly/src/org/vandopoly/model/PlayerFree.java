@@ -44,11 +44,11 @@ public class PlayerFree extends PlayerState{
 	}
 	
 	@Override
-	public void collectRent(Player payee, int space, Player payer) {
+	public void collectRent(Player payee, int amount, Player payer) {
 		// Call to payee.updateCash(), payer.updateCash() 
 		// Temporary - for checking to make sure states are working properly
-		payee.updateCash(space);
-		payer.updateCash(-space);
+		payee.updateCash(amount);
+		payer.updateCash(-amount);
 	}
 
 	@Override

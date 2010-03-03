@@ -16,6 +16,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * PropertyOwned class implements the behavior associated with the 
  * property space being owned.
@@ -38,6 +41,12 @@ public class PropertyOwned extends PropertySpaceState {
 		}
 		
 		return INSTANCE;
+	}
+	
+	public void landOn(Player player, UpgradablePropertySpace property) {
+		// TODO: Pay the man!
+		System.out.println("Player "+player.getName()+" should pay "+property.getOwner().getName()
+				+" rent from property "+property.getName());
 	}
 
 }

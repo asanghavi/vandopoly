@@ -16,6 +16,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * UpgradablePropertyUnowned class implements the behavior associated with the 
  * upgradable property space being unowned.
@@ -38,5 +41,9 @@ public class UpgradablePropertyUnowned extends UpgradablePropertyState {
 		}
 		
 		return INSTANCE;
+	}
+	
+	public void landOn(Player player, UpgradablePropertySpace property) {
+		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, null);
 	}
 }

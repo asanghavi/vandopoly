@@ -27,4 +27,8 @@ public class UpgradablePropertyState {
 	protected void changeState(UpgradablePropertySpace space, UpgradablePropertyState newState) {
 		space.changeState(newState);
 	}
+	
+	protected void landOn(Player player, UpgradablePropertySpace property) {
+		// Do something
+	}
 }

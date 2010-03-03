@@ -45,7 +45,7 @@ public class PlayerInJail extends PlayerState {
 	}
 	
 	@Override
-	public void collectRent(Player payee, int space, Player player) {
+	public void collectRent(Player payee, int amount, Player player) {
 		// Empty - rent is not collected when players are in jail
 	}
 	

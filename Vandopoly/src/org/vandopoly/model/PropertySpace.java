@@ -24,16 +24,20 @@ public class PropertySpace extends Space {
 	private PropertySpaceState state_;
 	private int purchasePrice_, mortgageValue_;
 	
+	private Player owner_;
+	
 	public PropertySpace() {
 		name_ = "NONE";
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
+		owner_ = null;
 	}
 	
 	public PropertySpace(String name, int purchasePrice, int mortgageValue) {
 		name_ = name;
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
+		owner_ = null;
 	}
 	
 	void changeState(PropertySpaceState newState) {
@@ -41,10 +45,18 @@ public class PropertySpace extends Space {
 	}
 	
 	public void landOn(Player p) {
-		// Empty
+		state_.landOn(p, this);
 	}
 
 	// Getters and setters
+	public void setOwner(Player p) {
+		owner_ = p;
+	}
+	
+	public Player getOwner() {
+		return owner_;
+	}
+	
 	public void setPurchasePrice(int purchasePrice) {
 		purchasePrice_ = purchasePrice;
 	}

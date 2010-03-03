@@ -25,6 +25,7 @@ public class UpgradablePropertySpace extends Space {
 	private int purchasePrice_;
 	private int mortgageValue_;
 	private int[] rentValues_;
+	private Player owner_;
 	
 	public UpgradablePropertySpace() {
 		name_ = "NONE";
@@ -32,6 +33,7 @@ public class UpgradablePropertySpace extends Space {
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
 		rentValues_ = new int[6];
+		owner_ = null;
 	}
 	
 	public UpgradablePropertySpace(String name, int purchasePrice, int mortgageValue, int rent0, int rent1, 
@@ -47,6 +49,7 @@ public class UpgradablePropertySpace extends Space {
 		rentValues_[3] = rent3;
 		rentValues_[4] = rent4;
 		rentValues_[5] = rent5;
+		owner_ = null;
 	}
 	
 	void changeState(UpgradablePropertyState newState) {
@@ -58,7 +61,7 @@ public class UpgradablePropertySpace extends Space {
 	}
 	
 	public void landOn(Player p) {
-		// Empty
+		state_.landOn(p, this);
 	}
 
 	// Getters and setters
@@ -85,5 +88,12 @@ public class UpgradablePropertySpace extends Space {
 	public int[] getRentValues() {
 		return rentValues_;
 	}
-
+	
+	public void setOwner(Player p) {
+		owner_ = p;
+	}
+	
+	public Player getOwner() {
+		return owner_;
+	}
 }
