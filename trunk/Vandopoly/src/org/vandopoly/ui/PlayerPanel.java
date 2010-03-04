@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -29,6 +30,7 @@ import javax.swing.SwingConstants;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.model.Player;
 
 
 /*
@@ -44,56 +46,35 @@ public class PlayerPanel extends JPanel {
 	int height_ = screen_.height;
 	private JTabbedPane infoPanel_;
 	private JPanel panel1_, panel2_, panel3_, panel4_;
-	private JLabel properties_, cash_;
-	private String names_[];
+	private JLabel properties_, cashLabel_, cashAmount1_, cashAmount2_, 
+		cashAmount3_, cashAmount4_;
+	//private String names_[];
 	private double panelScaleX_ = .80, coordScaleX_ = .1;
 	private double panelScaleY_ = .64, coordScaleY_ = .18;
+	ArrayList<Player> players_;
 
-	public PlayerPanel(String[] names) {
-		names_ = names;
+	public PlayerPanel(ArrayList<Player> players) {
 		
+		players_ = players;
 		Font nameFont = new Font("broadway", Font.PLAIN, 20);
-		Font labelFont = new Font("broadway", Font.PLAIN, 16);
 		
 		int paneX = 0, paneY = 0;
-
-		int numOfPlayers = Integer.parseInt(names_[0]);
 		
 		this.setSize((int) (panelScaleX_ * width_), (int) (panelScaleY_ * height_));
 		this.setLayout(null);
 
-		// Set up the JTabbedPane and its JPanels
-		int hGap = 10, vGap = 10;
-		GridLayout gridLayout = new GridLayout(4, 1, hGap, vGap);
-		
 		infoPanel_ = new JTabbedPane();
 		infoPanel_.setBounds(paneX, paneY, (int)(panelScaleX_ * width_), (int) (panelScaleY_ * height_));
 		infoPanel_.setFont(nameFont);
 
-		panel1_ = new JPanel();
-		panel1_.setLayout(gridLayout);
-		cash_ = new JLabel("Commodore Cash: ");
-		cash_.setFont(labelFont);
-		cash_.setVerticalAlignment(SwingConstants.TOP);
-		cash_.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		properties_ = new JLabel("Properties Owned: ");
-		properties_.setFont(labelFont);
-		properties_.setVerticalAlignment(SwingConstants.TOP);
-		properties_.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		panel1_.add(cash_);
-		panel1_.add(properties_);
-		
-		// Add the appropriate number of tabs to the pane, with the
-		// player names		
-		infoPanel_.addTab(names_[1], panel1_);
-		
-		infoPanel_.addTab(names_[2], panel2_);
-		if (numOfPlayers > 2) {
-			infoPanel_.addTab(names_[3], panel3_);
-			if (numOfPlayers == 4)
-				infoPanel_.addTab(names_[4], panel4_);
+		// Create all panels
+		panel1_ = createPanel(players_.get(0), cashAmount1_);
+		panel2_ = createPanel(players_.get(1), cashAmount2_);
+		if (players_.size() > 2) {
+			panel3_ = createPanel(players_.get(2), cashAmount3_);
+			
+			if (players_.size() == 4)
+				panel4_ = createPanel(players_.get(3), cashAmount4_);
 		}
 		
 		Point location = new Point((int) (coordScaleX_ * width_) + DisplayAssembler.getRightEdge(), 
@@ -106,6 +87,79 @@ public class PlayerPanel extends JPanel {
         
         this.add(infoPanel_);
 		this.setVisible(true);
+		
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_PROPERTIES, 
+				this, "updateProperties");
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_CASH, 
+				this, "updateCash");
+	}
+	
+	private JPanel createPanel(Player player, JLabel cashAmount) {
+		JPanel panel = new JPanel();
+		Font labelFont = new Font("broadway", Font.PLAIN, 16);
+		Font cashFont = new Font("broadway", Font.PLAIN, 40);
+		
+		String cash = "" + player.getCash();
+		
+		// Set up the JTabbedPane and its JPanels
+		int hGap = 10, vGap = 0;
+		GridLayout gridLayout = new GridLayout(10, 1, hGap, vGap);
+		
+		cashLabel_ = new JLabel("Commodore Cash: ");
+		cashLabel_.setFont(labelFont);
+		cashLabel_.setVerticalAlignment(SwingConstants.BOTTOM);
+		cashLabel_.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		cashAmount = new JLabel(cash);
+		cashAmount.setFont(cashFont);
+		cashAmount.setVerticalAlignment(SwingConstants.TOP);
+		cashAmount.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		properties_ = new JLabel("Properties Owned: ");
+		properties_.setFont(labelFont);
+		properties_.setVerticalAlignment(SwingConstants.CENTER);
+		properties_.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		panel.add(cashLabel_);
+		panel.add(cashAmount);
+		panel.add(properties_);
+		
+		panel.setLayout(gridLayout);
+		
+		infoPanel_.addTab(player.getName(), panel);
+		return panel;
+	}
+	
+	public void updateCash(Object object) {
+		try {
+			Player player = (Player) object;
+			String cash = "" + player.getCash();
+			
+			if (player == players_.get(0)) 
+				cashAmount1_.setText(cash);
+			else if (player == players_.get(1)) 
+				cashAmount2_.setText(cash);
+			else if (player == players_.get(2))
+				cashAmount3_.setText(cash);				
+			else if (player == players_.get(3))
+				cashAmount4_.setText(cash);
+				
+		} 
+		catch (ClassCastException e) {
+			System.err.println("Unexpected object passed to updateCash");
+		}
+		
+	}
+	
+	public void updateProperties(Object object) {
+		try {
+			Player player = (Player) object;
+			
+				
+		} 
+		catch (ClassCastException e) {
+			System.err.println("Unexpected object passed to updateCash");
+		}
 	}
 
 }

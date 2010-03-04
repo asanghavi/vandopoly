@@ -133,7 +133,8 @@ public class DicePanel extends JPanel {
 						die2_.setIcon(diePic_[r.nextInt(6)]);
 						try {
 							Thread.sleep(25+(i*3));
-						} catch (InterruptedException e) {
+						} 
+						catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
@@ -158,7 +159,8 @@ public class DicePanel extends JPanel {
 					}
 				}
 			}.start();
-		} catch (ClassCastException e) {
+		} 
+		catch (ClassCastException e) {
 			System.err.println("Dice expected object to method updateDice");
 		}
 	}
