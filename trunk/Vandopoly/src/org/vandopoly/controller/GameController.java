@@ -28,12 +28,12 @@ import org.vandopoly.model.Player;
 import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
-import org.vandopoly.model.UpgradablePropertySpace;
+import org.vandopoly.model.UpgradeablePropertySpace;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
-import org.vandopoly.ui.PropertySelectionPanel;
+//import org.vandopoly.ui.PropertySelectionPanel;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -122,44 +122,44 @@ public class GameController implements ActionListener {
 	private void createSpaces() {
 			
 		board_[0] = new CornerSpace("GO");
-		board_[1] = new UpgradablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
+		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
 		board_[2] = new CardSpace("Community Chest", false);
-		board_[3] = new UpgradablePropertySpace("Mims Hall", 60, 30, 4,	20,	60,	180, 320, 450);
+		board_[3] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4,	20,	60,	180, 320, 450);
 		board_[4] = new TaxSpace("Pay Tuition");
 		board_[5] = new PropertySpace("Vandy Van Reverse Route", 200, 100);
-		board_[6] = new UpgradablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
+		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
 		board_[7] = new CardSpace("Chance", true);
-		board_[8] = new UpgradablePropertySpace("Cole Hall", 100, 30, 6, 30, 90, 270, 400, 550);
-		board_[9] = new UpgradablePropertySpace("McGill Hall", 120, 30, 8, 40, 100, 300, 450, 600);
+		board_[8] = new UpgradeablePropertySpace("Cole Hall", 100, 30, 6, 30, 90, 270, 400, 550);
+		board_[9] = new UpgradeablePropertySpace("McGill Hall", 120, 30, 8, 40, 100, 300, 450, 600);
 		board_[10] = new CornerSpace("Academic Probation");
-		board_[11] = new UpgradablePropertySpace("Furman Hall", 140, 70, 10, 50, 150, 450, 625, 750);
+		board_[11] = new UpgradeablePropertySpace("Furman Hall", 140, 70, 10, 50, 150, 450, 625, 750);
 		board_[12] = new PropertySpace("CoGeneration Plant", 150, 75);
-		board_[13] = new UpgradablePropertySpace("Wilson Hall", 140, 70, 10, 50, 150, 450, 625, 750);
-		board_[14] = new UpgradablePropertySpace("Buttrick Hall", 160, 80, 12, 60, 180, 500, 700, 900);
+		board_[13] = new UpgradeablePropertySpace("Wilson Hall", 140, 70, 10, 50, 150, 450, 625, 750);
+		board_[14] = new UpgradeablePropertySpace("Buttrick Hall", 160, 80, 12, 60, 180, 500, 700, 900);
 		board_[15] = new PropertySpace("Vandy Van Long Route", 200, 100);
-		board_[16] = new UpgradablePropertySpace("Lewis House", 180, 90, 14, 70, 200, 550, 750, 950);
+		board_[16] = new UpgradeablePropertySpace("Lewis House", 180, 90, 14, 70, 200, 550, 750, 950);
 		board_[17] = new CardSpace("Community Chest", false);
-		board_[18] = new UpgradablePropertySpace("Morgan House", 180, 90, 14, 70, 200, 550, 750, 950);
-		board_[19] = new UpgradablePropertySpace("Chaffin Place", 200,100, 16, 80, 220, 600, 800, 1000);
+		board_[18] = new UpgradeablePropertySpace("Morgan House", 180, 90, 14, 70, 200, 550, 750, 950);
+		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 200,100, 16, 80, 220, 600, 800, 1000);
 		board_[20] = new CornerSpace("Scholarship Fund");
-		board_[21] = new UpgradablePropertySpace("Kirkland Hall", 220, 110, 18, 90, 250, 700, 875, 1050);
+		board_[21] = new UpgradeablePropertySpace("Kirkland Hall", 220, 110, 18, 90, 250, 700, 875, 1050);
 		board_[22] = new CardSpace("Chance", true);
-		board_[23] = new UpgradablePropertySpace("Wyatt Center", 220, 110, 18, 90, 250, 700, 875, 1050);
-		board_[24] = new UpgradablePropertySpace("Featheringhill Hall", 240, 120, 20, 100, 300, 750, 925, 1100);
+		board_[23] = new UpgradeablePropertySpace("Wyatt Center", 220, 110, 18, 90, 250, 700, 875, 1050);
+		board_[24] = new UpgradeablePropertySpace("Featheringill Hall", 240, 120, 20, 100, 300, 750, 925, 1100);
 		board_[25] = new PropertySpace("Vandy Van Normal Route", 200, 100);
-		board_[26] = new UpgradablePropertySpace("Sarratt Student Center", 260, 130, 22, 110, 330, 800, 975, 1150);
-		board_[27] = new UpgradablePropertySpace("Student Life Center", 260, 130, 22, 110, 330, 800, 975, 1150);
+		board_[26] = new UpgradeablePropertySpace("Sarratt Student Center", 260, 130, 22, 110, 330, 800, 975, 1150);
+		board_[27] = new UpgradeablePropertySpace("Student Life Center", 260, 130, 22, 110, 330, 800, 975, 1150);
 		board_[28] = new PropertySpace("BioDiesel Initiative", 150, 75);
-		board_[29] = new UpgradablePropertySpace("Ingram Center", 280, 140, 24, 120, 360, 850, 1025, 1200);
-		board_[31] = new UpgradablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
-		board_[32] = new UpgradablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
+		board_[29] = new UpgradeablePropertySpace("Ingram Center", 280, 140, 24, 120, 360, 850, 1025, 1200);
+		board_[31] = new UpgradeablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
+		board_[32] = new UpgradeablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
 		board_[33] = new CardSpace("Community Chest", false);
-		board_[34] = new UpgradablePropertySpace("Hank Ingram House", 320, 160, 28, 150, 450, 1000, 1200, 1400);
+		board_[34] = new UpgradeablePropertySpace("Hank Ingram House", 320, 160, 28, 150, 450, 1000, 1200, 1400);
 		board_[35] = new PropertySpace("Vandy Van Express Route", 200, 100);
 		board_[36] = new CardSpace("Chance", true);
-		board_[37] = new UpgradablePropertySpace("McGugin Center", 350, 175, 35, 175, 500, 1100, 1300, 1500);
+		board_[37] = new UpgradeablePropertySpace("McGugin Center", 350, 175, 35, 175, 500, 1100, 1300, 1500);
 		board_[38] = new TaxSpace("Parking Ticket");
-		board_[39] = new UpgradablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
+		board_[39] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
 		
 	}
 	
@@ -177,7 +177,7 @@ public class GameController implements ActionListener {
 		else if(action.getActionCommand().equals("Mortgage")) {
 			int position = players_.get(currentPlayerNum_).getPosition();
 
-			new PropertySelectionPanel();
+		//	new PropertySelectionPanel();
 			// TODO implement logic for mortgaging property
 		}
 		else if(action.getActionCommand().equals("End Turn")) {
