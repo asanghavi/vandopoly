@@ -35,6 +35,13 @@ public class CardSpace extends Space {
 		isChance_ = isChance;
 	}
 	
+	public String toString() {
+		String string = "Property Name: " + name_;
+		string += " On this space: Nobody";
+		
+		return string;
+	}
+	
 	public void landOn(Player p) {
 		// Empty
 	}

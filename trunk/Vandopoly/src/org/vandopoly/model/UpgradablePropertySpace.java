@@ -52,6 +52,13 @@ public class UpgradablePropertySpace extends Space {
 		owner_ = null;
 	}
 	
+	public String toString() {
+		String string = "Property Name: " + name_ + ", Owned by: " + owner_ + ", ";
+		string += "On this space: Nobody";
+		
+		return string;
+	}
+	
 	void changeState(UpgradablePropertyState newState) {
 		state_ = newState;
 	}
