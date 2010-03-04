@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 import org.vandopoly.ui.Display;
 
 /*
@@ -31,6 +33,7 @@ public class Player {
 	private String name_, icon_;
 	private int cash_ = 1500, positionOnBoard_;
 	private boolean getOutOfJail_;
+	private ArrayList<Space> properties_;
 	
 	public Player() {
 		state_ = PlayerFree.Instance();
@@ -39,6 +42,7 @@ public class Player {
 		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
+		setProperties(new ArrayList<Space>());
 	}
 	
 	public Player(String name, String icon) {
@@ -48,6 +52,7 @@ public class Player {
 		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
+		setProperties(new ArrayList<Space>());
 	}
 	
 	void changeState(PlayerState newState) {
@@ -123,6 +128,18 @@ public class Player {
 
 	public String getIcon() {
 		return icon_;
+	}
+
+	public void setProperties(ArrayList<Space> properties) {
+		properties_ = properties;
+	}
+
+	public ArrayList<Space> getProperties() {
+		return properties_;
+	}
+	
+	public void purchase(Space property) {
+		//Empty for now
 	}
 	
 }
