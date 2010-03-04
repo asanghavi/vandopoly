@@ -80,12 +80,12 @@ public class GameController implements ActionListener {
 		namesAndIcons_ =(String[]) obj;
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
 		
-		playerPanel_ = new PlayerPanel(namesAndIcons_);
-		dicePanel_ = new DicePanel(dice_);
-		buttonPanel_ = new GameButtonPanel(this);
-		
 		createSpaces();
 		createPlayers();
+		
+		playerPanel_ = new PlayerPanel(players_);
+		dicePanel_ = new DicePanel(dice_);
+		buttonPanel_ = new GameButtonPanel(this);
 		
 		scholarshipFund_ = 0;
 	}
