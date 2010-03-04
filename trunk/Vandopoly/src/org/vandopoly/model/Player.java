@@ -28,15 +28,15 @@ import org.vandopoly.ui.Display;
  * @author Allie Mazzia
  */
 public class Player {
-	
+
 	private final int SPACES_ON_BOARD = 40;
-	
+
 	private PlayerState state_;
 	private String name_, icon_;
 	private int cash_ = 1500, positionOnBoard_;
 	private boolean getOutOfJail_;
 	private ArrayList<PropertySpace> properties_;
-	
+
 	public Player() {
 		state_ = PlayerFree.Instance();
 		name_ = "ANONYMOUS";
@@ -46,7 +46,7 @@ public class Player {
 		getOutOfJail_ = false;
 		setProperties(new ArrayList<PropertySpace>());
 	}
-	
+
 	public Player(String name, String icon) {
 		state_ = PlayerFree.Instance();
 		name_ = name;
@@ -56,72 +56,72 @@ public class Player {
 		getOutOfJail_ = false;
 		setProperties(new ArrayList<PropertySpace>());
 	}
-	
+
 	void changeState(PlayerState newState) {
 		state_ = newState;
 	}
-	
+
 	public PlayerState getState() {
 		return state_;
 	}
-	
+
 	public void movePiece(int numOfSpaces) {
 		state_.movePiece(this, numOfSpaces);
 	}
-	
+
 	public void collectRent(int amount, Player payer) {
 		state_.collectRent(this, amount, payer);
 	}
-	
+
 	public void goToJail() {
 		state_.goToJail(this);
 	}
-	
+
 	public void getOutOfJail() {
 		state_.getOutOfJail(this);
 	}
-	
+
 	public void updatePosition(int numOfSpaces) {
 		positionOnBoard_ = (positionOnBoard_ + numOfSpaces) % SPACES_ON_BOARD;
 	}
-	
+
 	public void setPosition(int space) {
-		if(space > 0 && space < SPACES_ON_BOARD)
+		if (space > 0 && space < SPACES_ON_BOARD)
 			positionOnBoard_ = space;
 		else
-			System.err.println("Invalid space number for setPosition: "+space);
+			System.err.println("Invalid space number for setPosition: " + space);
 	}
-	
+
 	public int getPosition() {
 		return positionOnBoard_;
 	}
-	
+
 	public void updateCash(int value) {
 		cash_ += value;
 		NotificationManager.getInstance().notifyObservers
 		(Notification.UPDATE_CASH, this);
 	}
-	
+
 	public void setCash(int value) {
 		cash_ = value;
 	}
-	
+
 	public int getCash() {
 		return cash_;
 	}
-	
+
 	public void setGetOutOfJail(boolean hasCard) {
 		getOutOfJail_ = hasCard;
 	}
-	
+
 	public boolean hasGetOutOfJail() {
 		return getOutOfJail_;
 	}
-	
+
 	public void setName(String name) {
 		name_ = name;
 	}
-	
+
 	public String getName() {
 		return name_;
 	}
@@ -141,7 +141,7 @@ public class Player {
 	public ArrayList<PropertySpace> getProperties() {
 		return properties_;
 	}
-	
+
 	public void updateProperties(PropertySpace property) {
 		properties_.add(property);
 		NotificationManager.getInstance().notifyObservers
@@ -151,8 +151,21 @@ public class Player {
 	public void purchase(PropertySpace property) {
 		updateCash(-1 * property.getPurchasePrice());
 		updateProperties(property);
-		property.setOwner(this);	
+		property.setOwner(this);
 		property.bePurchased();
-	}	
-}
+	}
 
+	public void mortgage(PropertySpace property) {
+		updateCash(property.getMortgageValue());
+		property.beMortgaged();
+	}
+
+	public void unmortgage(PropertySpace property) {
+		if (getCash() - property.getMortgageValue() > 0) {
+			updateCash(-property.getMortgageValue());
+			property.unmortgage();
+		}
+		else
+			System.out.println("Can't Unmortgage "+getName()+", not enough cash");
+	}
+}

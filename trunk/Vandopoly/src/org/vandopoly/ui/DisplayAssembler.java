@@ -37,7 +37,7 @@ public class DisplayAssembler {
 	private JDesktopPane desktopPane_ = null;
 	
 	private static int rightEdge_;
-	private int boxSize_, spaceWidth_, topLeftGo_;
+	private static int boxSize_, spaceWidth_, topLeftGo_;
 	
 	private static Dimension screen_;
 	
@@ -72,15 +72,15 @@ public class DisplayAssembler {
 		return rightEdge_;
 	}
 	
-	public int getBoxSize() {
+	public static int getBoxSize() {
 		return boxSize_;
 	}
 	
-	public int getSpaceWidth() {
+	public static int getSpaceWidth() {
 		return spaceWidth_;
 	}
 	
-	public int getTopLeftGo() {
+	public static int getTopLeftGo() {
 		return topLeftGo_;
 	}
 	
