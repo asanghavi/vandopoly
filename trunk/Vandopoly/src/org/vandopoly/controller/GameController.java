@@ -30,10 +30,10 @@ import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradeablePropertySpace;
 import org.vandopoly.ui.DicePanel;
+import org.vandopoly.ui.Display;
 import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
-//import org.vandopoly.ui.PropertySelectionPanel;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -48,6 +48,7 @@ public class GameController implements ActionListener {
 	Space board_[];
 	int scholarshipFund_;
 	
+	Display display_;
 	DicePanel dicePanel_;
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
@@ -61,9 +62,10 @@ public class GameController implements ActionListener {
 	// Suggested integer for keeping track of the state of game
 	int currentPlayerNum_;
 	
-	public GameController() {
+	public GameController(Display display) {
 		dice_ = new Dice();
 		board_ = new Space[NUM_OF_SPACES];
+		display_ = display;
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
 				this, "startGame");
@@ -161,6 +163,8 @@ public class GameController implements ActionListener {
 		board_[38] = new TaxSpace("Parking Ticket");
 		board_[39] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
 		
+		display_.updateAllSpaces(board_);
+		
 	}
 	
 	// Represents the logic for the GameButtonPanel class
@@ -169,7 +173,7 @@ public class GameController implements ActionListener {
 			int position = players_.get(currentPlayerNum_).getPosition();
 			
 			// This is just a test remove later
-			piece_.get(0).move(0);
+			//piece_.get(0).move(0);
 			
 			// TODO implement logic for purchasing property
 			// this will probably need a purchase abstract function in Space
