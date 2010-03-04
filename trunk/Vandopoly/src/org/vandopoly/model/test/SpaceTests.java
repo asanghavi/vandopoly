@@ -19,12 +19,14 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.vandopoly.model.CardSpace;
+import org.vandopoly.controller.GameController;
+import org.vandopoly.model.CornerSpace;
 import org.vandopoly.model.Player;
 import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradeablePropertySpace;
+import org.vandopoly.ui.Display;
 
 /*
  * SpaceTests is a JUnit testing class that is meant to test the space class
@@ -36,7 +38,7 @@ public class SpaceTests extends TestCase {
 	Space normalSpace;
 	PropertySpace property;
 	
-	Player samplePlayer;
+	Player samplePlayer, samplePlayer2;
 	
 	Space board[] = new Space[4];
 	
@@ -46,18 +48,19 @@ public class SpaceTests extends TestCase {
 		super.setUp();
 		normalSpace = new Space();
 		
+		new GameController(null);
 		property = new PropertySpace();
 		property.setPurchasePrice(100);
 		
-		board[0] = new UpgradeablePropertySpace();
+		board[0] = new UpgradeablePropertySpace("Memorial Gym", 100, 50, 25, 100, 200, 400, 500, 750);
 		board[1] = new PropertySpace();
-		board[2] = new CardSpace();
-		board[3] = new TaxSpace();
+		board[2] = new CornerSpace("Scholarship Fund");
+		board[3] = new TaxSpace("Pay Tuition");
 		
 		samplePlayer = new Player();
-		samplePlayer.setCash(200);
 		samplePlayer.setName("James");
-		samplePlayer.setPosition(0);
+		
+		samplePlayer2 = new Player("Frank", null);
 	}
 	
 	// Must be used to cleanup after a .setUp()
@@ -70,12 +73,43 @@ public class SpaceTests extends TestCase {
 	public static Test suite(){
 		return new TestSuite(SpaceTests.class);
 	}
-	
+	// Basic set test
 	public void testSetName() {
 		normalSpace.setName("Space1");
-		assertTrue(normalSpace.getName() == "Space1");
+		assertTrue(normalSpace.getName().equals("Space1"));
 	}
+	// Testing constructor
 	public void testPropertyValue() {
 		assertTrue(property.getPurchasePrice() == 100);
+	}
+	// Testing purchasing of property
+	public void testPurchase() {
+		samplePlayer.purchase((PropertySpace)board[0]);
+		assertTrue(samplePlayer.getCash() == 1400);
+	}
+	// Testing rent payments
+	public void testRent() {
+		samplePlayer.purchase((PropertySpace)board[0]);
+		board[0].landOn(samplePlayer2);
+		assertTrue(samplePlayer2.getCash() == 1475 && samplePlayer.getCash() == 1425);
+	}
+	// Testing tax space
+	public void testTaxSpace() {
+		board[3].landOn(samplePlayer);
+		assertTrue(samplePlayer.getCash() == 1350);
+	}
+	// Testing mortgage
+	public void testMortgage() {
+		samplePlayer.purchase((PropertySpace)board[0]);
+		samplePlayer.mortgage((PropertySpace)board[0]);
+		board[0].landOn(samplePlayer2);
+		assertTrue(samplePlayer2.getCash() == 1500 && samplePlayer.getCash() == 1450);
+	}
+	// Test unmortgage
+	public void testUnmortgage() {
+		samplePlayer.purchase((PropertySpace)board[0]);
+		samplePlayer.mortgage((PropertySpace)board[0]);
+		samplePlayer.unmortgage((PropertySpace)board[0]);
+		assertTrue(samplePlayer.getCash() == 1400);
 	}
 }
