@@ -17,7 +17,6 @@ package org.vandopoly.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
@@ -26,9 +25,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
-import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.model.Space;
 
 /*
  * Space represents the spaces on the board and takes care of positioning,
@@ -46,6 +44,7 @@ public class SpacePanel extends JPanel {
 	Color c_;
 	boolean useTex_;
 	String spaceName_;
+	Space spaceObj_;
 	boolean isProp_;
 	String owner_;
 	ArrayList<String> onSpace_;
@@ -65,7 +64,6 @@ public class SpacePanel extends JPanel {
 		owner_ = "";
 		addSpace();
 		updateStatus();
-		NotificationManager.getInstance().addObserver("EndTurn", this, "updateStatus");
 	}
 	
 	// set the display properties of the space
@@ -100,6 +98,14 @@ public class SpacePanel extends JPanel {
 	
 	void addOnSpace(String name) {
 		onSpace_.add(name);
+	}
+	
+	String getSpaceName() {
+		return spaceName_;
+	}
+	
+	public void setSpaceObj(Space space) {
+		spaceObj_ = space;
 	}
 	
 	// add status text to board piece

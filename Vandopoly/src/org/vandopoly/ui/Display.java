@@ -17,22 +17,19 @@ package org.vandopoly.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.model.Space;
 
 /*
  * Main JFrame from which Vandopoly is built into
@@ -56,6 +53,7 @@ public class Display extends JFrame {
 	int spaceWidth_ = (int)(height_ / scaleWidth_);
 	int TopLeftGo_ = pos_ + sizeAcross_;
 	int RightEdge_ = pos_ + sizeAcross_ + boxSize_;
+	HashMap<String, SpacePanel> spaceMap_ = null;
 	
 	static final long serialVersionUID = 1;
 	
@@ -90,6 +88,7 @@ public class Display extends JFrame {
 		board_.setVisible(true);
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
 				this, "showBoard");
+
 	}
 	
 	// show the board
@@ -184,7 +183,25 @@ public class Display extends JFrame {
 		
 		// set center of board
 		addLabel("", false, pos_, pos_, sizeAcross_, sizeAcross_, c, true);
+	}
 	
+	public void updateAllSpaces(Space[] space) {
+		int x = 0;
+		Iterator<SpacePanel> itr = spaces_.iterator();
+		SpacePanel sp = null;
+		while(itr.hasNext()) {
+			sp = itr.next();
+			sp.setSpaceObj(space[x]);
+			sp.updateStatus();
+			spaceMap_.put(sp.getSpaceName(), sp);
+			x++;
+		}
+	}
+	
+	public void updateSpace(Space space) {
+		SpacePanel s = spaceMap_.get(space.getName());
+		s.setSpaceObj(space);
+		s.updateStatus();
 	}
 	
 	// adds a smaller rectangle to the board.
