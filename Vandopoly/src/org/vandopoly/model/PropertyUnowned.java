@@ -43,7 +43,7 @@ public class PropertyUnowned extends PropertySpaceState {
 		return INSTANCE;
 	}
 	
-	public void landOn(Player player, UpgradablePropertySpace property) {
+	public void landOn(Player player, UpgradeablePropertySpace property) {
 		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, null);
 	}
 

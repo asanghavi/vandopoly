@@ -13,22 +13,37 @@
  *   limitations under the License.                                          *
  ****************************************************************************/
 
+
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
- * UpgradablePropertyState class defines an interface for encapsulating the behavior
- * associated with a particular Concrete State.
- * State class for the State pattern.
+ * UpgradablePropertyUnowned class implements the behavior associated with the 
+ * upgradable property space being unowned.
+ * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
-public class UpgradablePropertyState {
+
+public class UpgradeablePropertyUnowned extends UpgradeablePropertyState {
+
+	private static UpgradeablePropertyUnowned INSTANCE = null;
 	
-	protected void changeState(UpgradablePropertySpace space, UpgradablePropertyState newState) {
-		space.changeState(newState);
+	protected UpgradeablePropertyUnowned() {
+		// Exists to disable instantiation
 	}
 	
-	protected void landOn(Player player, UpgradablePropertySpace property) {
-		// Do something
+	public static UpgradeablePropertyState Instance() {
+		if (INSTANCE == null) {
+			INSTANCE = new UpgradeablePropertyUnowned();
+		}
+		
+		return INSTANCE;
+	}
+	
+	public void landOn(Player player, UpgradeablePropertySpace property) {
+		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, null);
 	}
 }

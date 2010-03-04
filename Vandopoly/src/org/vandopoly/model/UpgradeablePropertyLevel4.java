@@ -16,34 +16,32 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.messaging.Notification;
-import org.vandopoly.messaging.NotificationManager;
-
 /*
- * UpgradablePropertyUnowned class implements the behavior associated with the 
- * upgradable property space being unowned.
+ * UpgradablePropertyLevel4 class implements the behavior associated with the 
+ * upgradable property space being upgraded to level 4.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class UpgradablePropertyUnowned extends UpgradablePropertyState {
-
-	private static UpgradablePropertyUnowned INSTANCE = null;
+public class UpgradeablePropertyLevel4 extends UpgradeablePropertyState {
 	
-	protected UpgradablePropertyUnowned() {
+	private static UpgradeablePropertyLevel4 INSTANCE = null;
+	
+	protected UpgradeablePropertyLevel4() {
 		// Exists to disable instantiation
 	}
 	
-	public static UpgradablePropertyState Instance() {
+	public static UpgradeablePropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new UpgradablePropertyUnowned();
+			INSTANCE = new UpgradeablePropertyLevel4();
 		}
 		
 		return INSTANCE;
 	}
 	
-	public void landOn(Player player, UpgradablePropertySpace property) {
-		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, null);
+	public void landOn(Player player, UpgradeablePropertySpace property) {
+		property.getOwner().collectRent(property.getRentValues()[4], player);
 	}
+
 }

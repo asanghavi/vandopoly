@@ -24,7 +24,7 @@ import org.vandopoly.model.Player;
 import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
-import org.vandopoly.model.UpgradablePropertySpace;
+import org.vandopoly.model.UpgradeablePropertySpace;
 
 /*
  * SpaceTests is a JUnit testing class that is meant to test the space class
@@ -49,7 +49,7 @@ public class SpaceTests extends TestCase {
 		property = new PropertySpace();
 		property.setPurchasePrice(100);
 		
-		board[0] = new UpgradablePropertySpace();
+		board[0] = new UpgradeablePropertySpace();
 		board[1] = new PropertySpace();
 		board[2] = new CardSpace();
 		board[3] = new TaxSpace();

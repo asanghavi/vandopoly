@@ -17,30 +17,30 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyMortgaged class implements the behavior associated with the 
- * upgradable property space being owned and mortgaged.
+ * UpgradablePropertyLevel1 class implements the behavior associated with the 
+ * upgradable property space being upgraded to level 1.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class UpgradablePropertyMortgaged extends UpgradablePropertyState {
+public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState {
 	
-	private static UpgradablePropertyMortgaged INSTANCE = null;
+	private static UpgradeablePropertyLevel1 INSTANCE = null;
 	
-	protected UpgradablePropertyMortgaged() {
+	protected UpgradeablePropertyLevel1() {
 		// Exists to disable instantiation
 	}
 	
-	public static UpgradablePropertyState Instance() {
+	public static UpgradeablePropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new UpgradablePropertyMortgaged();
+			INSTANCE = new UpgradeablePropertyLevel1();
 		}
 		
 		return INSTANCE;
 	}
 
-	public void landOn(Player player, UpgradablePropertySpace property) {
-		//Do nothing as the space is mortgaged
+	public void landOn(Player player, UpgradeablePropertySpace property) {
+		property.getOwner().collectRent(property.getRentValues()[1], player);
 	}
 }

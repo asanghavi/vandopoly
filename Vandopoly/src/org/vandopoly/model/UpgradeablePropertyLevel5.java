@@ -24,23 +24,23 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 
-public class UpgradablePropertyLevel5 extends UpgradablePropertyState {
+public class UpgradeablePropertyLevel5 extends UpgradeablePropertyState {
 	
-	private static UpgradablePropertyLevel5 INSTANCE = null;
+	private static UpgradeablePropertyLevel5 INSTANCE = null;
 	
-	protected UpgradablePropertyLevel5() {
+	protected UpgradeablePropertyLevel5() {
 		// Exists to disable instantiation
 	}
 	
-	public static UpgradablePropertyState Instance() {
+	public static UpgradeablePropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new UpgradablePropertyLevel5();
+			INSTANCE = new UpgradeablePropertyLevel5();
 		}
 		
 		return INSTANCE;
 	}
 
-	public void landOn(Player player, UpgradablePropertySpace property) {
+	public void landOn(Player player, UpgradeablePropertySpace property) {
 		property.getOwner().collectRent(property.getRentValues()[5], player);
 	}
 }

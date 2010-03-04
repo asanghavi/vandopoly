@@ -17,30 +17,31 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyLevel2 class implements the behavior associated with the 
- * upgradable property space being upgraded to level 2.
+ * UpgradablePropertyLevel0 class implements the behavior associated with the 
+ * upgradable property space being owned, but not upgraded. All spaces are in
+ * this state immediate after being bought.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class UpgradablePropertyLevel2 extends UpgradablePropertyState {
+public class UpgradeablePropertyLevel0 extends UpgradeablePropertyState {
 	
-	private static UpgradablePropertyLevel2 INSTANCE = null;
+	private static UpgradeablePropertyLevel0 INSTANCE = null;
 	
-	protected UpgradablePropertyLevel2() {
+	protected UpgradeablePropertyLevel0() {
 		// Exists to disable instantiation
 	}
 	
-	public static UpgradablePropertyState Instance() {
+	public static UpgradeablePropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new UpgradablePropertyLevel2();
+			INSTANCE = new UpgradeablePropertyLevel0();
 		}
 		
 		return INSTANCE;
 	}
-
-	public void landOn(Player player, UpgradablePropertySpace property) {
-		property.getOwner().collectRent(property.getRentValues()[2], player);
+	
+	public void landOn(Player player, UpgradeablePropertySpace property) {
+		property.getOwner().collectRent(property.getRentValues()[0], player);
 	}
 }
