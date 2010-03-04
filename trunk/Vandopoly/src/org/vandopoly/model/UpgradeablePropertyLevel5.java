@@ -17,8 +17,8 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyLevel5 class implements the behavior associated with the 
- * upgradable property space being upgraded to level 5 (highest).
+ * UpgradeablePropertyLevel5 class implements the behavior associated with the 
+ * upgradeable property space being upgraded to level 5 (highest).
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia

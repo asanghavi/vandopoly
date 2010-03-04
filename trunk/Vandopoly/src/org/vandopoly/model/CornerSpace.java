@@ -35,8 +35,7 @@ public class CornerSpace extends Space {
 	
 	public String toString() {
 		String string = "Property Name: " + name_;
-		string += " On this space: Nobody";
-		
+				
 		return string;
 	}
 	

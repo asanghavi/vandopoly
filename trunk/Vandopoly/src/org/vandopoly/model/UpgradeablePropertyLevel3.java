@@ -17,8 +17,8 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyLevel3 class implements the behavior associated with the 
- * upgradable property space being upgraded to level 3.
+ * UpgradeablePropertyLevel3 class implements the behavior associated with the 
+ * upgradeable property space being upgraded to level 3.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia

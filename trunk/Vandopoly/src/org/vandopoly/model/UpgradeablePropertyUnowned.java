@@ -20,8 +20,8 @@ import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
 /*
- * UpgradablePropertyUnowned class implements the behavior associated with the 
- * upgradable property space being unowned.
+ * UpgradeablePropertyUnowned class implements the behavior associated with the 
+ * upgradeable property space being unowned.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
