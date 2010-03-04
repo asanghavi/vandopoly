@@ -54,4 +54,12 @@ public class Notification {
 	// Award Scholarship Fund sends a player object who will receive the award
 	// Sent in the CornerSpace class, observed by GameControllers
 	public static final String AWARD_SCHOLARSHIP_FUND = "AwardScholarshipFund";
+	
+	// Update Cash sends a copy of the Player object that is sending the notification
+	// so that the observing class can correctly update the properties owned
+	public static final String UPDATE_PROPERTIES = "UpdateProperties";
+	
+	// Update Cash sends a copy of the Player object that is sending the notification
+	// so that the observing class can correctly update the amount of cash 
+	public static final String UPDATE_CASH = "UpdateCash";
 }

@@ -17,6 +17,8 @@ package org.vandopoly.model;
 
 import java.util.ArrayList;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.ui.Display;
 
 /*
@@ -33,7 +35,7 @@ public class Player {
 	private String name_, icon_;
 	private int cash_ = 1500, positionOnBoard_;
 	private boolean getOutOfJail_;
-	private ArrayList<Space> properties_;
+	private ArrayList<PropertySpace> properties_;
 	
 	public Player() {
 		state_ = PlayerFree.Instance();
@@ -42,7 +44,7 @@ public class Player {
 		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
-		setProperties(new ArrayList<Space>());
+		setProperties(new ArrayList<PropertySpace>());
 	}
 	
 	public Player(String name, String icon) {
@@ -52,7 +54,7 @@ public class Player {
 		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
-		setProperties(new ArrayList<Space>());
+		setProperties(new ArrayList<PropertySpace>());
 	}
 	
 	void changeState(PlayerState newState) {
@@ -96,6 +98,8 @@ public class Player {
 	
 	public void updateCash(int value) {
 		cash_ += value;
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_CASH, this);
 	}
 	
 	public void setCash(int value) {
@@ -130,17 +134,23 @@ public class Player {
 		return icon_;
 	}
 
-	public void setProperties(ArrayList<Space> properties) {
+	public void setProperties(ArrayList<PropertySpace> properties) {
 		properties_ = properties;
 	}
 
-	public ArrayList<Space> getProperties() {
+	public ArrayList<PropertySpace> getProperties() {
 		return properties_;
+	}
+	
+	public void updateProperties(PropertySpace property) {
+		properties_.add(property);
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_PROPERTIES, this);
 	}
 	
 	public void purchase(PropertySpace property) {
 		updateCash(-1 * property.getPurchasePrice());
-		properties_.add(property);
+		updateProperties(property);
 		property.setOwner(this);	
 		property.bePurchased();
 	}	

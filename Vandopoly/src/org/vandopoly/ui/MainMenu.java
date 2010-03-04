@@ -147,8 +147,8 @@ public class MainMenu extends JPanel {
 	}
 	
 	public static void main(String[] args) {
-		new Display();
+		Display display = new Display();
 		new MainMenu();
-		new GameController();
+		new GameController(display);
 	}
 }
