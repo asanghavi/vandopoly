@@ -79,4 +79,7 @@ public class PropertySpace extends Space {
 		return mortgageValue_;
 	}
 
+	public void bePurchased() {
+		state_.changeState(this, PropertyOwned.Instance());
+	}
 }
