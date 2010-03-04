@@ -82,4 +82,12 @@ public class PropertySpace extends Space {
 	public void bePurchased() {
 		state_.changeState(this, PropertyOwned.Instance());
 	}
+	
+	public void beMortgaged() {
+		state_.changeState(this, PropertyMortgaged.Instance());
+	}
+	
+	public void unmortgage() {
+		state_.changeState(this, PropertyOwned.Instance());
+	}
 }

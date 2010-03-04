@@ -108,4 +108,12 @@ public class UpgradeablePropertySpace extends PropertySpace {
 	public void bePurchased() {
 		state_.changeState(this, UpgradeablePropertyLevel0.Instance());
 	}
+	
+	public void beMortgaged() {
+		state_.changeState(this, UpgradeablePropertyMortgaged.Instance());
+	}
+	
+	public void unmortgage() {
+		state_.changeState(this, UpgradeablePropertyLevel0.Instance());
+	}
 }

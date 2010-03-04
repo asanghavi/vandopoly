@@ -36,16 +36,23 @@ public class GameButtonPanel extends JPanel {
 	
 	JButton purchase_, mortgage_, endTurn_, quitGame_;
 	
+	Font buttonFont;
+	
+	GameController controller_;
+	
+	int buttonX = 150, buttonY = 50;
+	int frameWidth = buttonX * 4;
+	int frameHeight = buttonY;
+	
 	static final long serialVersionUID = 11;
 	
 	// Will handle all controls in the actual GameController class
 	// GameController will have to implement ActionListener
-	public GameButtonPanel(GameController controller_) {
-		int buttonX = 150, buttonY = 50;
-		int frameWidth = buttonX * 4;
-		int frameHeight = buttonY;
+	public GameButtonPanel(GameController controller) {
 		
-		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
+		controller_ = controller;
+		
+		buttonFont = new Font("broadway", Font.PLAIN, 18);
 		
 		// Set size of window
 		this.setSize(frameWidth, frameHeight);
@@ -54,39 +61,19 @@ public class GameButtonPanel extends JPanel {
 		this.setLayout(null);
 		
 		// Set up the purchase button
-		purchase_ = new JButton("Purchase");
-		purchase_.setBounds(0, 0, buttonX, buttonY);
-		purchase_.setFont(buttonFont);
-		purchase_.setActionCommand("Purchase");
-		purchase_.addActionListener(controller_);
+		purchase_ = buttonCreator("Purchase", 0);
 		purchase_.setEnabled(false);
-		purchase_.setVisible(true);
 		
 		// Set up the mortgage button
-		mortgage_ = new JButton("Mortgage");
-		mortgage_.setBounds(buttonX, 0, buttonX, buttonY);
-		mortgage_.setFont(buttonFont);
-		mortgage_.setActionCommand("Mortgage");
-		mortgage_.addActionListener(controller_);
+		mortgage_ = buttonCreator("Mortgage", 1);
 		mortgage_.setEnabled(false);
-		mortgage_.setVisible(true);
 		
 		// Set up the end turn button
-		endTurn_ = new JButton("End Turn");
-		endTurn_.setBounds((buttonX * 2), 0, buttonX, buttonY);
-		endTurn_.setFont(buttonFont);
-		endTurn_.setActionCommand("End Turn");
-		endTurn_.addActionListener(controller_);
+		endTurn_ = buttonCreator("End Turn", 2);
 		endTurn_.setEnabled(false);
-		endTurn_.setVisible(true);
 		
 		// Set up the quit game button
-		quitGame_ = new JButton("Quit Game");
-		quitGame_.setBounds((buttonX * 3), 0, buttonX, buttonY);
-		quitGame_.setFont(buttonFont);
-		quitGame_.setActionCommand("Quit Game");
-		quitGame_.addActionListener(controller_);
-		quitGame_.setVisible(true);
+		quitGame_ = buttonCreator("Quit Game", 3);
 				
 		this.add(purchase_);
 		this.add(mortgage_);
@@ -98,15 +85,31 @@ public class GameButtonPanel extends JPanel {
 				JLayeredPane.PALETTE_LAYER);
 		
 		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
+		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
 	}
 
+	// Responsible for creating all the buttons in GameButtonPanel
+	private JButton buttonCreator(String name, int buttonNumber) {
+		JButton newButton = new JButton(name);
+		newButton.setBounds((buttonX * buttonNumber), 0, buttonX, buttonY);
+		newButton.setFont(buttonFont);
+		newButton.setActionCommand(name);
+		newButton.addActionListener(controller_);
+		newButton.setVisible(true);
+		return newButton;
+	}
+	
 	// Meant to represent the panel state when the player is done rolling and making decisions
 	// States may need to be more finely tuned based on actual space landed on
 	public void playerState() {
-		purchase_.setEnabled(true);
 		mortgage_.setEnabled(true);
 		endTurn_.setEnabled(true);
+	}
+	
+	// Gets called when the space landed on is available
+	public void enablePurchase() {
+		purchase_.setEnabled(true);
 	}
 	
 	// Represents the panel state when the player is rolling
