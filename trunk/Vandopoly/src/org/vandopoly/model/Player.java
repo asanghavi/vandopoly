@@ -138,8 +138,10 @@ public class Player {
 		return properties_;
 	}
 	
-	public void purchase(Space property) {
-		//Empty for now
+	public void purchase(PropertySpace property) {
+		updateCash(-1 * property.getPurchasePrice());
+		properties_.add(property);
+		property.setOwner(this);	
 	}
 	
 }

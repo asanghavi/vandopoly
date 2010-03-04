@@ -20,26 +20,26 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class UpgradablePropertySpace extends Space {
-	private UpgradablePropertyState state_;
+public class UpgradeablePropertySpace extends Space {
+	private UpgradeablePropertyState state_;
 	private int purchasePrice_;
 	private int mortgageValue_;
 	private int[] rentValues_;
 	private Player owner_;
 	
-	public UpgradablePropertySpace() {
+	public UpgradeablePropertySpace() {
 		name_ = "NONE";
-		state_ = UpgradablePropertyUnowned.Instance();
+		state_ = UpgradeablePropertyUnowned.Instance();
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
 		rentValues_ = new int[6];
 		owner_ = null;
 	}
 	
-	public UpgradablePropertySpace(String name, int purchasePrice, int mortgageValue, int rent0, int rent1, 
+	public UpgradeablePropertySpace(String name, int purchasePrice, int mortgageValue, int rent0, int rent1, 
 			int rent2, int rent3, int rent4, int rent5) {
 		name_ = name;
-		state_ = UpgradablePropertyUnowned.Instance();
+		state_ = UpgradeablePropertyUnowned.Instance();
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
 		rentValues_ = new int[6];
@@ -59,11 +59,11 @@ public class UpgradablePropertySpace extends Space {
 		return string;
 	}
 	
-	void changeState(UpgradablePropertyState newState) {
+	void changeState(UpgradeablePropertyState newState) {
 		state_ = newState;
 	}
 	
-	public UpgradablePropertyState getState() {
+	public UpgradeablePropertyState getState() {
 		return state_;
 	}
 	

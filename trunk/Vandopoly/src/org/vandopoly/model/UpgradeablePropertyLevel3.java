@@ -17,31 +17,30 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyLevel4 class implements the behavior associated with the 
- * upgradable property space being upgraded to level 4.
+ * UpgradablePropertyLevel3 class implements the behavior associated with the 
+ * upgradable property space being upgraded to level 3.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class UpgradablePropertyLevel4 extends UpgradablePropertyState {
+public class UpgradeablePropertyLevel3 extends UpgradeablePropertyState {
 	
-	private static UpgradablePropertyLevel4 INSTANCE = null;
+	private static UpgradeablePropertyLevel3 INSTANCE = null;
 	
-	protected UpgradablePropertyLevel4() {
+	protected UpgradeablePropertyLevel3() {
 		// Exists to disable instantiation
 	}
 	
-	public static UpgradablePropertyState Instance() {
+	public static UpgradeablePropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new UpgradablePropertyLevel4();
+			INSTANCE = new UpgradeablePropertyLevel3();
 		}
 		
 		return INSTANCE;
 	}
-	
-	public void landOn(Player player, UpgradablePropertySpace property) {
-		property.getOwner().collectRent(property.getRentValues()[4], player);
-	}
 
+	public void landOn(Player player, UpgradeablePropertySpace property) {
+		property.getOwner().collectRent(property.getRentValues()[3], player);
+	}
 }
