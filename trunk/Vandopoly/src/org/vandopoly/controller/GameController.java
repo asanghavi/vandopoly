@@ -90,6 +90,7 @@ public class GameController implements ActionListener {
 		scholarshipFund_ = 0;
 	}
 	
+	// Called by the UpdateScholarship notification
 	public void updateFund(Object obj) {
 		Integer value = (Integer)obj;
 		
@@ -99,6 +100,7 @@ public class GameController implements ActionListener {
 			System.err.println("Attempted to remove more money from scholarship than there currently is");
 	}
 	
+	// Called by the Award Scholarship Fund notification
 	public void awardFund(Object obj) {
 		Player player = (Player)obj;
 		
@@ -153,6 +155,7 @@ public class GameController implements ActionListener {
 		board_[27] = new UpgradeablePropertySpace("Student Life Center", 260, 130, 22, 110, 330, 800, 975, 1150);
 		board_[28] = new PropertySpace("BioDiesel Initiative", 150, 75);
 		board_[29] = new UpgradeablePropertySpace("Ingram Center", 280, 140, 24, 120, 360, 850, 1025, 1200);
+		board_[30] = new CornerSpace("Go On Academic Probation");
 		board_[31] = new UpgradeablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
 		board_[32] = new UpgradeablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
 		board_[33] = new CardSpace("Community Chest", false);
@@ -171,17 +174,10 @@ public class GameController implements ActionListener {
 	public void actionPerformed(ActionEvent action) {
 		if(action.getActionCommand().equals("Purchase")) {
 			int position = players_.get(currentPlayerNum_).getPosition();
-			
-			// This is just a test remove later
-			//piece_.get(0).move(0);
-			
-			// TODO implement logic for purchasing property
-			// this will probably need a purchase abstract function in Space
+			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[0]);
 		}
 		else if(action.getActionCommand().equals("Mortgage")) {
-			int position = players_.get(currentPlayerNum_).getPosition();
-
-		//	new PropertySelectionPanel();
+			//	new PropertySelectionPanel();
 			// TODO implement logic for mortgaging property
 		}
 		else if(action.getActionCommand().equals("End Turn")) {
