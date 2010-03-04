@@ -25,6 +25,10 @@ public class Space {
 	protected String name_;
 	
 	public void landOn(Player p) {}
+	
+	public String toString() {
+		return "Property Name: " + name_;
+	}
 
 	// Getters and setters
 	public void setName(String name) {
