@@ -41,9 +41,8 @@ public class PropertySpace extends Space {
 	}
 	
 	public String toString() {
-		String string = "Property Name: " + name_ + ", Owned by: " + owner_ + ", ";
-		string += "On this space: Nobody";
-		
+		String string = "Property Name: " + name_ + ", Owned by: " + owner_;
+				
 		return string;
 	}
 	

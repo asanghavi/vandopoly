@@ -17,8 +17,8 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyMortgaged class implements the behavior associated with the 
- * upgradable property space being owned and mortgaged.
+ * UpgradeablePropertyMortgaged class implements the behavior associated with the 
+ * upgradeable property space being owned and mortgaged.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia

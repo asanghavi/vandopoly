@@ -16,11 +16,12 @@
 package org.vandopoly.model;
 
 /*
- * Model class that is a descendant of Space and represents an upgradable-property on the board
+ * Model class that is a descendant of Space and represents an 
+ * upgradeable-property on the board
  * 
  * @author Allie Mazzia
  */
-public class UpgradeablePropertySpace extends Space {
+public class UpgradeablePropertySpace extends PropertySpace {
 	private UpgradeablePropertyState state_;
 	private int purchasePrice_;
 	private int mortgageValue_;

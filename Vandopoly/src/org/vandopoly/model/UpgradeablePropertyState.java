@@ -16,7 +16,7 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyState class defines an interface for encapsulating the behavior
+ * UpgradeablePropertyState class defines an interface for encapsulating the behavior
  * associated with a particular Concrete State.
  * State class for the State pattern.
  * 

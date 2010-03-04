@@ -142,13 +142,6 @@ public class Player {
 		updateCash(-1 * property.getPurchasePrice());
 		properties_.add(property);
 		property.setOwner(this);	
-	}
-	
-	public void purchase(UpgradeablePropertySpace property) {
-		updateCash(-1 * property.getPurchasePrice());
-		properties_.add(property);
-		property.setOwner(this);	
-	}
-	
+	}	
 }
 

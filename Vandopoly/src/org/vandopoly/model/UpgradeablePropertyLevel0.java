@@ -17,8 +17,8 @@
 package org.vandopoly.model;
 
 /*
- * UpgradablePropertyLevel0 class implements the behavior associated with the 
- * upgradable property space being owned, but not upgraded. All spaces are in
+ * UpgradeablePropertyLevel0 class implements the behavior associated with the 
+ * upgradeable property space being owned, but not upgraded. All spaces are in
  * this state immediate after being bought.
  * ConcreteState class for the State pattern.
  * 
