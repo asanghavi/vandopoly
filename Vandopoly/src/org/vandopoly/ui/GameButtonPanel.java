@@ -41,7 +41,7 @@ public class GameButtonPanel extends JPanel {
 	GameController controller_;
 	
 	int buttonX = 150, buttonY = 50;
-	int frameWidth = buttonX * 4;
+	int frameWidth = buttonX * 3;
 	int frameHeight = buttonY;
 	
 	static final long serialVersionUID = 11;
@@ -67,23 +67,26 @@ public class GameButtonPanel extends JPanel {
 		// Set up the mortgage button
 		mortgage_ = buttonCreator("Mortgage", 1);
 		mortgage_.setEnabled(false);
+		mortgage_.setVisible(false);
 		
 		// Set up the end turn button
-		endTurn_ = buttonCreator("End Turn", 2);
+		endTurn_ = buttonCreator("End Turn", 1);
 		endTurn_.setEnabled(false);
 		
 		// Set up the quit game button
-		quitGame_ = buttonCreator("Quit Game", 3);
+		quitGame_ = buttonCreator("Quit Game", 2);
 				
 		this.add(purchase_);
 		this.add(mortgage_);
 		this.add(endTurn_);
 		this.add(quitGame_);
 		
+		// Add the buttons to the screen
 		DisplayAssembler.getInstance().addComponent(this, 
 				new Point(0, ((int)DisplayAssembler.getScreenHeight()) - 50),
 				JLayeredPane.PALETTE_LAYER);
 		
+		// Sign up for the appropriate notifications
 		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
 		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
