@@ -46,32 +46,25 @@ public class SpacePanel extends JPanel {
 	String spaceName_;
 	Space spaceObj_;
 	boolean isProp_;
-	String owner_;
 	ArrayList<String> onSpace_;
 	JLabel label;
 	
-	public SpacePanel(int pos, String spaceName, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex) {
+	public SpacePanel(int pos, Space space, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex) {
 		x_ = x;
 		y_ = y;
 		width_ = width;
 		height_ = height;
 		c_ = c;
 		useTex_ = useTex;
-		spaceName_ = spaceName;
+		spaceName_ = space.getName();
 		isProp_ = isProp;
 		position_= pos;
 		onSpace_ = new ArrayList<String>();
-		owner_ = "";
+		spaceObj_ = space;
 		addSpace();
 		updateStatus();
 	}
-	
-	// set the display properties of the space
-	public void setProperties(String sn) {
-		spaceName_ = sn;
-		updateStatus();
-	}
-	
+
 	void addSpace() {
 		label = new JLabel();
 		label.setOpaque(true);
@@ -91,11 +84,6 @@ public class SpacePanel extends JPanel {
 				JLayeredPane.FRAME_CONTENT_LAYER);
 	}
 
-	// updates the owner
-	void setOwner(String owner) {
-		owner_ = owner;
-	}
-	
 	void addOnSpace(String name) {
 		onSpace_.add(name);
 	}
@@ -111,16 +99,8 @@ public class SpacePanel extends JPanel {
 	// add status text to board piece
 	public void updateStatus() {
 		String status = "";
-		if(isProp_) {
-			String owner = "Unowned";
-			if(owner_ != "")
-				owner = owner_;
-			status += "Property Name: " + spaceName_ + ", Owned by: " + owner + ", ";
-		} 
-		else if(spaceName_ != "") {
-			status += spaceName_ + ", ";
-		}
 		
+		status += spaceObj_ + ", ";
 		status += "On this space: ";
 		
 		if(onSpace_.size() == 0)
