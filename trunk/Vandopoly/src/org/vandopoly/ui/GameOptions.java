@@ -198,10 +198,10 @@ public class GameOptions extends JPanel{
 		    players_.add(four_);
 		    
 		    // Now set up all of the piece icons
-		    commodoreIcon_ = new ImageIcon("images/Piece/Commodore.jpg");
-		    squirrelIcon_ = new ImageIcon("images/Piece/squirrel.gif");
-		    zepposIcon_ = new ImageIcon("images/Piece/Zeppos.jpg");
-		    corneliusIcon_ = new ImageIcon("images/Piece/Cornelius.jpg");
+		    commodoreIcon_ = new ImageIcon("images/Piece/Commodore.png");
+		    squirrelIcon_ = new ImageIcon("images/Piece/Squirrel.png");
+		    zepposIcon_ = new ImageIcon("images/Piece/Zeppos.png");
+		    corneliusIcon_ = new ImageIcon("images/Piece/Cornelius.png");
 		    
 		    // Create the labels that will be placed underneath the player choices
 		    player1Piece_ = new JLabel();
