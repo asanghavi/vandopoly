@@ -64,7 +64,7 @@ public class GameOptions extends JPanel{
 	private JLabel player1Piece_, player2Piece_, player3Piece_, player4Piece_;
 	private ImageIcon commodoreIcon_, squirrelIcon_, zepposIcon_, corneliusIcon_;
 	
-	private JLabel repeatError_, pieceError_;
+	private JLabel repeatError_, longNameError_, pieceError_;
 	
 	private ButtonGroup icons_[];
 	
@@ -473,7 +473,7 @@ public class GameOptions extends JPanel{
 	            		}
 	            	}
 	            	
-	            	if (noRepeatNames()) {
+	            	if (noRepeatNames() && shortNames()) {
 	            		GameOptions.this.hideFirstPagePanels();
 	            		GameOptions.this.showSecondPagePanels();
 	            		optionsPageNum_ = 2;
@@ -481,8 +481,7 @@ public class GameOptions extends JPanel{
 	            }
 	            
 	            // Check to see if any of the names given are duplicates
-	            public boolean noRepeatNames()
-	            {
+	            public boolean noRepeatNames() {
 	            	// Had to adjust for loops to compensate for blank first name
 	            	for (int i = 1; i <= numberOfPlayers_; i++) {
 	            		for (int j = i+1; j <= numberOfPlayers_; j++) {
@@ -494,6 +493,17 @@ public class GameOptions extends JPanel{
 	            	}
 	            	
 	            	repeatError_.setVisible(false);
+	            	return true;
+	            }
+	            
+	            public boolean shortNames() {
+	            	for (int i = 1; i <= numberOfPlayers_; i++) {
+	            		if (namesAndIcons_[i].length() > 20) {
+	            			longNameError_.setVisible(true);
+	            			return false;
+	            		}
+	            	}
+	            	longNameError_.setVisible(false);
 	            	return true;
 	            }
 	        });		    
@@ -572,6 +582,12 @@ public class GameOptions extends JPanel{
 			repeatError_.setBounds(138, 675, 600, 40);
 			repeatError_.setVisible(false);
 			
+			longNameError_ = new JLabel("Please limit player names to a maximum of 20 characters");
+			longNameError_.setFont(errorFont);
+			longNameError_.setForeground(Color.red);
+			longNameError_.setBounds(25, 675, 700, 40);
+			longNameError_.setVisible(false);
+			
 			pieceError_ = new JLabel("All Players must choose a game piece");
 			pieceError_.setFont(errorFont);
 			pieceError_.setForeground(Color.red);
@@ -611,6 +627,7 @@ public class GameOptions extends JPanel{
 			this.add(playerFour_2_);
 			
 			this.add(repeatError_);
+			this.add(longNameError_);
 			this.add(pieceError_);
 			
 			// Add the Panel to the display
@@ -810,6 +827,7 @@ public class GameOptions extends JPanel{
 			nameFour_.setText(null);
 			numberOfPlayers_ = 2;
 			
+			longNameError_.setVisible(false);
 			repeatError_.setVisible(false);
 			mainMenu_.showMenu();
 			this.setVisible(false);
