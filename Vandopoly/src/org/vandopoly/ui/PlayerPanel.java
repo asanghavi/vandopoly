@@ -47,7 +47,7 @@ public class PlayerPanel extends JPanel {
 	private JTabbedPane infoPanel_;
 	private JPanel panel1_, panel2_, panel3_, panel4_;
 	private JLabel properties_, cashLabel_;
-	private JLabel cashAmount1_, cashAmount2_, cashAmount3_, cashAmount4_;
+	private JLabel cashAmount_[];
 	
 	
 	private double panelScaleX_ = .80, coordScaleX_ = .1;
@@ -68,15 +68,21 @@ public class PlayerPanel extends JPanel {
 		infoPanel_ = new JTabbedPane();
 		infoPanel_.setBounds(paneX, paneY, (int)(panelScaleX_ * width_), (int) (panelScaleY_ * height_));
 		infoPanel_.setFont(nameFont);
+		
+		// Must create the cashAmount JLabels outside a separate method
+		cashAmount_ = new JLabel[players.size()];
+		for (int i = 0; i < players.size(); i++) {
+			cashAmount_[i] = new JLabel("");
+		}
 
 		// Create all panels
-		panel1_ = createPanel(players_.get(0), cashAmount1_);
-		panel2_ = createPanel(players_.get(1), cashAmount2_);
+		panel1_ = createPanel(players_.get(0), cashAmount_[0]);
+		panel2_ = createPanel(players_.get(1), cashAmount_[1]);
 		if (players_.size() > 2) {
-			panel3_ = createPanel(players_.get(2), cashAmount3_);
+			panel3_ = createPanel(players_.get(2), cashAmount_[2]);
 			
 			if (players_.size() == 4)
-				panel4_ = createPanel(players_.get(3), cashAmount4_);
+				panel4_ = createPanel(players_.get(3), cashAmount_[3]);
 		}
 		
 		Point location = new Point((int) (coordScaleX_ * width_) + DisplayAssembler.getRightEdge(), 
@@ -112,7 +118,7 @@ public class PlayerPanel extends JPanel {
 		cashLabel_.setVerticalAlignment(SwingConstants.BOTTOM);
 		cashLabel_.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		cashAmount = new JLabel(cash);
+		cashAmount.setText(cash);
 		cashAmount.setFont(cashFont);
 		cashAmount.setVerticalAlignment(SwingConstants.TOP);
 		cashAmount.setHorizontalAlignment(SwingConstants.CENTER);
@@ -131,20 +137,21 @@ public class PlayerPanel extends JPanel {
 		infoPanel_.addTab(player.getName(), panel);
 		return panel;
 	}
-	
+
+	// Called by the updateCash notification
 	public void updateCash(Object object) {
 		try {
 			Player player = (Player) object;
 			String cash = "" + player.getCash();
 			
 			if (player == players_.get(0)) 
-				cashAmount1_.setText(cash);
+				cashAmount_[0].setText(cash);
 			else if (player == players_.get(1)) 
-				cashAmount2_.setText(cash);
+				cashAmount_[1].setText(cash);
 			else if (players_.size() > 2 && player == players_.get(2))
-				cashAmount3_.setText(cash);				
+				cashAmount_[2].setText(cash);				
 			else if (players_.size() > 3 && player == players_.get(3))
-				cashAmount4_.setText(cash);
+				cashAmount_[3].setText(cash);
 				
 		} 
 		catch (ClassCastException e) {
@@ -156,6 +163,7 @@ public class PlayerPanel extends JPanel {
 		
 	}
 	
+	// Called by the updateProperties notification
 	public void updateProperties(Object object) {
 		try {
 			Player player = (Player) object;
