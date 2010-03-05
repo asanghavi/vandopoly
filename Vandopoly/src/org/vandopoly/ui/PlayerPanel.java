@@ -46,9 +46,10 @@ public class PlayerPanel extends JPanel {
 	int height_ = screen_.height;
 	private JTabbedPane infoPanel_;
 	private JPanel panel1_, panel2_, panel3_, panel4_;
-	private JLabel properties_, cashLabel_, cashAmount1_, cashAmount2_, 
-		cashAmount3_, cashAmount4_;
-	//private String names_[];
+	private JLabel properties_, cashLabel_;
+	private JLabel cashAmount1_, cashAmount2_, cashAmount3_, cashAmount4_;
+	
+	
 	private double panelScaleX_ = .80, coordScaleX_ = .1;
 	private double panelScaleY_ = .64, coordScaleY_ = .18;
 	ArrayList<Player> players_;
@@ -56,6 +57,7 @@ public class PlayerPanel extends JPanel {
 	public PlayerPanel(ArrayList<Player> players) {
 		
 		players_ = players;
+		
 		Font nameFont = new Font("broadway", Font.PLAIN, 20);
 		
 		int paneX = 0, paneY = 0;
@@ -139,14 +141,17 @@ public class PlayerPanel extends JPanel {
 				cashAmount1_.setText(cash);
 			else if (player == players_.get(1)) 
 				cashAmount2_.setText(cash);
-			else if (player == players_.get(2))
+			else if (players_.size() > 2 && player == players_.get(2))
 				cashAmount3_.setText(cash);				
-			else if (player == players_.get(3))
+			else if (players_.size() > 3 && player == players_.get(3))
 				cashAmount4_.setText(cash);
 				
 		} 
 		catch (ClassCastException e) {
 			System.err.println("Unexpected object passed to updateCash");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 	}
