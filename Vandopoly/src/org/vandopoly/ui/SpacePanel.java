@@ -61,27 +61,29 @@ public class SpacePanel extends JPanel {
 		position_= pos;
 		onSpace_ = new ArrayList<String>();
 		spaceObj_ = space;
-		addSpace();
+		label = addSpace();
 		updateStatus();
 	}
 
-	void addSpace() {
-		label = new JLabel();
-		label.setOpaque(true);
+	JLabel addSpace() {
+		JLabel tmp = new JLabel();
+		tmp.setOpaque(true);
 		
 		if (useTex_) {
-			label.setIcon(new ImageIcon("images/boardTex.png"));
+			tmp.setIcon(new ImageIcon("images/boardTex.png"));
 		}
 		else {
-			label.setOpaque(true);
-			label.setBackground(c_);
+			tmp.setOpaque(true);
+			tmp.setBackground(c_);
 		}
 		
-		label.setSize(new Dimension(width_, height_));
-		label.setBorder(BorderFactory.createLineBorder(Color.black));
+		tmp.setSize(new Dimension(width_, height_));
+		tmp.setBorder(BorderFactory.createLineBorder(Color.black));
 
-		DisplayAssembler.getInstance().addComponent(label, new Point(x_,y_), 
+		DisplayAssembler.getInstance().addComponent(tmp, new Point(x_,y_), 
 				JLayeredPane.FRAME_CONTENT_LAYER);
+		
+		return tmp;
 	}
 
 	void addOnSpace(String name) {
@@ -114,5 +116,9 @@ public class SpacePanel extends JPanel {
 		}
 		
 		label.setToolTipText(status);
+	}
+	
+	public Point getCenter() {
+		return new Point((int)(x_ + width_) / 2, (int)(y_ + height_) / 2);
 	}
 }

@@ -30,6 +30,7 @@ public class PropertySpace extends Space {
 		name_ = "NONE";
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
+		state_ = PropertyUnowned.Instance();
 		owner_ = null;
 	}
 	
@@ -37,6 +38,7 @@ public class PropertySpace extends Space {
 		name_ = name;
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
+		state_ = PropertyUnowned.Instance();
 		owner_ = null;
 	}
 	
@@ -93,5 +95,9 @@ public class PropertySpace extends Space {
 	
 	public void unmortgage() {
 		state_.changeState(this, PropertyOwned.Instance());
+	}
+	
+	public PropertySpaceState getState() {
+		return state_.getState();
 	}
 }

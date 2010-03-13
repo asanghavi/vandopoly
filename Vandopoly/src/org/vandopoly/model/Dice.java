@@ -65,6 +65,9 @@ public class Dice {
 	public int getDie2() {
 		return die2_;
 	}
+	public int getTotalRoll() {
+		return die1_ + die2_;
+	}
 	public int getNumInRowDoubles() {
 		return numInRowDoubles_;
 	}
