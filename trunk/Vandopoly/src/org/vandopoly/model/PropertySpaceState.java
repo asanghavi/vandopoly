@@ -31,4 +31,8 @@ public class PropertySpaceState {
 	protected void landOn(Player player, PropertySpace property) {
 		// Do something
 	}
+	
+	protected PropertySpaceState getState() {
+		return this;
+	}
 }

@@ -34,14 +34,16 @@ import org.vandopoly.ui.Display;
 import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
+import org.vandopoly.ui.PropertySelectionPanel;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
  * GameController should have access to all real models and control game state.
  * 
+ * TODO Dont allow infinite purchases of same property, dont allow purchase when no money left.
+ * 
  *  @author James Kasten
  */
-
 public class GameController implements ActionListener {
 	Dice dice_;
 	ArrayList<Player> players_;
@@ -73,6 +75,8 @@ public class GameController implements ActionListener {
 				this, "updateFund");
 		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
 				this, "awardFund");
+		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
+				this, "moveCurrentPlayer");
 	}
 	
 	// Called by the START_GAME notification
@@ -88,6 +92,28 @@ public class GameController implements ActionListener {
 		buttonPanel_ = new GameButtonPanel(this);
 		
 		scholarshipFund_ = 0;
+	}
+	
+	public void moveCurrentPlayer(Object obj) {
+		
+		// In testing mode
+		try {
+			Dice dice = (Dice)obj;
+			Player currentPlayer = players_.get(currentPlayerNum_);
+			System.out.println("Current Player: "+currentPlayer.getName());
+			
+			currentPlayer.movePiece(dice.getTotalRoll());
+			System.out.println("Dice Roll: "+dice.getTotalRoll());
+			System.out.println("Giving a position of: "+currentPlayer.getPosition()+
+					" which is "+board_[currentPlayer.getPosition()].getName());
+			board_[currentPlayer.getPosition()].landOn(currentPlayer);
+			
+			piece_.get(currentPlayerNum_).move(dice.getTotalRoll());
+			//System.out.println(display_.getCenter(currentPlayer.getPosition()));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// Called by the UpdateScholarship notification
@@ -118,7 +144,7 @@ public class GameController implements ActionListener {
 		
 		// Create all of the appropriate pieces
 		for (int i = 0; i < numOfPlayers_; i++) {
-			//piece_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
+			piece_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
 		}
 		
 	}
@@ -127,51 +153,45 @@ public class GameController implements ActionListener {
 		
 		// set 1
 		board_[0] = new CornerSpace("GO");
-		board_[1] = new UpgradeablePropertySpace("Chaffin Place", 200,100, 16, 80, 220, 600, 800, 1000);
-		board_[2] = new UpgradeablePropertySpace("Morgan House", 180, 90, 14, 70, 200, 550, 750, 950);
-		board_[3] = new CardSpace("Community Chest", false);
-		board_[4] = new UpgradeablePropertySpace("Lewis House", 180, 90, 14, 70, 200, 550, 750, 950);
-		board_[5] = new PropertySpace("Vandy Van Long Route", 200, 100);
-		board_[6] = new UpgradeablePropertySpace("Buttrick Hall", 160, 80, 12, 60, 180, 500, 700, 900);
-		board_[7] = new UpgradeablePropertySpace("Wilson Hall", 140, 70, 10, 50, 150, 450, 625, 750);
-		board_[8] = new PropertySpace("CoGeneration Plant", 150, 75);
-		board_[9] = new UpgradeablePropertySpace("Furman Hall", 140, 70, 10, 50, 150, 450, 625, 750);
-		
-		// set 2
-		board_[10] = new CornerSpace("Go On Academic Probation");
-		board_[11] = new UpgradeablePropertySpace("Kirkland Hall", 220, 110, 18, 90, 250, 700, 875, 1050);
-		board_[12] = new CardSpace("Chance", true);
-		board_[13] = new UpgradeablePropertySpace("Wyatt Center", 220, 110, 18, 90, 250, 700, 875, 1050);
-		board_[14] = new UpgradeablePropertySpace("Featheringill Hall", 240, 120, 20, 100, 300, 750, 925, 1100);
-		board_[15] = new PropertySpace("Vandy Van Normal Route", 200, 100);
-		board_[16] = new UpgradeablePropertySpace("Sarratt Student Center", 260, 130, 22, 110, 330, 800, 975, 1150);
-		board_[17] = new UpgradeablePropertySpace("Student Life Center", 260, 130, 22, 110, 330, 800, 975, 1150);
-		board_[18] = new PropertySpace("BioDiesel Initiative", 150, 75);
-		board_[19] = new UpgradeablePropertySpace("Ingram Center", 280, 140, 24, 120, 360, 850, 1025, 1200);
-		
-		// set 3
-		board_[20] = new CornerSpace("Academic Probation");
-		board_[21] = new UpgradeablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
-		board_[22] = new UpgradeablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
-		board_[23] = new CardSpace("Community Chest", false);
-		board_[24] = new UpgradeablePropertySpace("Hank Ingram House", 320, 160, 28, 150, 450, 1000, 1200, 1400);
-		board_[25] = new PropertySpace("Vandy Van Express Route", 200, 100);
-		board_[26] = new CardSpace("Chance", true);
-		board_[27] = new UpgradeablePropertySpace("McGugin Center", 350, 175, 35, 175, 500, 1100, 1300, 1500);
-		board_[28] = new TaxSpace("Parking Ticket");
-		board_[29] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
-		
-		// set 4
-		board_[30] = new CornerSpace("Scholarship Fund");
-		board_[31] = new UpgradeablePropertySpace("McGill Hall", 120, 30, 8, 40, 100, 300, 450, 600);
-		board_[32] = new UpgradeablePropertySpace("Cole Hall", 100, 30, 6, 30, 90, 270, 400, 550);
-		board_[33] = new CardSpace("Chance", true);
-		board_[34] = new UpgradeablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
-		board_[35] = new PropertySpace("Vandy Van Reverse Route", 200, 100);
-		board_[36] = new TaxSpace("Pay Tuition");
-		board_[37] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4,	20,	60,	180, 320, 450);
-		board_[38] = new CardSpace("Community Chest", false);
-		board_[39] = new UpgradeablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
+		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
+		board_[2] = new CardSpace("Community Chest", false);
+		board_[3] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4,	20,	60,	180, 320, 450);
+		board_[4] = new TaxSpace("Pay Tuition");
+		board_[5] = new PropertySpace("Vandy Van Reverse Route", 200, 100);
+		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
+		board_[7] = new CardSpace("Chance", true);
+		board_[8] = new UpgradeablePropertySpace("Cole Hall", 100, 30, 6, 30, 90, 270, 400, 550);
+		board_[9] = new UpgradeablePropertySpace("McGill Hall", 120, 30, 8, 40, 100, 300, 450, 600);
+		board_[10] = new CornerSpace("Academic Probation");
+		board_[11] = new UpgradeablePropertySpace("Furman Hall", 140, 70, 10, 50, 150, 450, 625, 750);
+		board_[12] = new PropertySpace("CoGeneration Plant", 150, 75);
+		board_[13] = new UpgradeablePropertySpace("Wilson Hall", 140, 70, 10, 50, 150, 450, 625, 750);
+		board_[14] = new UpgradeablePropertySpace("Buttrick Hall", 160, 80, 12, 60, 180, 500, 700, 900);
+		board_[15] = new PropertySpace("Vandy Van Long Route", 200, 100);
+		board_[16] = new UpgradeablePropertySpace("Lewis House", 180, 90, 14, 70, 200, 550, 750, 950);
+		board_[17] = new CardSpace("Community Chest", false);
+		board_[18] = new UpgradeablePropertySpace("Morgan House", 180, 90, 14, 70, 200, 550, 750, 950);
+		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 200,100, 16, 80, 220, 600, 800, 1000);
+		board_[20] = new CornerSpace("Scholarship Fund");
+		board_[21] = new UpgradeablePropertySpace("Kirkland Hall", 220, 110, 18, 90, 250, 700, 875, 1050);
+		board_[22] = new CardSpace("Chance", true);
+		board_[23] = new UpgradeablePropertySpace("Wyatt Center", 220, 110, 18, 90, 250, 700, 875, 1050);
+		board_[24] = new UpgradeablePropertySpace("Featheringill Hall", 240, 120, 20, 100, 300, 750, 925, 1100);
+		board_[25] = new PropertySpace("Vandy Van Normal Route", 200, 100);
+		board_[26] = new UpgradeablePropertySpace("Sarratt Student Center", 260, 130, 22, 110, 330, 800, 975, 1150);
+		board_[27] = new UpgradeablePropertySpace("Student Life Center", 260, 130, 22, 110, 330, 800, 975, 1150);
+		board_[28] = new PropertySpace("BioDiesel Initiative", 150, 75);
+		board_[29] = new UpgradeablePropertySpace("Ingram Center", 280, 140, 24, 120, 360, 850, 1025, 1200);
+		board_[30] = new CornerSpace("Go On Academic Probation");
+		board_[31] = new UpgradeablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
+		board_[32] = new UpgradeablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
+		board_[33] = new CardSpace("Community Chest", false);
+		board_[34] = new UpgradeablePropertySpace("Hank Ingram House", 320, 160, 28, 150, 450, 1000, 1200, 1400);
+		board_[35] = new PropertySpace("Vandy Van Express Route", 200, 100);
+		board_[36] = new CardSpace("Chance", true);
+		board_[37] = new UpgradeablePropertySpace("McGugin Center", 350, 175, 35, 175, 500, 1100, 1300, 1500);
+		board_[38] = new TaxSpace("Parking Ticket");
+		board_[39] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
 		
 		display_.showBoard(board_);
 		
@@ -179,19 +199,22 @@ public class GameController implements ActionListener {
 	
 	// Represents the logic for the GameButtonPanel class
 	public void actionPerformed(ActionEvent action) {
-		if(action.getActionCommand().equals("Purchase")) {
+		if (action.getActionCommand().equals("Purchase")) {
 			int position = players_.get(currentPlayerNum_).getPosition();
-			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[0]);
+			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[position]);
 		}
-		else if(action.getActionCommand().equals("Mortgage")) {
-			//	new PropertySelectionPanel();
+		else if (action.getActionCommand().equals("Renovate")) {
+			
+		}
+		else if (action.getActionCommand().equals("Mortgage")) {
+			new PropertySelectionPanel(players_.get(currentPlayerNum_).getProperties());
 			// TODO implement logic for mortgaging property
 		}
-		else if(action.getActionCommand().equals("End Turn")) {
+		else if (action.getActionCommand().equals("End Turn")) {
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 		}
-		else if(action.getActionCommand().equals("Quit Game")) {
+		else if (action.getActionCommand().equals("Quit Game")) {
 			System.exit(0);
 		}
 	}

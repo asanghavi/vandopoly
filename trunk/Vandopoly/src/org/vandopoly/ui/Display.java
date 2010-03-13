@@ -279,4 +279,8 @@ public class Display extends JFrame {
 			Color c, boolean useTex) {
 		new SpacePanel(spacePos_++, space, isProp, x, y, width, height, c, useTex);
 	}
+	
+	public Point getCenter(int spaceNum) {
+		return spaces_[spaceNum][0].getCenter();
+	}
 }

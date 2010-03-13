@@ -64,7 +64,7 @@ public class GameOptions extends JPanel{
 	private JLabel player1Piece_, player2Piece_, player3Piece_, player4Piece_;
 	private ImageIcon commodoreIcon_, squirrelIcon_, zepposIcon_, corneliusIcon_;
 	
-	private JLabel repeatError_, longNameError_, pieceError_;
+	private JLabel repeatError_, longNameError_, noNameError_, pieceError_;
 	
 	private ButtonGroup icons_[];
 	
@@ -473,7 +473,7 @@ public class GameOptions extends JPanel{
 	            		}
 	            	}
 	            	
-	            	if (noRepeatNames() && shortNames()) {
+	            	if (noRepeatNames() && shortNames() && allHaveNames()) {
 	            		GameOptions.this.hideFirstPagePanels();
 	            		GameOptions.this.showSecondPagePanels();
 	            		optionsPageNum_ = 2;
@@ -505,6 +505,17 @@ public class GameOptions extends JPanel{
 	            	}
 	            	longNameError_.setVisible(false);
 	            	return true;
+	            }
+	            
+	            public boolean allHaveNames() {
+	            	for (int i = 1; i <= numberOfPlayers_; i++) {
+	            		if (namesAndIcons_[i].length() == 0) {
+	            			noNameError_.setVisible(true);
+	            			return false;
+	            		}
+	            	}
+	            	noNameError_.setVisible(false);
+	            	return true;	
 	            }
 	        });		    
 			
@@ -588,6 +599,12 @@ public class GameOptions extends JPanel{
 			longNameError_.setBounds(25, 675, 700, 40);
 			longNameError_.setVisible(false);
 			
+			noNameError_ = new JLabel("All players must have a name");
+			noNameError_.setFont(errorFont);
+			noNameError_.setForeground(Color.red);
+			noNameError_.setBounds(187, 675, 700, 40);
+			noNameError_.setVisible(false);
+			
 			pieceError_ = new JLabel("All Players must choose a game piece");
 			pieceError_.setFont(errorFont);
 			pieceError_.setForeground(Color.red);
@@ -628,6 +645,7 @@ public class GameOptions extends JPanel{
 			
 			this.add(repeatError_);
 			this.add(longNameError_);
+			this.add(noNameError_);
 			this.add(pieceError_);
 			
 			// Add the Panel to the display
@@ -829,6 +847,7 @@ public class GameOptions extends JPanel{
 			
 			longNameError_.setVisible(false);
 			repeatError_.setVisible(false);
+			noNameError_.setVisible(false);
 			mainMenu_.showMenu();
 			this.setVisible(false);
 		}

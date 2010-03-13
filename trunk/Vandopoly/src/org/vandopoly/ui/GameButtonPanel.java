@@ -34,14 +34,14 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class GameButtonPanel extends JPanel {
 	
-	JButton purchase_, mortgage_, endTurn_, quitGame_;
+	JButton purchase_, mortgage_, endTurn_, quitGame_, renovate_;
 	
 	Font buttonFont;
 	
 	GameController controller_;
 	
 	int buttonX = 150, buttonY = 50;
-	int frameWidth = buttonX * 3;
+	int frameWidth = buttonX * 5;
 	int frameHeight = buttonY;
 	
 	static final long serialVersionUID = 11;
@@ -64,19 +64,22 @@ public class GameButtonPanel extends JPanel {
 		purchase_ = buttonCreator("Purchase", 0);
 		purchase_.setEnabled(false);
 		
+		renovate_ = buttonCreator("Renovate", 1);
+		renovate_.setEnabled(false);
+		
 		// Set up the mortgage button
-		mortgage_ = buttonCreator("Mortgage", 1);
+		mortgage_ = buttonCreator("Mortgage", 2);
 		mortgage_.setEnabled(false);
-		mortgage_.setVisible(false);
 		
 		// Set up the end turn button
-		endTurn_ = buttonCreator("End Turn", 1);
+		endTurn_ = buttonCreator("End Turn", 3);
 		endTurn_.setEnabled(false);
 		
 		// Set up the quit game button
-		quitGame_ = buttonCreator("Quit Game", 2);
+		quitGame_ = buttonCreator("Quit Game", 4);
 				
 		this.add(purchase_);
+		this.add(renovate_);
 		this.add(mortgage_);
 		this.add(endTurn_);
 		this.add(quitGame_);
@@ -106,6 +109,7 @@ public class GameButtonPanel extends JPanel {
 	// Meant to represent the panel state when the player is done rolling and making decisions
 	// States may need to be more finely tuned based on actual space landed on
 	public void playerState() {
+		renovate_.setEnabled(true);
 		mortgage_.setEnabled(true);
 		endTurn_.setEnabled(true);
 	}
@@ -119,6 +123,7 @@ public class GameButtonPanel extends JPanel {
 	// ie. the player should not be able to end his turn early
 	public void rollingState() {
 		purchase_.setEnabled(false);
+		renovate_.setEnabled(false);
 		mortgage_.setEnabled(false);
 		endTurn_.setEnabled(false);
 	}
