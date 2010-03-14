@@ -89,9 +89,14 @@ public class DisplayAssembler {
 		desktopPane_ = desktopPane;
 	}
 	
-	// Function allows components to be added to the DesktopPane
+	// Functions allows components to be added to the DesktopPane
 	public void addComponent(JComponent component, Point location, Object layer) {
 		component.setLocation(location);
+		desktopPane_.add(component, layer);
+	}
+	
+	public void addComponent(JComponent component, int pointX, int pointY, Object layer) {
+		component.setLocation(pointX, pointY);
 		desktopPane_.add(component, layer);
 	}
 	

@@ -42,82 +42,22 @@ public class PieceDown extends PieceState {
 	
 	public void move(final Piece piece, int currentSpace, int newSpace) {
 		assert(newSpace < 40);
-		final int startX = piece.pixelX_;
-		final int startY = piece.pixelY_;
 		
-		// Eventually move out to main function - due to race conditions
-		if (newSpace < 30) {
-			piece.pixelY_ = (int)(piece.pixelY_ + ((40 - currentSpace) * DisplayAssembler.getSpaceWidth() + 
-					(DisplayAssembler.getSpaceWidth() * .4)));
-			piece.pixelX_ = piece.pixelX_ - (int)(DisplayAssembler.getSpaceWidth());
-		}
-		else
-			piece.pixelY_ = piece.pixelY_ + ((newSpace - currentSpace) * DisplayAssembler.getSpaceWidth());
-		final int curSpace = currentSpace;
-		final int nSpace = newSpace;
-		
-		try {
-			// Thread used for animation of piece
-			new Thread() {
-				public void run() {
-					int cSpace = curSpace;
-					int cX = startX;
-					int cY = startY;
+		while(currentSpace != newSpace) {
 					
-					while(cSpace != nSpace) {
-						
-						cY = moveSquare(piece, cX, cY);
-						
-						cSpace = (cSpace + 1) % 40;
-						
-						if (cSpace == 0) {
-							
-							for (int i = 0; i < DisplayAssembler.getSpaceWidth() * .4; i++) {
-								DisplayAssembler.getInstance().addComponent(piece.getIcon(), 
-									new Point(cX, ++cY), JLayeredPane.MODAL_LAYER);
-								
-								try {
-									Thread.sleep(1);
-								} catch(InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-							
-							for (int i = 0; i < DisplayAssembler.getSpaceWidth(); i++) {
-								DisplayAssembler.getInstance().addComponent(piece.getIcon(), 
-									new Point(--cX, cY), JLayeredPane.MODAL_LAYER);
-								
-								try {
-									Thread.sleep(1);
-								} catch(InterruptedException e) {
-									e.printStackTrace();
-								}
-							}
-							
-							piece.changeState(PieceLeft.Instance());
-							piece.getState().move(piece, cSpace, nSpace);
-							break;
-						}
-					}
+			piece.pixelY_ = moveSquareDown(piece, piece.pixelX_, piece.pixelY_, 1);
 					
-				}
-			}.start();
-		} catch (ClassCastException e) {
-			System.err.println("Dice expected object to method updateDice");
-		}
-	}
-	
-	private int moveSquare(Piece piece, int currentX, int currentY) {
-		for (int i = 0; i < DisplayAssembler.getSpaceWidth(); i++) {
-			DisplayAssembler.getInstance().addComponent(piece.getIcon(), 
-				new Point(currentX, ++currentY), JLayeredPane.MODAL_LAYER);
+			currentSpace = (currentSpace + 1) % 40;
 			
-			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+			// Move piece appropriately in Corner Space
+			if (currentSpace == 0) {	
+				piece.pixelY_ = moveSquareDown(piece, piece.pixelX_, piece.pixelY_, leftDownYBuffer);
+				piece.pixelX_ = moveSquareLeft(piece, piece.pixelX_, piece.pixelY_, xBuffer);
+				
+				piece.changeState(PieceLeft.Instance());
+				piece.getState().move(piece, currentSpace, newSpace);
+				break;
 			}
 		}
-		return currentY;
 	}
 }
