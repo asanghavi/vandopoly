@@ -96,20 +96,25 @@ public class GameController implements ActionListener {
 	
 	public void moveCurrentPlayer(Object obj) {
 		
-		// In testing mode
 		try {
 			Dice dice = (Dice)obj;
 			Player currentPlayer = players_.get(currentPlayerNum_);
-			System.out.println("Current Player: "+currentPlayer.getName());
 			
+			// Update current position of player model
 			currentPlayer.movePiece(dice.getTotalRoll());
+			
+			//Print out some statements that help testing
+			System.out.println("Current Player: "+currentPlayer.getName());
 			System.out.println("Dice Roll: "+dice.getTotalRoll());
 			System.out.println("Giving a position of: "+currentPlayer.getPosition()+
 					" which is "+board_[currentPlayer.getPosition()].getName());
+			
+			// Have currentPlayer landOn the appropriate board position
 			board_[currentPlayer.getPosition()].landOn(currentPlayer);
 			
+			// Move piece on the Board
 			piece_.get(currentPlayerNum_).move(dice.getTotalRoll());
-			//System.out.println(display_.getCenter(currentPlayer.getPosition()));
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

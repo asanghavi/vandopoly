@@ -16,6 +16,7 @@
 package org.vandopoly.ui;
 
 import java.awt.Point;
+import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -35,13 +36,15 @@ public class Piece {
 	private int player_;
 	private final int TOTAL_SPACES = 40;
 	
-	private int pieceSeparation = 50;
+	private int pieceSeparation = 40;
 	private String name_;
 	
 	private PieceState state_;
 	
 	private ImageIcon image_;
 	private JLabel icon_;
+	
+	private Semaphore motionControl;
 	
 	final static long serialVersionUID = 20;
 	
@@ -58,27 +61,59 @@ public class Piece {
 		icon_.setVisible(true);
 		
 		if(playerNum == 1) {
-			pixelX_ = DisplayAssembler.getTopLeftGo() + 10;
+			pixelX_ = DisplayAssembler.getTopLeftGo() + 2;
 			pixelY_ = 980;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
-		if(playerNum == 2) {
-			pixelX_ = DisplayAssembler.getTopLeftGo() + 10;
+		else if(playerNum == 2) {
+			pixelX_ = DisplayAssembler.getTopLeftGo() + 2;
 			pixelY_ = 980 + pieceSeparation;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
-		// TODO: change PlayerRollDie to something more appropriate
-		//NotificationManager.getInstance().addObserver("PlayerRollDie", this, "move");
+		else if(playerNum == 3) {
+			pixelX_ = DisplayAssembler.getTopLeftGo() + 2 + pieceSeparation;
+			pixelY_ = 980;
+			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
+					pixelY_), JLayeredPane.MODAL_LAYER);
+		}
+		else if(playerNum == 4) {
+			pixelX_ = DisplayAssembler.getTopLeftGo() + 2 + pieceSeparation;
+			pixelY_ = 980 + pieceSeparation;
+			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
+					pixelY_), JLayeredPane.MODAL_LAYER);
+		}
+		
+		motionControl = new Semaphore(1);
 	}
 	
 	// TODO: Standard move function that moves the GUI the correct number of spaces.
 	// based on a roll of the dice
 	public void move(final int numSpaces) {
-		int oldSpace = currentSpace_;
-		currentSpace_ = (currentSpace_ + numSpaces) % TOTAL_SPACES;
-		state_.move(this, oldSpace, currentSpace_);
+		new Thread() {
+			public void run() {
+				try {
+					// Must acquire the lock before moving...
+					// This prevents multiple movements at the same time that result
+					// in glitches
+					motionControl.acquire();
+					
+					// Update current piece spaces
+					int oldSpace = currentSpace_;
+					currentSpace_ = (currentSpace_ + numSpaces) % TOTAL_SPACES;
+					
+					// Call on proper state to move the piece
+					state_.move(Piece.this, oldSpace, currentSpace_);
+					
+					// Must release lock
+					motionControl.release();
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}.start();
 	}
 	
 	public JLabel getIcon() {

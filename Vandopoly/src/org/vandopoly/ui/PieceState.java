@@ -15,6 +15,10 @@
 
 package org.vandopoly.ui;
 
+import java.awt.Point;
+
+import javax.swing.JLayeredPane;
+
 
 /*
  * Piece State is the base state of the Piece state pattern
@@ -22,11 +26,47 @@ package org.vandopoly.ui;
  * @author James Kasten
  */
 public class PieceState {
+	protected double xBuffer = .8;
+	protected double upRightYBuffer = .5;
+	protected double leftDownYBuffer = .4;
+	
 	protected void changeState(Piece piece, PieceState newState) {
 		piece.changeState(newState);
 	}
 	
 	protected void move(Piece piece, int currentSpace, int newSpace) {
 		
+	}
+	
+	protected int moveSquareLeft(Piece piece, int currentX, int currentY, double percent) {
+		for (int i = 0; i < DisplayAssembler.getSpaceWidth() * percent; i++) {
+			DisplayAssembler.getInstance().addComponent(piece.getIcon(),
+					new Point(--currentX, currentY), JLayeredPane.MODAL_LAYER);
+		}
+		return currentX;
+	}
+	
+	protected int moveSquareRight(Piece piece, int currentX, int currentY, double percent) {
+		for (int i = 0; i < DisplayAssembler.getSpaceWidth() * percent; i++) {
+			DisplayAssembler.getInstance().addComponent(piece.getIcon(),
+					new Point(++currentX, currentY), JLayeredPane.MODAL_LAYER);
+		}
+		return currentX;
+	}
+	
+	protected int moveSquareUp(Piece piece, int currentX, int currentY, double percent) {
+		for (int i = 0; i < DisplayAssembler.getSpaceWidth() * percent; i++) {
+			DisplayAssembler.getInstance().addComponent(piece.getIcon(),
+					new Point(currentX, --currentY), JLayeredPane.MODAL_LAYER);
+		}
+		return currentY;
+	}
+	
+	protected int moveSquareDown(Piece piece, int currentX, int currentY, double percent) {
+		for (int i = 0; i < DisplayAssembler.getSpaceWidth() * percent; i++) {
+			DisplayAssembler.getInstance().addComponent(piece.getIcon(), 
+				new Point(currentX, ++currentY), JLayeredPane.MODAL_LAYER);
+		}
+		return currentY;
 	}
 }
