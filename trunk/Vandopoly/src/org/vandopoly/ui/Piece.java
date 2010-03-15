@@ -62,25 +62,25 @@ public class Piece {
 		
 		if(playerNum == 1) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2;
-			pixelY_ = 980;
+			pixelY_ = DisplayAssembler.getTopLeftGo()+ 25;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		else if(playerNum == 2) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2;
-			pixelY_ = 980 + pieceSeparation;
+			pixelY_ = DisplayAssembler.getTopLeftGo() + 25 + pieceSeparation;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		else if(playerNum == 3) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2 + pieceSeparation;
-			pixelY_ = 980;
+			pixelY_ = DisplayAssembler.getTopLeftGo()+ 25;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		else if(playerNum == 4) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2 + pieceSeparation;
-			pixelY_ = 980 + pieceSeparation;
+			pixelY_ = DisplayAssembler.getTopLeftGo() + 25 + pieceSeparation;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
