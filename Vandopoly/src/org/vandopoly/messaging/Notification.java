@@ -62,4 +62,13 @@ public class Notification {
 	// Update Cash sends a copy of the Player object that is sending the notification
 	// so that the observing class can correctly update the amount of cash 
 	public static final String UPDATE_CASH = "UpdateCash";
+	
+	////////////////////////////////////////////////////////////////////////////////////////////
+	// Button Functionality
+	////////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Disable Purchase is simply a message sent from Player.purchase and the DicePanel used to 
+	// stop a player from pushing the purchase button when the player should no longer be able
+	// to purchase a property due to the player moving, or already purchasing the property
+	public static final String DISABLE_PURCHASE = "DisablePurchase";
 }

@@ -78,6 +78,7 @@ public class DicePanel extends JPanel {
 		// Add action listener to roll dice button
 		rollDice_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 				dice_.roll();
 			}
 		});
