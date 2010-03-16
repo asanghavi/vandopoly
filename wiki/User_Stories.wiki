@@ -6,6 +6,7 @@ User stories for Vandopoly.
     * User can move piece around the board appropriately by rolling dice (James)
     * User can purchase properties by using the purchase button when appropriate (James)
     * User can mortgage properties by using the mortgage button on the game button panel (James)
+    * User can see a pop-up box containing a the contents of a "Chance" or "Community Chest" card after landing on a "Chance" or "Community Chest" space (Allie) 
 
 = Cycle 3 User Stories =
     * User can see a menu bar aligned on the bottom of the screen. The menu bar will contain the "Quit Game" button and a "Purchase" button (James, Allie)
