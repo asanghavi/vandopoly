@@ -93,6 +93,7 @@ public class GameButtonPanel extends JPanel {
 		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
 		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
+		NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "disablePurchase");
 	}
 
 	// Responsible for creating all the buttons in GameButtonPanel
@@ -117,6 +118,12 @@ public class GameButtonPanel extends JPanel {
 	// Gets called when the space landed on is available
 	public void enablePurchase() {
 		purchase_.setEnabled(true);
+	}
+	
+	// Gets called after successful purchase, or when there are doubles and
+	// the player must roll again
+	public void disablePurchase() {
+		purchase_.setEnabled(false);
 	}
 	
 	// Represents the panel state when the player is rolling

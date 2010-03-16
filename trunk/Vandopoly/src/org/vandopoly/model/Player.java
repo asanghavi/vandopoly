@@ -149,10 +149,13 @@ public class Player {
 	}
 	
 	public void purchase(PropertySpace property) {
-		updateCash(-1 * property.getPurchasePrice());
-		updateProperties(property);
-		property.setOwner(this);
-		property.bePurchased();
+		if(property.getPurchasePrice() < cash_) {
+			updateCash(-1 * property.getPurchasePrice());
+			updateProperties(property);
+			property.setOwner(this);
+			property.bePurchased();
+			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
+		}
 	}
 
 	public void mortgage(PropertySpace property) {
