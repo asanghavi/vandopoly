@@ -9,6 +9,8 @@ User stories for Vandopoly.
     * User can see a pop-up box containing a the contents of a "Chance" or "Community Chest" card after landing on a "Chance" or "Community Chest" space (Allie) 
     * User can see appropriate graphics on all board spaces (Matt)
 
+----
+
 = Cycle 3 User Stories =
     * User can see a menu bar aligned on the bottom of the screen. The menu bar will contain the "Quit Game" button and a "Purchase" button (James, Allie)
     * User sees tool tips pop up immediately (Matt)
