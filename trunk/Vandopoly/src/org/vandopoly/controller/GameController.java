@@ -18,9 +18,11 @@ package org.vandopoly.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.model.Card;
 import org.vandopoly.model.CardSpace;
 import org.vandopoly.model.CornerSpace;
 import org.vandopoly.model.Dice;
@@ -56,6 +58,9 @@ public class GameController implements ActionListener {
 	PlayerPanel playerPanel_;
 	ArrayList<Piece> piece_;
 	
+	Vector<Card> chanceStack_;
+	Vector<Card> commChestStack_;
+	
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
 	
@@ -86,6 +91,9 @@ public class GameController implements ActionListener {
 		
 		createSpaces();
 		createPlayers();
+		
+		createCards();
+		shuffleCards();
 		
 		playerPanel_ = new PlayerPanel(players_);
 		dicePanel_ = new DicePanel(dice_);
@@ -199,6 +207,17 @@ public class GameController implements ActionListener {
 		board_[39] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
 		
 		display_.showBoard(board_);
+		
+	}
+	
+	public void shuffleCards() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void createCards() {
+		chanceStack_ = new Vector<Card>();
+		commChestStack_ = new Vector<Card>();
 		
 	}
 	
