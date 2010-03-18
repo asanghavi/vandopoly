@@ -21,6 +21,7 @@ import java.util.concurrent.Semaphore;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
 
 /*
  * Piece is designed to be the visual representation of a player's piece
@@ -62,25 +63,25 @@ public class Piece {
 		
 		if(playerNum == 1) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2;
-			pixelY_ = DisplayAssembler.getTopLeftGo()+ 25;
+			pixelY_ = DisplayAssembler.getTopLeftGo()+ (int)(DisplayAssembler.getSpaceWidth() * .35);
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		else if(playerNum == 2) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2;
-			pixelY_ = DisplayAssembler.getTopLeftGo() + 25 + pieceSeparation;
+			pixelY_ = DisplayAssembler.getTopLeftGo() + (int)(DisplayAssembler.getSpaceWidth() * .35) + pieceSeparation;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		else if(playerNum == 3) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2 + pieceSeparation;
-			pixelY_ = DisplayAssembler.getTopLeftGo()+ 25;
+			pixelY_ = DisplayAssembler.getTopLeftGo()+ (int)(DisplayAssembler.getSpaceWidth() * .35);
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		else if(playerNum == 4) {
 			pixelX_ = DisplayAssembler.getTopLeftGo() + 2 + pieceSeparation;
-			pixelY_ = DisplayAssembler.getTopLeftGo() + 25 + pieceSeparation;
+			pixelY_ = DisplayAssembler.getTopLeftGo() + (int)(DisplayAssembler.getSpaceWidth() * .35) + pieceSeparation;
 			DisplayAssembler.getInstance().addComponent(icon_, new Point(pixelX_, 
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
@@ -91,7 +92,7 @@ public class Piece {
 	// TODO: Standard move function that moves the GUI the correct number of spaces.
 	// based on a roll of the dice
 	public void move(final int numSpaces) {
-		new Thread() {
+		new Thread("PieceMovement") {
 			public void run() {
 				try {
 					// Must acquire the lock before moving...
@@ -100,7 +101,7 @@ public class Piece {
 					motionControl.acquire();
 					
 					// Update current piece spaces
-					int oldSpace = currentSpace_;
+					final int oldSpace = currentSpace_;
 					currentSpace_ = (currentSpace_ + numSpaces) % TOTAL_SPACES;
 					
 					// Call on proper state to move the piece
@@ -114,6 +115,7 @@ public class Piece {
 				}
 			}
 		}.start();
+		
 	}
 	
 	public JLabel getIcon() {
