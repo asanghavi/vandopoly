@@ -22,15 +22,7 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 public class Card {
-	private String message_;
-	
-	public Card() {
-		message_ = "NONE";
-	}
-	
-	public Card(String message, String action, int number) {
-		message_ = message;
-	}
+	protected String message_;
 	
 	public void setMessage(String message) {
 		message_ = message;

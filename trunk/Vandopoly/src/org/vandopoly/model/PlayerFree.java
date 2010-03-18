@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.model.PlayerState;
+
 /*
  * PlayerFree class implements the behavior associated with the player 
  * being free, or not in jail.

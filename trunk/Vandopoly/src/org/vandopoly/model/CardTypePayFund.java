@@ -15,27 +15,31 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.model.Player;
-
 /*
- * PlayerState class defines an interface for encapsulating the behavior
- * associated with a particular Concrete State.
- * State class for the State pattern.
- * 
+ * The CardTypePayFund class represents a "Chance" or "Community Chest" card
+ * that requires the player who drew the card to pay the Scholarship Fund
+ *
  * @author Allie Mazzia
  */
-public class PlayerState {
+public class CardTypePayFund extends Card {
+	private int amount_;
 	
-	public void movePiece(Player player, int spaces) {};
-	
-	public void collectRent(Player payee, int amount, Player player) {};
-	
-	public void goToJail(Player player) {};
-	
-	public void getOutOfJail(Player player) {};
-	
-	protected void changeState(Player player, PlayerState newState) {
-		player.changeState(newState);
+	public CardTypePayFund() {
+		message_ = "NONE";
+		amount_ = 0;
 	}
 	
+	public CardTypePayFund(String message, int amount) {
+		message_ = message;
+		amount_ = amount;
+	}
+	
+	public int getAmount() {
+		return amount_;
+	}
+	
+	public void setAmount(int amount) {
+		amount_ = amount;
+	}
+
 }

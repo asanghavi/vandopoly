@@ -15,27 +15,40 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.model.Player;
-
 /*
- * PlayerState class defines an interface for encapsulating the behavior
- * associated with a particular Concrete State.
- * State class for the State pattern.
- * 
+ * The CardTypeMove class represents a "Chance" or "Community Chest" card
+ * that requires the player who drew the card to move to a specified space
+ *
  * @author Allie Mazzia
  */
-public class PlayerState {
+public class CardTypeMove extends Card {
+	private int space_;
 	
-	public void movePiece(Player player, int spaces) {};
-	
-	public void collectRent(Player payee, int amount, Player player) {};
-	
-	public void goToJail(Player player) {};
-	
-	public void getOutOfJail(Player player) {};
-	
-	protected void changeState(Player player, PlayerState newState) {
-		player.changeState(newState);
+	public CardTypeMove() {
+		message_ = "NONE";
+		space_ = 0;
 	}
+
+	public CardTypeMove(String message, int space) {
+		message_ = message;
+		if (space > 39) {
+			System.out.print("Invalid space number passed to CardTypeMove()");
+			space_ = space % 40;
+		}
+		space_ = space;
+	}
+	
+	public void setSpace(int space) {
+		if (space > 39) {
+			System.out.print("Invalid space number passed to CardTypeMove()");
+			space_ = space % 40;
+		}
+		space_ = space;
+	}
+
+	public int getSpace() {
+		return space_;
+	}
+	
 	
 }
