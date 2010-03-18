@@ -22,7 +22,7 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 public class UpgradeablePropertySpace extends PropertySpace {
-	private UpgradeablePropertyState state_;
+	private PropertyState state_;
 	private int purchasePrice_;
 	private int mortgageValue_;
 	private int[] rentValues_;
@@ -30,7 +30,7 @@ public class UpgradeablePropertySpace extends PropertySpace {
 	
 	public UpgradeablePropertySpace() {
 		name_ = "NONE";
-		state_ = UpgradeablePropertyUnowned.Instance();
+		state_ = PropertyUnowned.Instance();
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
 		rentValues_ = new int[6];
@@ -40,7 +40,7 @@ public class UpgradeablePropertySpace extends PropertySpace {
 	public UpgradeablePropertySpace(String name, int purchasePrice, int mortgageValue, int rent0, int rent1, 
 			int rent2, int rent3, int rent4, int rent5) {
 		name_ = name;
-		state_ = UpgradeablePropertyUnowned.Instance();
+		state_ = PropertyUnowned.Instance();
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
 		rentValues_ = new int[6];
@@ -50,6 +50,7 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		rentValues_[3] = rent3;
 		rentValues_[4] = rent4;
 		rentValues_[5] = rent5;
+		
 		owner_ = null;
 	}
 	
@@ -63,11 +64,11 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		return string;
 	}
 	
-	void changeState(UpgradeablePropertyState newState) {
+	void changeState(PropertyState newState) {
 		state_ = newState;
 	}
 	
-	public UpgradeablePropertyState getState() {
+	public PropertyState getState() {
 		return state_;
 	}
 	
@@ -109,14 +110,14 @@ public class UpgradeablePropertySpace extends PropertySpace {
 	}
 	
 	public void bePurchased() {
-		state_.changeState(this, UpgradeablePropertyLevel0.Instance());
+		state_.changeState(this, PropertyLevel0.Instance());
 	}
 	
 	public void beMortgaged() {
-		state_.changeState(this, UpgradeablePropertyMortgaged.Instance());
+		state_.changeState(this, PropertyMortgaged.Instance());
 	}
 	
 	public void unmortgage() {
-		state_.changeState(this, UpgradeablePropertyLevel0.Instance());
+		state_.changeState(this, PropertyLevel0.Instance());
 	}
 }

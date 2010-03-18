@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.ui.Display;
 
 /*
  * Player class is a model class that represents a game player.
@@ -82,6 +81,8 @@ public class Player {
 	}
 
 	public void updatePosition(int numOfSpaces) {
+		if((positionOnBoard_ + numOfSpaces) > SPACES_ON_BOARD)
+			updateCash(200);
 		positionOnBoard_ = (positionOnBoard_ + numOfSpaces) % SPACES_ON_BOARD;
 	}
 

@@ -26,7 +26,6 @@ import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradeablePropertySpace;
-import org.vandopoly.ui.Display;
 
 /*
  * SpaceTests is a JUnit testing class that is meant to test the space class

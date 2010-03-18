@@ -16,37 +16,31 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.messaging.Notification;
-import org.vandopoly.messaging.NotificationManager;
-
 /*
- * PropertyOwned class implements the behavior associated with the 
- * property space being owned.
+ * PropertyLevel3 class implements the behavior associated with the 
+ * upgradeable property space being upgraded to level 3.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class PropertyOwned extends PropertySpaceState {
+public class PropertyLevel3 extends PropertyState {
 	
-	private static PropertyOwned INSTANCE = null;
+	private static PropertyLevel3 INSTANCE = null;
 	
-	protected PropertyOwned() {
+	protected PropertyLevel3() {
 		// Exists to disable instantiation
 	}
 	
-	public static PropertyOwned Instance() {
+	public static PropertyState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new PropertyOwned();
+			INSTANCE = new PropertyLevel3();
 		}
 		
 		return INSTANCE;
 	}
-	
-	public void landOn(Player player, UpgradeablePropertySpace property) {
-		// TODO: Pay the man!
-		System.out.println("Player "+player.getName()+" should pay "+property.getOwner().getName()
-				+" rent from property "+property.getName());
-	}
 
+	public void landOn(Player player, PropertySpace property) {
+		property.getOwner().collectRent(property.getRentValues()[3], player);
+	}
 }

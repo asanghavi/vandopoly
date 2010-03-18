@@ -21,8 +21,10 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 public class PropertySpace extends Space {
-	private PropertySpaceState state_;
+	private PropertyState state_;
 	private int purchasePrice_, mortgageValue_;
+	
+	private int rentValues_[];
 	
 	private Player owner_;
 	
@@ -31,6 +33,7 @@ public class PropertySpace extends Space {
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
 		state_ = PropertyUnowned.Instance();
+		rentValues_ = new int[6];
 		owner_ = null;
 	}
 	
@@ -39,6 +42,7 @@ public class PropertySpace extends Space {
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
 		state_ = PropertyUnowned.Instance();
+		rentValues_ = new int[6];
 		owner_ = null;
 	}
 	
@@ -52,7 +56,7 @@ public class PropertySpace extends Space {
 		return string;
 	}
 	
-	void changeState(PropertySpaceState newState) {
+	void changeState(PropertyState newState) {
 		state_ = newState;
 	}
 	
@@ -86,7 +90,7 @@ public class PropertySpace extends Space {
 	}
 
 	public void bePurchased() {
-		state_.changeState(this, PropertyOwned.Instance());
+		state_.changeState(this, PropertyLevel0.Instance());
 	}
 	
 	public void beMortgaged() {
@@ -94,10 +98,14 @@ public class PropertySpace extends Space {
 	}
 	
 	public void unmortgage() {
-		state_.changeState(this, PropertyOwned.Instance());
+		state_.changeState(this, PropertyLevel0.Instance());
 	}
 	
-	public PropertySpaceState getState() {
-		return state_.getState();
+	public int[] getRentValues() {
+		return rentValues_;
+	}
+	
+	public PropertyState getState() {
+		return state_;
 	}
 }
