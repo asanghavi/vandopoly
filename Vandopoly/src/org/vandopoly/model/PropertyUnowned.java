@@ -21,21 +21,21 @@ import org.vandopoly.messaging.NotificationManager;
 
 /*
  * PropertyUnowned class implements the behavior associated with the 
- * property space being unowned.
+ * upgradeable property space being unowned.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class PropertyUnowned extends PropertySpaceState {
-	
+public class PropertyUnowned extends PropertyState {
+
 	private static PropertyUnowned INSTANCE = null;
 	
 	protected PropertyUnowned() {
 		// Exists to disable instantiation
 	}
 	
-	public static PropertyUnowned Instance() {
+	public static PropertyState Instance() {
 		if (INSTANCE == null) {
 			INSTANCE = new PropertyUnowned();
 		}
@@ -43,8 +43,7 @@ public class PropertyUnowned extends PropertySpaceState {
 		return INSTANCE;
 	}
 	
-	public void landOn(Player player, UpgradeablePropertySpace property) {
+	public void landOn(Player player, PropertySpace property) {
 		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, null);
 	}
-
 }

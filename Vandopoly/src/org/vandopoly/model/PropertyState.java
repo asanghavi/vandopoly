@@ -13,34 +13,22 @@
  *   limitations under the License.                                          *
  ****************************************************************************/
 
-
 package org.vandopoly.model;
 
 /*
- * UpgradeablePropertyLevel1 class implements the behavior associated with the 
- * upgradeable property space being upgraded to level 1.
- * ConcreteState class for the State pattern.
+ * PropertyState class defines an interface for encapsulating the behavior
+ * associated with a particular Concrete State.
+ * State class for the State pattern.
  * 
  * @author Allie Mazzia
  */
-
-public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState {
+public class PropertyState  {
 	
-	private static UpgradeablePropertyLevel1 INSTANCE = null;
-	
-	protected UpgradeablePropertyLevel1() {
-		// Exists to disable instantiation
+	protected void changeState(PropertySpace space, PropertyState newState) {
+		space.changeState(newState);
 	}
 	
-	public static UpgradeablePropertyState Instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new UpgradeablePropertyLevel1();
-		}
-		
-		return INSTANCE;
-	}
-
-	public void landOn(Player player, UpgradeablePropertySpace property) {
-		property.getOwner().collectRent(property.getRentValues()[1], player);
+	protected void landOn(Player player, PropertySpace property) {
+		// Do something
 	}
 }
