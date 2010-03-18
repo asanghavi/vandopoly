@@ -21,7 +21,6 @@ import java.util.concurrent.Semaphore;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
-import javax.swing.SwingUtilities;
 
 /*
  * Piece is designed to be the visual representation of a player's piece
@@ -34,7 +33,7 @@ public class Piece {
 	
 	private int currentSpace_;
 	int pixelX_, pixelY_;
-	private int player_;
+	
 	private final int TOTAL_SPACES = 40;
 	
 	private int pieceSeparation = 40;
@@ -42,7 +41,6 @@ public class Piece {
 	
 	private PieceState state_;
 	
-	private ImageIcon image_;
 	private JLabel icon_;
 	
 	private Semaphore motionControl;
@@ -53,7 +51,7 @@ public class Piece {
 		
 		name_ = "images/Piece/"+name+".png";
 		currentSpace_ = 0;
-		player_ = playerNum;
+
 		state_ = PieceLeft.Instance();
 		
 		icon_ = new JLabel();
