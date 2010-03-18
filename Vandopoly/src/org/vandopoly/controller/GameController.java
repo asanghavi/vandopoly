@@ -24,6 +24,11 @@ import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Card;
 import org.vandopoly.model.CardSpace;
+import org.vandopoly.model.CardTypeMove;
+import org.vandopoly.model.CardTypeOutOfJail;
+import org.vandopoly.model.CardTypePayFund;
+import org.vandopoly.model.CardTypePayPlayers;
+import org.vandopoly.model.CardTypeWinMoney;
 import org.vandopoly.model.CornerSpace;
 import org.vandopoly.model.Dice;
 import org.vandopoly.model.Player;
@@ -37,6 +42,8 @@ import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
+
+import java.util.Collections;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -211,13 +218,25 @@ public class GameController implements ActionListener {
 	}
 	
 	public void shuffleCards() {
-		// TODO Auto-generated method stub
+		Collections.shuffle(chanceStack_);
+		Collections.shuffle(commChestStack_);
 		
+		System.out.println("After shuffling, chance contains: " + chanceStack_);
 	}
 
 	private void createCards() {
-		chanceStack_ = new Vector<Card>();
-		commChestStack_ = new Vector<Card>();
+		chanceStack_ = new Vector<Card>(5);
+		commChestStack_ = new Vector<Card>(1);
+		
+		chanceStack_.add(new CardTypeOutOfJail());
+		chanceStack_.add(new CardTypeWinMoney("You win $40!", 40));
+		chanceStack_.add(new CardTypePayPlayers("Awarded Student Body President. " +
+				"Pay players $20 each.", 20));
+		chanceStack_.add(new CardTypePayFund("It's a new semester! Pay $200 for books.", 200));
+		chanceStack_.add(new CardTypeMove("Caught cheating on a test. You are" +
+				" immediately placed on Academic Probation", 10));
+		
+		commChestStack_.add(new CardTypeOutOfJail());
 		
 	}
 	

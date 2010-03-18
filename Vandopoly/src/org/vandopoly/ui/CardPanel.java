@@ -13,29 +13,17 @@
  *   limitations under the License.                                          *
  ****************************************************************************/
 
-package org.vandopoly.model;
+package org.vandopoly.ui;
 
-import org.vandopoly.model.Player;
+import javax.swing.JPanel;
+
 
 /*
- * PlayerState class defines an interface for encapsulating the behavior
- * associated with a particular Concrete State.
- * State class for the State pattern.
+ * CardPanel will display a pop-up window with the card message when the
+ * user lands on a "Chance" or "Community Chest" space
  * 
  * @author Allie Mazzia
  */
-public class PlayerState {
-	
-	public void movePiece(Player player, int spaces) {};
-	
-	public void collectRent(Player payee, int amount, Player player) {};
-	
-	public void goToJail(Player player) {};
-	
-	public void getOutOfJail(Player player) {};
-	
-	protected void changeState(Player player, PlayerState newState) {
-		player.changeState(newState);
-	}
-	
+public class CardPanel extends JPanel {
+
 }
