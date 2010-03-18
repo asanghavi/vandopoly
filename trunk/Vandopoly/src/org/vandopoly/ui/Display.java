@@ -96,40 +96,61 @@ public class Display extends JFrame {
 	
 	// show the board
 	public void showBoard(Space[] board) {
-		int start = 0;
+		int start;
 
 		int bp = 0;
-		Color c = new Color(228, 108, 12);
+		Color c = new Color(0, 0, 0);
 		
 		// bottom right corner
 		addLabel(board[bp++], false, pos_ + sizeAcross_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
+
+		// prop 7
+		c = new Color(97, 73, 121);
+		start = 8;
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		
+		// prop 8
+		c = new Color(85, 141, 215);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		
+		// bottom left corner
+		addLabel(board[bp++], false, scaleHeight_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
 		
 		// prop 1
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		start = 8;
+		c = new Color(148, 55, 53);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
 		
 		// prop 2
-		c = new Color(148, 55, 53);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		c = new Color(228, 108, 12);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
 		
-		// top right corner
-		addLabel(board[bp++], false, pos_ + sizeAcross_, scaleHeight_, boxSize_, boxSize_, c, true);
+		// top left corner
+		addLabel(board[bp++], false, scaleHeight_, scaleHeight_, boxSize_, boxSize_, c, true);
 		
 		// prop 3
-		c = new Color(255, 0, 0);
 		start = 0;
+		c = new Color(255, 0, 0);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-	
+		
 		// prop 4
 		c = new Color(255, 255, 0);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
@@ -137,8 +158,8 @@ public class Display extends JFrame {
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
 		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		
-		// bottom left corner
-		addLabel(board[bp++], false, scaleHeight_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
+		// top right corner
+		addLabel(board[bp++], false, pos_ + sizeAcross_, scaleHeight_, boxSize_, boxSize_, c, true);
 		
 		// prop 5
 		c = new Color(79, 99, 40);
@@ -155,25 +176,6 @@ public class Display extends JFrame {
 		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
 		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
 		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		
-		// top left corner
-		addLabel(board[bp++], false, scaleHeight_, scaleHeight_, boxSize_, boxSize_, c, true);
-		
-		// prop 7
-		c = new Color(97, 73, 121);
-		start = 0;
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		
-		// prop 8
-		c = new Color(85, 141, 215);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		
 		// set center of board
 		JLabel label = new JLabel();
@@ -280,6 +282,7 @@ public class Display extends JFrame {
 		new SpacePanel(spacePos_++, space, isProp, x, y, width, height, c, useTex);
 	}
 	
+	// return point of the center of given space
 	public Point getCenter(int spaceNum) {
 		return spaces_[spaceNum][0].getCenter();
 	}
