@@ -41,7 +41,6 @@ public class PieceLeft extends PieceState {
 	}
 
 	public void move(final Piece piece, int currentSpace, int newSpace) {
-		
 		while (currentSpace != newSpace) {
 			piece.pixelX_ = moveSquareLeft(piece, piece.pixelX_, piece.pixelY_, 1);
 			currentSpace++;

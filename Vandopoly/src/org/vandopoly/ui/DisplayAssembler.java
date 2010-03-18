@@ -21,6 +21,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
+import javax.swing.JLayeredPane;
+import javax.swing.SwingUtilities;
 /*
  * The DisplayAssembler class is a Singleton intended to allow developers access
  * to the underlying DesktopPane.  Any JComponent can be added to the JDesktopPane
@@ -98,6 +100,17 @@ public class DisplayAssembler {
 	public void addComponent(JComponent component, int pointX, int pointY, Object layer) {
 		component.setLocation(pointX, pointY);
 		desktopPane_.add(component, layer);
+	}
+	
+	public void animateComponentLocation(final JComponent component, final int pointX, final int pointY) {
+		// Technically the right way to update GUI components
+		// Let the main event dispatch take care of the Swing object
+		// as swing objects are not type safe
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				component.setLocation(pointX, pointY);
+			}
+		});
 	}
 	
 	public void removeComponent(JComponent component) {
