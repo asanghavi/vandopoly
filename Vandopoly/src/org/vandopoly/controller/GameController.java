@@ -115,6 +115,9 @@ public class GameController implements ActionListener {
 			Dice dice = (Dice)obj;
 			Player currentPlayer = players_.get(currentPlayerNum_);
 			
+			// Move piece on the Board
+			piece_.get(currentPlayerNum_).move(dice.getTotalRoll());
+			
 			// Update current position of player model
 			currentPlayer.movePiece(dice.getTotalRoll());
 			
@@ -126,9 +129,6 @@ public class GameController implements ActionListener {
 			
 			// Have currentPlayer landOn the appropriate board position
 			board_[currentPlayer.getPosition()].landOn(currentPlayer);
-			
-			// Move piece on the Board
-			piece_.get(currentPlayerNum_).move(dice.getTotalRoll());
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -250,7 +250,7 @@ public class GameController implements ActionListener {
 			
 		}
 		else if (action.getActionCommand().equals("Mortgage")) {
-			new PropertySelectionPanel(players_.get(currentPlayerNum_).getProperties());
+			new PropertySelectionPanel(players_.get(currentPlayerNum_));
 			// TODO implement logic for mortgaging property
 		}
 		else if (action.getActionCommand().equals("End Turn")) {

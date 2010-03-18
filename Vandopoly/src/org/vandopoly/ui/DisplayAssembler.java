@@ -21,7 +21,6 @@ import java.awt.Toolkit;
 
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
-import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 /*
  * The DisplayAssembler class is a Singleton intended to allow developers access

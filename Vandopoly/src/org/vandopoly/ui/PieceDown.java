@@ -15,9 +15,6 @@
 
 package org.vandopoly.ui;
 
-import java.awt.Point;
-
-import javax.swing.JLayeredPane;
 
 /*
  * Represents a piece on the right side of the board moving in the down direction

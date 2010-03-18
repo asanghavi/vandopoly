@@ -29,28 +29,35 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.vandopoly.model.Player;
+import org.vandopoly.model.PropertyMortgaged;
 import org.vandopoly.model.PropertySpace;
 
 
 /*
  * PropertySelectionPanel is meant to provide a generic way to present an ArrayList of properties.
- * It should be useable for all presentations of multiple properties and should be adaptable to 
- * mortgageing, renovating, and selling renovations.
+ * It should be usable for all presentations of multiple properties and should be adaptable to 
+ * mortgaging, renovating, and selling renovations.
  * 
  * @author James Kasten
  */
-public class PropertySelectionPanel
-{
-    public PropertySelectionPanel(ArrayList<PropertySpace> propertyList) { 
+public class PropertySelectionPanel implements  ListSelectionListener {
+	
+	private final ArrayList<PropertySpace> propertyList;
+	private JButton mortgage;
+	
+    public PropertySelectionPanel(final Player player) { 
+    	
+    	propertyList = player.getProperties();
     	
     	final DefaultListModel model = new DefaultListModel();
     	
     	for (int i = 0; i < propertyList.size(); i++) {
-    		model.addElement(propertyList.get(i).getName());
+    		if(propertyList.get(i).getState() != PropertyMortgaged.Instance())
+    			model.addElement(propertyList.get(i).getName());
+    		else
+    			model.addElement(propertyList.get(i).getName() + " (Mortgaged)");
     	}
-    	model.addElement("TEST1");
-    	model.addElement("TEST2");
-    	model.addElement("TEST3");
     	
 
 	/*KeyListener keyTypedListener = new KeyAdapter() {
@@ -68,7 +75,7 @@ public class PropertySelectionPanel
 	//list.addKeyListener(keyTypedListener);
 	final ListSelectionModel listSelection = list.getSelectionModel();
 	listSelection.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	listSelection.addListSelectionListener(new SharedListSelectionHandler());
+	listSelection.addListSelectionListener(this);
 	
 	JFrame frame = new JFrame("Vandopoly Properties Owned");
 	frame.setLayout(null);
@@ -81,13 +88,18 @@ public class PropertySelectionPanel
 	scrollPane.setVisible(true);
 	
 	Font buttonFont = new Font("broadway",Font.PLAIN,18);
-	JButton mortgage = new JButton("Mortgage");
+	mortgage = new JButton("Mortgage");
 	mortgage.setFont(buttonFont);
 	mortgage.setBounds(0,100,150,50);
 	mortgage.setVisible(true);
+	
 	mortgage.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent event) {
-        	model.remove(listSelection.getAnchorSelectionIndex());
+        	int index = listSelection.getAnchorSelectionIndex();
+        	
+        	model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
+        	player.mortgage(propertyList.get(index));
+        	mortgage.setEnabled(false);
         }
 
     });
@@ -103,9 +115,39 @@ public class PropertySelectionPanel
 
 	frame.setVisible(true);
     }
+    
+    public void valueChanged(ListSelectionEvent e) { 
+        ListSelectionModel lsm = (ListSelectionModel)e.getSource();
+
+        if(propertyList.get(lsm.getMinSelectionIndex()).getState() == PropertyMortgaged.Instance())
+        	mortgage.setEnabled(false);
+        else
+        	mortgage.setEnabled(true);
+        
+        int firstIndex = e.getFirstIndex();
+        int lastIndex = e.getLastIndex();
+        boolean isAdjusting = e.getValueIsAdjusting(); 
+        System.out.println("Event for indexes "
+                      + firstIndex + " - " + lastIndex
+                      + "; isAdjusting is " + isAdjusting
+                      + "; selected indexes:");
+
+        if (lsm.isSelectionEmpty()) {
+        	System.out.println(" <none>");
+        } else {
+            // Find out which indexes are selected.
+            int minIndex = lsm.getMinSelectionIndex();
+            int maxIndex = lsm.getMaxSelectionIndex();
+            for (int i = minIndex; i <= maxIndex; i++) {
+                if (lsm.isSelectedIndex(i)) {
+                	System.out.println(" " + i);
+                }
+            }
+        }
+    }
 
 }
-
+/*
 class SharedListSelectionHandler implements ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) { 
         ListSelectionModel lsm = (ListSelectionModel)e.getSource();
@@ -131,4 +173,4 @@ class SharedListSelectionHandler implements ListSelectionListener {
             }
         }
     }
-}
+}*/

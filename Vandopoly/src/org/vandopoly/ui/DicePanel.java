@@ -78,6 +78,7 @@ public class DicePanel extends JPanel {
 		// Add action listener to roll dice button
 		rollDice_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				rollDice_.setEnabled(false);
 				NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 				dice_.roll();
 			}
@@ -145,18 +146,17 @@ public class DicePanel extends JPanel {
 					die2_.setIcon(diePic_[dice.getDie2() - 1]);
 
 					if (dice.getNumInRowDoubles() == 0) {
-						rollDice_.setEnabled(false);
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
 					}
 					// User should roll again
 					else if (dice.getNumInRowDoubles() < 3) {
 						rollDice_.setForeground(Color.red);
 						rollDice_.setText("Roll Again");
+						rollDice_.setEnabled(true);
 					}
 					// User must go to jail for rolling too many doubles
 					else {
 						rollDice_.setText("Go To Jail");
-						rollDice_.setEnabled(false);
 					}
 				}
 			}.start();
