@@ -17,12 +17,20 @@ package org.vandopoly.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
-import java.util.ListIterator;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -32,8 +40,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
-import org.vandopoly.messaging.Notification;
-import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Space;
 
 /*
@@ -177,10 +183,17 @@ public class Display extends JFrame {
 		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
 		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
 		
-		// set center of board
+		// set center of boards
 		JLabel label = new JLabel();
 		label.setOpaque(true);
-		label.setIcon(new ImageIcon("images/boardTex.png"));
+		
+		try {
+			label.setIcon(new ImageIcon(scaleImage(new FileInputStream("images/center.png"),
+					sizeAcross_, sizeAcross_)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 		label.setSize(new Dimension(sizeAcross_, sizeAcross_));
 		label.setBorder(BorderFactory.createLineBorder(Color.black));
 		DisplayAssembler.getInstance().addComponent(label, new Point(pos_, pos_), 
@@ -286,4 +299,38 @@ public class Display extends JFrame {
 	public Point getCenter(int spaceNum) {
 		return spaces_[spaceNum][0].getCenter();
 	}
+	
+	public static BufferedImage scaleImage(InputStream p_image, int p_width, int p_height) {
+	   InputStream imageStream = new BufferedInputStream(p_image);
+	   Image image = null;
+		try {
+			image = (Image) ImageIO.read(imageStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	 
+	   int thumbWidth = p_width;
+	   int thumbHeight = p_height;        
+	 
+        // Make sure the aspect ratio is maintained, so the image is not skewed
+        double thumbRatio = (double)thumbWidth / (double)thumbHeight;
+        int imageWidth = image.getWidth(null);
+        int imageHeight = image.getHeight(null);
+        double imageRatio = (double)imageWidth / (double)imageHeight;
+        if (thumbRatio < imageRatio) {
+          thumbHeight = (int)(thumbWidth / imageRatio);
+        } else {
+          thumbWidth = (int)(thumbHeight * imageRatio);
+        }
+ 
+        // Draw the scaled image
+        BufferedImage thumbImage = new BufferedImage(thumbWidth, 
+          thumbHeight, BufferedImage.TYPE_INT_RGB);
+        Graphics2D graphics2D = thumbImage.createGraphics();
+        graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+          RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+ 
+        return thumbImage;        
+    }
 }
