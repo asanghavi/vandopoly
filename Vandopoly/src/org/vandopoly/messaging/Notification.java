@@ -67,6 +67,9 @@ public class Notification {
 	// their cash or other data members
 	public static final String SHOW_CARD = "ShowCard";
 	
+	// Sends a Property object when the owner has changed
+	public static final String CHANGED_OWNER = "ChangedOwner";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////

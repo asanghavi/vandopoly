@@ -153,8 +153,7 @@ public class Player {
 		if(property.getPurchasePrice() < cash_) {
 			updateCash(-1 * property.getPurchasePrice());
 			updateProperties(property);
-			property.setOwner(this);
-			property.bePurchased();
+			property.bePurchased(this);
 			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 		}
 	}
