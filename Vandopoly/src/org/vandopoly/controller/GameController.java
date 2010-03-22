@@ -141,7 +141,7 @@ public class GameController implements ActionListener {
 	public void updateFund(Object obj) {
 		Integer value = (Integer)obj;
 		
-		if((scholarshipFund_ += value.intValue()) > 0)
+		if((scholarshipFund_ + value.intValue()) > 0)
 			scholarshipFund_ += value.intValue();
 		else
 			System.err.println("Attempted to remove more money from scholarship than there currently is");
