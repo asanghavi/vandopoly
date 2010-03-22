@@ -71,4 +71,12 @@ public class Notification {
 	// stop a player from pushing the purchase button when the player should no longer be able
 	// to purchase a property due to the player moving, or already purchasing the property
 	public static final String DISABLE_PURCHASE = "DisablePurchase";
+	
+	///////////////////////////////////////////////////////////////////////////////////////////
+	// Timing
+	///////////////////////////////////////////////////////////////////////////////////////////
+	
+	// Sent after the dice animation is finished, so pieces don't move before dice
+	// are "done" rolling
+	public static final String DICE_ANIMATION_DONE = "DiceAnimationDone";
 }

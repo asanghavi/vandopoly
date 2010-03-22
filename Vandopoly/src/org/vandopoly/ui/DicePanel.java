@@ -130,7 +130,7 @@ public class DicePanel extends JPanel {
 					Random r = new Random();
 					
 					// Quickly flip through random dice panels
-					for (int i = 0; i < 25; i++) {
+					for (int i = 0; i < 20; i++) {
 						die1_.setIcon(diePic_[r.nextInt(6)]);
 						die2_.setIcon(diePic_[r.nextInt(6)]);
 						try {
@@ -144,6 +144,8 @@ public class DicePanel extends JPanel {
 					// Set the correct icon based on the model dice
 					die1_.setIcon(diePic_[dice.getDie1() - 1]);
 					die2_.setIcon(diePic_[dice.getDie2() - 1]);
+					
+					NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
 
 					if (dice.getNumInRowDoubles() == 0) {
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
