@@ -23,12 +23,13 @@ import java.util.Vector;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Card;
-import org.vandopoly.model.CardSpace;
 import org.vandopoly.model.CardTypeMove;
 import org.vandopoly.model.CardTypeOutOfJail;
 import org.vandopoly.model.CardTypePayFund;
 import org.vandopoly.model.CardTypePayPlayers;
 import org.vandopoly.model.CardTypeWinMoney;
+import org.vandopoly.model.ChanceCardSpace;
+import org.vandopoly.model.CommCardSpace;
 import org.vandopoly.model.CornerSpace;
 import org.vandopoly.model.Dice;
 import org.vandopoly.model.Player;
@@ -65,12 +66,12 @@ public class GameController implements ActionListener {
 	PlayerPanel playerPanel_;
 	PropertySelectionPanel propertySelectionPanel_;
 	ArrayList<Piece> piece_;
-	
-	Vector<Card> chanceStack_;
-	Vector<Card> commChestStack_;
-	
+
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
+	
+	ChanceCardSpace chance_;
+	CommCardSpace commChest_;
 	
 	final int NUM_OF_SPACES = 40;
 	
@@ -100,7 +101,6 @@ public class GameController implements ActionListener {
 		createSpaces();
 		createPlayers();
 		
-		createCards();
 		shuffleCards();
 		
 		playerPanel_ = new PlayerPanel(players_);
@@ -171,16 +171,18 @@ public class GameController implements ActionListener {
 	}
 	
 	private void createSpaces() {
+		chance_ = ChanceCardSpace.Instance();
+		commChest_ = CommCardSpace.Instance();
 		
 		// set 1
 		board_[0] = new CornerSpace("GO");
 		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
-		board_[2] = new CardSpace("Community Chest", false);
+		board_[2] = commChest_;
 		board_[3] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4,	20,	60,	180, 320, 450);
 		board_[4] = new TaxSpace("Pay Tuition");
 		board_[5] = new PropertySpace("Vandy Van Reverse Route", 200, 100);
 		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
-		board_[7] = new CardSpace("Chance", true);
+		board_[7] = chance_;
 		board_[8] = new UpgradeablePropertySpace("Cole Hall", 100, 30, 6, 30, 90, 270, 400, 550);
 		board_[9] = new UpgradeablePropertySpace("McGill Hall", 120, 30, 8, 40, 100, 300, 450, 600);
 		board_[10] = new CornerSpace("Academic Probation");
@@ -190,12 +192,12 @@ public class GameController implements ActionListener {
 		board_[14] = new UpgradeablePropertySpace("Buttrick Hall", 160, 80, 12, 60, 180, 500, 700, 900);
 		board_[15] = new PropertySpace("Vandy Van Long Route", 200, 100);
 		board_[16] = new UpgradeablePropertySpace("Lewis House", 180, 90, 14, 70, 200, 550, 750, 950);
-		board_[17] = new CardSpace("Community Chest", false);
+		board_[17] = commChest_;
 		board_[18] = new UpgradeablePropertySpace("Morgan House", 180, 90, 14, 70, 200, 550, 750, 950);
 		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 200,100, 16, 80, 220, 600, 800, 1000);
 		board_[20] = new CornerSpace("Scholarship Fund");
 		board_[21] = new UpgradeablePropertySpace("Kirkland Hall", 220, 110, 18, 90, 250, 700, 875, 1050);
-		board_[22] = new CardSpace("Chance", true);
+		board_[22] = chance_;
 		board_[23] = new UpgradeablePropertySpace("Wyatt Center", 220, 110, 18, 90, 250, 700, 875, 1050);
 		board_[24] = new UpgradeablePropertySpace("Featheringill Hall", 240, 120, 20, 100, 300, 750, 925, 1100);
 		board_[25] = new PropertySpace("Vandy Van Normal Route", 200, 100);
@@ -206,10 +208,10 @@ public class GameController implements ActionListener {
 		board_[30] = new CornerSpace("Go On Academic Probation");
 		board_[31] = new UpgradeablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
 		board_[32] = new UpgradeablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
-		board_[33] = new CardSpace("Community Chest", false);
+		board_[33] = commChest_;
 		board_[34] = new UpgradeablePropertySpace("Hank Ingram House", 320, 160, 28, 150, 450, 1000, 1200, 1400);
 		board_[35] = new PropertySpace("Vandy Van Express Route", 200, 100);
-		board_[36] = new CardSpace("Chance", true);
+		board_[36] = chance_;
 		board_[37] = new UpgradeablePropertySpace("McGugin Center", 350, 175, 35, 175, 500, 1100, 1300, 1500);
 		board_[38] = new TaxSpace("Parking Ticket");
 		board_[39] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
@@ -219,26 +221,8 @@ public class GameController implements ActionListener {
 	}
 	
 	public void shuffleCards() {
-		Collections.shuffle(chanceStack_);
-		Collections.shuffle(commChestStack_);
-		
-		System.out.println("After shuffling, chance contains: " + chanceStack_);
-	}
-
-	private void createCards() {
-		chanceStack_ = new Vector<Card>(5);
-		commChestStack_ = new Vector<Card>(1);
-		
-		chanceStack_.add(new CardTypeOutOfJail());
-		chanceStack_.add(new CardTypeWinMoney("You win $40!", 40));
-		chanceStack_.add(new CardTypePayPlayers("Awarded Student Body President. " +
-				"Pay players $20 each.", 20));
-		chanceStack_.add(new CardTypePayFund("It's a new semester! Pay $200 for books.", 200));
-		chanceStack_.add(new CardTypeMove("Caught cheating on a test. You are" +
-				" immediately placed on Academic Probation", 10));
-		
-		commChestStack_.add(new CardTypeOutOfJail());
-		
+		chance_.shuffleCards();
+		commChest_.shuffleCards();
 	}
 	
 	// Represents the logic for the GameButtonPanel class
