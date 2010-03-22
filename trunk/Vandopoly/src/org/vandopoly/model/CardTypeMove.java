@@ -49,6 +49,4 @@ public class CardTypeMove extends Card {
 	public int getSpace() {
 		return space_;
 	}
-	
-	
 }
