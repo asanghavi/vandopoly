@@ -63,6 +63,7 @@ public class GameController implements ActionListener {
 	DicePanel dicePanel_;
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
+	PropertySelectionPanel propertySelectionPanel_;
 	ArrayList<Piece> piece_;
 	
 	Vector<Card> chanceStack_;
@@ -87,7 +88,7 @@ public class GameController implements ActionListener {
 				this, "updateFund");
 		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
 				this, "awardFund");
-		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
+		NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
 				this, "moveCurrentPlayer");
 	}
 	
@@ -250,11 +251,23 @@ public class GameController implements ActionListener {
 			
 		}
 		else if (action.getActionCommand().equals("Mortgage")) {
-			new PropertySelectionPanel(players_.get(currentPlayerNum_));
-			// TODO implement logic for mortgaging property
+			// If the propertySelectionPanel has already been created, dispose and get a new one
+			// This makes sure the panel is fully updated, and allows only a single propertySelection
+			// panel at a time
+			if(propertySelectionPanel_ != null)
+				propertySelectionPanel_.dispose();
+			
+			propertySelectionPanel_ = new PropertySelectionPanel(players_.get(currentPlayerNum_));
 		}
 		else if (action.getActionCommand().equals("End Turn")) {
+			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+			
+			// Get rid of current propertySelectionPanel
+			if(propertySelectionPanel_ != null) {
+				propertySelectionPanel_.dispose();
+				propertySelectionPanel_ = null;
+			}
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 		}
 		else if (action.getActionCommand().equals("Quit Game")) {

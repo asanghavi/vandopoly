@@ -46,7 +46,15 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	private final ArrayList<PropertySpace> propertyList;
 	private JButton mortgage;
 	
+	JFrame frame;
+	
     public PropertySelectionPanel(final Player player) { 
+    	
+    	frame = new JFrame("Vandopoly Properties Owned");
+    	frame.setLayout(null);
+    	frame.setSize(350,190);
+    	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - 350) / 2), 
+    			(int)((DisplayAssembler.getScreenHeight() - 190) / 2));
     	
     	propertyList = player.getProperties();
     	
@@ -76,53 +84,73 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	final ListSelectionModel listSelection = list.getSelectionModel();
 	listSelection.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	listSelection.addListSelectionListener(this);
-	
-	JFrame frame = new JFrame("Vandopoly Properties Owned");
-	frame.setLayout(null);
-	frame.setSize(300,180);
-	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - 300) / 2), (int)((DisplayAssembler.getScreenHeight() - 180) / 2));
 
 	JScrollPane scrollPane = new JScrollPane(list);
 	scrollPane.setBorder(new TitledBorder("Select Properties"));
-	scrollPane.setBounds(0,0,300,100);
+	scrollPane.setBounds(0,0,350,100);
 	scrollPane.setVisible(true);
 	
 	Font buttonFont = new Font("broadway",Font.PLAIN,18);
 	mortgage = new JButton("Mortgage");
 	mortgage.setFont(buttonFont);
-	mortgage.setBounds(0,100,150,50);
+	mortgage.setBounds(0,100,175,50);
 	mortgage.setVisible(true);
 	
 	mortgage.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent event) {
         	int index = listSelection.getAnchorSelectionIndex();
         	
-        	model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
-        	player.mortgage(propertyList.get(index));
-        	mortgage.setEnabled(false);
+        	// Represents case when no properties are selected
+			if(index < 0) {
+				System.out.println(player.getName()+" tried to mortage: "+index+" which is invalid");
+			}
+			// If property selected is currently mortgaged
+			else if(!propertyList.get(index).getState().equals(PropertyMortgaged.Instance())) {
+				model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
+				player.mortgage(propertyList.get(index));
+				mortgage.setText("Unmortgage");
+			}
+			else if(propertyList.get(index).getState().equals(PropertyMortgaged.Instance())) {
+				model.set(index, propertyList.get(index).getName());
+				player.unmortgage(propertyList.get(index));
+				mortgage.setText("Mortgage");
+    		}
         }
 
     });
 	
 	JButton finish = new JButton("Finished");
 	finish.setFont(buttonFont);
-	finish.setBounds(150,100,150,50);
+	finish.setBounds(175,100,175,50);
 	finish.setVisible(true);
+	finish.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+        	frame.dispose();
+        }
+
+    });
+	
 	
 	frame.add(scrollPane);
 	frame.add(mortgage);
 	frame.add(finish);
-
+	
 	frame.setVisible(true);
+    }
+    
+    public void dispose() {
+    	frame.dispose();
     }
     
     public void valueChanged(ListSelectionEvent e) { 
         ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
-        if(propertyList.get(lsm.getMinSelectionIndex()).getState() == PropertyMortgaged.Instance())
-        	mortgage.setEnabled(false);
+        // Update the button words based on state of property
+        if(propertyList.get(lsm.getMinSelectionIndex()).getState().equals(PropertyMortgaged.Instance())) {
+        	mortgage.setText("Unmortgage");
+        }
         else
-        	mortgage.setEnabled(true);
+        	mortgage.setText("Mortgage");
         
         int firstIndex = e.getFirstIndex();
         int lastIndex = e.getLastIndex();

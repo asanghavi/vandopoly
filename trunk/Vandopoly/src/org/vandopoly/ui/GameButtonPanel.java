@@ -65,11 +65,11 @@ public class GameButtonPanel extends JPanel {
 		purchase_.setEnabled(false);
 		
 		renovate_ = buttonCreator("Renovate", 1);
-		renovate_.setEnabled(false);
+		renovate_.setEnabled(true);
 		
 		// Set up the mortgage button
 		mortgage_ = buttonCreator("Mortgage", 2);
-		mortgage_.setEnabled(false);
+		mortgage_.setEnabled(true);
 		
 		// Set up the end turn button
 		endTurn_ = buttonCreator("End Turn", 3);
@@ -110,8 +110,6 @@ public class GameButtonPanel extends JPanel {
 	// Meant to represent the panel state when the player is done rolling and making decisions
 	// States may need to be more finely tuned based on actual space landed on
 	public void playerState() {
-		renovate_.setEnabled(true);
-		mortgage_.setEnabled(true);
 		endTurn_.setEnabled(true);
 	}
 	
@@ -130,8 +128,6 @@ public class GameButtonPanel extends JPanel {
 	// ie. the player should not be able to end his turn early
 	public void rollingState() {
 		purchase_.setEnabled(false);
-		renovate_.setEnabled(false);
-		mortgage_.setEnabled(false);
 		endTurn_.setEnabled(false);
 	}
 }
