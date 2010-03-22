@@ -48,12 +48,16 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	
 	JFrame frame;
 	
+	int panelWidth = 350;
+	int panelHeight = 190;
+	int buttonHeight = 50;
+	
     public PropertySelectionPanel(final Player player) { 
     	
     	frame = new JFrame("Vandopoly Properties Owned");
     	frame.setLayout(null);
     	frame.setSize(350,190);
-    	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - 350) / 2), 
+    	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - panelWidth) / 2), 
     			(int)((DisplayAssembler.getScreenHeight() - 190) / 2));
     	
     	propertyList = player.getProperties();
@@ -87,13 +91,13 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 
 	JScrollPane scrollPane = new JScrollPane(list);
 	scrollPane.setBorder(new TitledBorder("Select Properties"));
-	scrollPane.setBounds(0,0,350,100);
+	scrollPane.setBounds(0,0,panelWidth,100);
 	scrollPane.setVisible(true);
 	
 	Font buttonFont = new Font("broadway",Font.PLAIN,18);
 	mortgage = new JButton("Mortgage");
 	mortgage.setFont(buttonFont);
-	mortgage.setBounds(0,100,175,50);
+	mortgage.setBounds(0,100,(panelWidth / 2),buttonHeight);
 	mortgage.setVisible(true);
 	
 	mortgage.addActionListener(new ActionListener() {
@@ -121,7 +125,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	
 	JButton finish = new JButton("Finished");
 	finish.setFont(buttonFont);
-	finish.setBounds(175,100,175,50);
+	finish.setBounds((panelWidth / 2),100,(panelWidth / 2),buttonHeight);
 	finish.setVisible(true);
 	finish.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent event) {
@@ -135,6 +139,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	frame.add(mortgage);
 	frame.add(finish);
 	
+	frame.setResizable(false);
 	frame.setVisible(true);
     }
     

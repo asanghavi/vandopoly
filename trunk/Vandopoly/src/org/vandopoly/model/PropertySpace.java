@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * Model class that is a descendant of Space and represents a property space on the board
  * 
@@ -67,6 +70,7 @@ public class PropertySpace extends Space {
 	// Getters and setters
 	public void setOwner(Player p) {
 		owner_ = p;
+		NotificationManager.getInstance().notifyObservers(Notification.CHANGED_OWNER, this);
 	}
 	
 	public Player getOwner() {
@@ -89,7 +93,8 @@ public class PropertySpace extends Space {
 		return mortgageValue_;
 	}
 
-	public void bePurchased() {
+	public void bePurchased(Player owner) {
+		setOwner(owner);
 		state_.changeState(this, PropertyLevel0.Instance());
 	}
 	
