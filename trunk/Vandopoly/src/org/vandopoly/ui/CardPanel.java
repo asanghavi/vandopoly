@@ -15,7 +15,17 @@
 
 package org.vandopoly.ui;
 
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import org.vandopoly.model.Card;
+
 
 
 /*
@@ -26,4 +36,38 @@ import javax.swing.JPanel;
  */
 public class CardPanel extends JPanel {
 
+	public CardPanel(Card card) {  	
+
+	/*KeyListener keyTypedListener = new KeyAdapter() {
+	    public void keyTyped(KeyEvent e) {
+		if ((e.getKeyChar() == '\b') && (model.getSize() > 0)) {
+		    model.removeElementAt(model.getSize() - 1);
+		}
+		else if (e.getKeyChar() != '\b') {
+		    model.addElement("Added " + e.getKeyChar());
+		}
+	    }
+	};*/
+	
+	JFrame frame = new JFrame(card.getMessage());
+	frame.setLayout(null);
+	frame.setSize(300,180);
+	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - 300) / 2), (int)((DisplayAssembler.getScreenHeight() - 180) / 2));
+	
+	Font buttonFont = new Font("broadway",Font.PLAIN,18);
+	JButton ok = new JButton("OK");
+	ok.setFont(buttonFont);
+	ok.setBounds(0,100,150,50);
+	ok.setVisible(true);
+	ok.addActionListener(new ActionListener() {
+        public void actionPerformed(ActionEvent event) {
+        	//Action goes here
+        }
+
+    });
+	
+	frame.add(ok);
+
+	frame.setVisible(true);
+    }
 }
