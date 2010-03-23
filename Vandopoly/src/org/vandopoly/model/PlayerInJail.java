@@ -40,7 +40,7 @@ public class PlayerInJail extends PlayerState {
 
 	@Override
 	public void movePiece(Player player, int spaces) {
-		// Empty - player does not move when in jail
+		// Must get out of Jail somehow
 
 	}
 	

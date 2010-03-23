@@ -25,11 +25,10 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class PropertySpace extends Space {
 	private PropertyState state_;
-	private int purchasePrice_, mortgageValue_;
-	
 	private int rentValues_[];
 	
-	private Player owner_;
+	protected int purchasePrice_, mortgageValue_;
+	protected Player owner_;
 	
 	public PropertySpace() {
 		name_ = "NONE";

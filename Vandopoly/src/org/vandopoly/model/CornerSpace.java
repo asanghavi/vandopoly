@@ -33,19 +33,11 @@ public class CornerSpace extends Space {
 		name_ = name;
 	}
 	
-	public String toString() {
-		String string = "Property Name: " + name_;
-				
-		return string;
-	}
-	
 	public void landOn(Player p) {
 		if(this.name_.equals("Scholarship Fund"))
 			NotificationManager.getInstance().notifyObservers(Notification.AWARD_SCHOLARSHIP_FUND, p);
 		if(this.name_.equals("Go On Academic Probation"))
-		{
 			p.goToJail();
-		}
 	}
 
 }
