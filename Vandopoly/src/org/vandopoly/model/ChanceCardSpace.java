@@ -36,10 +36,11 @@ public class ChanceCardSpace extends Space {
 	
 	Vector<Card> stack_;
 	ListIterator itr;
+	ArrayList<Player> players_;
 	private static ChanceCardSpace INSTANCE = null;
 	public static final int NUMBER = 5;
 
-	protected ChanceCardSpace() {
+	protected ChanceCardSpace(ArrayList<Player> players) {
 		stack_ = new Vector<Card>(NUMBER);
 		
 		stack_.add(new CardTypeOutOfJail());
@@ -50,12 +51,13 @@ public class ChanceCardSpace extends Space {
 		stack_.add(new CardTypeMove("Caught cheating on a test. You are" +
 				" immediately placed on Academic Probation", 10));
 		
+		players_ = players;
 		itr = stack_.listIterator();
 	}
 	
-	public static ChanceCardSpace Instance() {
+	public static ChanceCardSpace Instance(ArrayList<Player> players) {
 		if (INSTANCE == null) {
-			INSTANCE = new ChanceCardSpace();
+			INSTANCE = new ChanceCardSpace(players);
 		}
 		
 		return INSTANCE;
@@ -81,6 +83,14 @@ public class ChanceCardSpace extends Space {
 		}
 		else if (c instanceof CardTypePayPlayers) {
 			//Pay people
+			ListIterator<Player> iter = players_.listIterator();
+			while (iter.hasNext()) {
+				if (iter.next() != p) {
+					p.updateCash(-((CardTypePayFund)c).getAmount());
+					iter.previous().updateCash(((CardTypePayFund)c).getAmount());
+				}
+			}
+		
 		}
 		else if (c instanceof CardTypeWinMoney) 
 			p.updateCash(((CardTypeWinMoney)c).getAmount());
