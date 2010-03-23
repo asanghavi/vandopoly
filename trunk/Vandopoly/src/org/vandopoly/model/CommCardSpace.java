@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
 import java.util.Vector;
@@ -32,19 +33,26 @@ import org.vandopoly.ui.CardPanel;
 public class CommCardSpace extends Space {
 	
 	Vector<Card> stack_;
-	ListIterator itr;
+	ListIterator<Card> itr;
+	ArrayList<Player> players_;
 	private static CommCardSpace INSTANCE = null;
-	public static final int NUMBER = 1;
+	public static final int NUMBER = 2;
 
-	protected CommCardSpace() {
+	protected CommCardSpace(ArrayList<Player> players) {
 		stack_ = new Vector<Card>(NUMBER);
 		
 		stack_.add(new CardTypeOutOfJail());
+		stack_.add(new CardTypeMove("Out late partying. Go directly to the Vandy"
+				+ " Van Normal Route", 25));
+		stack_.add(new CardTypePayFund("Buy a Rites of Spring ticket. Pay $30", 30));
+		
+		players_ = players;
+		itr = stack_.listIterator();
 	}
 	
-	public static CommCardSpace Instance() {
+	public static CommCardSpace Instance(ArrayList<Player> players) {
 		if (INSTANCE == null) {
-			INSTANCE = new CommCardSpace();
+			INSTANCE = new CommCardSpace(players);
 		}
 		
 		return INSTANCE;
@@ -59,8 +67,10 @@ public class CommCardSpace extends Space {
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, c);
 		new CardPanel(c);
 		
-		if (c instanceof CardTypeMove) 
+		if (c instanceof CardTypeMove) {
 			p.setPosition(((CardTypeMove)c).getSpace());
+			//Move piece
+		}
 		else if (c instanceof CardTypeOutOfJail)
 			p.setGetOutOfJail(true);
 		else if (c instanceof CardTypePayFund) {
@@ -70,6 +80,14 @@ public class CommCardSpace extends Space {
 		}
 		else if (c instanceof CardTypePayPlayers) {
 			//Pay people
+			ListIterator<Player> iter = players_.listIterator();
+			while (iter.hasNext()) {
+				if (iter.next() != p) {
+					p.updateCash(-((CardTypePayFund)c).getAmount());
+					iter.previous().updateCash(((CardTypePayFund)c).getAmount());
+				}
+			}
+		
 		}
 		else if (c instanceof CardTypeWinMoney) 
 			p.updateCash(((CardTypeWinMoney)c).getAmount());
@@ -80,17 +98,33 @@ public class CommCardSpace extends Space {
 	
 	public Card drawCard() {
 		
-		if (itr.hasNext())
-			return (Card) itr.next();
+		if (itr.hasNext()) {
+			return itr.next();
+		}
 		else {
 			while(itr.hasPrevious()) {
 				itr.previous();
 			}
-			return (Card) itr.next();
+			return itr.next();
 		}
 	}
 	
 	public void shuffleCards() {
 		Collections.shuffle(stack_);
 	}
+	
+/*	Debugging Code:
+	public static void main(String[] args)  {
+		CommCardSpace space = new CommCardSpace();
+		space.shuffleCards();
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+		System.out.println(space.drawCard().getMessage());
+	}
+*/
 }
