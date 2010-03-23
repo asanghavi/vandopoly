@@ -22,5 +22,11 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 public class CardTypeOutOfJail extends Card {
+	
+	public CardTypeOutOfJail() {
+		message_ = "Get out of jail FREE!";
+	}
+	
+	
 
 }
