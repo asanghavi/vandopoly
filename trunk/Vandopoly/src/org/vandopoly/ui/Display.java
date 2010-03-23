@@ -40,7 +40,11 @@ import javax.swing.JLayeredPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
+import org.vandopoly.model.CornerSpace;
+import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
+import org.vandopoly.model.TaxSpace;
+import org.vandopoly.model.UpgradeablePropertySpace;
 
 /*
  * Main JFrame from which Vandopoly is built into
@@ -103,7 +107,49 @@ public class Display extends JFrame {
 	// show the board
 	public void showBoard(Space[] board) {
 		int start;
-
+		
+		String boardpics[] = new String[40];
+		boardpics[0] = "go";
+		boardpics[1] = "Dyer Hall";
+		boardpics[2] = "Community Chest";
+		boardpics[3] = "Mims Hall";
+		boardpics[4] = "Pay Tuition";
+		boardpics[5] = "vandyvanreverse";
+		boardpics[6] = "Tolman Hall";
+		boardpics[7] = "chancebot";
+		boardpics[8] = "Cole Hall";
+		boardpics[9] = "McGill Hall";
+		boardpics[10] = "Academic Probation";
+		boardpics[11] = "Furman Hall";
+		boardpics[12] = "CoGeneration Plant";
+		boardpics[13] = "Wilson Hall";
+		boardpics[14] = "Buttrick Hall";
+		boardpics[15] = "vandyvanlong";
+		boardpics[16] = "Lewis House";
+		boardpics[17] = "Community Chest";
+		boardpics[18] = "Morgan House";
+		boardpics[19] = "Chaffin Place";
+		boardpics[20] = "Scholarship Fund";
+		boardpics[21] = "Kirkland Hall";
+		boardpics[22] = "chanceright";
+		boardpics[23] = "Wyatt Center";
+		boardpics[24] = "Featheringill Hall";
+		boardpics[25] = "vandyvannormal";
+		boardpics[26] = "Sarratt Student Center";
+		boardpics[27] = "Student Life Center";
+		boardpics[28] = "BioDiesel Initiative";
+		boardpics[29] = "Ingram Center";
+		boardpics[30] = "goonacademicprob";
+		boardpics[31] = "Murray House";
+		boardpics[32] = "Stambaugh House";
+		boardpics[33] = "communitychest3";
+		boardpics[34] = "Hank Ingram House";
+		boardpics[35] = "vandyvanexpress";
+		boardpics[36] = "chancetop";
+		boardpics[37] = "McGugin Center";
+		boardpics[38] = "parkingticket";
+		boardpics[39] = "Commons Center";
+		
 		int bp = 0;
 		Color c = new Color(0, 0, 0);
 		
@@ -325,7 +371,7 @@ public class Display extends JFrame {
  
         // Draw the scaled image
         BufferedImage thumbImage = new BufferedImage(thumbWidth, 
-          thumbHeight, BufferedImage.TYPE_INT_RGB);
+          thumbHeight, BufferedImage.TRANSLUCENT);
         Graphics2D graphics2D = thumbImage.createGraphics();
         graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
