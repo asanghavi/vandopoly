@@ -59,7 +59,7 @@ public class SpaceTests extends TestCase {
 		samplePlayer = new Player();
 		samplePlayer.setName("James");
 		
-		samplePlayer2 = new Player("Frank", null);
+		samplePlayer2 = new Player("Frank", null, 2);
 	}
 	
 	// Must be used to cleanup after a .setUp()
