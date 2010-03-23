@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.ui.Piece;
 
 /*
  * Player class is a model class that represents a game player.
@@ -35,6 +36,7 @@ public class Player {
 	private int cash_ = 1500, positionOnBoard_;
 	private boolean getOutOfJail_;
 	private ArrayList<PropertySpace> properties_;
+	private Piece piece_;
 
 	public Player() {
 		state_ = PlayerFree.Instance();
@@ -46,13 +48,14 @@ public class Player {
 		setProperties(new ArrayList<PropertySpace>());
 	}
 
-	public Player(String name, String icon) {
+	public Player(String name, String icon, int playerNum) {
 		state_ = PlayerFree.Instance();
 		name_ = name;
 		icon_ = icon;
 		cash_ = 1500;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
+		piece_ = new Piece(icon, playerNum);
 		setProperties(new ArrayList<PropertySpace>());
 	}
 
@@ -73,6 +76,7 @@ public class Player {
 	}
 
 	public void goToJail() {
+		setPosition(10);
 		state_.goToJail(this);
 	}
 
@@ -81,14 +85,18 @@ public class Player {
 	}
 
 	public void updatePosition(int numOfSpaces) {
-		if((positionOnBoard_ + numOfSpaces) > SPACES_ON_BOARD)
+		if((positionOnBoard_ + numOfSpaces) >= SPACES_ON_BOARD)
 			updateCash(200);
+		
+		piece_.move(numOfSpaces);
 		positionOnBoard_ = (positionOnBoard_ + numOfSpaces) % SPACES_ON_BOARD;
 	}
 
 	public void setPosition(int space) {
-		if (space > 0 && space < SPACES_ON_BOARD)
+		if (space >= 0 && space < SPACES_ON_BOARD) {
 			positionOnBoard_ = space;
+			piece_.moveToSpace(space);
+		}
 		else
 			System.err.println("Invalid space number for setPosition: " + space);
 	}

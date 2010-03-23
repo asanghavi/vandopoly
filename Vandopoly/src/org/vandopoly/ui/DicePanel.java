@@ -159,6 +159,8 @@ public class DicePanel extends JPanel {
 					// User must go to jail for rolling too many doubles
 					else {
 						rollDice_.setText("Go To Jail");
+						NotificationManager.getInstance().notifyObservers(Notification.GO_TO_JAIL, null);
+						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
 					}
 				}
 			}.start();

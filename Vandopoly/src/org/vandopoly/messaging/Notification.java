@@ -70,6 +70,10 @@ public class Notification {
 	// Sends a Property object when the owner has changed
 	public static final String CHANGED_OWNER = "ChangedOwner";
 	
+	// Send the current player to Jail... sent by DicePanel for 3 doubles in a row
+	// Does not include object
+	public static final String GO_TO_JAIL = "GoToJail";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////

@@ -91,6 +91,8 @@ public class GameController implements ActionListener {
 				this, "awardFund");
 		NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
 				this, "moveCurrentPlayer");
+		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
+				this, "sendPlayerToJail");
 	}
 	
 	// Called by the START_GAME notification
@@ -116,9 +118,6 @@ public class GameController implements ActionListener {
 			Dice dice = (Dice)obj;
 			Player currentPlayer = players_.get(currentPlayerNum_);
 			
-			// Move piece on the Board
-			piece_.get(currentPlayerNum_).move(dice.getTotalRoll());
-			
 			// Update current position of player model
 			currentPlayer.movePiece(dice.getTotalRoll());
 			
@@ -135,6 +134,10 @@ public class GameController implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void sendPlayerToJail() {
+		players_.get(currentPlayerNum_).goToJail();
 	}
 	
 	// Called by the UpdateScholarship notification
@@ -160,14 +163,8 @@ public class GameController implements ActionListener {
 		piece_ = new ArrayList<Piece>();
 		
 		for (int i = 0; i < numOfPlayers_; i++) {
-			players_.add(new Player(namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1]));
+			players_.add(new Player(namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
 		}
-		
-		// Create all of the appropriate pieces
-		for (int i = 0; i < numOfPlayers_; i++) {
-			piece_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
-		}
-		
 	}
 	
 	private void createSpaces() {
