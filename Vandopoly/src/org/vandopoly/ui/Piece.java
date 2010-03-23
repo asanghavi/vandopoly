@@ -16,6 +16,8 @@
 package org.vandopoly.ui;
 
 import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
@@ -36,12 +38,14 @@ public class Piece {
 	
 	private final int TOTAL_SPACES = 40;
 	
-	private int pieceSeparation = 40;
+	private int pieceSeparation = DisplayAssembler.getSpaceWidth() / 2;
 	private String name_;
 	
 	private PieceState state_;
 	
 	private JLabel icon_;
+	int iconWidth = (DisplayAssembler.getSpaceWidth() * 2 / 3);
+	int iconHeight = (60/55) * iconWidth;
 	
 	private Semaphore motionControl;
 	
@@ -55,8 +59,16 @@ public class Piece {
 		state_ = PieceLeft.Instance();
 		
 		icon_ = new JLabel();
-		icon_.setIcon(new ImageIcon(name_));
-		icon_.setBounds(0,0,55,60);
+		//icon_.setIcon(new ImageIcon(name_));
+		
+		try {
+			icon_.setIcon(new ImageIcon(Display.scaleImage(new FileInputStream(name_),
+					iconWidth, iconHeight)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		icon_.setBounds(0,0,iconWidth,iconHeight);
 		icon_.setVisible(true);
 		
 		if(playerNum == 1) {
