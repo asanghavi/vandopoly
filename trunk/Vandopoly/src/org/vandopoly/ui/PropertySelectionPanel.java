@@ -91,13 +91,13 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 
 	JScrollPane scrollPane = new JScrollPane(list);
 	scrollPane.setBorder(new TitledBorder("Select Properties"));
-	scrollPane.setBounds(0,0,panelWidth,100);
+	scrollPane.setBounds(0, 0, panelWidth, 100);
 	scrollPane.setVisible(true);
 	
-	Font buttonFont = new Font("broadway",Font.PLAIN,18);
+	Font buttonFont = new Font("broadway", Font.PLAIN,18);
 	mortgage = new JButton("Mortgage");
 	mortgage.setFont(buttonFont);
-	mortgage.setBounds(0,100,(panelWidth / 2),buttonHeight);
+	mortgage.setBounds(0, 100, (panelWidth / 2), buttonHeight);
 	mortgage.setVisible(true);
 	
 	mortgage.addActionListener(new ActionListener() {
@@ -106,7 +106,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
         	
         	// Represents case when no properties are selected
 			if(index < 0) {
-				System.out.println(player.getName()+" tried to mortage: "+index+" which is invalid");
+				System.out.println(player.getName() + " tried to mortage: " + index + " which is invalid");
 			}
 			// If property selected is currently mortgaged
 			else if(!propertyList.get(index).getState().equals(PropertyMortgaged.Instance())) {
