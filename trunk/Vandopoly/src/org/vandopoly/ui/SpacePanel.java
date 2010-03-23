@@ -18,6 +18,8 @@ package org.vandopoly.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -26,6 +28,9 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 
 /*
@@ -48,8 +53,10 @@ public class SpacePanel extends JPanel {
 	boolean isProp_;
 	ArrayList<String> onSpace_;
 	JLabel label;
+	String pic_;
 	
-	public SpacePanel(int pos, Space space, boolean isProp, int x, int y, int width, int height, Color c, boolean useTex) {
+	public SpacePanel(int pos, Space space, boolean isProp, int x, int y, int width, int height, Color c,
+			boolean useTex, String imageName) {
 		x_ = x;
 		y_ = y;
 		width_ = width;
@@ -61,16 +68,26 @@ public class SpacePanel extends JPanel {
 		position_= pos;
 		onSpace_ = new ArrayList<String>();
 		spaceObj_ = space;
+		pic_ = imageName;
 		label = addSpace();
-		updateStatus();
+		updateStatus(spaceObj_);
+		NotificationManager.getInstance().addObserver(Notification.CHANGED_OWNER, this, "updateStatus");
 	}
 
 	JLabel addSpace() {
 		JLabel tmp = new JLabel();
 		tmp.setOpaque(true);
 		
-		if (useTex_) {
-			tmp.setIcon(new ImageIcon("images/boardTex.png"));
+		if(useTex_) {
+			try {
+				if(pic_ == "boardTex")
+					tmp.setIcon(new ImageIcon("images/Spaces/" + pic_ + ".png"));
+				else
+					tmp.setIcon(new ImageIcon(Display.scaleImage(new FileInputStream("images/Spaces/" + pic_ + ".png"),
+							width_, height_)));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		else {
 			tmp.setOpaque(true);
@@ -99,13 +116,16 @@ public class SpacePanel extends JPanel {
 	}
 	
 	// add status text to board piece
-	public void updateStatus() {
+	public void updateStatus(Object obj) {
+		Space p = (Space)obj;
+		spaceObj_ = p;
+		
 		String status = "";
 		
 		status += spaceObj_ + ", ";
 		status += "On this space: ";
 		
-		if(onSpace_.size() == 0)
+		/*if(onSpace_.size() == 0)
 			status += "Nobody";
 		else {
 			String spacelist = "";
@@ -113,7 +133,7 @@ public class SpacePanel extends JPanel {
 				spacelist += ", " + s;
 			}
 			status += spacelist.substring(3);
-		}
+		}*/
 		
 		label.setToolTipText(status);
 	}
