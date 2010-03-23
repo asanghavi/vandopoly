@@ -150,11 +150,19 @@ public class Player {
 	public ArrayList<PropertySpace> getProperties() {
 		return properties_;
 	}
+	
+	public String[] getPropertyArray() {
+		String [] array = new String[properties_.size()];
+		for (int i = 0; i < properties_.size(); i++) {
+			array[i] = properties_.get(i).getName();
+		}
+		return array;
+	}
 
 	public void updateProperties(PropertySpace property) {
 		properties_.add(property);
 		NotificationManager.getInstance().notifyObservers
-		(Notification.UPDATE_PROPERTIES, this);
+			(Notification.UPDATE_PROPERTIES, this);
 	}
 	
 	public void purchase(PropertySpace property) {
