@@ -100,9 +100,19 @@ public class Piece {
 		motionControl = new Semaphore(1);
 	}
 	
-	// TODO: Standard move function that moves the GUI the correct number of spaces.
-	// based on a roll of the dice
 	public void move(final int numSpaces) {
+		
+		// Update current piece spaces first
+		// Avoids race conditions by putting statement in main thread...
+		// All updates to currentSpace will happen in main thread
+		final int oldSpace = currentSpace_;
+		currentSpace_ = (currentSpace_ + numSpaces) % TOTAL_SPACES;
+		
+		// This temporary is used so that currentSpace_ can change before the function state_.move
+		// is actually called
+		// Avoids a race condition - now this new thread is like a completely different function
+		final int curSpace = currentSpace_;
+		
 		new Thread("PieceMovement") {
 			public void run() {
 				try {
@@ -111,12 +121,8 @@ public class Piece {
 					// in glitches
 					motionControl.acquire();
 					
-					// Update current piece spaces
-					final int oldSpace = currentSpace_;
-					currentSpace_ = (currentSpace_ + numSpaces) % TOTAL_SPACES;
-					
 					// Call on proper state to move the piece
-					state_.move(Piece.this, oldSpace, currentSpace_);
+					state_.move(Piece.this, oldSpace, curSpace);
 					
 					// Must release lock
 					motionControl.release();
@@ -141,10 +147,12 @@ public class Piece {
 		return state_;
 	}
 	
-	// TODO: Intended to be used to move to specific spaces, like Jail,
-	// or cards that direct the piece to a particular spot
+	// Move to a specific space
 	public void moveToSpace(int spaceNum) {
-		int numSpaces = spaceNum + TOTAL_SPACES - currentSpace_;
+
+		// Calculate the number of spaces to move
+		int numSpaces = (spaceNum + TOTAL_SPACES - currentSpace_) % TOTAL_SPACES;
+		// Call normal move function
 		move(numSpaces);
 	}
 }

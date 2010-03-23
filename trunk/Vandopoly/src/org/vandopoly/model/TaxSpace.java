@@ -45,14 +45,7 @@ public class TaxSpace extends Space {
 		percentageFee_ = percentageFee;
 	}
 	
-	public String toString() {
-		String string = "Property Name: " + name_;
-		
-		return string;
-	}
-	
 	// TODO: should be 10% of all assets
-	
 	public void landOn(Player p) {
 		int value;
 		

@@ -26,10 +26,7 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class UpgradeablePropertySpace extends PropertySpace {
 	private PropertyState state_;
-	private int purchasePrice_;
-	private int mortgageValue_;
 	private int[] rentValues_;
-	private Player owner_;
 	
 	public UpgradeablePropertySpace() {
 		name_ = "NONE";
@@ -55,16 +52,6 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		rentValues_[5] = rent5;
 		
 		owner_ = null;
-	}
-	
-	public String toString() {
-		String string = "Property Name: " + name_;
-		if (owner_ == null)
-			string += ", Owned by: Nobody";
-		else
-			string += ", Owned by: " + owner_.getName();
-		
-		return string;
 	}
 	
 	void changeState(PropertyState newState) {
