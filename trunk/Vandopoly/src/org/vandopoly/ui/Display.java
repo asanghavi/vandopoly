@@ -108,8 +108,13 @@ public class Display extends JFrame {
 	public void showBoard(Space[] board) {
 		int start;
 		
-		String boardpics[] = new String[40];
-		boardpics[0] = "go";
+		String boardpics[] = new String[41];
+		for(int x=0; x<boardpics.length; x++)
+		{
+			boardpics[x] = "boardTex";
+		}
+		
+		/*boardpics[0] = "go";
 		boardpics[1] = "Dyer Hall";
 		boardpics[2] = "Community Chest";
 		boardpics[3] = "Mims Hall";
@@ -149,85 +154,126 @@ public class Display extends JFrame {
 		boardpics[37] = "McGugin Center";
 		boardpics[38] = "parkingticket";
 		boardpics[39] = "Commons Center";
+		*/
+		//boardpics[0] = "go";
+		/*boardpics[1] = "Dyer Hall";
+		boardpics[2] = "Community Chest";
+		boardpics[3] = "Mims Hall";
+		boardpics[4] = "Pay Tuition";*/
+		boardpics[5] = "vandyvanreverse";
+		/*boardpics[6] = "Tolman Hall";*/
+		boardpics[7] = "chancebot";
+		/*boardpics[8] = "Cole Hall";
+		boardpics[9] = "McGill Hall";
+		boardpics[10] = "Academic Probation";
+		boardpics[11] = "Furman Hall";
+		boardpics[12] = "CoGeneration Plant";
+		boardpics[13] = "Wilson Hall";
+		boardpics[14] = "Buttrick Hall";*/
+		boardpics[15] = "vandyvanlong";
+		/*boardpics[16] = "Lewis House";
+		boardpics[17] = "Community Chest";
+		boardpics[18] = "Morgan House";
+		boardpics[19] = "Chaffin Place";
+		boardpics[20] = "Scholarship Fund";
+		boardpics[21] = "Kirkland Hall";*/
+		boardpics[22] = "chancebot";
+		/*boardpics[23] = "Wyatt Center";
+		boardpics[24] = "Featheringill Hall";*/
+		boardpics[25] = "vandyvannormal";
+		/*boardpics[26] = "Sarratt Student Center";
+		boardpics[27] = "Student Life Center";
+		boardpics[28] = "BioDiesel Initiative";
+		boardpics[29] = "Ingram Center";*/
+		boardpics[30] = "goonacademicprob";
+		/*boardpics[31] = "Murray House";
+		boardpics[32] = "Stambaugh House";
+		boardpics[33] = "communitychest3";*/
+		/*boardpics[34] = "Hank Ingram House";*/
+		boardpics[35] = "vandyvanexpress";
+		boardpics[36] = "chanceright";
+		/*boardpics[37] = "McGugin Center";*/
+		boardpics[38] = "parkingticket";
+		//boardpics[39] = "Commons Center";
 		
 		int bp = 0;
 		Color c = new Color(0, 0, 0);
 		
 		// bottom right corner
-		addLabel(board[bp++], false, pos_ + sizeAcross_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
+		addLabel(board[bp++], false, pos_ + sizeAcross_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true, boardpics[bp-1]);
 
 		// prop 7
 		c = new Color(97, 73, 121);
 		start = 8;
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
 		
 		// prop 8
 		c = new Color(85, 141, 215);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
-		addSmallOp(board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, new Color(0, 0, 0), false, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
+		addSmallOp(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start--), 0, c, true, true);
 		
 		// bottom left corner
-		addLabel(board[bp++], false, scaleHeight_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true);
+		addLabel(board[bp++], false, scaleHeight_, pos_ + sizeAcross_, boxSize_, boxSize_, c, true, boardpics[bp-1]);
 		
 		// prop 1
 		start = 8;
 		c = new Color(148, 55, 53);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
 		
 		// prop 2
 		c = new Color(228, 108, 12);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
-		addSmall(board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), new Color(0, 0, 0), false, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
+		addSmall(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start--), c, true, false);
 		
 		// top left corner
-		addLabel(board[bp++], false, scaleHeight_, scaleHeight_, boxSize_, boxSize_, c, true);
+		addLabel(board[bp++], false, scaleHeight_, scaleHeight_, boxSize_, boxSize_, c, true, boardpics[bp-1]);
 		
 		// prop 3
 		start = 0;
 		c = new Color(255, 0, 0);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
 		
 		// prop 4
 		c = new Color(255, 255, 0);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
-		addSmall(board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, new Color(0, 0, 0), false, true);
+		addSmall(boardpics[bp], board[bp++], pos_ + (spaceWidth_ * start++), 0, c, true, true);
 		
 		// top right corner
-		addLabel(board[bp++], false, pos_ + sizeAcross_, scaleHeight_, boxSize_, boxSize_, c, true);
+		addLabel(board[bp++], false, pos_ + sizeAcross_, scaleHeight_, boxSize_, boxSize_, c, true, boardpics[bp-1]);
 		
 		// prop 5
 		c = new Color(79, 99, 40);
 		start = 0;
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
 		
 		// prop 6
 		c = new Color(39, 63, 97);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
-		addSmallOp(board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), new Color(0, 0, 0), false, false);
+		addSmallOp(boardpics[bp], board[bp++], 0, pos_ + (spaceWidth_ * start++), c, true, false);
 		
 		// set center of boards
 		JLabel label = new JLabel();
@@ -250,7 +296,7 @@ public class Display extends JFrame {
 	// x, y specify the point to be placed on the board. c is the color of the property.
 	// isProp specifies if it is a property or not, isVert specifies weather the piece goes vertically or
 	// horizontally
-	void addSmall(Space space, int x, int y, Color c, boolean isProp, boolean isVert) {
+	void addSmall(String imageName, Space space, int x, int y, Color c, boolean isProp, boolean isVert) {
 		// set the larger part of the piece
 		int panelWidth;
 		
@@ -271,7 +317,7 @@ public class Display extends JFrame {
 			x += scaleHeight_;
 		}
 		
-		addLabel(space, isProp, x, y, panelWidth, panelHeight,c,true);
+		addLabel(space, isProp, x, y, panelWidth, panelHeight,c, true, imageName);
 		
 		// set the smaller colored part of the piece
 		if (isProp) {
@@ -283,15 +329,15 @@ public class Display extends JFrame {
 	
 			if (isVert)
 				addLabel(space, isProp, x, y + (int)(spaceScale_ * boxSize_), panelWidth,
-						panelHeight, c, false);
+						panelHeight, c, false, imageName);
 			else
 				addLabel(space, isProp, x + (int)(spaceScale_ * boxSize_), y, panelWidth, 
-						panelHeight, c, false);	
+						panelHeight, c, false, imageName);	
 		}
 	}
 	
 	// same as addSmall, but used for bottom and right side of board
-	void addSmallOp(Space space, int x, int y, Color c, boolean isProp, boolean isVert) {
+	void addSmallOp(String imageName, Space space, int x, int y, Color c, boolean isProp, boolean isVert) {
 		// set the larger part of the piece	
 		int panelWidth;
 
@@ -321,7 +367,7 @@ public class Display extends JFrame {
 				panelHeightS = panelWidthS;
 				panelWidthS = height_ / scaleWidth_;
 			}
-			addLabel(space, isProp, x, y, panelWidthS, panelHeightS, c, false);
+			addLabel(space, isProp, x, y, panelWidthS, panelHeightS, c, false, imageName);
 		} 
 		else {
 			panelWidthS = 0;
@@ -330,15 +376,15 @@ public class Display extends JFrame {
 		
 		// set the larger part
 		if (isVert)
-			addLabel(space, isProp, x, y + panelHeightS, panelWidth, panelHeight, c, true);
+			addLabel(space, isProp, x, y + panelHeightS, panelWidth, panelHeight, c, true, imageName);
 		else
-			addLabel(space, isProp, x + panelWidthS, y, panelWidth, panelHeight, c, true);	
+			addLabel(space, isProp, x + panelWidthS, y, panelWidth, panelHeight, c, true, imageName);	
 	}
 
 	// make a space and add it to the board
 	void addLabel(Space space, boolean isProp, int x, int y, int width, int height, 
-			Color c, boolean useTex) {
-		new SpacePanel(spacePos_++, space, isProp, x, y, width, height, c, useTex);
+			Color c, boolean useTex, String imageName) {
+		new SpacePanel(spacePos_++, space, isProp, x, y, width, height, c, useTex, imageName);
 	}
 	
 	// return point of the center of given space
@@ -346,6 +392,7 @@ public class Display extends JFrame {
 		return spaces_[spaceNum][0].getCenter();
 	}
 	
+	// resize an image to the specified width and height and return a BufferedImage
 	public static BufferedImage scaleImage(InputStream p_image, int p_width, int p_height) {
 	   InputStream imageStream = new BufferedInputStream(p_image);
 	   Image image = null;
