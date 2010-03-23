@@ -15,14 +15,20 @@
 
 package org.vandopoly.ui;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+
+import javax.swing.JLabel;
+
 import javax.swing.JPanel;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
 
 import org.vandopoly.model.Card;
 
@@ -37,37 +43,44 @@ import org.vandopoly.model.Card;
 public class CardPanel extends JPanel {
 
 	public CardPanel(Card card) {  	
-
-	/*KeyListener keyTypedListener = new KeyAdapter() {
-	    public void keyTyped(KeyEvent e) {
-		if ((e.getKeyChar() == '\b') && (model.getSize() > 0)) {
-		    model.removeElementAt(model.getSize() - 1);
-		}
-		else if (e.getKeyChar() != '\b') {
-		    model.addElement("Added " + e.getKeyChar());
-		}
-	    }
-	};*/
 	
-	JFrame frame = new JFrame(card.getMessage());
-	frame.setLayout(null);
-	frame.setSize(300,180);
-	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - 300) / 2), (int)((DisplayAssembler.getScreenHeight() - 180) / 2));
-	
-	Font buttonFont = new Font("broadway",Font.PLAIN,18);
-	JButton ok = new JButton("OK");
-	ok.setFont(buttonFont);
-	ok.setBounds(0,100,150,50);
-	ok.setVisible(true);
-	ok.addActionListener(new ActionListener() {
-        public void actionPerformed(ActionEvent event) {
-        	//Action goes here
-        }
+		JPanel panel = new JPanel();
+		
+		int hGap = 10, vGap = 10;
+		GridLayout gridLayout = new GridLayout(2, 1, hGap, vGap);
+		
+		panel.setLayout(null);
+		Font labelFont = new Font("broadway", Font.PLAIN, 20);
+		
+		JLabel label = new JLabel(card.getMessage());
+		System.out.println("Message: " + card.getMessage());
 
-    });
+		label.setFont(labelFont);
+		panel.add(label);
+		
+		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
+		JButton ok = new JButton("OK");
+		ok.setFont(buttonFont);
+		ok.setVisible(true);
+		panel.setLayout(gridLayout);
+		Color white = new Color(255, 255, 255);
+		panel.setBackground(white);
+		panel.add(ok);
+		panel.setVisible(true);
+		
+		PopupFactory factory = PopupFactory.getSharedInstance();
+		final Popup popup = factory.getPopup(this, panel, (int)((DisplayAssembler.getScreenWidth() - 400) / 2), (int)((DisplayAssembler.getScreenHeight() - 300) / 2));
+		
+		ok.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent event) {
+	        	popup.hide();
+	        }
 	
-	frame.add(ok);
-
-	frame.setVisible(true);
+	    });
+	
+		//frame.setVisible(true);
+	
+		popup.show();	
+	
     }
 }
