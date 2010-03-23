@@ -112,7 +112,7 @@ public class GameController implements ActionListener {
 		scholarshipFund_ = 0;
 	}
 	
-	public void moveCurrentPlayer(Object obj) {
+public void moveCurrentPlayer(Object obj) {
 		
 		try {
 			Dice dice = (Dice)obj;
@@ -131,11 +131,10 @@ public class GameController implements ActionListener {
 			board_[currentPlayer.getPosition()].landOn(currentPlayer);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendPlayerToJail() {
 		players_.get(currentPlayerNum_).goToJail();
 	}
@@ -168,8 +167,8 @@ public class GameController implements ActionListener {
 	}
 	
 	private void createSpaces() {
-		chance_ = ChanceCardSpace.Instance();
-		commChest_ = CommCardSpace.Instance();
+		chance_ = ChanceCardSpace.Instance(players_);
+		commChest_ = CommCardSpace.Instance(players_);
 		
 		// set 1
 		board_[0] = new CornerSpace("GO");
@@ -229,7 +228,7 @@ public class GameController implements ActionListener {
 			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[position]);
 		}
 		else if (action.getActionCommand().equals("Renovate")) {
-			
+			//To-do
 		}
 		else if (action.getActionCommand().equals("Mortgage")) {
 			// If the propertySelectionPanel has already been created, dispose and get a new one
