@@ -54,7 +54,7 @@ public class PropertySpace extends Space {
 		if (owner_ == null)
 			string += ", Owned by: Nobody";
 		else
-			string += ", Owned by: " + owner_;
+			string += ", Owned by: " + owner_.getName();
 		
 		return string;
 	}
