@@ -35,10 +35,14 @@ public class Dice {
 		die1_ = generator_.nextInt(6) + 1;
 		die2_ = generator_.nextInt(6) + 1;
 		
-		if (die1_ == die2_)
-			numInRowDoubles_++;
-		else
+		if (die1_ != die2_)
 			numInRowDoubles_ = 0;
+		else if (numInRowDoubles_ < 4)
+			numInRowDoubles_++;
+		
+		// Represents case where previous player went to Jail, counter must be reset
+		else
+			numInRowDoubles_ = 1;
 		
 		// Notify interested parties about the change of Die state
 		NotificationManager.getInstance().notifyObservers(Notification.ROLL_DICE, this);

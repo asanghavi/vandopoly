@@ -42,6 +42,10 @@ public class CornerSpace extends Space {
 	public void landOn(Player p) {
 		if(this.name_.equals("Scholarship Fund"))
 			NotificationManager.getInstance().notifyObservers(Notification.AWARD_SCHOLARSHIP_FUND, p);
+		if(this.name_.equals("Go On Academic Probation"))
+		{
+			p.goToJail();
+		}
 	}
 
 }

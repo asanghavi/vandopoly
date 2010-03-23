@@ -47,6 +47,7 @@ public class Piece {
 	int iconWidth = (DisplayAssembler.getSpaceWidth() * 2 / 3);
 	int iconHeight = (60/55) * iconWidth;
 	
+	// Used to prevent multiple threads competing to move the piece.
 	private Semaphore motionControl;
 	
 	final static long serialVersionUID = 20;
@@ -143,6 +144,7 @@ public class Piece {
 	// TODO: Intended to be used to move to specific spaces, like Jail,
 	// or cards that direct the piece to a particular spot
 	public void moveToSpace(int spaceNum) {
-		
+		int numSpaces = spaceNum + TOTAL_SPACES - currentSpace_;
+		move(numSpaces);
 	}
 }
