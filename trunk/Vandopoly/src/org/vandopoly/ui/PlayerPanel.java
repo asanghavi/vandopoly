@@ -15,6 +15,7 @@ package org.vandopoly.ui;
  *   limitations under the License.                                          *
  ****************************************************************************/
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -24,8 +25,11 @@ import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import org.vandopoly.messaging.Notification;
@@ -45,14 +49,17 @@ public class PlayerPanel extends JPanel {
 	double width_ = screen_.getWidth() - DisplayAssembler.getRightEdge();
 	int height_ = screen_.height;
 	private JTabbedPane infoPanel_;
-	private JPanel panel1_, panel2_, panel3_, panel4_;
+	private JPanel panel_[];
 	private JLabel properties_, cashLabel_;
 	private JLabel cashAmount_[];
-	
+	private JScrollPane scrollPane_[];
+	private JList list_[];
 	
 	private double panelScaleX_ = .80, coordScaleX_ = .1;
 	private double panelScaleY_ = .64, coordScaleY_ = .18;
 	ArrayList<Player> players_;
+	
+	Font propertyFont_ = new Font("broadway", Font.PLAIN, 18);
 
 	public PlayerPanel(ArrayList<Player> players) {
 		
@@ -71,18 +78,32 @@ public class PlayerPanel extends JPanel {
 		
 		// Must create the cashAmount JLabels outside a separate method
 		cashAmount_ = new JLabel[players.size()];
+		list_ = new JList[players.size()];
+		scrollPane_ = new JScrollPane[players.size()];
+		panel_ = new JPanel[players.size()];
 		for (int i = 0; i < players.size(); i++) {
 			cashAmount_[i] = new JLabel("");
+			list_[i] = new JList(players.get(i).getProperties().toArray());
+			scrollPane_[i] = new JScrollPane();
+			list_[i].setBackground(new Color(240, 240, 240));
+			list_[i].setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			list_[i].setSelectionBackground(new Color(250, 250, 250));
+			scrollPane_[i].setBackground(new Color(240, 240, 240));
+			scrollPane_[i].setBounds(5, 110, (int) (panelScaleX_ * width_) - 10, 
+					(int) (panelScaleY_ * height_) - 100);
+			list_[i].setFont(propertyFont_);
+			scrollPane_[i].setFont(propertyFont_);
 		}
 
 		// Create all panels
-		panel1_ = createPanel(players_.get(0), cashAmount_[0]);
-		panel2_ = createPanel(players_.get(1), cashAmount_[1]);
+		panel_[0] = createPanel(players_.get(0), cashAmount_[0], scrollPane_[0], list_[0]);
+		panel_[1] = createPanel(players_.get(1), cashAmount_[1], scrollPane_[1], list_[1]);
+		
 		if (players_.size() > 2) {
-			panel3_ = createPanel(players_.get(2), cashAmount_[2]);
+			panel_[2] = createPanel(players_.get(2), cashAmount_[2], scrollPane_[2], list_[2]);
 			
 			if (players_.size() == 4)
-				panel4_ = createPanel(players_.get(3), cashAmount_[3]);
+				panel_[3] = createPanel(players_.get(3), cashAmount_[3], scrollPane_[3], list_[3]);
 		}
 		
 		Point location = new Point((int) (coordScaleX_ * width_) + DisplayAssembler.getRightEdge(), 
@@ -102,7 +123,7 @@ public class PlayerPanel extends JPanel {
 				this, "updateCash");
 	}
 	
-	private JPanel createPanel(Player player, JLabel cashAmount) {
+	private JPanel createPanel(Player player, JLabel cashAmount, JScrollPane scroll, JList list) {
 		JPanel panel = new JPanel();
 		Font labelFont = new Font("broadway", Font.PLAIN, 16);
 		Font cashFont = new Font("broadway", Font.PLAIN, 40);
@@ -110,29 +131,28 @@ public class PlayerPanel extends JPanel {
 		String cash = "" + player.getCash();
 		
 		// Set up the JTabbedPane and its JPanels
-		int hGap = 10, vGap = 0;
-		GridLayout gridLayout = new GridLayout(10, 1, hGap, vGap);
+		panel.setLayout(null);
 		
 		cashLabel_ = new JLabel("Commodore Cash: ");
 		cashLabel_.setFont(labelFont);
-		cashLabel_.setVerticalAlignment(SwingConstants.BOTTOM);
-		cashLabel_.setHorizontalAlignment(SwingConstants.CENTER);
+		cashLabel_.setBounds(5, 0, 200, 50);
 		
 		cashAmount.setText(cash);
 		cashAmount.setFont(cashFont);
-		cashAmount.setVerticalAlignment(SwingConstants.TOP);
-		cashAmount.setHorizontalAlignment(SwingConstants.CENTER);
+		cashAmount.setBounds(200, 0, 250, 50);
 		
 		properties_ = new JLabel("Properties Owned: ");
 		properties_.setFont(labelFont);
-		properties_.setVerticalAlignment(SwingConstants.CENTER);
-		properties_.setHorizontalAlignment(SwingConstants.CENTER);
+		properties_.setBounds(5, 60, 250, 50);
+		
+		scroll.setVisible(true);
+		list.setVisible(true);
 		
 		panel.add(cashLabel_);
 		panel.add(cashAmount);
 		panel.add(properties_);
-		
-		panel.setLayout(gridLayout);
+		panel.add(scroll);
+		panel.add(list);
 		
 		infoPanel_.addTab(player.getName(), panel);
 		return panel;
@@ -166,12 +186,28 @@ public class PlayerPanel extends JPanel {
 	// Called by the updateProperties notification
 	public void updateProperties(Object object) {
 		try {
-			Player player = (Player) object;
-			
-				
+				Player player = (Player) object;
+				int i;
+				for (i = 0; i < players_.size(); i++) {
+					if (player == players_.get(i))
+						break;
+				}
+				list_[i].setListData(player.getPropertyArray());				
+				scrollPane_[i].setViewportView(list_[i]);
+				scrollPane_[i].setBackground(new Color(240, 240, 240));
+				scrollPane_[i].setBounds(5, 110, (int) (panelScaleX_ * width_) - 10, 
+					(int) (panelScaleY_ * height_) - 100);
+				scrollPane_[i].setVisible(true);
+				panel_[i].add(scrollPane_[i]);
+				list_[i].setFont(propertyFont_);
+				scrollPane_[i].setFont(propertyFont_);
+		
 		} 
 		catch (ClassCastException e) {
 			System.err.println("Unexpected object passed to updateCash");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
