@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+
 /*
  * The CardTypePayPlayers class represents a "Chance" or "Community Chest" card
  * that requires the player who drew the card to pay the other player(s)
@@ -40,5 +43,15 @@ public class CardTypePayPlayers extends Card {
 	
 	public void setAmount(int amount) {
 		amount_ = amount;
+	}
+	
+	public void landOn(Player p, ArrayList<Player> players) {
+		ListIterator<Player> iter = players.listIterator();
+		while (iter.hasNext()) {
+			if (iter.next() != p) {
+				p.updateCash(-getAmount());
+				iter.previous().updateCash(getAmount());
+			}
+		}
 	}
 }

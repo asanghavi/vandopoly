@@ -45,6 +45,10 @@ public class CommCardSpace extends Space {
 		stack_.add(new CardTypeMove("Out late partying. Go directly to the Vandy"
 				+ " Van Normal Route", 25));
 		stack_.add(new CardTypePayFund("Buy a Rites of Spring ticket. Pay $30", 30));
+		stack_.add(new CardTypeWinMoney("You've earned yourself a scholarship! " +
+				"Collect $200", 200));
+		stack_.add(new CardTypePayFund("ER visit! Pay VUMC $100", 100));
+		
 		
 		players_ = players;
 		itr = stack_.listIterator();
@@ -65,35 +69,9 @@ public class CommCardSpace extends Space {
 	public void landOn(Player p) {
 		Card c = drawCard();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, c);
-		new CardPanel(c);
+		new CardPanel(c, "Community Chest");
 		
-		if (c instanceof CardTypeMove) {
-			p.setPosition(((CardTypeMove)c).getSpace());
-			//Move piece
-		}
-		else if (c instanceof CardTypeOutOfJail)
-			p.setGetOutOfJail(true);
-		else if (c instanceof CardTypePayFund) {
-			p.updateCash(-((CardTypePayFund)c).getAmount());
-			NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
-					new Integer(((CardTypePayFund)c).getAmount()));
-		}
-		else if (c instanceof CardTypePayPlayers) {
-			//Pay people
-			ListIterator<Player> iter = players_.listIterator();
-			while (iter.hasNext()) {
-				if (iter.next() != p) {
-					p.updateCash(-((CardTypePayFund)c).getAmount());
-					iter.previous().updateCash(((CardTypePayFund)c).getAmount());
-				}
-			}
-		
-		}
-		else if (c instanceof CardTypeWinMoney) 
-			p.updateCash(((CardTypeWinMoney)c).getAmount());
-		else
-			System.out.print("Unknown Card type passed to landOn()");
-		
+		c.landOn(p, players_);
 	}
 	
 	public Card drawCard() {

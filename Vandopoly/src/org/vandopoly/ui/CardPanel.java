@@ -26,9 +26,12 @@ import javax.swing.JButton;
 
 import javax.swing.JLabel;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import org.vandopoly.model.Card;
 
@@ -42,7 +45,7 @@ import org.vandopoly.model.Card;
  */
 public class CardPanel extends JPanel {
 
-	public CardPanel(Card card) {  	
+	public CardPanel(Card card, String spaceName) {  	
 	
 		JPanel panel = new JPanel();
 		
@@ -51,6 +54,8 @@ public class CardPanel extends JPanel {
 		
 		panel.setLayout(null);
 		Font labelFont = new Font("broadway", Font.PLAIN, 20);
+		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
+		Font titleFont = new Font("broadway", Font.PLAIN, 14);
 		
 		JLabel label = new JLabel(card.getMessage());
 		System.out.println("Message: " + card.getMessage());
@@ -58,18 +63,28 @@ public class CardPanel extends JPanel {
 		label.setFont(labelFont);
 		panel.add(label);
 		
-		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
 		JButton ok = new JButton("OK");
 		ok.setFont(buttonFont);
 		ok.setVisible(true);
 		panel.setLayout(gridLayout);
-		Color white = new Color(255, 255, 255);
-		panel.setBackground(white);
+		panel.setBackground(new Color(236, 234, 166));
+		
+		Border blackline = BorderFactory.createLineBorder(Color.black, 2);
+		TitledBorder title = BorderFactory.createTitledBorder(
+			       blackline, spaceName);
+		title.setTitleFont(titleFont);
+		title.setTitleJustification(TitledBorder.LEFT);
+		panel.setBorder(title);
 		panel.add(ok);
 		panel.setVisible(true);
+	
+		int xCoord = (int)(DisplayAssembler.getScreenWidth() - 
+				panel.getPreferredSize().getWidth()) / 2;
+		int yCoord = (int)(DisplayAssembler.getScreenHeight() - 
+				panel.getPreferredSize().getHeight()) / 2;
 		
 		PopupFactory factory = PopupFactory.getSharedInstance();
-		final Popup popup = factory.getPopup(this, panel, (int)((DisplayAssembler.getScreenWidth() - 400) / 2), (int)((DisplayAssembler.getScreenHeight() - 300) / 2));
+		final Popup popup = factory.getPopup(this, panel, xCoord, yCoord);
 		
 		ok.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {

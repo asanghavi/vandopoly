@@ -35,21 +35,34 @@ import org.vandopoly.ui.PropertySelectionPanel;
 public class ChanceCardSpace extends Space {
 	
 	Vector<Card> stack_;
-	ListIterator itr;
+	ListIterator<Card> itr;
 	ArrayList<Player> players_;
 	private static ChanceCardSpace INSTANCE = null;
-	public static final int NUMBER = 5;
+	public static final int NUMBER = 15;
 
 	protected ChanceCardSpace(ArrayList<Player> players) {
 		stack_ = new Vector<Card>(NUMBER);
 		
 		stack_.add(new CardTypeOutOfJail());
-		stack_.add(new CardTypeWinMoney("You win $40!", 40));
-		stack_.add(new CardTypePayPlayers("Awarded Student Body President. " +
-				"Pay players $20 each.", 20));
-		stack_.add(new CardTypePayFund("It's a new semester! Pay $200 for books.", 200));
+		stack_.add(new CardTypeMove("Take a walk to the Commons Center", 39));
+		stack_.add(new CardTypeMove("Advance to Featheringill Hall", 24));
+		stack_.add(new CardTypeWinMoney("Win $150 from taking the dining survey!", 150));
+		stack_.add(new CardTypeMove("Take a walk to the Commons Center", 39));
+		stack_.add(new CardTypePayPlayers("Elected Student Body President. " +
+				"Pay each player $20.", 20));
+		stack_.add(new CardTypeWinMoney("Complete a psychology study. Receive $20", 20));
+		stack_.add(new CardTypePayFund("It's a new semester! Pay $100 for books.", 200));
 		stack_.add(new CardTypeMove("Caught cheating on a test. You are" +
 				" immediately placed on Academic Probation", 10));
+		stack_.add(new CardTypeMove("Advance to GO", 0));
+		stack_.add(new CardTypeWinMoney("Your parents send you an unexpected check!"
+				+ " Collect $200.", 200));
+		stack_.add(new CardTypeMove("Take a ride on the Reverse Route!", 5));
+		stack_.add(new CardTypeMove("Visit friends. Go directly to Chaffin Place", 19));
+		stack_.add(new CardTypePayFund("Lost your phone at a frat party. Pay $50 "
+				+ "for a new one.", 50));
+		stack_.add(new CardTypePayFund("Traffic & Parking got you again! Pay $25 "
+				+ "for a ticket", 25));
 		
 		players_ = players;
 		itr = stack_.listIterator();
@@ -70,44 +83,20 @@ public class ChanceCardSpace extends Space {
 	public void landOn(Player p) {
 		Card c = drawCard();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, c);
-		new CardPanel(c);
+		new CardPanel(c, "Chance");
 		
-		if (c instanceof CardTypeMove) 
-			p.setPosition(((CardTypeMove)c).getSpace());
-		else if (c instanceof CardTypeOutOfJail)
-			p.setGetOutOfJail(true);
-		else if (c instanceof CardTypePayFund) {
-			p.updateCash(-((CardTypePayFund)c).getAmount());
-			NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
-					new Integer(((CardTypePayFund)c).getAmount()));
-		}
-		else if (c instanceof CardTypePayPlayers) {
-			//Pay people
-			ListIterator<Player> iter = players_.listIterator();
-			while (iter.hasNext()) {
-				if (iter.next() != p) {
-					p.updateCash(-((CardTypePayFund)c).getAmount());
-					iter.previous().updateCash(((CardTypePayFund)c).getAmount());
-				}
-			}
-		
-		}
-		else if (c instanceof CardTypeWinMoney) 
-			p.updateCash(((CardTypeWinMoney)c).getAmount());
-		else
-			System.out.print("Unknown Card type passed to landOn()");
-		
+		c.landOn(p, players_);
 	}
 	
 	public Card drawCard() {
 		
 		if (itr.hasNext())
-			return (Card) itr.next();
+			return itr.next();
 		else {
 			while(itr.hasPrevious()) {
 				itr.previous();
 			}
-			return (Card) itr.next();
+			return itr.next();
 		}
 	}
 	

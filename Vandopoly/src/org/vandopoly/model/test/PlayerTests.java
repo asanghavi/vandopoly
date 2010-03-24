@@ -7,8 +7,8 @@ import org.vandopoly.model.PlayerInJail;
 public class PlayerTests {
 
 	public static void main(String[] args) {
-		Player A = new Player();
-		Player B = new Player();
+		Player A = new Player(0, "Bob", null, 0);
+		Player B = new Player(1, "Mark", null, 1);
 
 		A.goToJail();
 		

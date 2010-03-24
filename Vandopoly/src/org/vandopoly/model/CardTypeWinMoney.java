@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 /*
  * The CardTypeWinMoney class represents a "Chance" or "Community Chest" card
  * that awards the player money
@@ -40,6 +42,10 @@ public class CardTypeWinMoney extends Card {
 	
 	public void setAmount(int amount) {
 		amount_ = amount;
+	}
+	
+	public void landOn(Player p, ArrayList<Player> players) {
+		p.updateCash(getAmount());
 	}
 	
 }

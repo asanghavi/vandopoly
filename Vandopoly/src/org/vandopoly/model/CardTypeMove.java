@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 /*
  * The CardTypeMove class represents a "Chance" or "Community Chest" card
  * that requires the player who drew the card to move to a specified space
@@ -48,5 +50,11 @@ public class CardTypeMove extends Card {
 
 	public int getSpace() {
 		return space_;
+	}
+	
+	public void landOn(Player p, ArrayList<Player> players) {
+		p.setPosition(getSpace());
+		if (getSpace() == 10)
+			p.changeState(PlayerInJail.Instance());
 	}
 }

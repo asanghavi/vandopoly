@@ -161,7 +161,7 @@ public void moveCurrentPlayer(Object obj) {
 		piece_ = new ArrayList<Piece>();
 		
 		for (int i = 0; i < numOfPlayers_; i++) {
-			players_.add(new Player(namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
+			players_.add(new Player(i, namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
 		}
 	}
 	
@@ -247,7 +247,8 @@ public void moveCurrentPlayer(Object obj) {
 				propertySelectionPanel_.dispose();
 				propertySelectionPanel_ = null;
 			}
-			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
+			
+			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 		}
 		else if (action.getActionCommand().equals("Quit Game")) {
 			System.exit(0);

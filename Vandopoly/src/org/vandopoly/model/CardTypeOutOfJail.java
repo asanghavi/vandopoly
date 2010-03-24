@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 /*
  * The CardTypeOutOfJail class represents a "Chance" or "Community Chest" card
  * that is a "Get Out of Jail Free" card
@@ -24,9 +26,11 @@ package org.vandopoly.model;
 public class CardTypeOutOfJail extends Card {
 	
 	public CardTypeOutOfJail() {
-		message_ = "Get out of jail FREE!";
+		message_ = "Get off Academic Probation FREE!";
 	}
 	
-	
+	public void landOn(Player p, ArrayList<Player> players) {
+		p.setGetOutOfJail(true);
+	}
 
 }

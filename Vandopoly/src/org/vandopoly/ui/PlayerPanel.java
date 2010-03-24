@@ -121,6 +121,8 @@ public class PlayerPanel extends JPanel {
 				this, "updateProperties");
 		NotificationManager.getInstance().addObserver(Notification.UPDATE_CASH, 
 				this, "updateCash");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, 
+				this, "switchPanel");
 	}
 	
 	private JPanel createPanel(Player player, JLabel cashAmount, JScrollPane scroll, JList list) {
@@ -164,14 +166,7 @@ public class PlayerPanel extends JPanel {
 			Player player = (Player) object;
 			String cash = "" + player.getCash();
 			
-			if (player == players_.get(0)) 
-				cashAmount_[0].setText(cash);
-			else if (player == players_.get(1)) 
-				cashAmount_[1].setText(cash);
-			else if (players_.size() > 2 && player == players_.get(2))
-				cashAmount_[2].setText(cash);				
-			else if (players_.size() > 3 && player == players_.get(3))
-				cashAmount_[3].setText(cash);
+			cashAmount_[player.getIndex()].setText(cash);
 				
 		} 
 		catch (ClassCastException e) {
@@ -187,11 +182,8 @@ public class PlayerPanel extends JPanel {
 	public void updateProperties(Object object) {
 		try {
 				Player player = (Player) object;
-				int i;
-				for (i = 0; i < players_.size(); i++) {
-					if (player == players_.get(i))
-						break;
-				}
+				int i = player.getIndex();
+				
 				list_[i].setListData(player.getPropertyArray());				
 				scrollPane_[i].setViewportView(list_[i]);
 				scrollPane_[i].setBackground(new Color(240, 240, 240));
@@ -209,6 +201,11 @@ public class PlayerPanel extends JPanel {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void switchPanel(Object i) {
+		Integer number = (Integer) i;
+		infoPanel_.setSelectedIndex((int)number);
 	}
 
 }

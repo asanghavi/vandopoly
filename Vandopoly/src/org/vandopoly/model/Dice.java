@@ -77,7 +77,7 @@ public class Dice {
 	}
 	// toString method
 	public String toString() {
-		return "("+this.getDie1()+", "+this.getDie2()+")";
+		return "(" + this.getDie1() + ", " + this.getDie2() + ")";
 	}
 	
 }

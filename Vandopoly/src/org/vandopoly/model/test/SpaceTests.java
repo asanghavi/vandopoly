@@ -56,10 +56,10 @@ public class SpaceTests extends TestCase {
 		board[2] = new CornerSpace("Scholarship Fund");
 		board[3] = new TaxSpace("Pay Tuition");
 		
-		samplePlayer = new Player();
+		samplePlayer = new Player(0, "James", null, 2);
 		samplePlayer.setName("James");
 		
-		samplePlayer2 = new Player("Frank", null, 2);
+		samplePlayer2 = new Player(1, "Frank", null, 2);
 	}
 	
 	// Must be used to cleanup after a .setUp()
