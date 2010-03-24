@@ -41,7 +41,13 @@ public class PlayerInJail extends PlayerState {
 	@Override
 	public void movePiece(Player player, int spaces) {
 		// Must get out of Jail somehow
-
+	}
+	
+	public void movePiece(Player player, Dice dice) {
+		if (dice.getDie1() == dice.getDie2()) {
+			getOutOfJail(player);
+			player.updatePosition(dice.getTotalRoll());
+		}
 	}
 	
 	@Override

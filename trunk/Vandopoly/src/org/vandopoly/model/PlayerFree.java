@@ -45,6 +45,10 @@ public class PlayerFree extends PlayerState{
 		player.updatePosition(spaces);
 	}
 	
+	public void movePiece(Player player, Dice dice) {
+		player.updatePosition(dice.getTotalRoll());
+	}
+	
 	@Override
 	public void collectRent(Player payee, int amount, Player payer) {
 		// Call to payee.updateCash(), payer.updateCash() 
