@@ -28,6 +28,8 @@ public class PlayerState {
 	
 	public void movePiece(Player player, int spaces) {};
 	
+	public void movePiece(Player player, Dice dice) {};
+	
 	public void collectRent(Player payee, int amount, Player player) {};
 	
 	public void goToJail(Player player) {};

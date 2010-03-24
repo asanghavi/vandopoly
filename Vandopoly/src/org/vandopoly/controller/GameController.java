@@ -50,8 +50,6 @@ import java.util.Collections;
  * GameController is meant to handle all complex button/model interactions. 
  * GameController should have access to all real models and control game state.
  * 
- * TODO Dont allow infinite purchases of same property, dont allow purchase when no money left.
- * 
  *  @author James Kasten
  */
 public class GameController implements ActionListener {
@@ -119,7 +117,8 @@ public void moveCurrentPlayer(Object obj) {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 			
 			// Update current position of player model
-			currentPlayer.movePiece(dice.getTotalRoll());
+			currentPlayer.movePiece(dice);
+			//currentPlayer.movePiece(dice.getTotalRoll());
 			
 			//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());

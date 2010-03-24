@@ -70,6 +70,10 @@ public class Player {
 	public void movePiece(int numOfSpaces) {
 		state_.movePiece(this, numOfSpaces);
 	}
+	
+	public void movePiece(Dice dice) {
+		state_.movePiece(this, dice);
+	}
 
 	public void collectRent(int amount, Player payer) {
 		state_.collectRent(this, amount, payer);

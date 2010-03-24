@@ -18,6 +18,8 @@ package org.vandopoly.ui;
 import java.awt.Point;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.Semaphore;
 
 import javax.swing.ImageIcon;
@@ -35,6 +37,10 @@ public class Piece {
 	
 	private int currentSpace_;
 	int pixelX_, pixelY_;
+	
+	// These are used for queuing the threads for motionControl
+	private Queue<Integer> moveFromTo;
+	Integer oldS, newS;
 	
 	private final int TOTAL_SPACES = 40;
 	
@@ -60,7 +66,6 @@ public class Piece {
 		state_ = PieceLeft.Instance();
 		
 		icon_ = new JLabel();
-		//icon_.setIcon(new ImageIcon(name_));
 		
 		try {
 			icon_.setIcon(new ImageIcon(Display.scaleImage(new FileInputStream(name_),
@@ -97,6 +102,10 @@ public class Piece {
 					pixelY_), JLayeredPane.MODAL_LAYER);
 		}
 		
+		oldS = new Integer(0);
+		newS = new Integer(0);
+		moveFromTo = new LinkedList<Integer>();
+		
 		motionControl = new Semaphore(1);
 	}
 	
@@ -105,13 +114,18 @@ public class Piece {
 		// Update current piece spaces first
 		// Avoids race conditions by putting statement in main thread...
 		// All updates to currentSpace will happen in main thread
-		final int oldSpace = currentSpace_;
+		oldS = currentSpace_;
 		currentSpace_ = (currentSpace_ + numSpaces) % TOTAL_SPACES;
 		
 		// This temporary is used so that currentSpace_ can change before the function state_.move
 		// is actually called
 		// Avoids a race condition - now this new thread is like a completely different function
-		final int curSpace = currentSpace_;
+		newS = currentSpace_;
+		
+		// Place these into a queue... that way no matter what thread is called up to run first,
+		// it will always grab the correct numbers
+		moveFromTo.add(oldS);
+		moveFromTo.add(newS);
 		
 		new Thread("PieceMovement") {
 			public void run() {
@@ -122,7 +136,9 @@ public class Piece {
 					motionControl.acquire();
 					
 					// Call on proper state to move the piece
-					state_.move(Piece.this, oldSpace, curSpace);
+					//state_.move(Piece.this, oldSpace, curSpace);
+					state_.move(Piece.this, Piece.this.moveFromTo.poll().intValue(), 
+							Piece.this.moveFromTo.poll().intValue());
 					
 					// Must release lock
 					motionControl.release();
@@ -132,7 +148,6 @@ public class Piece {
 				}
 			}
 		}.start();
-		
 	}
 	
 	public JLabel getIcon() {
