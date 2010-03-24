@@ -118,24 +118,27 @@ public class SpacePanel extends JPanel {
 	// add status text to board piece
 	public void updateStatus(Object obj) {
 		Space p = (Space)obj;
-		spaceObj_ = p;
-		
-		String status = "";
-		
-		status += spaceObj_ + ", ";
-		status += "On this space: ";
-		
-		/*if(onSpace_.size() == 0)
-			status += "Nobody";
-		else {
-			String spacelist = "";
-			for (String s : onSpace_) {
-				spacelist += ", " + s;
-			}
-			status += spacelist.substring(3);
-		}*/
-		
-		label.setToolTipText(status);
+		if(spaceObj_.getName() == p.getName())
+		{
+			spaceObj_ = p;
+			
+			String status = "";
+			
+			status += spaceObj_ + ", ";
+			status += "On this space: ";
+			
+			/*if(onSpace_.size() == 0)
+				status += "Nobody";
+			else {
+				String spacelist = "";
+				for (String s : onSpace_) {
+					spacelist += ", " + s;
+				}
+				status += spacelist.substring(3);
+			}*/
+			
+			label.setToolTipText(status);
+		}
 	}
 	
 	public Point getCenter() {
