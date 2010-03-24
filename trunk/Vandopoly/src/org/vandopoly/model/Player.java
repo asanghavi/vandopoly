@@ -33,30 +33,36 @@ public class Player {
 
 	private PlayerState state_;
 	private String name_, icon_;
-	private int cash_ = 1500, positionOnBoard_;
+	private int cash_ = 1500, positionOnBoard_, index_;
 	private boolean getOutOfJail_;
 	private ArrayList<PropertySpace> properties_;
 	private Piece piece_;
+	//Used to move player out of jail after three rolls
+	private int numOfRolls_ = 0;
 
-	public Player() {
+	protected Player() {
 		state_ = PlayerFree.Instance();
 		name_ = "ANONYMOUS";
 		icon_ = "NONE";
 		cash_ = 1500;
+		index_ = 0;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
 		setProperties(new ArrayList<PropertySpace>());
+		numOfRolls_ = 0;
 	}
 
-	public Player(String name, String icon, int playerNum) {
+	public Player(int index, String name, String icon, int playerNum) {
 		state_ = PlayerFree.Instance();
 		name_ = name;
 		icon_ = icon;
 		cash_ = 1500;
+		index_ = index;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
 		piece_ = new Piece(icon, playerNum);
 		setProperties(new ArrayList<PropertySpace>());
+		numOfRolls_ = 0;
 	}
 
 	void changeState(PlayerState newState) {
@@ -111,8 +117,7 @@ public class Player {
 
 	public void updateCash(int value) {
 		cash_ += value;
-		NotificationManager.getInstance().notifyObservers
-		(Notification.UPDATE_CASH, this);
+		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_CASH, this);
 	}
 
 	public void setCash(int value) {
@@ -161,6 +166,22 @@ public class Player {
 			array[i] = properties_.get(i).getName();
 		}
 		return array;
+	}
+	
+	public int getIndex() {
+		return index_;
+	}
+	
+	public void setIndex(int i) {
+		index_ = i;
+	}
+	
+	public void setNumOfRolls(int i) {
+		numOfRolls_ = i;
+	}
+	
+	public int getNumOfRolls() {
+		return numOfRolls_;
 	}
 
 	public void updateProperties(PropertySpace property) {

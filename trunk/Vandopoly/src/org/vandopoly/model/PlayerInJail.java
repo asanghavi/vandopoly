@@ -44,9 +44,12 @@ public class PlayerInJail extends PlayerState {
 	}
 	
 	public void movePiece(Player player, Dice dice) {
-		if (dice.getDie1() == dice.getDie2()) {
+		int i = player.getNumOfRolls();
+		player.setNumOfRolls(++i);
+		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {
 			getOutOfJail(player);
 			player.updatePosition(dice.getTotalRoll());
+			player.setNumOfRolls(0);
 		}
 	}
 	

@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * The CardTypePayFund class represents a "Chance" or "Community Chest" card
  * that requires the player who drew the card to pay the Scholarship Fund
@@ -40,6 +43,12 @@ public class CardTypePayFund extends Card {
 	
 	public void setAmount(int amount) {
 		amount_ = amount;
+	}
+	
+	public void landOn(Player p) {
+		p.updateCash(getAmount());
+		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
+				new Integer(getAmount()));
 	}
 
 }

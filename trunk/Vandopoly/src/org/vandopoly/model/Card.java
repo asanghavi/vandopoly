@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 /*
  * The Card class is the base class for the different types of "Chance" and 
  * "Community Chest" cards
@@ -31,5 +33,7 @@ public class Card {
 	public String getMessage() {
 		return message_;
 	}
+	
+	public void landOn(Player p, ArrayList<Player> players) {}
 	
 }
