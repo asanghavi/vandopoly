@@ -120,7 +120,7 @@ public void moveCurrentPlayer(Object obj) {
 			
 			// Update current position of player model
 			currentPlayer.movePiece(dice);
-			//currentPlayer.movePiece(dice.getTotalRoll());
+			//currentPlayer.movePiece(2);
 			
 			//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());
@@ -258,6 +258,7 @@ public void moveCurrentPlayer(Object obj) {
 	}
 	
 	public void cardMoveTo(Object obj) {
+		System.out.println("cardmoveTo");
 		Integer num = (Integer)obj;
 		board_[(int)num].landOn(players_.get(currentPlayerNum_));
 		
