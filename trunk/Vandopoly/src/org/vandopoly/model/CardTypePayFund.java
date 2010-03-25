@@ -46,7 +46,7 @@ public class CardTypePayFund extends Card {
 	}
 	
 	public void landOn(Player p) {
-		p.updateCash(getAmount());
+		p.updateCash(-getAmount());
 		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
 				new Integer(getAmount()));
 	}
