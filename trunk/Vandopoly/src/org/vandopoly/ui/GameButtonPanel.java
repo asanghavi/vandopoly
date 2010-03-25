@@ -44,6 +44,8 @@ public class GameButtonPanel extends JPanel {
 	int frameWidth = buttonX * 5;
 	int frameHeight = buttonY;
 	
+	private boolean purchaseState_, endTurnState_;
+	
 	static final long serialVersionUID = 11;
 	
 	// Will handle all controls in the actual GameController class
@@ -94,6 +96,8 @@ public class GameButtonPanel extends JPanel {
 		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
 		NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "disablePurchase");
+		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "setAllDisabled");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "setEnabled");
 	}
 
 	// Responsible for creating all the buttons in GameButtonPanel
@@ -129,5 +133,26 @@ public class GameButtonPanel extends JPanel {
 	public void rollingState() {
 		purchase_.setEnabled(false);
 		endTurn_.setEnabled(false);
+	}
+	
+	public void setAllDisabled() {
+		purchaseState_ = purchase_.isEnabled();
+		System.out.println("Purchase: " + purchaseState_);
+		purchase_.setEnabled(false);
+		
+		mortgage_.setEnabled(false);
+		
+		endTurnState_ = endTurn_.isEnabled();
+		System.out.println("End turn: " + endTurnState_);
+		endTurn_.setEnabled(false);
+		
+		renovate_.setEnabled(false);
+	}
+	
+	public void setEnabled() {
+		purchase_.setEnabled(purchaseState_);
+		mortgage_.setEnabled(true);
+		endTurn_.setEnabled(endTurnState_);
+		renovate_.setEnabled(false);
 	}
 }

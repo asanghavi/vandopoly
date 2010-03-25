@@ -47,6 +47,7 @@ public class DicePanel extends JPanel {
 	private ImageIcon diePic_[];
 
 	private Dice dice_;
+	private boolean diceState_ = true;
 
 	int buttonCounter = 0;
 	
@@ -113,6 +114,10 @@ public class DicePanel extends JPanel {
 				this, "updateDice");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN,
 				this, "endTurn");
+		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, 
+				this, "setDisabled");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, 
+				this, "setEnabled");
 	}
 
 	public JButton getRollButton() {
@@ -145,7 +150,7 @@ public class DicePanel extends JPanel {
 					die1_.setIcon(diePic_[dice.getDie1() - 1]);
 					die2_.setIcon(diePic_[dice.getDie2() - 1]);
 					
-					NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
+					
 
 					if (dice.getNumInRowDoubles() == 0) {
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
@@ -162,6 +167,7 @@ public class DicePanel extends JPanel {
 						NotificationManager.getInstance().notifyObservers(Notification.GO_TO_JAIL, null);
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
 					}
+					NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
 				}
 			}.start();
 		} 
@@ -175,5 +181,15 @@ public class DicePanel extends JPanel {
 		rollDice_.setForeground(Color.black);
 		rollDice_.setText("Roll Dice");
 		rollDice_.setEnabled(true);
+	}
+	
+	public void setDisabled() {
+		diceState_ = rollDice_.isEnabled();
+		rollDice_.setEnabled(false);
+	}
+	
+	//Return to previous state
+	public void setEnabled() {
+		rollDice_.setEnabled(diceState_);
 	}
 }

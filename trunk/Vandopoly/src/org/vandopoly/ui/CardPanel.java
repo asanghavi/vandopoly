@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 
 import javax.swing.JButton;
@@ -33,7 +34,10 @@ import javax.swing.PopupFactory;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Card;
+import org.vandopoly.model.Player;
 
 
 
@@ -44,9 +48,16 @@ import org.vandopoly.model.Card;
  * @author Allie Mazzia
  */
 public class CardPanel extends JPanel {
-
-	public CardPanel(Card card, String spaceName) {  	
+	private Card card_;
+	private ArrayList<Player> players_;
+	private Player player_;
 	
+	public CardPanel(Card card, Player p, ArrayList<Player> players, String spaceName) {  	
+	
+		card_ = card;
+		player_ = p;
+		players_ = players;
+		
 		JPanel panel = new JPanel();
 		
 		int hGap = 10, vGap = 10;
@@ -89,8 +100,10 @@ public class CardPanel extends JPanel {
 		ok.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {
 	        	popup.hide();
+	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+	        	card_.landOn(player_, players_);
 	        }
-	
+	        
 	    });
 	
 		//frame.setVisible(true);
