@@ -154,20 +154,24 @@ public class DicePanel extends JPanel {
 
 					if (dice.getNumInRowDoubles() == 0) {
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
+						NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
 					}
 					// User should roll again
 					else if (dice.getNumInRowDoubles() < 3) {
 						rollDice_.setForeground(Color.red);
 						rollDice_.setText("Roll Again");
 						rollDice_.setEnabled(true);
+						NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
 					}
+					
 					// User must go to jail for rolling too many doubles
+					// Go to Jail takes place of DiceAnimationDone or else the doubles from the dice
+					// will automatically move player out of jail.
 					else {
 						rollDice_.setText("Go To Jail");
 						NotificationManager.getInstance().notifyObservers(Notification.GO_TO_JAIL, null);
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
 					}
-					NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
 				}
 			}.start();
 		} 
