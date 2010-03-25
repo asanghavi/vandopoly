@@ -67,6 +67,13 @@ public class Notification {
 	// their cash or other data members
 	public static final String SHOW_CARD = "ShowCard";
 	
+	// Special notification sent only when a CardTypeMove is drawn, to have the Game Controller
+	// landOn() the specified space
+	public static final String CARD_MOVE = "CardMove";
+	
+	// Sends a null object when the user clicks "OK" on a Chance/Comm Chest card
+	public static final String REMOVE_CARD = "RemoveCard";
+	
 	// Sends a Property object when the owner has changed
 	public static final String CHANGED_OWNER = "ChangedOwner";
 	
