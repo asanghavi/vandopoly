@@ -32,9 +32,9 @@ import org.vandopoly.ui.CardPanel;
  */
 public class CommCardSpace extends Space {
 	
-	Vector<Card> stack_;
-	ListIterator<Card> itr;
 	ArrayList<Player> players_;
+	Vector<Card> stack_;
+	ListIterator<Card> itr_;
 	private static CommCardSpace INSTANCE = null;
 	public static final int NUMBER = 2;
 
@@ -49,9 +49,8 @@ public class CommCardSpace extends Space {
 				"Collect $200", 200));
 		stack_.add(new CardTypePayFund("ER visit! Pay VUMC $100", 100));
 		
-		
 		players_ = players;
-		itr = stack_.listIterator();
+		itr_ = stack_.listIterator();
 	}
 	
 	public static CommCardSpace Instance(ArrayList<Player> players) {
@@ -67,23 +66,22 @@ public class CommCardSpace extends Space {
 	}
 	
 	public void landOn(Player p) {
-		Card c = drawCard();
-		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, c);
-		new CardPanel(c, "Community Chest");
+		Card card = drawCard();
+		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, card);
+		new CardPanel(card, p, players_, "Community Chest");
 		
-		c.landOn(p, players_);
 	}
 	
 	public Card drawCard() {
 		
-		if (itr.hasNext()) {
-			return itr.next();
+		if (itr_.hasNext()) {
+			return itr_.next();
 		}
 		else {
-			while(itr.hasPrevious()) {
-				itr.previous();
+			while(itr_.hasPrevious()) {
+				itr_.previous();
 			}
-			return itr.next();
+			return itr_.next();
 		}
 	}
 	

@@ -35,7 +35,7 @@ import org.vandopoly.ui.PropertySelectionPanel;
 public class ChanceCardSpace extends Space {
 	
 	Vector<Card> stack_;
-	ListIterator<Card> itr;
+	ListIterator<Card> itr_;
 	ArrayList<Player> players_;
 	private static ChanceCardSpace INSTANCE = null;
 	public static final int NUMBER = 15;
@@ -65,7 +65,7 @@ public class ChanceCardSpace extends Space {
 				+ "for a ticket", 25));
 		
 		players_ = players;
-		itr = stack_.listIterator();
+		itr_ = stack_.listIterator();
 	}
 	
 	public static ChanceCardSpace Instance(ArrayList<Player> players) {
@@ -81,22 +81,20 @@ public class ChanceCardSpace extends Space {
 	}
 	
 	public void landOn(Player p) {
-		Card c = drawCard();
-		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, c);
-		new CardPanel(c, "Chance");
-		
-		c.landOn(p, players_);
+		Card card = drawCard();
+		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, card);
+		new CardPanel(card, p, players_, "Chance");
 	}
 	
 	public Card drawCard() {
 		
-		if (itr.hasNext())
-			return itr.next();
+		if (itr_.hasNext())
+			return itr_.next();
 		else {
-			while(itr.hasPrevious()) {
-				itr.previous();
+			while(itr_.hasPrevious()) {
+				itr_.previous();
 			}
-			return itr.next();
+			return itr_.next();
 		}
 	}
 	
