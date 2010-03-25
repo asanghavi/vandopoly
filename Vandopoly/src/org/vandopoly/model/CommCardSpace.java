@@ -36,7 +36,7 @@ public class CommCardSpace extends Space {
 	Vector<Card> stack_;
 	ListIterator<Card> itr_;
 	private static CommCardSpace INSTANCE = null;
-	public static final int NUMBER = 2;
+	public static final int NUMBER = 12;
 
 	protected CommCardSpace(ArrayList<Player> players) {
 		stack_ = new Vector<Card>(NUMBER);
@@ -48,6 +48,13 @@ public class CommCardSpace extends Space {
 		stack_.add(new CardTypeWinMoney("You've earned yourself a scholarship! " +
 				"Collect $200", 200));
 		stack_.add(new CardTypePayFund("ER visit! Pay VUMC $100", 100));
+		stack_.add(new CardTypeWinMoney("Income tax refund. Collect $30", 30));
+		stack_.add(new CardTypeWinMoney("Second Prize in a beauty contest! Collect $11", 11));
+		stack_.add(new CardTypeMove("Advance to GO", 0));
+		stack_.add(new CardTypeMove("Fail a class. Go directly to Academic Probation.", 10));
+		stack_.add(new CardTypeWinMoney("Sell your books online. Collect $60", 60));
+		stack_.add(new CardTypeWinMoney("Sell your books to the bookstore. Collect $5", 5));
+		stack_.add(new CardTypePayFund("Your hard drive crashes. Pay $100 for a new one", 100));
 		
 		players_ = players;
 		itr_ = stack_.listIterator();
