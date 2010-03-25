@@ -81,7 +81,10 @@ public class SpacePanel extends JPanel {
 		if(useTex_) {
 			try {
 				if(pic_ == "boardTex")
+				{
 					tmp.setIcon(new ImageIcon("images/Spaces/" + pic_ + ".png"));
+					tmp.setText(spaceObj_.getName());
+				}
 				else
 					tmp.setIcon(new ImageIcon(Display.scaleImage(new FileInputStream("images/Spaces/" + pic_ + ".png"),
 							width_, height_)));
