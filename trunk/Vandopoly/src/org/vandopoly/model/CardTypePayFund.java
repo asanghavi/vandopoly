@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -45,7 +47,8 @@ public class CardTypePayFund extends Card {
 		amount_ = amount;
 	}
 	
-	public void landOn(Player p) {
+	public void landOn(Player p, ArrayList<Player> players) {
+		System.out.println("Pay Fund");
 		p.updateCash(-getAmount());
 		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
 				new Integer(getAmount()));
