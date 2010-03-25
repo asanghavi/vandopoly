@@ -18,16 +18,9 @@ package org.vandopoly.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.model.Card;
-import org.vandopoly.model.CardTypeMove;
-import org.vandopoly.model.CardTypeOutOfJail;
-import org.vandopoly.model.CardTypePayFund;
-import org.vandopoly.model.CardTypePayPlayers;
-import org.vandopoly.model.CardTypeWinMoney;
 import org.vandopoly.model.ChanceCardSpace;
 import org.vandopoly.model.CommCardSpace;
 import org.vandopoly.model.CornerSpace;
@@ -40,11 +33,10 @@ import org.vandopoly.model.UpgradeablePropertySpace;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.Display;
 import org.vandopoly.ui.GameButtonPanel;
+import org.vandopoly.ui.MessagePopUp;
 import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
-
-import java.util.Collections;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -120,7 +112,8 @@ public void moveCurrentPlayer(Object obj) {
 			
 			// Update current position of player model
 			currentPlayer.movePiece(dice);
-			//currentPlayer.movePiece(2);
+			// Kept for testing purposes
+			//currentPlayer.movePiece(10);
 			
 			//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());
@@ -154,6 +147,8 @@ public void moveCurrentPlayer(Object obj) {
 	public void awardFund(Object obj) {
 		Player player = (Player)obj;
 		
+		new MessagePopUp(player.getName()+" you have been awarded $"+scholarshipFund_
+				+" from the Scholarship Fund");
 		player.updateCash(scholarshipFund_);
 		scholarshipFund_ = 500;
 	}

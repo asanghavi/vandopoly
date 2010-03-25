@@ -41,7 +41,7 @@ public class GameButtonPanel extends JPanel {
 	GameController controller_;
 	
 	int buttonX = 150, buttonY = 50;
-	int frameWidth = buttonX * 5;
+	int frameWidth = buttonX * 4;
 	int frameHeight = buttonY;
 	
 	private boolean purchaseState_, endTurnState_;
@@ -66,22 +66,18 @@ public class GameButtonPanel extends JPanel {
 		purchase_ = buttonCreator("Purchase", 0);
 		purchase_.setEnabled(false);
 		
-		renovate_ = buttonCreator("Renovate", 1);
-		renovate_.setEnabled(true);
-		
 		// Set up the mortgage button
-		mortgage_ = buttonCreator("Mortgage", 2);
+		mortgage_ = buttonCreator("Mortgage", 1);
 		mortgage_.setEnabled(true);
 		
 		// Set up the end turn button
-		endTurn_ = buttonCreator("End Turn", 3);
+		endTurn_ = buttonCreator("End Turn", 2);
 		endTurn_.setEnabled(false);
 		
 		// Set up the quit game button
-		quitGame_ = buttonCreator("Quit Game", 4);
+		quitGame_ = buttonCreator("Quit Game", 3);
 				
 		this.add(purchase_);
-		this.add(renovate_);
 		this.add(mortgage_);
 		this.add(endTurn_);
 		this.add(quitGame_);
@@ -145,14 +141,11 @@ public class GameButtonPanel extends JPanel {
 		endTurnState_ = endTurn_.isEnabled();
 		System.out.println("End turn: " + endTurnState_);
 		endTurn_.setEnabled(false);
-		
-		renovate_.setEnabled(false);
 	}
 	
 	public void setEnabled() {
 		purchase_.setEnabled(purchaseState_);
 		mortgage_.setEnabled(true);
 		endTurn_.setEnabled(endTurnState_);
-		renovate_.setEnabled(false);
 	}
 }
