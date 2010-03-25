@@ -51,7 +51,7 @@ public class ChanceCardSpace extends Space {
 		stack_.add(new CardTypePayPlayers("Elected Student Body President. " +
 				"Pay each player $20.", 20));
 		stack_.add(new CardTypeWinMoney("Complete a psychology study. Receive $20", 20));
-		stack_.add(new CardTypePayFund("It's a new semester! Pay $100 for books.", 200));
+		stack_.add(new CardTypePayFund("It's a new semester! Pay $100 for books.", 100));
 		stack_.add(new CardTypeMove("Caught cheating on a test. You are" +
 				" immediately placed on Academic Probation", 10));
 		stack_.add(new CardTypeMove("Advance to GO", 0));
