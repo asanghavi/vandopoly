@@ -91,6 +91,8 @@ public class GameController implements ActionListener {
 				this, "moveCurrentPlayer");
 		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
 				this, "sendPlayerToJail");
+		NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
+				this, "cardMoveTo");
 	}
 	
 	// Called by the START_GAME notification
@@ -107,7 +109,7 @@ public class GameController implements ActionListener {
 		dicePanel_ = new DicePanel(dice_);
 		buttonPanel_ = new GameButtonPanel(this);
 		
-		scholarshipFund_ = 0;
+		scholarshipFund_ = 500;
 	}
 	
 public void moveCurrentPlayer(Object obj) {
@@ -153,7 +155,7 @@ public void moveCurrentPlayer(Object obj) {
 		Player player = (Player)obj;
 		
 		player.updateCash(scholarshipFund_);
-		scholarshipFund_ = 0;
+		scholarshipFund_ = 500;
 	}
 	
 	private void createPlayers() {
@@ -173,7 +175,7 @@ public void moveCurrentPlayer(Object obj) {
 		board_[0] = new CornerSpace("GO");
 		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
 		board_[2] = commChest_;
-		board_[3] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4,	20,	60,	180, 320, 450);
+		board_[3] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4, 20,	60,	180, 320, 450);
 		board_[4] = new TaxSpace("Pay Tuition");
 		board_[5] = new PropertySpace("Vandy Van Reverse Route", 200, 100);
 		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
@@ -253,5 +255,11 @@ public void moveCurrentPlayer(Object obj) {
 		else if (action.getActionCommand().equals("Quit Game")) {
 			System.exit(0);
 		}
+	}
+	
+	public void cardMoveTo(Object obj) {
+		Integer num = (Integer)obj;
+		board_[(int)num].landOn(players_.get(currentPlayerNum_));
+		
 	}
 }
