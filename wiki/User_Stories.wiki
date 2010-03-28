@@ -1,6 +1,10 @@
 #summary User stories for Vandopoly
 
 User stories for Vandopoly.
+
+= Cycle 5 User Stories =
+    * User can renovate and degrade properties appropriately by using a "Manage Properties" button (James)
+    * User sees list of properties in order by type then space# for all property lists (James)
  
 = Cycle 4 User Stories =
     * User can see pieces move around the board appropriately after rolling dice (James)
