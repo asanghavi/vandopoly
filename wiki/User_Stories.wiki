@@ -6,7 +6,7 @@ User stories for Vandopoly.
     * User can renovate and degrade properties appropriately by using a "Manage Properties" button (James)
     * User sees list of properties in order by type then space# for all property lists (James)
     * User sees the Player Panel update when properties are mortgaged (Allie)
-    * Starting a networked game capability added (Matt)
+    * Ability to create/join a game on a network  (Matt)
 
 = Cycle 4 User Stories =
     * User can see pieces move around the board appropriately after rolling dice (James)
