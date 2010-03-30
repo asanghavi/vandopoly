@@ -6,6 +6,8 @@ User stories for Vandopoly.
     * User can renovate and degrade properties appropriately by using a "Manage Properties" button (James)
     * User sees list of properties in order by type then space# for all property lists (James)
     * User sees the Player Panel update when properties are mortgaged (Allie)
+    * User sees pop-ups notifying them of actions taken in the game, including: collecting $200 as they pass GO, paying/being paid rent on properties, being sent to jail, getting out of jail (rolling doubles or after 3 rolls), paying tuition/parking tickets (tax spaces), etc (Allie)
+    * User sees a confirmation message after clicking the "Quit Game" button (Allie)
     * Ability to create/join a game on a network  (Matt)
 
 = Cycle 4 User Stories =
