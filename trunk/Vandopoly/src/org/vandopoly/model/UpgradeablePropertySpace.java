@@ -112,6 +112,10 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		return state_.isDowngradeable();
 	}
 	
+	public boolean isRenovated() {
+		return state_.isRenovated();
+	}
+	
 	public void bePurchased(Player owner) {
 		setOwner(owner);
 		state_.changeState(this, PropertyOwned.Instance());

@@ -37,4 +37,7 @@ public class SpaceState {
 	protected boolean isDowngradeable() {
 		return false;
 	}
+	protected boolean isRenovated() {
+		return true;
+	}
 }

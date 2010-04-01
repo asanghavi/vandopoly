@@ -50,4 +50,8 @@ public class PropertyOwned extends SpaceState {
 	protected boolean isUpgradeable() {
 		return true;
 	}
+	
+	protected boolean isRenovated() {
+		return false;
+	}
 }
