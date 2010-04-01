@@ -222,10 +222,7 @@ public void moveCurrentPlayer(Object obj) {
 			int position = players_.get(currentPlayerNum_).getPosition();
 			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[position]);
 		}
-		else if (action.getActionCommand().equals("Renovate")) {
-			//To-do
-		}
-		else if (action.getActionCommand().equals("Mortgage")) {
+		else if (action.getActionCommand().equals("Manage Properties")) {
 			// If the propertySelectionPanel has already been created, dispose and get a new one
 			// This makes sure the panel is fully updated, and allows only a single propertySelection
 			// panel at a time

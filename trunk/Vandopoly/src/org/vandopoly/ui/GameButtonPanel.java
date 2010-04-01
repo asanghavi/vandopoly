@@ -40,7 +40,7 @@ public class GameButtonPanel extends JPanel {
 	
 	GameController controller_;
 	
-	int buttonX = 150, buttonY = 50;
+	int buttonX = 240, buttonY = 50;
 	int frameWidth = buttonX * 4;
 	int frameHeight = buttonY;
 	
@@ -67,7 +67,7 @@ public class GameButtonPanel extends JPanel {
 		purchase_.setEnabled(false);
 		
 		// Set up the mortgage button
-		mortgage_ = buttonCreator("Mortgage", 1);
+		mortgage_ = buttonCreator("Manage Properties", 1);
 		mortgage_.setEnabled(true);
 		
 		// Set up the end turn button

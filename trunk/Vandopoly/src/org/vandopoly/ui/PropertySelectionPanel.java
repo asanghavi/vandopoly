@@ -44,21 +44,22 @@ import org.vandopoly.model.SpaceMortgaged;
 public class PropertySelectionPanel implements  ListSelectionListener {
 	
 	private final ArrayList<PropertySpace> propertyList;
-	private JButton mortgage;
+	private JButton mortgage, renovate, unrenovate;
 	
 	JFrame frame;
 	
 	int panelWidth = 350;
-	int panelHeight = 190;
+	int panelHeight = 260;
 	int buttonHeight = 50;
+	int listHeight = 120;
 	
     public PropertySelectionPanel(final Player player) { 
     	
     	frame = new JFrame("Vandopoly Properties Owned");
     	frame.setLayout(null);
-    	frame.setSize(350,190);
+    	frame.setSize(panelWidth, panelHeight);
     	frame.setLocation((int)((DisplayAssembler.getScreenWidth() - panelWidth) / 2), 
-    			(int)((DisplayAssembler.getScreenHeight() - 190) / 2));
+    			(int)((DisplayAssembler.getScreenHeight() - panelHeight) / 2));
     	
     	propertyList = player.getProperties();
     	
@@ -91,13 +92,19 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 
 	JScrollPane scrollPane = new JScrollPane(list);
 	scrollPane.setBorder(new TitledBorder("Select Properties"));
-	scrollPane.setBounds(0, 0, panelWidth, 100);
+	scrollPane.setBounds(0, 0, panelWidth, listHeight);
 	scrollPane.setVisible(true);
 	
 	Font buttonFont = new Font("broadway", Font.PLAIN,18);
+	
+	renovate = new JButton("Renovate");
+	renovate.setFont(buttonFont);
+	renovate.setBounds(0, listHeight, (panelWidth / 2), buttonHeight);
+	renovate.setVisible(true);
+	
 	mortgage = new JButton("Mortgage");
 	mortgage.setFont(buttonFont);
-	mortgage.setBounds(0, 100, (panelWidth / 2), buttonHeight);
+	mortgage.setBounds(0, listHeight + buttonHeight, panelWidth, buttonHeight);
 	mortgage.setVisible(true);
 	
 	mortgage.addActionListener(new ActionListener() {
@@ -108,7 +115,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 			if(index < 0) {
 				System.out.println(player.getName() + " tried to mortage: " + index + " which is invalid");
 			}
-			// If property selected is currently mortgaged
+			// If property selected is currently being mortgaged
 			else if(!propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 				model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
 				player.mortgage(propertyList.get(index));
@@ -123,11 +130,11 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 
     });
 	
-	JButton finish = new JButton("Finished");
-	finish.setFont(buttonFont);
-	finish.setBounds((panelWidth / 2),100,(panelWidth / 2),buttonHeight);
-	finish.setVisible(true);
-	finish.addActionListener(new ActionListener() {
+	unrenovate = new JButton("UnRenovate");
+	unrenovate.setFont(buttonFont);
+	unrenovate.setBounds((panelWidth / 2), listHeight,(panelWidth / 2),buttonHeight);
+	unrenovate.setVisible(true);
+	unrenovate.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent event) {
         	frame.dispose();
         }
@@ -136,8 +143,9 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	
 	
 	frame.add(scrollPane);
+	frame.add(renovate);
 	frame.add(mortgage);
-	frame.add(finish);
+	frame.add(unrenovate);
 	
 	frame.setResizable(false);
 	frame.setVisible(true);
