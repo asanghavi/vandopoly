@@ -119,6 +119,15 @@ public class PropertySpace extends Space {
 	public int getMortgageValue() {
 		return mortgageValue_;
 	}
+	
+	public boolean isUpgradeable() {
+		return false;
+	}
+	
+	public boolean isDowngradeable() {
+		return false;
+	}
+
 
 	public void bePurchased(Player owner) {
 		setOwner(owner);

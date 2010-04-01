@@ -44,4 +44,10 @@ public class UpgradeablePropertyLevel4 extends UpgradeablePropertyState {
 		property.getOwner().collectRent(property.getRentValues()[4], player);
 	}
 
+	protected boolean isUpgradeable() {
+		return true;
+	}
+	protected boolean isDowngradeable() {
+		return true;
+	}
 }

@@ -22,12 +22,11 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class UpgradeablePropertyState {
+public class UpgradeablePropertyState extends SpaceState {
 	
 	protected void changeState(UpgradeablePropertySpace space, SpaceState newState) {
 		space.changeState(newState);
 	}
 	
 	protected void landOn(Player player, PropertySpace property) {}
-
 }

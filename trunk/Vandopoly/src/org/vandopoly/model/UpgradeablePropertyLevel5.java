@@ -43,4 +43,11 @@ public class UpgradeablePropertyLevel5 extends UpgradeablePropertyState {
 	public void landOn(Player player, UpgradeablePropertySpace property) {
 		property.getOwner().collectRent(property.getRentValues()[5], player);
 	}
+	
+	protected boolean isUpgradeable() {
+		return false;
+	}
+	protected boolean isDowngradeable() {
+		return true;
+	}
 }

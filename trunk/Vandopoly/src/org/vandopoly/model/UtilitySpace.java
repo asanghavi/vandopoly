@@ -89,7 +89,7 @@ public class UtilitySpace extends PropertySpace {
 	public int getMortgageValue() {
 		return mortgageValue_;
 	}
-
+	
 	public void bePurchased(Player owner) {
 		setOwner(owner);
 		state_.changeState(this, UtilityOwns1.Instance());
