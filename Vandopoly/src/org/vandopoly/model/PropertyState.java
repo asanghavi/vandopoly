@@ -24,11 +24,9 @@ package org.vandopoly.model;
  */
 public class PropertyState  {
 	
-	protected void changeState(PropertySpace space, PropertyState newState) {
+	protected void changeState(PropertySpace space, SpaceState newState) {
 		space.changeState(newState);
 	}
 	
-	protected void landOn(Player player, PropertySpace property) {
-		// Do something
-	}
+	protected void landOn(Player player, PropertySpace property) {}
 }

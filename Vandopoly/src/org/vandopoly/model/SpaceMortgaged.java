@@ -17,30 +17,30 @@
 package org.vandopoly.model;
 
 /*
- * PropertyMortgaged class implements the behavior associated with the 
- * upgradeable property space being owned and mortgaged.
+ * SpaceMortgaged class implements the behavior associated with the 
+ * property space being owned and mortgaged.
  * ConcreteState class for the State pattern.
  * 
  * @author Allie Mazzia
  */
 
-public class PropertyMortgaged extends PropertyState {
+public class SpaceMortgaged extends SpaceState {
 	
-	private static PropertyMortgaged INSTANCE = null;
+	private static SpaceMortgaged INSTANCE = null;
 	
-	protected PropertyMortgaged() {
+	protected SpaceMortgaged() {
 		// Exists to disable instantiation
 	}
 	
-	public static PropertyState Instance() {
+	public static SpaceState Instance() {
 		if (INSTANCE == null) {
-			INSTANCE = new PropertyMortgaged();
+			INSTANCE = new SpaceMortgaged();
 		}
 		
 		return INSTANCE;
 	}
 
-	public void landOn(Player player, UpgradeablePropertySpace property) {
+	public void landOn(Player player, PropertySpace property) {
 		//Do nothing as the space is mortgaged
 	}
 }
