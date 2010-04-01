@@ -79,6 +79,22 @@ public class PropertySpace extends Space {
 	}
 
 	// Getters and setters
+	public String getType() {
+		return propertyType_[type_];
+	}
+	
+	/**
+	 * Get level of Property type, so Purple = 0, Light Blue = 1 ect.
+	 * @return int value from 0 - 9 
+	 */
+	public int getTypeInt() {
+		return type_;
+	}
+	
+	public int getSpaceNumber() {
+		return spaceNumber_;
+	}
+	
 	public void setOwner(Player p) {
 		owner_ = p;
 		NotificationManager.getInstance().notifyObservers(Notification.CHANGED_OWNER, this);
