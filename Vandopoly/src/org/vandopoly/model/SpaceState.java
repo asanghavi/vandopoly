@@ -30,4 +30,11 @@ public class SpaceState {
 	}
 	
 	protected void landOn(Player player, PropertySpace property) {}
+	
+	protected boolean isUpgradeable() {
+		return false;
+	}
+	protected boolean isDowngradeable() {
+		return false;
+	}
 }

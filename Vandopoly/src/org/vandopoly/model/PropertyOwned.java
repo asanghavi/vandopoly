@@ -44,4 +44,10 @@ public class PropertyOwned extends SpaceState {
 	public void landOn(Player player, PropertySpace property) {
 		property.getOwner().collectRent(property.getRentValues()[0], player);
 	}
+	
+	// This method should only be called by UpgradeablePropertySpaces,
+	// as all other properties do not query the states.
+	protected boolean isUpgradeable() {
+		return true;
+	}
 }

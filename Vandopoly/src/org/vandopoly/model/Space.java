@@ -38,5 +38,4 @@ public class Space {
 	public String getName() {
 		return name_;
 	}
-
 }
