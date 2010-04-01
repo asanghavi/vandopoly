@@ -30,11 +30,11 @@ import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradeablePropertySpace;
+import org.vandopoly.ui.ActionMessage;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.Display;
 import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.MessagePopUp;
-import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
 
@@ -55,7 +55,7 @@ public class GameController implements ActionListener {
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
 	PropertySelectionPanel propertySelectionPanel_;
-	ArrayList<Piece> piece_;
+	ActionMessage message_;
 
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
@@ -71,6 +71,7 @@ public class GameController implements ActionListener {
 	public GameController(Display display) {
 		dice_ = new Dice();
 		board_ = new Space[NUM_OF_SPACES];
+		
 		display_ = display;
 		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
@@ -155,7 +156,6 @@ public void moveCurrentPlayer(Object obj) {
 	
 	private void createPlayers() {
 		players_ = new ArrayList<Player>();
-		piece_ = new ArrayList<Piece>();
 		
 		for (int i = 0; i < numOfPlayers_; i++) {
 			players_.add(new Player(i, namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
@@ -168,45 +168,45 @@ public void moveCurrentPlayer(Object obj) {
 		
 		// set 1
 		board_[0] = new CornerSpace("GO");
-		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 60, 30, 2, 10, 30, 90, 160, 250);
+		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 0, 1, 60, 30, 2, 10, 30, 90, 160, 250);
 		board_[2] = commChest_;
-		board_[3] = new UpgradeablePropertySpace("Mims Hall", 60, 30, 4, 20,	60,	180, 320, 450);
+		board_[3] = new UpgradeablePropertySpace("Mims Hall", 0, 3, 60, 30, 4, 20,	60,	180, 320, 450);
 		board_[4] = new TaxSpace("Pay Tuition");
-		board_[5] = new PropertySpace("Vandy Van Reverse Route", 200, 100);
-		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 100, 30, 6,	30,	90,	270, 400, 550);
+		board_[5] = new PropertySpace("Vandy Van Reverse Route", 8, 5, 200, 100, 25, 50, 100, 200);
+		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 1, 6, 100, 30, 6,	30,	90,	270, 400, 550);
 		board_[7] = chance_;
-		board_[8] = new UpgradeablePropertySpace("Cole Hall", 100, 30, 6, 30, 90, 270, 400, 550);
-		board_[9] = new UpgradeablePropertySpace("McGill Hall", 120, 30, 8, 40, 100, 300, 450, 600);
+		board_[8] = new UpgradeablePropertySpace("Cole Hall", 1, 8, 100, 30, 6, 30, 90, 270, 400, 550);
+		board_[9] = new UpgradeablePropertySpace("McGill Hall", 1, 9, 120, 30, 8, 40, 100, 300, 450, 600);
 		board_[10] = new CornerSpace("Academic Probation");
-		board_[11] = new UpgradeablePropertySpace("Furman Hall", 140, 70, 10, 50, 150, 450, 625, 750);
-		board_[12] = new PropertySpace("CoGeneration Plant", 150, 75);
-		board_[13] = new UpgradeablePropertySpace("Wilson Hall", 140, 70, 10, 50, 150, 450, 625, 750);
-		board_[14] = new UpgradeablePropertySpace("Buttrick Hall", 160, 80, 12, 60, 180, 500, 700, 900);
-		board_[15] = new PropertySpace("Vandy Van Long Route", 200, 100);
-		board_[16] = new UpgradeablePropertySpace("Lewis House", 180, 90, 14, 70, 200, 550, 750, 950);
+		board_[11] = new UpgradeablePropertySpace("Furman Hall", 2, 11, 140, 70, 10, 50, 150, 450, 625, 750);
+		board_[12] = new PropertySpace("CoGeneration Plant", 9, 12, 150, 75, 0, 0, 0, 0);
+		board_[13] = new UpgradeablePropertySpace("Wilson Hall", 2, 13, 140, 70, 10, 50, 150, 450, 625, 750);
+		board_[14] = new UpgradeablePropertySpace("Buttrick Hall", 2, 14, 160, 80, 12, 60, 180, 500, 700, 900);
+		board_[15] = new PropertySpace("Vandy Van Long Route", 8, 15, 200, 100, 25, 50, 100, 200);
+		board_[16] = new UpgradeablePropertySpace("Lewis House", 3, 16, 180, 90, 14, 70, 200, 550, 750, 950);
 		board_[17] = commChest_;
-		board_[18] = new UpgradeablePropertySpace("Morgan House", 180, 90, 14, 70, 200, 550, 750, 950);
-		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 200,100, 16, 80, 220, 600, 800, 1000);
+		board_[18] = new UpgradeablePropertySpace("Morgan House", 3, 18, 180, 90, 14, 70, 200, 550, 750, 950);
+		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 3, 19, 200,100, 16, 80, 220, 600, 800, 1000);
 		board_[20] = new CornerSpace("Scholarship Fund");
-		board_[21] = new UpgradeablePropertySpace("Kirkland Hall", 220, 110, 18, 90, 250, 700, 875, 1050);
+		board_[21] = new UpgradeablePropertySpace("Kirkland Hall", 4, 21, 220, 110, 18, 90, 250, 700, 875, 1050);
 		board_[22] = chance_;
-		board_[23] = new UpgradeablePropertySpace("Wyatt Center", 220, 110, 18, 90, 250, 700, 875, 1050);
-		board_[24] = new UpgradeablePropertySpace("Featheringill Hall", 240, 120, 20, 100, 300, 750, 925, 1100);
-		board_[25] = new PropertySpace("Vandy Van Normal Route", 200, 100);
-		board_[26] = new UpgradeablePropertySpace("Sarratt Student Center", 260, 130, 22, 110, 330, 800, 975, 1150);
-		board_[27] = new UpgradeablePropertySpace("Student Life Center", 260, 130, 22, 110, 330, 800, 975, 1150);
-		board_[28] = new PropertySpace("BioDiesel Initiative", 150, 75);
-		board_[29] = new UpgradeablePropertySpace("Ingram Center", 280, 140, 24, 120, 360, 850, 1025, 1200);
+		board_[23] = new UpgradeablePropertySpace("Wyatt Center", 4, 23, 220, 110, 18, 90, 250, 700, 875, 1050);
+		board_[24] = new UpgradeablePropertySpace("Featheringill Hall", 4, 24, 240, 120, 20, 100, 300, 750, 925, 1100);
+		board_[25] = new PropertySpace("Vandy Van Normal Route", 8, 25, 200, 100, 25, 50, 100, 200);
+		board_[26] = new UpgradeablePropertySpace("Sarratt Student Center", 5, 26, 260, 130, 22, 110, 330, 800, 975, 1150);
+		board_[27] = new UpgradeablePropertySpace("Student Life Center", 5, 27, 260, 130, 22, 110, 330, 800, 975, 1150);
+		board_[28] = new PropertySpace("BioDiesel Initiative", 9, 28, 150, 75, 0, 0, 0, 0);
+		board_[29] = new UpgradeablePropertySpace("Ingram Center", 5, 29, 280, 140, 24, 120, 360, 850, 1025, 1200);
 		board_[30] = new CornerSpace("Go On Academic Probation");
-		board_[31] = new UpgradeablePropertySpace("Murray House", 300, 150, 26, 130, 390, 900, 1100, 1275);
-		board_[32] = new UpgradeablePropertySpace("Stambaugh House", 300, 150, 26, 130, 390, 900, 1100, 1275);
+		board_[31] = new UpgradeablePropertySpace("Murray House", 6, 31, 300, 150, 26, 130, 390, 900, 1100, 1275);
+		board_[32] = new UpgradeablePropertySpace("Stambaugh House", 6, 32, 300, 150, 26, 130, 390, 900, 1100, 1275);
 		board_[33] = commChest_;
-		board_[34] = new UpgradeablePropertySpace("Hank Ingram House", 320, 160, 28, 150, 450, 1000, 1200, 1400);
-		board_[35] = new PropertySpace("Vandy Van Express Route", 200, 100);
+		board_[34] = new UpgradeablePropertySpace("Hank Ingram House", 6, 34, 320, 160, 28, 150, 450, 1000, 1200, 1400);
+		board_[35] = new PropertySpace("Vandy Van Express Route", 8, 35, 200, 100, 25, 50, 100, 200);
 		board_[36] = chance_;
-		board_[37] = new UpgradeablePropertySpace("McGugin Center", 350, 175, 35, 175, 500, 1100, 1300, 1500);
+		board_[37] = new UpgradeablePropertySpace("McGugin Center", 7, 37, 350, 175, 35, 175, 500, 1100, 1300, 1500);
 		board_[38] = new TaxSpace("Parking Ticket");
-		board_[39] = new UpgradeablePropertySpace("Commons Center", 400, 200, 50, 200, 600, 1400, 1700, 2000);
+		board_[39] = new UpgradeablePropertySpace("Commons Center", 7, 39, 400, 200, 50, 200, 600, 1400, 1700, 2000);
 		
 		display_.showBoard(board_);
 		

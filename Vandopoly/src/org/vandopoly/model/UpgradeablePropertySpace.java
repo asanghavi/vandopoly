@@ -37,8 +37,9 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		owner_ = null;
 	}
 	
-	public UpgradeablePropertySpace(String name, int purchasePrice, int mortgageValue, int rent0, int rent1, 
-			int rent2, int rent3, int rent4, int rent5) {
+	public UpgradeablePropertySpace(String name, int type, int spaceNumber, int purchasePrice, 
+			int mortgageValue, int rent0, int rent1, int rent2, int rent3, int rent4, int rent5) {
+		
 		name_ = name;
 		state_ = PropertyUnowned.Instance();
 		purchasePrice_ = purchasePrice;
@@ -50,6 +51,9 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		rentValues_[3] = rent3;
 		rentValues_[4] = rent4;
 		rentValues_[5] = rent5;
+		
+		type_ = type;
+		spaceNumber_ = spaceNumber;
 		
 		owner_ = null;
 	}
