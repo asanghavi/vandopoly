@@ -20,6 +20,7 @@ import java.util.ListIterator;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.ui.ActionMessage;
 import org.vandopoly.ui.Piece;
 
 /*
@@ -204,6 +205,7 @@ public class Player {
 			updateCash(-1 * property.getPurchasePrice());
 			updateProperties(property);
 			property.bePurchased(this);
+			ActionMessage.getInstance().newMessage(name_+" purchased "+property.getName());
 			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 		}
 	}

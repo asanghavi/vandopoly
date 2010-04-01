@@ -16,6 +16,8 @@
 package org.vandopoly.ui;
 
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.Toolkit;
 
@@ -122,5 +124,9 @@ public class DisplayAssembler {
 	
 	public static int getScreenWidth() {
 		return screen_.width;
+	}
+	
+	public FontMetrics getFontMetrics(Font font) {
+		return desktopPane_.getFontMetrics(font);
 	}
 }

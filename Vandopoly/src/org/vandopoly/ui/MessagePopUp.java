@@ -41,6 +41,8 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class MessagePopUp extends JPanel {
 	
+	static final long serialVersionUID = 102;
+	
 	public MessagePopUp(String message) {  	
 		
 		JPanel panel = new JPanel();
