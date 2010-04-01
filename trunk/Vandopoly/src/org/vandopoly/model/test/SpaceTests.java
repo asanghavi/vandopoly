@@ -51,15 +51,15 @@ public class SpaceTests extends TestCase {
 		property = new PropertySpace();
 		property.setPurchasePrice(100);
 		
-		board[0] = new UpgradeablePropertySpace("Memorial Gym", 100, 50, 25, 100, 200, 400, 500, 750);
+		board[0] = new UpgradeablePropertySpace("Memorial Gym", 0, 0, 100, 50, 25, 100, 200, 400, 500, 750);
 		board[1] = new PropertySpace();
 		board[2] = new CornerSpace("Scholarship Fund");
 		board[3] = new TaxSpace("Pay Tuition");
 		
-		samplePlayer = new Player(0, "James", null, 2);
+		samplePlayer = new Player(0, "James", "Squirrel", 2);
 		samplePlayer.setName("James");
 		
-		samplePlayer2 = new Player(1, "Frank", null, 2);
+		samplePlayer2 = new Player(1, "Frank", "Zeppos", 2);
 	}
 	
 	// Must be used to cleanup after a .setUp()
