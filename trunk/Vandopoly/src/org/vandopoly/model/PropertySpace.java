@@ -30,22 +30,34 @@ public class PropertySpace extends Space {
 	protected int purchasePrice_, mortgageValue_;
 	protected Player owner_;
 	
+	protected int type_, spaceNumber_;
+	protected static final String propertyType_[] = {"Purple", "Light Blue", "Brown", "Orange",
+		"Red", "Yellow", "Green", "Dark Blue", "Transportation", "Utility"};
+	
 	public PropertySpace() {
 		name_ = "NONE";
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
 		state_ = PropertyUnowned.Instance();
-		rentValues_ = new int[6];
+		rentValues_ = new int[4];
 		owner_ = null;
 	}
 	
-	public PropertySpace(String name, int purchasePrice, int mortgageValue) {
+	public PropertySpace(String name, int type, int spaceNumber, int purchasePrice, int mortgageValue, 
+			int rent0, int rent1, int rent2, int rent3) {
+		
 		name_ = name;
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
 		state_ = PropertyUnowned.Instance();
-		rentValues_ = new int[6];
+		rentValues_ = new int[4];
+		rentValues_[0] = rent0;
+		rentValues_[1] = rent1;
+		rentValues_[2] = rent2; 
+		rentValues_[3] = rent3;
 		owner_ = null;
+		type_ = type;
+		spaceNumber_ = spaceNumber;
 	}
 	
 	public String toString() {
