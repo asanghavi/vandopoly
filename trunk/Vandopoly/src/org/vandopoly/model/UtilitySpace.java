@@ -28,13 +28,6 @@ import org.vandopoly.messaging.NotificationManager;
 public class UtilitySpace extends PropertySpace {
 	private SpaceState state_;
 	
-	protected int purchasePrice_, mortgageValue_;
-	protected Player owner_;
-	
-	protected int type_, spaceNumber_;
-	protected static final String propertyType_[] = {"Purple", "Light Blue", "Brown", "Orange",
-		"Red", "Yellow", "Green", "Dark Blue", "Transportation", "Utility"};
-	
 	public UtilitySpace() {
 		name_ = "NONE";
 		purchasePrice_ = 0;
