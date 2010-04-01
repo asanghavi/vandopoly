@@ -30,8 +30,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.vandopoly.model.Player;
-import org.vandopoly.model.PropertyMortgaged;
 import org.vandopoly.model.PropertySpace;
+import org.vandopoly.model.SpaceMortgaged;
 
 
 /*
@@ -65,7 +65,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
     	final DefaultListModel model = new DefaultListModel();
     	
     	for (int i = 0; i < propertyList.size(); i++) {
-    		if(propertyList.get(i).getState() != PropertyMortgaged.Instance())
+    		if(propertyList.get(i).getState() != SpaceMortgaged.Instance())
     			model.addElement(propertyList.get(i).getName());
     		else
     			model.addElement(propertyList.get(i).getName() + " (Mortgaged)");
@@ -109,12 +109,12 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 				System.out.println(player.getName() + " tried to mortage: " + index + " which is invalid");
 			}
 			// If property selected is currently mortgaged
-			else if(!propertyList.get(index).getState().equals(PropertyMortgaged.Instance())) {
+			else if(!propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 				model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
 				player.mortgage(propertyList.get(index));
 				mortgage.setText("Unmortgage");
 			}
-			else if(propertyList.get(index).getState().equals(PropertyMortgaged.Instance())) {
+			else if(propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 				model.set(index, propertyList.get(index).getName());
 				player.unmortgage(propertyList.get(index));
 				mortgage.setText("Mortgage");
@@ -151,7 +151,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
         ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
         // Update the button words based on state of property
-        if(propertyList.get(lsm.getMinSelectionIndex()).getState().equals(PropertyMortgaged.Instance())) {
+        if(propertyList.get(lsm.getMinSelectionIndex()).getState().equals(SpaceMortgaged.Instance())) {
         	mortgage.setText("Unmortgage");
         }
         else
