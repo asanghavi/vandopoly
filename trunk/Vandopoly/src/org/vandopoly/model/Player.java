@@ -16,6 +16,7 @@
 package org.vandopoly.model;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
@@ -166,6 +167,14 @@ public class Player {
 			array[i] = properties_.get(i).getName();
 		}
 		return array;
+	}
+	
+	public void sortPropertyArray() {
+		
+		ListIterator<PropertySpace> itr = properties_.listIterator();
+		while (itr.hasNext()) {
+			//Sort by type_
+		}
 	}
 	
 	public int getIndex() {

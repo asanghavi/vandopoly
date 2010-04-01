@@ -25,12 +25,12 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 public class UpgradeablePropertySpace extends PropertySpace {
-	private PropertyState state_;
+	private SpaceState state_;
 	private int[] rentValues_;
 	
 	public UpgradeablePropertySpace() {
 		name_ = "NONE";
-		state_ = PropertyUnowned.Instance();
+		state_ = SpaceUnowned.Instance();
 		purchasePrice_ = 0;
 		mortgageValue_ = 0;
 		rentValues_ = new int[6];
@@ -41,7 +41,7 @@ public class UpgradeablePropertySpace extends PropertySpace {
 			int mortgageValue, int rent0, int rent1, int rent2, int rent3, int rent4, int rent5) {
 		
 		name_ = name;
-		state_ = PropertyUnowned.Instance();
+		state_ = SpaceUnowned.Instance();
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
 		rentValues_ = new int[6];
@@ -58,11 +58,11 @@ public class UpgradeablePropertySpace extends PropertySpace {
 		owner_ = null;
 	}
 	
-	void changeState(PropertyState newState) {
+	void changeState(SpaceState newState) {
 		state_ = newState;
 	}
 	
-	public PropertyState getState() {
+	public SpaceState getState() {
 		return state_;
 	}
 	
@@ -106,14 +106,14 @@ public class UpgradeablePropertySpace extends PropertySpace {
 	
 	public void bePurchased(Player owner) {
 		setOwner(owner);
-		state_.changeState(this, PropertyLevel0.Instance());
+		state_.changeState(this, PropertyOwned.Instance());
 	}
 	
 	public void beMortgaged() {
-		state_.changeState(this, PropertyMortgaged.Instance());
+		state_.changeState(this, SpaceMortgaged.Instance());
 	}
 	
 	public void unmortgage() {
-		state_.changeState(this, PropertyLevel0.Instance());
+		state_.changeState(this, PropertyOwned.Instance());
 	}
 }
