@@ -30,7 +30,7 @@ import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradeablePropertySpace;
-import org.vandopoly.ui.ActionMessage;
+import org.vandopoly.model.UtilitySpace;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.Display;
 import org.vandopoly.ui.GameButtonPanel;
@@ -55,7 +55,6 @@ public class GameController implements ActionListener {
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
 	PropertySelectionPanel propertySelectionPanel_;
-	ActionMessage message_;
 
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
@@ -179,7 +178,7 @@ public void moveCurrentPlayer(Object obj) {
 		board_[9] = new UpgradeablePropertySpace("McGill Hall", 1, 9, 120, 30, 8, 40, 100, 300, 450, 600);
 		board_[10] = new CornerSpace("Academic Probation");
 		board_[11] = new UpgradeablePropertySpace("Furman Hall", 2, 11, 140, 70, 10, 50, 150, 450, 625, 750);
-		board_[12] = new PropertySpace("CoGeneration Plant", 9, 12, 150, 75, 0, 0, 0, 0);
+		board_[12] = new UtilitySpace("CoGeneration Plant", 9, 12, 150, 75);
 		board_[13] = new UpgradeablePropertySpace("Wilson Hall", 2, 13, 140, 70, 10, 50, 150, 450, 625, 750);
 		board_[14] = new UpgradeablePropertySpace("Buttrick Hall", 2, 14, 160, 80, 12, 60, 180, 500, 700, 900);
 		board_[15] = new PropertySpace("Vandy Van Long Route", 8, 15, 200, 100, 25, 50, 100, 200);
@@ -195,7 +194,7 @@ public void moveCurrentPlayer(Object obj) {
 		board_[25] = new PropertySpace("Vandy Van Normal Route", 8, 25, 200, 100, 25, 50, 100, 200);
 		board_[26] = new UpgradeablePropertySpace("Sarratt Student Center", 5, 26, 260, 130, 22, 110, 330, 800, 975, 1150);
 		board_[27] = new UpgradeablePropertySpace("Student Life Center", 5, 27, 260, 130, 22, 110, 330, 800, 975, 1150);
-		board_[28] = new PropertySpace("BioDiesel Initiative", 9, 28, 150, 75, 0, 0, 0, 0);
+		board_[28] = new UtilitySpace("BioDiesel Initiative", 9, 28, 150, 75);
 		board_[29] = new UpgradeablePropertySpace("Ingram Center", 5, 29, 280, 140, 24, 120, 360, 850, 1025, 1200);
 		board_[30] = new CornerSpace("Go On Academic Probation");
 		board_[31] = new UpgradeablePropertySpace("Murray House", 6, 31, 300, 150, 26, 130, 390, 900, 1100, 1275);

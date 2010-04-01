@@ -31,6 +31,10 @@ public class UtilitySpace extends PropertySpace {
 	protected int purchasePrice_, mortgageValue_;
 	protected Player owner_;
 	
+	protected int type_, spaceNumber_;
+	protected static final String propertyType_[] = {"Purple", "Light Blue", "Brown", "Orange",
+		"Red", "Yellow", "Green", "Dark Blue", "Transportation", "Utility"};
+	
 	public UtilitySpace() {
 		name_ = "NONE";
 		purchasePrice_ = 0;
@@ -39,8 +43,10 @@ public class UtilitySpace extends PropertySpace {
 		owner_ = null;
 	}
 	
-	public UtilitySpace(String name, int purchasePrice, int mortgageValue) {
+	public UtilitySpace(String name, int type, int spaceNumber, int purchasePrice, int mortgageValue) {
 		name_ = name;
+		type_ = type;
+		spaceNumber_ = spaceNumber;
 		purchasePrice_ = purchasePrice;
 		mortgageValue_ = mortgageValue;
 		state_ = SpaceUnowned.Instance();
