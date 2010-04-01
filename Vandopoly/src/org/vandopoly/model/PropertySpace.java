@@ -128,6 +128,9 @@ public class PropertySpace extends Space {
 		return false;
 	}
 
+	public boolean isRenovated() {
+		return false;
+	}
 
 	public void bePurchased(Player owner) {
 		setOwner(owner);

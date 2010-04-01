@@ -119,13 +119,14 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 			else if(!propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 				model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
 				player.mortgage(propertyList.get(index));
-				mortgage.setText("Unmortgage");
 			}
 			else if(propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 				model.set(index, propertyList.get(index).getName());
 				player.unmortgage(propertyList.get(index));
-				mortgage.setText("Mortgage");
     		}
+			
+			// Toggle Buttons Appropriately
+			PropertySelectionPanel.this.toggleButtons(propertyList.get(index));
         }
 
     });
@@ -158,12 +159,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) { 
         ListSelectionModel lsm = (ListSelectionModel)e.getSource();
 
-        // Update the button words based on state of property
-        if(propertyList.get(lsm.getMinSelectionIndex()).getState().equals(SpaceMortgaged.Instance())) {
-        	mortgage.setText("Unmortgage");
-        }
-        else
-        	mortgage.setText("Mortgage");
+        toggleButtons(propertyList.get(lsm.getMinSelectionIndex()));
         
         int firstIndex = e.getFirstIndex();
         int lastIndex = e.getLastIndex();
@@ -187,6 +183,31 @@ public class PropertySelectionPanel implements  ListSelectionListener {
         }
     }
 
+    // TODO: Toggle Mortgage Appropriately
+    private void toggleButtons(PropertySpace selectedProperty) {
+    	
+    	if (selectedProperty.isUpgradeable())
+        	renovate.setEnabled(true);
+        else
+        	renovate.setEnabled(false);
+        
+        if (selectedProperty.isDowngradeable())
+        	unrenovate.setEnabled(true);
+        else
+        	unrenovate.setEnabled(false);
+        
+        if (selectedProperty.isRenovated())
+        	mortgage.setEnabled(false);
+        else
+        	mortgage.setEnabled(true);
+        
+        // Update the button words based on state of property
+        if (selectedProperty.getState().equals(SpaceMortgaged.Instance())) {
+        	mortgage.setText("Unmortgage");
+        }
+        else
+        	mortgage.setText("Mortgage");
+    }
 }
 /*
 class SharedListSelectionHandler implements ListSelectionListener {

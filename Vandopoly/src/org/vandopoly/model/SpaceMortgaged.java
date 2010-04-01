@@ -43,4 +43,8 @@ public class SpaceMortgaged extends SpaceState {
 	public void landOn(Player player, PropertySpace property) {
 		//Do nothing as the space is mortgaged
 	}
+	
+	protected boolean isRenovated() {
+		return false;
+	}
 }
