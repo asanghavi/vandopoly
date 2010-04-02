@@ -17,6 +17,7 @@ package org.vandopoly.model;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.ui.ActionMessage;
 
 /*
  * Model class that is a descendant of Space and represents a tax space on the board
@@ -47,19 +48,24 @@ public class TaxSpace extends Space {
 	
 	// TODO: should be 10% of all assets
 	public void landOn(Player p) {
-		int value;
+		int value = 0;
+		String message = p.getName() + " paid $";
 		
 		// Pay the minimum of either 10% of current money or 200 dollar fee
-		if(name_.equals("Pay Tuition"))
+		if(name_.equals("Pay Tuition")) {
 			value = Math.min((int)(p.getCash() * .1), 200);
-		
+			message += value + " in tuition";
+		}
 		// Represents luxury tax or Parking Ticket space
-		else
+		else {
 			value = 75;
+			message += value + " in parking tickets";
+		}
 		
 		p.updateCash(-value);
 		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
 				new Integer(value));
+		ActionMessage.getInstance().newMessage(message);
 	}
 
 	// Getters and setters
