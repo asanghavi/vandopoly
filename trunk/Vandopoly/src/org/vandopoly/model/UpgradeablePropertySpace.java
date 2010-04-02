@@ -25,8 +25,6 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 public class UpgradeablePropertySpace extends PropertySpace {
-	private SpaceState state_;
-	private int[] rentValues_;
 	
 	public UpgradeablePropertySpace() {
 		name_ = "NONE";

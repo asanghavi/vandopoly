@@ -50,4 +50,8 @@ public class UpgradeablePropertyLevel3 extends UpgradeablePropertyState {
 	protected boolean isDowngradeable() {
 		return true;
 	}
+	
+	protected String getNameAndStatus() {
+		return " (Level 3)";
+	}
 }

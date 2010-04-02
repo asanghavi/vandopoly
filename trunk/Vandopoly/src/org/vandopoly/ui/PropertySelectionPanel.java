@@ -44,7 +44,7 @@ import org.vandopoly.model.SpaceMortgaged;
 public class PropertySelectionPanel implements  ListSelectionListener {
 	
 	private final ArrayList<PropertySpace> propertyList;
-	private JButton mortgage, renovate, unrenovate;
+	private JButton mortgage, renovate, downgrade;
 	
 	JFrame frame;
 	
@@ -65,12 +65,8 @@ public class PropertySelectionPanel implements  ListSelectionListener {
     	
     	final DefaultListModel model = new DefaultListModel();
     	
-    	for (int i = 0; i < propertyList.size(); i++) {
-    		if(propertyList.get(i).getState() != SpaceMortgaged.Instance())
-    			model.addElement(propertyList.get(i).getName());
-    		else
-    			model.addElement(propertyList.get(i).getName() + " (Mortgaged)");
-    	}
+    	for (int i = 0; i < propertyList.size(); i++)
+    		model.addElement(propertyList.get(i).getNameAndStatus());
     	
 
 	/*KeyListener keyTypedListener = new KeyAdapter() {
@@ -117,12 +113,12 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 			}
 			// If property selected is currently being mortgaged
 			else if(!propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
-				model.set(index, propertyList.get(index).getName() + " (Mortgaged)");
 				player.mortgage(propertyList.get(index));
+				model.set(index, propertyList.get(index).getNameAndStatus());
 			}
 			else if(propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
-				model.set(index, propertyList.get(index).getName());
 				player.unmortgage(propertyList.get(index));
+				model.set(index, propertyList.get(index).getNameAndStatus());
     		}
 			
 			// Toggle Buttons Appropriately
@@ -131,11 +127,11 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 
     });
 	
-	unrenovate = new JButton("UnRenovate");
-	unrenovate.setFont(buttonFont);
-	unrenovate.setBounds((panelWidth / 2), listHeight,(panelWidth / 2),buttonHeight);
-	unrenovate.setVisible(true);
-	unrenovate.addActionListener(new ActionListener() {
+	downgrade = new JButton("Downgrade");
+	downgrade.setFont(buttonFont);
+	downgrade.setBounds((panelWidth / 2), listHeight,(panelWidth / 2),buttonHeight);
+	downgrade.setVisible(true);
+	downgrade.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent event) {
         	frame.dispose();
         }
@@ -146,7 +142,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 	frame.add(scrollPane);
 	frame.add(renovate);
 	frame.add(mortgage);
-	frame.add(unrenovate);
+	frame.add(downgrade);
 	
 	frame.setResizable(false);
 	frame.setVisible(true);
@@ -161,7 +157,7 @@ public class PropertySelectionPanel implements  ListSelectionListener {
 
         toggleButtons(propertyList.get(lsm.getMinSelectionIndex()));
         
-        int firstIndex = e.getFirstIndex();
+        /*int firstIndex = e.getFirstIndex();
         int lastIndex = e.getLastIndex();
         boolean isAdjusting = e.getValueIsAdjusting(); 
         System.out.println("Event for indexes "
@@ -181,21 +177,24 @@ public class PropertySelectionPanel implements  ListSelectionListener {
                 }
             }
         }
+        */
     }
 
-    // TODO: Toggle Mortgage Appropriately
     private void toggleButtons(PropertySpace selectedProperty) {
     	
+    	// Control Renovate button
     	if (selectedProperty.isUpgradeable())
         	renovate.setEnabled(true);
         else
         	renovate.setEnabled(false);
         
+    	// Control downgrade button
         if (selectedProperty.isDowngradeable())
-        	unrenovate.setEnabled(true);
+        	downgrade.setEnabled(true);
         else
-        	unrenovate.setEnabled(false);
+        	downgrade.setEnabled(false);
         
+        // Control Mortgage button
         if (selectedProperty.isRenovated())
         	mortgage.setEnabled(false);
         else

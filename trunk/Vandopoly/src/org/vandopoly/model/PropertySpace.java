@@ -24,8 +24,8 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 public class PropertySpace extends Space {
-	private SpaceState state_;
-	private int rentValues_[];
+	protected SpaceState state_;
+	protected int rentValues_[];
 	
 	protected int purchasePrice_, mortgageValue_;
 	protected Player owner_;
@@ -147,6 +147,10 @@ public class PropertySpace extends Space {
 	
 	public int[] getRentValues() {
 		return rentValues_;
+	}
+	
+	public String getNameAndStatus() {
+		return propertyType_[type_] + ": " + name_ + state_.getNameAndStatus(); 
 	}
 	
 	public SpaceState getState() {
