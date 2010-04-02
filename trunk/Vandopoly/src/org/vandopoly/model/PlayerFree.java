@@ -16,6 +16,7 @@
 package org.vandopoly.model;
 
 import org.vandopoly.model.PlayerState;
+import org.vandopoly.ui.ActionMessage;
 
 /*
  * PlayerFree class implements the behavior associated with the player 
@@ -55,6 +56,8 @@ public class PlayerFree extends PlayerState{
 		// Temporary - for checking to make sure states are working properly
 		payee.updateCash(amount);
 		payer.updateCash(-amount);
+		ActionMessage.getInstance().newMessage(payer.getName() + " paid $" + 
+				amount + " in rent to " + payee.getName());
 	}
 
 	@Override
