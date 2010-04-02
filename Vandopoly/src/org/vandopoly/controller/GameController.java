@@ -15,9 +15,21 @@
 
 package org.vandopoly.controller;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Popup;
+import javax.swing.PopupFactory;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
@@ -33,6 +45,7 @@ import org.vandopoly.model.UpgradeablePropertySpace;
 import org.vandopoly.model.UtilitySpace;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.Display;
+import org.vandopoly.ui.DisplayAssembler;
 import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.MessagePopUp;
 import org.vandopoly.ui.PlayerPanel;
@@ -244,7 +257,7 @@ public void moveCurrentPlayer(Object obj) {
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 		}
 		else if (action.getActionCommand().equals("Quit Game")) {
-			System.exit(0);
+			confirmationPopUp();
 		}
 	}
 	
@@ -253,5 +266,80 @@ public void moveCurrentPlayer(Object obj) {
 		Integer num = (Integer)obj;
 		board_[(int)num].landOn(players_.get(currentPlayerNum_));
 		
+	}
+	
+	// Used to create the pop-up window to confirm quitting the game
+	public void confirmationPopUp() {
+		JPanel basePanel = new JPanel();
+		JPanel panel1 = new JPanel();
+		JPanel panel2 = new JPanel();
+		
+		int hGap = 10, vGap = 10;
+		GridLayout baseGridLayout = new GridLayout(2, 1, hGap, vGap);
+		GridLayout gridLayout1 = new GridLayout(1, 1, 0, 0);
+		GridLayout gridLayout2 = new GridLayout(1, 2, 0, 0);
+		
+		basePanel.setLayout(null);
+		panel1.setLayout(null);
+		panel2.setLayout(null);
+		Font labelFont = new Font("broadway", Font.PLAIN, 20);
+		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
+		Font titleFont = new Font("broadway", Font.PLAIN, 14);
+		
+		JLabel label = new JLabel("Are you sure you want to quit?");
+		label.setFont(labelFont);
+		panel1.setLayout(gridLayout1);
+		panel1.add(label);
+		panel1.setBackground(new Color(236, 234, 166));
+		
+		JButton quit = new JButton("Quit");
+		quit.setFont(buttonFont);
+		quit.setVisible(true);
+		
+		JButton cancel = new JButton("Cancel");
+		cancel.setFont(buttonFont);
+		cancel.setVisible(true);
+		
+		panel2.add(quit);
+		panel2.add(cancel);
+		panel2.setLayout(gridLayout2);
+		
+		basePanel.setLayout(baseGridLayout);
+		basePanel.setBackground(new Color(236, 234, 166));
+		
+		Border blackline = BorderFactory.createLineBorder(Color.black, 2);
+		TitledBorder title = BorderFactory.createTitledBorder(
+			       blackline, "Quit Game");
+		title.setTitleFont(titleFont);
+		title.setTitleJustification(TitledBorder.LEFT);
+		basePanel.setBorder(title);
+		basePanel.add(panel1);
+		basePanel.add(panel2);
+		basePanel.setVisible(true);
+	
+		int xCoord = (int)(DisplayAssembler.getScreenWidth() - 
+				basePanel.getPreferredSize().getWidth()) / 2;
+		int yCoord = (int)(DisplayAssembler.getScreenHeight() - 
+				basePanel.getPreferredSize().getHeight()) / 2;
+		
+		PopupFactory factory = PopupFactory.getSharedInstance();
+		final Popup popup = factory.getPopup(null, basePanel, xCoord, yCoord);
+		
+		quit.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent event) {
+	        	popup.hide();
+	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+	        	System.exit(0);
+	        }
+		});
+		cancel.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent event) {
+	        	popup.hide();
+	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+	        }
+	    });
+	
+		popup.show();	
+		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
 	}
 }
