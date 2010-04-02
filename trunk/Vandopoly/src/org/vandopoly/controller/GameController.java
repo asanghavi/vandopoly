@@ -105,9 +105,9 @@ public class GameController implements ActionListener {
 		namesAndIcons_ =(String[]) obj;
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
 		
-		createSpaces();
 		createPlayers();
-		
+		createSpaces();
+			
 		shuffleCards();
 		
 		playerPanel_ = new PlayerPanel(players_);
@@ -126,7 +126,7 @@ public void moveCurrentPlayer(Object obj) {
 			// Update current position of player model
 			currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			//currentPlayer.movePiece(10);
+			//currentPlayer.movePiece(7);
 			
 			//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());
@@ -160,7 +160,7 @@ public void moveCurrentPlayer(Object obj) {
 	public void awardFund(Object obj) {
 		Player player = (Player)obj;
 		
-		new MessagePopUp(player.getName()+" you have been awarded $"+scholarshipFund_
+		new MessagePopUp(player.getName()+" has been awarded $"+scholarshipFund_
 				+" from the Scholarship Fund");
 		player.updateCash(scholarshipFund_);
 		scholarshipFund_ = 500;
@@ -274,6 +274,7 @@ public void moveCurrentPlayer(Object obj) {
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
 		
+		//Create layouts and buttons
 		int hGap = 10, vGap = 10;
 		GridLayout baseGridLayout = new GridLayout(2, 1, hGap, vGap);
 		GridLayout gridLayout1 = new GridLayout(1, 1, 0, 0);
