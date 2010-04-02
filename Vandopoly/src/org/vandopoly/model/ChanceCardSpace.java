@@ -48,8 +48,6 @@ public class ChanceCardSpace extends Space {
 		stack_.add(new CardTypeMove("Advance to Featheringill Hall", 24));
 		stack_.add(new CardTypeWinMoney("Win $150 from taking the dining survey!", 150));
 		stack_.add(new CardTypeMove("Take a walk to the Commons Center", 39));
-		stack_.add(new CardTypePayPlayers("Elected Student Body President. " +
-				"Pay each player $20.", 20));
 		stack_.add(new CardTypeWinMoney("Complete a psychology study. Receive $20", 20));
 		stack_.add(new CardTypePayFund("It's a new semester! Pay $100 for books.", 100));
 		stack_.add(new CardTypeMove("Caught cheating on a test. You are" +
@@ -62,7 +60,9 @@ public class ChanceCardSpace extends Space {
 		stack_.add(new CardTypePayFund("Lost your phone at a frat party. Pay $50 "
 				+ "for a new one.", 50));
 		stack_.add(new CardTypePayFund("Traffic & Parking got you again! Pay $25 "
-				+ "for a ticket", 25));
+				+ "for a ticket", 25)); 
+		stack_.add(new CardTypePayPlayers("Elected Student Body President. " +
+				"Pay each player $20.", 20));
 		
 		players_ = players;
 		itr_ = stack_.listIterator();

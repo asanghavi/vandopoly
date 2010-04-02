@@ -46,11 +46,10 @@ public class CardTypePayPlayers extends Card {
 	}
 	
 	public void landOn(Player p, ArrayList<Player> players) {
-		ListIterator<Player> iter = players.listIterator();
-		while (iter.hasNext()) {
-			if (iter.next() != p) {
+		for (int i = 0; i < players.size(); ++i) {
+			if (i != p.getIndex()) {
 				p.updateCash(-getAmount());
-				iter.previous().updateCash(getAmount());
+				players.get(i).updateCash(getAmount());
 			}
 		}
 	}
