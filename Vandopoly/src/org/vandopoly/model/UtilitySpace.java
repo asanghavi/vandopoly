@@ -26,7 +26,6 @@ import org.vandopoly.messaging.NotificationManager;
  * TO-DO: If player owns 2 and mortgages 1, change state in other to UO1 from UO2 
  */
 public class UtilitySpace extends PropertySpace {
-	private SpaceState state_;
 	
 	public UtilitySpace() {
 		name_ = "NONE";

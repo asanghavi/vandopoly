@@ -47,4 +47,8 @@ public class SpaceMortgaged extends SpaceState {
 	protected boolean isRenovated() {
 		return false;
 	}
+	
+	protected String getNameAndStatus() {
+		return " (Mortgaged)";
+	}
 }

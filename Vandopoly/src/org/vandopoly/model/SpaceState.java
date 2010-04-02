@@ -40,4 +40,8 @@ public class SpaceState {
 	protected boolean isRenovated() {
 		return true;
 	}
+	
+	protected String getNameAndStatus() {
+		return "";
+	}
 }
