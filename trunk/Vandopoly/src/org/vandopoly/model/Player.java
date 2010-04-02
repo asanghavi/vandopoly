@@ -228,7 +228,7 @@ public class Player {
 			updateCash(-1 * property.getPurchasePrice());
 			updateProperties(property);
 			property.bePurchased(this);
-			ActionMessage.getInstance().newMessage(name_+" purchased "+property.getName());
+			ActionMessage.getInstance().newMessage(name_ + " purchased " + property.getName());
 			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 		}
 	}
