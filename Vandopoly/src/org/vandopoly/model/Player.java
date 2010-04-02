@@ -165,17 +165,9 @@ public class Player {
 	public String[] getPropertyArray() {
 		String [] array = new String[properties_.size()];
 		for (int i = 0; i < properties_.size(); i++) {
-			array[i] = properties_.get(i).getName();
+			array[i] = properties_.get(i).getNameAndStatus();
 		}
 		return array;
-	}
-	
-	public void sortPropertyArray() {
-		
-		ListIterator<PropertySpace> itr = properties_.listIterator();
-		while (itr.hasNext()) {
-			//Sort by type_
-		}
 	}
 	
 	public int getIndex() {
@@ -194,8 +186,39 @@ public class Player {
 		return numOfRolls_;
 	}
 
+	// Adds elements to the property list in the correct order -
+	// sorted first by type (color), and then by space number
 	public void updateProperties(PropertySpace property) {
-		properties_.add(property);
+		System.out.println("Inserting: " + property.getName() + "type:" + 
+				property.getTypeInt() + " Space: " + property.getSpaceNumber());
+		if (properties_.size() == 0)
+			properties_.add(property);
+		else {
+			//Start iterator at the end of the list - for proper insertion we must traverse
+			// the list from right to left
+			ListIterator<PropertySpace> itr = properties_.listIterator(properties_.size());
+			PropertySpace tempSpace = null;
+			while (itr.hasPrevious()) {
+				tempSpace = itr.previous(); 
+				//Found properties of the same type, so insert based on space number
+				if (property.getTypeInt() == tempSpace.getTypeInt()) {
+					if (property.getSpaceNumber() < tempSpace.getSpaceNumber())
+						properties_.add(itr.nextIndex(), property);
+					else
+						properties_.add(1 + itr.nextIndex(), property);
+					
+					break;
+				}
+				// Found property with a type less than 'property''s type - add after
+				else if (property.getTypeInt() > tempSpace.getTypeInt()) {
+					properties_.add(1 + (itr.nextIndex()), property);
+					break;
+				}
+			}
+			// Property has the least type on the list, insert at the beginning
+			if (property.getTypeInt() < tempSpace.getTypeInt())
+				properties_.add(itr.nextIndex(), property);
+		}
 		NotificationManager.getInstance().notifyObservers
 			(Notification.UPDATE_PROPERTIES, this);
 	}
@@ -213,12 +236,16 @@ public class Player {
 	public void mortgage(PropertySpace property) {
 		updateCash(property.getMortgageValue());
 		property.beMortgaged();
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_PROPERTIES, this);
 	}
 
 	public void unmortgage(PropertySpace property) {
 		if (getCash() - property.getMortgageValue() > 0) {
 			updateCash(-property.getMortgageValue());
 			property.unmortgage();
+			NotificationManager.getInstance().notifyObservers
+			(Notification.UPDATE_PROPERTIES, this);
 		}
 		else
 			System.out.println("Can't Unmortgage "+getName()+", not enough cash");
