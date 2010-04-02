@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
@@ -84,17 +85,18 @@ public class PlayerPanel extends JPanel {
 		for (int i = 0; i < players.size(); i++) {
 			cashAmount_[i] = new JLabel("");
 			list_[i] = new JList(players.get(i).getProperties().toArray());
-			scrollPane_[i] = new JScrollPane();
+			scrollPane_[i] = new JScrollPane(list_[i]);
 			list_[i].setBackground(new Color(240, 240, 240));
 			list_[i].setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			list_[i].setSelectionBackground(new Color(250, 250, 250));
+			list_[i].setVisibleRowCount(16);
 			scrollPane_[i].setBackground(new Color(240, 240, 240));
 			scrollPane_[i].setBounds(5, 110, (int) (panelScaleX_ * width_) - 10, 
-					(int) (panelScaleY_ * height_) - 100);
+					(int) (panelScaleY_ * height_) - 150);
 			list_[i].setFont(propertyFont_);
 			scrollPane_[i].setFont(propertyFont_);
 		}
-
+		
 		// Create all panels
 		panel_[0] = createPanel(players_.get(0), cashAmount_[0], scrollPane_[0], list_[0]);
 		panel_[1] = createPanel(players_.get(1), cashAmount_[1], scrollPane_[1], list_[1]);
@@ -182,13 +184,13 @@ public class PlayerPanel extends JPanel {
 	public void updateProperties(Object object) {
 		try {
 				Player player = (Player) object;
-				int i = player.getIndex();
-				
-				list_[i].setListData(player.getPropertyArray());				
+				int i = player.getIndex();	
+				list_[i].setListData(player.getPropertyArray());		
+				list_[i].setVisibleRowCount(16);
 				scrollPane_[i].setViewportView(list_[i]);
 				scrollPane_[i].setBackground(new Color(240, 240, 240));
 				scrollPane_[i].setBounds(5, 110, (int) (panelScaleX_ * width_) - 10, 
-					(int) (panelScaleY_ * height_) - 100);
+					(int) (panelScaleY_ * height_) - 150);
 				scrollPane_[i].setVisible(true);
 				panel_[i].add(scrollPane_[i]);
 				list_[i].setFont(propertyFont_);
@@ -203,6 +205,7 @@ public class PlayerPanel extends JPanel {
 		}
 	}
 	
+	// Used to automatically switch to the player who is currently rolling
 	public void switchPanel(Object i) {
 		Integer number = (Integer) i;
 		infoPanel_.setSelectedIndex((int)number);
