@@ -52,6 +52,15 @@ public class SpaceState {
 		System.err.println("SpaceState downgrade called - Not supposed to happen");
 	}
 	
+	// Meant to represent when a new property of type PropertySpace is purchased
+	protected void ownershipIncrease(PropertySpace p) {
+		System.err.println("SpaceState ownershipIncrease called - Not supposed to happen");
+	}
+	
+	protected void ownershipDecrease(PropertySpace p) {
+		System.err.println("SpaceState ownershipDecrease called - Not supposed to happen");
+	}
+	
 	public int getLevel() {
 		return 0;
 	}

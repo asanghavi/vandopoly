@@ -51,4 +51,13 @@ public class SpaceMortgaged extends SpaceState {
 	protected String getNameAndStatus() {
 		return " (Mortgaged)";
 	}
+	
+	// Meant to represent when a new property of type PropertySpace is purchased
+	protected void ownershipIncrease(PropertySpace p) {
+		// Do nothing
+	}
+	
+	protected void ownershipDecrease(PropertySpace p) {
+		// Do nothing
+	}
 }

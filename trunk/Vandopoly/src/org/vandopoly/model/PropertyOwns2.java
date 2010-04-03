@@ -40,6 +40,19 @@ public class PropertyOwns2 extends PropertyState{
 	}
 
 	public void landOn(Player player, PropertySpace property) {
-		//property.getOwner().collectRent(property.getRentValues()[1], player);
+		property.getOwner().collectRent(property.getRentValues()[1], player);
+	}
+	
+	// Meant to represent when a new property of type PropertySpace is purchased
+	protected void ownershipIncrease(PropertySpace p) {
+		p.changeState(PropertyOwns3.Instance());
+	}
+	
+	protected void ownershipDecrease(PropertySpace p) {
+		p.changeState(PropertyOwned.Instance());
+	}
+	
+	protected String getNameAndStatus() {
+		return " (2 Owned)";
 	}
 }

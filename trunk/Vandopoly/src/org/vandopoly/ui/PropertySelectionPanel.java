@@ -48,6 +48,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 	private JButton mortgage, renovate, downgrade;
 
 	JFrame frame;
+	final DefaultListModel model;
 
 	int panelWidth = 350;
 	int panelHeight = 260;
@@ -64,7 +65,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 
 		propertyList = player.getProperties();
 
-		final DefaultListModel model = new DefaultListModel();
+		model = new DefaultListModel();
 
 		for (int i = 0; i < propertyList.size(); i++)
 			model.addElement(propertyList.get(i).getNameAndStatus());
@@ -131,14 +132,14 @@ public class PropertySelectionPanel implements ListSelectionListener {
 				// If property selected is currently being mortgaged
 				else if (!propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 					player.mortgage(propertyList.get(index));
-					model.set(index, propertyList.get(index).getNameAndStatus());
+					repaint();
 					
 					// Toggle Buttons Appropriately
 					PropertySelectionPanel.this.toggleButtons(propertyList.get(index));
 				} 
 				else if (propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
 					player.unmortgage(propertyList.get(index));
-					model.set(index, propertyList.get(index).getNameAndStatus());
+					repaint();
 					
 					// Toggle Buttons Appropriately
 					PropertySelectionPanel.this.toggleButtons(propertyList.get(index));
@@ -179,6 +180,11 @@ public class PropertySelectionPanel implements ListSelectionListener {
 
 		frame.setResizable(false);
 		frame.setVisible(true);
+	}
+	
+	private void repaint() {
+		for (int i = 0; i < propertyList.size(); i++)
+			model.set(i, propertyList.get(i).getNameAndStatus());
 	}
 
 	public void dispose() {

@@ -62,4 +62,14 @@ public class PropertyOwned extends SpaceState {
 	protected boolean isRenovated(UpgradeablePropertySpace p) {
 		return p.getOwner().propertiesRenovated(p.getTypeInt());
 	}
+	
+	
+	// Meant to represent when a new property of type PropertySpace is purchased
+	protected void ownershipIncrease(PropertySpace p) {
+		p.changeState(PropertyOwns2.Instance());
+	}
+	
+	protected void ownershipDecrease(PropertySpace p) {
+		System.err.println("PropertyOwned ownershipDecrease called - Not supposed to happen");
+	}
 }
