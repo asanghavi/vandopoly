@@ -31,8 +31,10 @@ public class PropertySpace extends Space {
 	protected Player owner_;
 	
 	protected int type_, spaceNumber_;
+	
 	protected static final String propertyType_[] = {"Purple", "Light Blue", "Brown", "Orange",
 		"Red", "Yellow", "Green", "Dark Blue", "Transportation", "Utility"};
+	protected static final int propertiesForMonopoly_[] = {2, 3, 3, 3, 3, 3, 3, 2, 4, 2};
 	
 	public PropertySpace() {
 		name_ = "NONE";
@@ -89,6 +91,10 @@ public class PropertySpace extends Space {
 	 */
 	public int getTypeInt() {
 		return type_;
+	}
+	
+	public int getPropertiesForMonopoly(int type) {
+		return propertiesForMonopoly_[type];
 	}
 	
 	public int getSpaceNumber() {

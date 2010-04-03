@@ -31,14 +31,29 @@ public class SpaceState {
 	
 	protected void landOn(Player player, PropertySpace property) {}
 	
-	protected boolean isUpgradeable() {
+	protected boolean isUpgradeable(UpgradeablePropertySpace p) {
 		return false;
 	}
-	protected boolean isDowngradeable() {
+	
+	protected boolean isDowngradeable(UpgradeablePropertySpace p) {
 		return false;
 	}
-	protected boolean isRenovated() {
+	
+	// All normal properties do not consult the state for renovated info
+	protected boolean isRenovated(UpgradeablePropertySpace p) {
 		return true;
+	}
+	
+	protected void renovate(UpgradeablePropertySpace p) {
+		System.err.println("SpaceState renovate called - Not supposed to happen");
+	}
+	
+	protected void downgrade(UpgradeablePropertySpace p) {
+		System.err.println("SpaceState downgrade called - Not supposed to happen");
+	}
+	
+	public int getLevel() {
+		return 0;
 	}
 	
 	protected String getNameAndStatus() {

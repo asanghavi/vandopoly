@@ -44,14 +44,27 @@ public class UpgradeablePropertyLevel2 extends UpgradeablePropertyState {
 		property.getOwner().collectRent(property.getRentValues()[2], player);
 	}
 	
-	protected boolean isUpgradeable() {
-		return true;
+	protected void renovate(UpgradeablePropertySpace p) {
+		p.changeState(UpgradeablePropertyLevel3.Instance());
 	}
-	protected boolean isDowngradeable() {
-		return true;
+	
+	protected void downgrade(UpgradeablePropertySpace p) {
+		p.changeState(UpgradeablePropertyLevel1.Instance());
+	}
+	
+	protected boolean isUpgradeable(UpgradeablePropertySpace p) {
+		return p.getOwner().monopolyUpgradeValid(p);
+	}
+	
+	protected boolean isDowngradeable(UpgradeablePropertySpace p) {
+		return p.getOwner().monopolyDowngradeValid(p);
 	}
 	
 	protected String getNameAndStatus() {
 		return " (Level 2)";
+	}
+	
+	public int getLevel() {
+		return 2;
 	}
 }

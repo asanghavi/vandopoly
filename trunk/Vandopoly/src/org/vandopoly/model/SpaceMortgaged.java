@@ -44,7 +44,7 @@ public class SpaceMortgaged extends SpaceState {
 		//Do nothing as the space is mortgaged
 	}
 	
-	protected boolean isRenovated() {
+	protected boolean isRenovated(UpgradeablePropertySpace p) {
 		return false;
 	}
 	

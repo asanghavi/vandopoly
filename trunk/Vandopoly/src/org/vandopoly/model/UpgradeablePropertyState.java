@@ -29,4 +29,8 @@ public class UpgradeablePropertyState extends SpaceState {
 	}
 	
 	protected void landOn(Player player, PropertySpace property) {}
+	
+	public int getLevel() {
+		return 0;
+	}
 }

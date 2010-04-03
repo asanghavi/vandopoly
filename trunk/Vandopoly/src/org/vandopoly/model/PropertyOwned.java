@@ -45,13 +45,21 @@ public class PropertyOwned extends SpaceState {
 		property.getOwner().collectRent(property.getRentValues()[0], player);
 	}
 	
-	// This method should only be called by UpgradeablePropertySpaces,
-	// as all other properties do not query the states.
-	protected boolean isUpgradeable() {
-		return true;
+	protected void renovate(UpgradeablePropertySpace p) {
+		p.changeState(UpgradeablePropertyLevel1.Instance());
 	}
 	
-	protected boolean isRenovated() {
-		return false;
+	protected void downgrade(UpgradeablePropertySpace p) {
+		System.err.println("Attempted to downgrade PropertyOwned state");
+	}
+	
+	// This method should only be called by UpgradeablePropertySpaces,
+	// as all other properties do not query the states.
+	protected boolean isUpgradeable(UpgradeablePropertySpace p) {
+		return p.getOwner().monopolyUpgradeValid(p);
+	}
+	
+	protected boolean isRenovated(UpgradeablePropertySpace p) {
+		return p.getOwner().propertiesRenovated(p.getTypeInt());
 	}
 }
