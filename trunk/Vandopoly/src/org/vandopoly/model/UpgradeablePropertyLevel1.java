@@ -16,6 +16,8 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.ui.ActionMessage;
+
 /*
  * UpgradeablePropertyLevel1 class implements the behavior associated with the 
  * upgradeable property space being upgraded to level 1.
@@ -39,7 +41,7 @@ public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState {
 		return INSTANCE;
 	}
 
-	public void landOn(Player player, UpgradeablePropertySpace property) {
+	public void landOn(Player player, PropertySpace property) {
 		property.getOwner().collectRent(property.getRentValues()[1], player);
 	}
 	
