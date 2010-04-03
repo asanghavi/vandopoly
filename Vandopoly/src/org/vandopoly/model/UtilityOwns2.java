@@ -43,5 +43,17 @@ public class UtilityOwns2 extends UtilityState{
 		//property.getOwner().collectRent(property.getRentValues()[4], player);
 		// REnt is 10 times amount shown on dice
 	}
+	
+	protected void ownershipIncrease(PropertySpace p) {
+		System.err.println("UtiltiyOwns2 ownershipIncrease called - Not supposed to happen");
+	}
+	
+	protected void ownershipDecrease(PropertySpace p) {
+		p.changeState(UtilityOwns1.Instance());
+	}
+	
+	protected String getNameAndStatus() {
+		return " (2 Owned)";
+	}
 
 }

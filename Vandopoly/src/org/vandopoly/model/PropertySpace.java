@@ -148,10 +148,13 @@ public class PropertySpace extends Space {
 
 	public void bePurchased(Player owner) {
 		setOwner(owner);
-		state_.changeState(this, PropertyOwned.Instance());
 		
 		// Find the current state of properties of this type, increase them, then update this.state_
-		state_ = owner.updateTypeIncrease(type_);
+		SpaceState newState = owner.updateTypeIncrease(type_);
+		if (newState != null)
+			state_ = newState;
+		else
+			state_ = PropertyOwned.Instance();
 	}
 	
 	public void beMortgaged() {
@@ -160,7 +163,13 @@ public class PropertySpace extends Space {
 	}
 	
 	public void unmortgage() {
-		state_ = owner_.updateTypeIncrease(type_);
+		// Find the current state of properties of this type, increase them, then update this.state_
+		SpaceState newState = owner_.updateTypeIncrease(type_);
+		if (newState != null)
+			state_ = newState;
+		else
+			state_ = PropertyOwned.Instance();
+				
 	}
 	
 	public int[] getRentValues() {

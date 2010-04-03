@@ -22,8 +22,6 @@ import org.vandopoly.messaging.NotificationManager;
  * Model class that is a descendant of PropertySpace and represents a utility space on the board
  * 
  * @author Allie Mazzia
- * 
- * TO-DO: If player owns 2 and mortgages 1, change state in other to UO1 from UO2 
  */
 public class UtilitySpace extends PropertySpace {
 	
@@ -91,15 +89,27 @@ public class UtilitySpace extends PropertySpace {
 	
 	public void bePurchased(Player owner) {
 		setOwner(owner);
-		state_.changeState(this, UtilityOwns1.Instance());
+		
+		// Find the current state of properties of this type, increase them, then update this.state_
+		SpaceState newState = owner.updateTypeIncrease(type_);
+		if (newState != null)
+			state_ = newState;
+		else
+			state_ = UtilityOwns1.Instance();
 	}
 	
 	public void beMortgaged() {
 		state_.changeState(this, SpaceMortgaged.Instance());
+		owner_.updateTypeDecrease(type_);
 	}
 	
 	public void unmortgage() {
-		state_.changeState(this, UtilityOwns1.Instance());
+		// Find the current state of properties of this type, increase them, then update this.state_
+		SpaceState newState = owner_.updateTypeIncrease(type_);
+		if (newState != null)
+			state_ = newState;
+		else
+			state_ = UtilityOwns1.Instance();
 	}
 	
 	public SpaceState getState() {
