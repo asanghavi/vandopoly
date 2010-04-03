@@ -9,6 +9,8 @@ User stories for Vandopoly.
     * User sees pop-ups notifying them of actions taken in the game, including: collecting $200 as they pass GO, paying/being paid rent on properties, being sent to jail, getting out of jail (rolling doubles or after 3 rolls), paying tuition/parking tickets (tax spaces), etc (James & Allie)
     * User sees a confirmation message after clicking the "Quit Game" button (Allie)
     * Ability to create/join a game on a network  (Matt)
+    * Railroads charge appropriate rent based on the state of the current game. (James)
+    * Railroads display their state appropriately and auto-update based on actions in the game.  This includes purchasing new railroads and mortgaging existing railroads.
 
 = Cycle 4 User Stories =
     * User can see pieces move around the board appropriately after rolling dice (James)
