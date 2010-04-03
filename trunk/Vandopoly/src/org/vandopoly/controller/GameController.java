@@ -232,6 +232,11 @@ public void moveCurrentPlayer(Object obj) {
 	// Represents the logic for the GameButtonPanel class
 	public void actionPerformed(ActionEvent action) {
 		if (action.getActionCommand().equals("Purchase")) {
+			// This stops players from opening a propertySelectionPanel, then buying a property
+			// and adjusting the levels inappropriately
+			if(propertySelectionPanel_ != null)
+				propertySelectionPanel_.dispose();
+			
 			int position = players_.get(currentPlayerNum_).getPosition();
 			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[position]);
 		}

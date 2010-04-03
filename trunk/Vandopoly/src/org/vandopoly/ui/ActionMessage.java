@@ -37,8 +37,10 @@ public class ActionMessage extends JLabel {
 	
 	private int leftSide = DisplayAssembler.getBoxSize() + 7;
 	private int rightSide = leftSide + DisplayAssembler.getSpaceWidth() * 9;
+	private int totalSize = rightSide - leftSide;
 	
-	private Font actionFont;
+	private Font actionFont[];
+	private int numOfFonts = 35;
 	
 	static final long serialVersionUID = 101;
 
@@ -50,6 +52,11 @@ public class ActionMessage extends JLabel {
 	}
 	
 	private ActionMessage() {
+		actionFont = new Font[numOfFonts];
+		
+		for (int i = 0; i < numOfFonts; i++)
+			actionFont[i] = new Font("broadway", Font.BOLD, (i+1));
+		
 		this.setForeground(Color.yellow);
 		this.setBounds(0, 0, screenWidth, 100);
 		this.setVisible(true);
@@ -57,32 +64,30 @@ public class ActionMessage extends JLabel {
 	}
 	
 	public void newMessage(final String message) {
+		
+		final int maxFontSize = findProperSize(message);
+		
 		new Thread() {
 			public void run() {
+				// Used so that multiple threads do not display at the same time.
 				synchronized(ActionMessage.this) {
 					
-					int fontSize = 10;
-					actionFont = new Font("broadway", Font.BOLD, fontSize);
-					
 					// Removes old font and Text before displaying and going through loop
-					ActionMessage.this.setFont(actionFont);
+					ActionMessage.this.setFont(actionFont[0]);
 					ActionMessage.this.setText(message);
-					setLocation(message);
+					setLocation(message, 0);
 					ActionMessage.this.setVisible(true);
 				
 					try {
 					
-						for (int i = 0; i < 25; i++) {
-							fontSize++;
-							actionFont = new Font("broadway", Font.BOLD, fontSize);
+						for (int i = 0; i < maxFontSize; i++) {
+							setLocation(message, i);
+							ActionMessage.this.setFont(actionFont[i]);
 						
-							setLocation(message);
-							ActionMessage.this.setFont(actionFont);
-						
-							Thread.sleep(10);
+							Thread.sleep(8);
 						}
 						
-						Thread.sleep(1600);
+						Thread.sleep(1800);
 						
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -94,9 +99,19 @@ public class ActionMessage extends JLabel {
 		}.start();
 	}
 	
-	private void setLocation(String message) {
+	private int findProperSize(String message) {
+		int size = numOfFonts - 1;
 		
-		FontMetrics metrics = DisplayAssembler.getInstance().getFontMetrics(actionFont);
+		while(DisplayAssembler.getInstance().getFontMetrics(actionFont[size]).stringWidth(message) > totalSize) {
+			size-=2;
+		}
+		
+		return size;
+	}
+	
+	private void setLocation(String message, int fontSelection) {
+		
+		FontMetrics metrics = DisplayAssembler.getInstance().getFontMetrics(actionFont[fontSelection]);
 		DisplayAssembler.getInstance().animateComponentLocation(this, 
 				(leftSide + ((rightSide - leftSide) / 2) - (metrics.stringWidth(message)) / 2), 
 				leftSide - metrics.getHeight() + 10);
