@@ -97,7 +97,7 @@ public class Player {
 	}
 
 	public void updatePosition(int numOfSpaces) {
-		if((positionOnBoard_ + numOfSpaces) >= SPACES_ON_BOARD)
+		if ((positionOnBoard_ + numOfSpaces) >= SPACES_ON_BOARD)
 			updateCash(200);
 		
 		piece_.move(numOfSpaces);
@@ -164,9 +164,10 @@ public class Player {
 	
 	public String[] getPropertyArray() {
 		String [] array = new String[properties_.size()];
-		for (int i = 0; i < properties_.size(); i++) {
+		
+		for (int i = 0; i < properties_.size(); i++)
 			array[i] = properties_.get(i).getNameAndStatus();
-		}
+		
 		return array;
 	}
 	
@@ -184,6 +185,88 @@ public class Player {
 	
 	public int getNumOfRolls() {
 		return numOfRolls_;
+	}
+	
+	public boolean hasMonopoly(int type_) {
+		int counter = 0;
+		
+		for (int i = 0; i < properties_.size(); i++) {
+			if (properties_.get(i).getTypeInt() == type_)
+				counter++;
+		}
+		
+		if (counter == PropertySpace.propertiesForMonopoly_[type_])
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Returns whether current property can be upgraded
+	 * Checks to make sure monopoly is owned and also checks to make sure that 
+	 * other properties in monopoly are not a lower level
+	 * @param UpgradeablePropertySpace that is being considered for upgrade
+	 * @return true if upgrading is valid; false otherwise
+	 */
+	public boolean monopolyUpgradeValid(UpgradeablePropertySpace p) {
+		int propertyCounter = 0;
+		
+		for (int i = 0; i < properties_.size(); i++) {
+			if (properties_.get(i).getTypeInt() == p.getTypeInt()) {
+				propertyCounter++;
+				
+				// Check to make sure that other properties in monopoly are not in lower state
+				// Then checks to make sure that no other properties of this type are mortgaged
+				if (properties_.get(i).getState().getLevel() < p.getState().getLevel()
+						|| properties_.get(i).getState().equals(SpaceMortgaged.Instance())) {
+					return false;
+				}
+			}
+		}
+		
+		if (propertyCounter == PropertySpace.propertiesForMonopoly_[p.getTypeInt()])
+			return true;
+		
+		return false;
+	}
+	
+	/**
+	 * Returns whether current property can be downgraded.
+	 * Assumes monopoly is already owned.
+	 * Checks to make sure other properties in monopoly are not a higher level
+	 * @param UpgradeablePropertySpace that is being considered for upgrade
+	 * @return true if downgrading is valid; false otherwise
+	 */
+	public boolean monopolyDowngradeValid(UpgradeablePropertySpace p) {
+		
+		for (int i = 0; i < properties_.size(); i++) {
+			if (properties_.get(i).getTypeInt() == p.getTypeInt()) {
+				
+				// Check to make sure that other properties in monopoly are not in higher state
+				if (properties_.get(i).getState().getLevel() > p.getState().getLevel())
+					return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * propertiesRenovated is used to determine whether the player owns any properties of
+	 * the same type that are currently renovated.  The player should not be able to mortgage
+	 * their properties, if they own another property of the same type that is renovated
+	 * @param type integer used to associate colors of properties
+	 * @return true if there are other properties renovated, false otherwise
+	 */
+	public boolean propertiesRenovated(int type) {
+		for (int i = 0; i < properties_.size(); i++) {
+			if (properties_.get(i).getTypeInt() == type  
+					&& properties_.get(i).getState().getLevel() != 0) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	// Adds elements to the property list in the correct order -
@@ -224,12 +307,34 @@ public class Player {
 	}
 	
 	public void purchase(PropertySpace property) {
-		if(property.getPurchasePrice() < cash_) {
+		if (property.getPurchasePrice() < cash_) {
 			updateCash(-1 * property.getPurchasePrice());
 			updateProperties(property);
 			property.bePurchased(this);
 			ActionMessage.getInstance().newMessage(name_ + " purchased " + property.getName());
 			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
+		}
+	}
+	
+	public void renovateProperty(UpgradeablePropertySpace p) {
+		if (cash_ >= 50 && p.getState().getLevel() < 4) {
+			updateCash(-50);
+			p.renovate();
+		}
+		else if (cash_ >= 200 && p.getState().getLevel() == 4) {
+			updateCash(-200);
+			p.renovate();
+		}
+	}
+	
+	public void downgradeProperty(UpgradeablePropertySpace p) {
+		if (p.getState().getLevel() < 5) {
+			updateCash(25);
+			p.downgrade();
+		}
+		else {
+			updateCash(100);
+			p.downgrade();
 		}
 	}
 
