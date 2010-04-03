@@ -10,7 +10,7 @@ User stories for Vandopoly.
     * User sees a confirmation message after clicking the "Quit Game" button (Allie)
     * Ability to create/join a game on a network  (Matt)
     * Railroads charge appropriate rent based on the state of the current game. (James)
-    * Railroads display their state appropriately and auto-update based on actions in the game.  This includes purchasing new railroads and mortgaging existing railroads. (James)
+    * Railroads and Utilities display their state appropriately and auto-update based on actions in the game.  This includes purchasing new railroads/utilities and mortgaging existing railroads/utilities. (James)
 
 = Cycle 4 User Stories =
     * User can see pieces move around the board appropriately after rolling dice (James)
