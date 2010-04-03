@@ -276,9 +276,15 @@ public class Player {
 			System.out.println("Can't Unmortgage "+getName()+", not enough cash");
 	}
 	
+	/**
+	 * Increases ownership value for all properties owned by player of given type_
+	 * @param type_
+	 * @return state of the properties of color type_
+	 *  returns null if no other properties of given type are owned
+	 */
 	public SpaceState updateTypeIncrease(int type_) {
 		// Represents the new state that the properties of this type should be in.
-		SpaceState newState = PropertyOwned.Instance();
+		SpaceState newState = null;
 		
 		for (int i = 0; i < properties_.size(); i++) {
 			if (type_ == properties_.get(i).getTypeInt() 
@@ -290,9 +296,15 @@ public class Player {
 		return newState;
 	}
 	
+	/**
+	 * Decreases ownership value for all properties owned by player of given type_
+	 * @param type_
+	 * @return state of the properties of color type_
+	 *  returns null if no other properties of given type are owned
+	 */
 	public SpaceState updateTypeDecrease(int type_) {
 		// Represents the new state that the properties of this type should be in.
-		SpaceState newState = PropertyOwned.Instance();
+		SpaceState newState = null;
 		
 		for (int i = 0; i < properties_.size(); i++) {
 			if (type_ == properties_.get(i).getTypeInt() 
