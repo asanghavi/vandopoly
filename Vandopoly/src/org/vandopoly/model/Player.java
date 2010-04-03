@@ -190,8 +190,10 @@ public class Player {
 	public void purchase(PropertySpace property) {
 		if (property.getPurchasePrice() < cash_) {
 			updateCash(-1 * property.getPurchasePrice());
-			updateProperties(property);
+			// Property must be purchased before the property list
+			// is updated... The railroads rely on it.
 			property.bePurchased(this);
+			updateProperties(property);
 			ActionMessage.getInstance().newMessage(name_ + " purchased " + property.getName());
 			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 		}
@@ -272,6 +274,34 @@ public class Player {
 		}
 		else
 			System.out.println("Can't Unmortgage "+getName()+", not enough cash");
+	}
+	
+	public SpaceState updateTypeIncrease(int type_) {
+		// Represents the new state that the properties of this type should be in.
+		SpaceState newState = PropertyOwned.Instance();
+		
+		for (int i = 0; i < properties_.size(); i++) {
+			if (type_ == properties_.get(i).getTypeInt() 
+					&& !properties_.get(i).getState().equals(SpaceMortgaged.Instance())) {
+				properties_.get(i).ownershipIncrease();
+				newState = properties_.get(i).getState();
+			}
+		}
+		return newState;
+	}
+	
+	public SpaceState updateTypeDecrease(int type_) {
+		// Represents the new state that the properties of this type should be in.
+		SpaceState newState = PropertyOwned.Instance();
+		
+		for (int i = 0; i < properties_.size(); i++) {
+			if (type_ == properties_.get(i).getTypeInt() 
+					&& !properties_.get(i).getState().equals(SpaceMortgaged.Instance())) {
+				properties_.get(i).ownershipDecrease();
+				newState = properties_.get(i).getState();
+			}
+		}
+		return newState;
 	}
 	
 	public int countProperties(int type) {

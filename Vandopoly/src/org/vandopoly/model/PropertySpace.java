@@ -79,6 +79,14 @@ public class PropertySpace extends Space {
 	public void landOn(Player p) {
 		state_.landOn(p, this);
 	}
+	
+	public void ownershipIncrease() {
+		state_.ownershipIncrease(this);
+	}
+	
+	public void ownershipDecrease() {
+		state_.ownershipDecrease(this);
+	}
 
 	// Getters and setters
 	public String getType() {
@@ -141,14 +149,18 @@ public class PropertySpace extends Space {
 	public void bePurchased(Player owner) {
 		setOwner(owner);
 		state_.changeState(this, PropertyOwned.Instance());
+		
+		// Find the current state of properties of this type, increase them, then update this.state_
+		state_ = owner.updateTypeIncrease(type_);
 	}
 	
 	public void beMortgaged() {
 		state_.changeState(this, SpaceMortgaged.Instance());
+		owner_.updateTypeDecrease(type_);
 	}
 	
 	public void unmortgage() {
-		state_.changeState(this, PropertyOwned.Instance());
+		state_ = owner_.updateTypeIncrease(type_);
 	}
 	
 	public int[] getRentValues() {

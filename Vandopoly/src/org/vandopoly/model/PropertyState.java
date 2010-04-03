@@ -22,7 +22,7 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class PropertyState  {
+public class PropertyState extends SpaceState {
 	
 	protected void changeState(PropertySpace space, SpaceState newState) {
 		space.changeState(newState);
