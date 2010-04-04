@@ -54,10 +54,12 @@ public class PlayerFree extends PlayerState{
 	public void collectRent(Player payee, int amount, Player payer) {
 		// Call to payee.updateCash(), payer.updateCash() 
 		// Temporary - for checking to make sure states are working properly
-		payee.updateCash(amount);
-		payer.updateCash(-amount);
-		ActionMessage.getInstance().newMessage(payer.getName() + " paid $" + 
-				amount + " in rent to " + payee.getName());
+		if (payer.getIndex() != payee.getIndex()) {
+			payee.updateCash(amount);
+			payer.updateCash(-amount);
+			ActionMessage.getInstance().newMessage(payer.getName() + " paid $" + 
+					amount + " in rent to " + payee.getName());
+		}
 	}
 
 	@Override
