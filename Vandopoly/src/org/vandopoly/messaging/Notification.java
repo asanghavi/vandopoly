@@ -85,6 +85,10 @@ public class Notification {
 	// using a get out of jail free card
 	public static final String USED_JAIL_CARD = "UsedJailCard";
 	
+	public static final String PIECE_MOVE_TO = "PieceMoveTo";
+	
+	public static final String PIECE_MOVE_SPACES = "PieceMoveSpaces";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////
