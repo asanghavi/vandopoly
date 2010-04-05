@@ -92,6 +92,10 @@ public class Notification {
 	
 	public static final String PIECE_MOVE_SPACES = "PieceMoveSpaces";
 	
+	// Sent when the "Roll Dice" button must be disabled early - like when a player
+	// rolls doubles, but they land on the "Go to Academic Probation" space
+	public static final String END_TURN_EARLY = "EndTurnEarly";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////
