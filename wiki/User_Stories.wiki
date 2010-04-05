@@ -12,6 +12,7 @@ User stories for Vandopoly.
     * Railroads charge appropriate rent based on the state of the current game. (James)
     * Railroads and Utilities display their state appropriately and auto-update based on actions in the game.  This includes purchasing new railroads/utilities and mortgaging existing railroads/utilities. (James)
     * User is given the choice of rolling, paying or using a get out of jail free card when beginning their turn in jail (Allie)
+    * User can see an icon in the player Panel when they have a get off academic probation free card (Allie)
 
 = Cycle 4 User Stories =
     * User can see pieces move around the board appropriately after rolling dice (James)
