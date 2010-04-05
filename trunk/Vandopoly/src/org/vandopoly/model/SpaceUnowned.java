@@ -44,6 +44,6 @@ public class SpaceUnowned extends SpaceState {
 	}
 	
 	public void landOn(Player player, PropertySpace property) {
-		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, null);
+		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, property);
 	}
 }

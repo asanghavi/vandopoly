@@ -23,7 +23,7 @@ import java.util.Vector;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.ui.CardPanel;
+import org.vandopoly.ui.MessagePopUp;
 import org.vandopoly.ui.PropertySelectionPanel;
 
 /*
@@ -83,7 +83,7 @@ public class ChanceCardSpace extends Space {
 	public void landOn(Player p) {
 		Card card = drawCard();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, card);
-		new CardPanel(card, p, players_, "Chance");
+		new MessagePopUp(card, p, players_, "Chance");
 	}
 	
 	public Card drawCard() {

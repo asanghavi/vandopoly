@@ -100,6 +100,8 @@ public class GameController implements ActionListener {
 				this, "sendPlayerToJail");
 		NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
 				this, "cardMoveTo");
+		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
+				this, "unownedProperty");
 	}
 	
 	// Called by the START_GAME notification
@@ -126,9 +128,9 @@ public void moveCurrentPlayer(Object obj) {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 			
 			// Update current position of player model
-			//currentPlayer.movePiece(dice);
+			currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			currentPlayer.movePiece(10);
+			//currentPlayer.movePiece(10);
 			
 			//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());
@@ -351,5 +353,17 @@ public void moveCurrentPlayer(Object obj) {
 	
 		popup.show();	
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
+	}
+	
+	//Called by the UNOWNED_PROPERTY notification to display a pop-up window
+	public void unownedProperty(Object obj) {
+		try {
+			PropertySpace property = (PropertySpace) obj;
+			new MessagePopUp(property.getName() + " is unowned. To purchase it for $"
+					+ property.getPurchasePrice() + ", use the purchase button.");
+		} 		
+		catch (ClassCastException e) {
+			System.err.println("Unknown object passed to method unownedProperty");
+		}
 	}
 }
