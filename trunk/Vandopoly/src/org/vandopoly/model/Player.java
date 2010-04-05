@@ -102,7 +102,7 @@ public class Player {
 		
 		// Only award if the player did not previously land on 'GO' - that is taken
 		// care of in CornerSpace.java
-		if ((positionOnBoard_ != 40) && (positionOnBoard_ + numOfSpaces) >= SPACES_ON_BOARD) {
+		if ((positionOnBoard_ != 39) && (positionOnBoard_ + numOfSpaces) >= SPACES_ON_BOARD) {
 			updateCash(200);
 			ActionMessage.getInstance().newMessage(getName() + 
 					" has been awarded $200 for passing GO!");
