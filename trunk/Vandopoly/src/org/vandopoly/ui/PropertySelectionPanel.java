@@ -78,7 +78,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 		 * e.getKeyChar()); } } };
 		 */
 
-		JList list = new JList(model);
+		final JList list = new JList(model);
 		// list.addKeyListener(keyTypedListener);
 		final ListSelectionModel listSelection = list.getSelectionModel();
 		listSelection.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -109,11 +109,43 @@ public class PropertySelectionPanel implements ListSelectionListener {
 					player.renovateProperty((UpgradeablePropertySpace)propertyList.get(index));
 					model.set(index, propertyList.get(index).getNameAndStatus());
 					
+					int newIndex = findNextIndex(index);
+					list.setSelectedIndex(newIndex);
+					
 					// Toggle Buttons Appropriately
-					PropertySelectionPanel.this.toggleButtons(propertyList.get(index));
+					PropertySelectionPanel.this.toggleButtons(propertyList.get(newIndex));
 				}
 			}
 		});
+		
+		downgrade = new JButton("Downgrade");
+		downgrade.setFont(buttonFont);
+		downgrade.setBounds((panelWidth / 2), listHeight, (panelWidth / 2),
+				buttonHeight);
+		downgrade.setVisible(true);
+		downgrade.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				int index = listSelection.getAnchorSelectionIndex();
+
+				// Represents case when no properties are selected
+				if (index < 0) {
+					System.out.println(player.getName() + " tried to downgrade: "
+							+ index + " which is invalid");
+				}
+				else {
+					player.downgradeProperty((UpgradeablePropertySpace)propertyList.get(index));
+					model.set(index, propertyList.get(index).getNameAndStatus());
+					
+					int newIndex = findNextIndex(index);
+					list.setSelectedIndex(newIndex);
+					
+					// Toggle Buttons Appropriately
+					PropertySelectionPanel.this.toggleButtons(propertyList.get(newIndex));
+				}
+			}
+
+		});
+		
 		mortgage = new JButton("Mortgage");
 		mortgage.setFont(buttonFont);
 		mortgage.setBounds(0, listHeight + buttonHeight, panelWidth,
@@ -148,31 +180,6 @@ public class PropertySelectionPanel implements ListSelectionListener {
 
 		});
 
-		downgrade = new JButton("Downgrade");
-		downgrade.setFont(buttonFont);
-		downgrade.setBounds((panelWidth / 2), listHeight, (panelWidth / 2),
-				buttonHeight);
-		downgrade.setVisible(true);
-		downgrade.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				int index = listSelection.getAnchorSelectionIndex();
-
-				// Represents case when no properties are selected
-				if (index < 0) {
-					System.out.println(player.getName() + " tried to downgrade: "
-							+ index + " which is invalid");
-				}
-				else {
-					player.downgradeProperty((UpgradeablePropertySpace)propertyList.get(index));
-					model.set(index, propertyList.get(index).getNameAndStatus());
-					
-					// Toggle Buttons Appropriately
-					PropertySelectionPanel.this.toggleButtons(propertyList.get(index));
-				}
-			}
-
-		});
-
 		frame.add(scrollPane);
 		frame.add(renovate);
 		frame.add(mortgage);
@@ -185,6 +192,24 @@ public class PropertySelectionPanel implements ListSelectionListener {
 	private void repaint() {
 		for (int i = 0; i < propertyList.size(); i++)
 			model.set(i, propertyList.get(i).getNameAndStatus());
+	}
+	
+	private int findNextIndex(int curIndex) {
+		int newIndex = curIndex - 1;
+		
+		if(curIndex == 0 || propertyList.get(curIndex).getType() != propertyList.get(newIndex).getType()) {
+			newIndex = curIndex + 1;
+			
+			// Then move up until the types no longer match
+			while((newIndex < propertyList.size() 
+					&& propertyList.get(curIndex).getType() == propertyList.get(newIndex).getType()))
+				newIndex++;
+			
+			// Move down to the first property of that type that does match
+			newIndex--;
+		}
+		
+		return newIndex;
 	}
 
 	public void dispose() {

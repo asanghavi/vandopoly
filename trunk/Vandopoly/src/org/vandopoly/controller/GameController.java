@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 import javax.swing.border.Border;
@@ -121,7 +123,7 @@ public class GameController implements ActionListener {
 		scholarshipFund_ = 500;
 	}
 	
-public void moveCurrentPlayer(Object obj) {
+	public void moveCurrentPlayer(Object obj) {
 		
 		try {
 			Dice dice = (Dice)obj;
@@ -130,13 +132,32 @@ public void moveCurrentPlayer(Object obj) {
 			// Update current position of player model
 			currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			//currentPlayer.movePiece(10);
+			//currentPlayer.movePiece(1);
 			
-			//Print out some statements that help testing
+			/*//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());
 			System.out.println("Dice Roll: "+dice.getTotalRoll());
 			System.out.println("Giving a position of: "+currentPlayer.getPosition()+
 					" which is "+board_[currentPlayer.getPosition()].getName());
+			 */
+			
+			// Have currentPlayer landOn the appropriate board position
+			board_[currentPlayer.getPosition()].landOn(currentPlayer);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// Same as moveCurrentPlayer except that it expects an Integer to be passed to it
+	public void moveCurrentPlayerInteger(Object obj) {
+		
+		try {
+			Integer numSpaces = (Integer)obj;
+			Player currentPlayer = players_.get(currentPlayerNum_);
+			
+			// Update current position of player model
+			currentPlayer.movePiece(numSpaces);
 			
 			// Have currentPlayer landOn the appropriate board position
 			board_[currentPlayer.getPosition()].landOn(currentPlayer);
@@ -176,6 +197,10 @@ public void moveCurrentPlayer(Object obj) {
 		for (int i = 0; i < numOfPlayers_; i++) {
 			players_.add(new Player(i, namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
 		}
+		
+		//Enables easy testing
+		if(namesAndIcons_[1].equals("test"))
+			cheatMode();
 	}
 	
 	private void createSpaces() {
@@ -365,5 +390,48 @@ public void moveCurrentPlayer(Object obj) {
 		catch (ClassCastException e) {
 			System.err.println("Unknown object passed to method unownedProperty");
 		}
+	}
+	
+	public void cheatMode() {
+		int totalX = 150;
+		int buttonY = 20;
+		
+		final JTextField cheatSpaces = new JTextField();
+		cheatSpaces.setBounds(0, 0, (totalX * 2 / 3), buttonY);
+		cheatSpaces.setVisible(true);
+		
+		JButton go = new JButton("Go");
+		go.setBounds(0, 0, (totalX / 3), buttonY);
+		go.setVisible(true);
+		go.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				//
+				int num = Integer.parseInt(cheatSpaces.getText());
+				moveCurrentPlayerInteger(num);
+			}
+		});
+		
+		JButton endTurn = new JButton("End Turn");
+		endTurn.setBounds(0, 0, totalX, buttonY);
+		endTurn.setVisible(true);
+		endTurn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				// Simulates End Turn button in GameButtonPanel
+				currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
+				if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
+					new JailPopUp(players_.get(currentPlayerNum_));
+			}
+		});
+		
+		DisplayAssembler.getInstance().addComponent(go, DisplayAssembler.getScreenWidth()-50, 
+				DisplayAssembler.getScreenHeight()-40,
+				JLayeredPane.POPUP_LAYER);
+		DisplayAssembler.getInstance().addComponent(cheatSpaces, DisplayAssembler.getScreenWidth()-150, 
+				DisplayAssembler.getScreenHeight()-40,
+				JLayeredPane.POPUP_LAYER);
+		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth()-150, 
+				DisplayAssembler.getScreenHeight()-20,
+				JLayeredPane.POPUP_LAYER);
 	}
 }

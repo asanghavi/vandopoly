@@ -59,8 +59,15 @@ public class PlayerInJail extends PlayerState {
 	}
 	
 	@Override
-	public void collectRent(Player payee, int amount, Player player) {
+	public void collectRent(Player payee, int amount, Player payer) {
 		// Empty - rent is not collected when players are in jail
+		// False
+		if (payer.getIndex() != payee.getIndex()) {
+			payee.updateCash(amount);
+			payer.updateCash(-amount);
+			ActionMessage.getInstance().newMessage(payer.getName() + " paid $" + 
+					amount + " in rent to " + payee.getName());
+		}
 	}
 	
 	@Override

@@ -40,7 +40,7 @@ public class GameButtonPanel extends JPanel {
 	
 	GameController controller_;
 	
-	int buttonX = 240, buttonY = 50;
+	int buttonX = 221, buttonY = 50;
 	int frameWidth = buttonX * 4;
 	int frameHeight = buttonY;
 	
