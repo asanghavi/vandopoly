@@ -87,7 +87,7 @@ public class ActionMessage extends JLabel {
 							Thread.sleep(8);
 						}
 						
-						Thread.sleep(1800);
+						Thread.sleep(2000);
 						
 					} catch (InterruptedException e) {
 						e.printStackTrace();
