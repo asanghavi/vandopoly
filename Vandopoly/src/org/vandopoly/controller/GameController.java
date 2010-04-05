@@ -38,6 +38,7 @@ import org.vandopoly.model.CommCardSpace;
 import org.vandopoly.model.CornerSpace;
 import org.vandopoly.model.Dice;
 import org.vandopoly.model.Player;
+import org.vandopoly.model.PlayerInJail;
 import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
@@ -47,6 +48,7 @@ import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.Display;
 import org.vandopoly.ui.DisplayAssembler;
 import org.vandopoly.ui.GameButtonPanel;
+import org.vandopoly.ui.JailPopUp;
 import org.vandopoly.ui.MessagePopUp;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
@@ -124,9 +126,9 @@ public void moveCurrentPlayer(Object obj) {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 			
 			// Update current position of player model
-			currentPlayer.movePiece(dice);
+			//currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			//currentPlayer.movePiece(7);
+			currentPlayer.movePiece(10);
 			
 			//Print out some statements that help testing
 			System.out.println("Current Player: "+currentPlayer.getName());
@@ -260,6 +262,8 @@ public void moveCurrentPlayer(Object obj) {
 			}
 			
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
+			if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
+				new JailPopUp(players_.get(currentPlayerNum_));
 		}
 		else if (action.getActionCommand().equals("Quit Game")) {
 			confirmationPopUp();
