@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.ui.ActionMessage;
+import org.vandopoly.ui.MessagePopUp;
+
 /*
  * PlayerFree class implements the behavior associated with the player 
  * being in jail.
@@ -47,6 +50,8 @@ public class PlayerInJail extends PlayerState {
 		int i = player.getNumOfRolls();
 		player.setNumOfRolls(++i);
 		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {
+			ActionMessage.getInstance().newMessage(player.getName() + 
+					" has been removed from Academic Probation!");
 			getOutOfJail(player);
 			player.updatePosition(dice.getTotalRoll());
 			player.setNumOfRolls(0);
