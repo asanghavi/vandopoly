@@ -22,7 +22,7 @@ import java.util.Vector;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.ui.CardPanel;
+import org.vandopoly.ui.MessagePopUp;
 
 /*
  * Model class that is a descendant of Space and represents a Community Chest
@@ -75,7 +75,7 @@ public class CommCardSpace extends Space {
 	public void landOn(Player p) {
 		Card card = drawCard();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, card);
-		new CardPanel(card, p, players_, "Community Chest");
+		new MessagePopUp(card, p, players_, "Community Chest");
 		
 	}
 	
