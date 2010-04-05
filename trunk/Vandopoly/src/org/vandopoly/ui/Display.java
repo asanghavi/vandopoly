@@ -40,11 +40,8 @@ import javax.swing.JLayeredPane;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 
-import org.vandopoly.model.CornerSpace;
-import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
-import org.vandopoly.model.TaxSpace;
-import org.vandopoly.model.UpgradeablePropertySpace;
+
 
 /*
  * Main JFrame from which Vandopoly is built into

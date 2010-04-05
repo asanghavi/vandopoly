@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.Space;
 
 /*
@@ -41,6 +40,9 @@ import org.vandopoly.model.Space;
  */
 
 public class SpacePanel extends JPanel {
+	
+	private static final long serialVersionUID = 81;
+	
 	int x_;
 	int y_;
 	int width_;

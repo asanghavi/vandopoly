@@ -17,14 +17,12 @@ package org.vandopoly.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.ui.MessagePopUp;
-import org.vandopoly.ui.PropertySelectionPanel;
 
 /*
  * Model class that is a descendant of Space and represents a 

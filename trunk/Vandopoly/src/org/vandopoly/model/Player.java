@@ -21,7 +21,6 @@ import java.util.ListIterator;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.ui.ActionMessage;
-import org.vandopoly.ui.MessagePopUp;
 import org.vandopoly.ui.Piece;
 
 /*

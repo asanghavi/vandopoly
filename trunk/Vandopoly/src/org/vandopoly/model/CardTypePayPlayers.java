@@ -16,7 +16,6 @@
 package org.vandopoly.model;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 /*
  * The CardTypePayPlayers class represents a "Chance" or "Community Chest" card

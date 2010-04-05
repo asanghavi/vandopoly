@@ -16,7 +16,6 @@
 package org.vandopoly.model;
 
 import org.vandopoly.ui.ActionMessage;
-import org.vandopoly.ui.MessagePopUp;
 
 /*
  * PlayerFree class implements the behavior associated with the player 
