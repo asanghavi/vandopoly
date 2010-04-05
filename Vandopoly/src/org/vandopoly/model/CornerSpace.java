@@ -17,6 +17,7 @@ package org.vandopoly.model;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.ui.ActionMessage;
 import org.vandopoly.ui.MessagePopUp;
 
 /*
@@ -35,11 +36,17 @@ public class CornerSpace extends Space {
 	}
 	
 	public void landOn(Player p) {
-		if(this.name_.equals("Scholarship Fund"))
+		if (this.name_.equals("Scholarship Fund"))
 			NotificationManager.getInstance().notifyObservers(Notification.AWARD_SCHOLARSHIP_FUND, p);
-		if(this.name_.equals("Go On Academic Probation")) {
-			new MessagePopUp(p.getName()+" has been put on Academic Probation!");
+		else if (this.name_.equals("Go On Academic Probation")) {
+			ActionMessage.getInstance().newMessage(p.getName() + 
+					" has been put on Academic Probation!");
 			p.goToJail();
+		}
+		else if (this.name_.equals("GO")) {
+			p.updateCash(400);
+			ActionMessage.getInstance().newMessage(p.getName() +
+					" has been awarded $400 for landing on GO!");
 		}
 	}
 

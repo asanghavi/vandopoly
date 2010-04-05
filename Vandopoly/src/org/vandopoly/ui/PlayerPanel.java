@@ -23,6 +23,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
@@ -32,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
@@ -55,6 +57,8 @@ public class PlayerPanel extends JPanel {
 	private JLabel cashAmount_[];
 	private JScrollPane scrollPane_[];
 	private JList list_[];
+	Color background_;
+	ImageIcon enabled_, disabled_;
 	
 	private double panelScaleX_ = .80, coordScaleX_ = .1;
 	private double panelScaleY_ = .64, coordScaleY_ = .18;
@@ -65,6 +69,9 @@ public class PlayerPanel extends JPanel {
 	public PlayerPanel(ArrayList<Player> players) {
 		
 		players_ = players;
+		background_ = new Color(239, 227, 160);
+		enabled_ = new ImageIcon("images/Star.png");
+		disabled_ = new ImageIcon("images/disabled.png");
 		
 		Font nameFont = new Font("broadway", Font.PLAIN, 20);
 		
@@ -99,14 +106,19 @@ public class PlayerPanel extends JPanel {
 		
 		// Create all panels
 		panel_[0] = createPanel(players_.get(0), cashAmount_[0], scrollPane_[0], list_[0]);
+		infoPanel_.setIconAt(0, enabled_);
 		panel_[1] = createPanel(players_.get(1), cashAmount_[1], scrollPane_[1], list_[1]);
+		infoPanel_.setIconAt(1, disabled_);
 		
 		if (players_.size() > 2) {
 			panel_[2] = createPanel(players_.get(2), cashAmount_[2], scrollPane_[2], list_[2]);
-			
+			infoPanel_.setIconAt(2, disabled_);
 			if (players_.size() == 4)
 				panel_[3] = createPanel(players_.get(3), cashAmount_[3], scrollPane_[3], list_[3]);
+				infoPanel_.setIconAt(3, disabled_);
 		}
+		
+		
 		
 		Point location = new Point((int) (coordScaleX_ * width_) + DisplayAssembler.getRightEdge(), 
 				(int) (coordScaleY_ * height_));
@@ -151,6 +163,8 @@ public class PlayerPanel extends JPanel {
 		
 		scroll.setVisible(true);
 		list.setVisible(true);
+		UIManager.put("TabbedPane.selected", new Color(238, 238, 238));  
+		UIManager.put("TabbedPane.focus", new Color(238, 238, 238));
 		
 		panel.add(cashLabel_);
 		panel.add(cashAmount);
@@ -208,8 +222,15 @@ public class PlayerPanel extends JPanel {
 	// Used to automatically switch to the player who is currently rolling
 	public void switchPanel(Object i) {
 		Integer number = (Integer) i;
-		infoPanel_.setSelectedIndex((int)number);
+		for (int j = 0; j < players_.size(); ++j) {
+			if (number == j) {
+				infoPanel_.setSelectedIndex((int)number);
+				infoPanel_.setIconAt(number, enabled_);
+			}
+			else {
+				infoPanel_.setIconAt(j, disabled_);
+			}
+		}
 	}
-
 }
 

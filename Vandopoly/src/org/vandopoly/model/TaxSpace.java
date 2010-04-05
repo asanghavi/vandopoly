@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.util.ArrayList;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.ui.ActionMessage;
@@ -46,14 +48,19 @@ public class TaxSpace extends Space {
 		percentageFee_ = percentageFee;
 	}
 	
-	// TODO: should be 10% of all assets
 	public void landOn(Player p) {
+		int assets = p.getCash();
+		ArrayList<PropertySpace> properties = p.getProperties();
+		for (int i = 0; i < properties.size(); ++i) {
+			assets += properties.get(i).getMortgageValue();
+		}
+		
 		int value = 0;
 		String message = p.getName() + " paid $";
 		
-		// Pay the minimum of either 10% of current money or 200 dollar fee
+		// Pay the minimum of either 10% of current assets or 200 dollar fee
 		if(name_.equals("Pay Tuition")) {
-			value = Math.min((int)(p.getCash() * .1), 200);
+			value = Math.min((int)(assets * .1), 200);
 			message += value + " in tuition";
 		}
 		// Represents luxury tax or Parking Ticket space
@@ -62,10 +69,15 @@ public class TaxSpace extends Space {
 			message += value + " in parking tickets";
 		}
 		
-		p.updateCash(-value);
-		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
-				new Integer(value));
-		ActionMessage.getInstance().newMessage(message);
+		if (p.getCash() < value) {
+			// Window telling the user they owe x dollars in tax and must mortgage properties
+		}
+		else {
+			p.updateCash(-value);
+			NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
+					new Integer(value));
+			ActionMessage.getInstance().newMessage(message);
+		}
 	}
 
 	// Getters and setters
