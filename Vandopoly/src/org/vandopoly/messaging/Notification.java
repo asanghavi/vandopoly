@@ -81,6 +81,10 @@ public class Notification {
 	// Does not include object
 	public static final String GO_TO_JAIL = "GoToJail";
 	
+	// Sends a Player object to notify why players have been removed from jail by
+	// using a get out of jail free card
+	public static final String USED_JAIL_CARD = "UsedJailCard";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////
