@@ -16,8 +16,6 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.ui.ActionMessage;
-
 /*
  * UpgradeablePropertyLevel1 class implements the behavior associated with the 
  * upgradeable property space being upgraded to level 1.

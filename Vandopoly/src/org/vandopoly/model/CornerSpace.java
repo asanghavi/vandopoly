@@ -18,7 +18,6 @@ package org.vandopoly.model;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.ui.ActionMessage;
-import org.vandopoly.ui.MessagePopUp;
 
 /*
  * Model class that is a descendant of Space and represents a corner of the board
