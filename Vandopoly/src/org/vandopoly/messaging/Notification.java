@@ -81,9 +81,12 @@ public class Notification {
 	// Does not include object
 	public static final String GO_TO_JAIL = "GoToJail";
 	
-	// Sends a Player object to notify why players have been removed from jail by
+	// Sends a Player object to notify when players have been removed from jail by
 	// using a get out of jail free card
 	public static final String USED_JAIL_CARD = "UsedJailCard";
+	
+	// Sends a Player object to notify when players gain a get out of jail free card
+	public static final String GAINED_JAIL_CARD = "GainedJailCard";
 	
 	public static final String PIECE_MOVE_TO = "PieceMoveTo";
 	
