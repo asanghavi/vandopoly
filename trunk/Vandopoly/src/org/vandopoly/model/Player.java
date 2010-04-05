@@ -139,6 +139,11 @@ public class Player {
 
 	public void setGetOutOfJail(boolean hasCard) {
 		getOutOfJail_ = hasCard;
+		
+		if (hasCard)
+			NotificationManager.getInstance().notifyObservers(Notification.GAINED_JAIL_CARD, this);
+		else
+			NotificationManager.getInstance().notifyObservers(Notification.USED_JAIL_CARD, this);
 	}
 
 	public boolean hasGetOutOfJail() {
