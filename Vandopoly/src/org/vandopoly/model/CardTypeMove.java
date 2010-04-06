@@ -59,6 +59,6 @@ public class CardTypeMove extends Card {
 		p.setPosition(getSpace());
 		NotificationManager.getInstance().notifyObservers(Notification.CARD_MOVE, new Integer(getSpace()));
 		if (getSpace() == 10)
-			p.changeState(PlayerInJail.Instance());
+			p.goToJail();
 	}
 }

@@ -118,6 +118,8 @@ public class DicePanel extends JPanel {
 				this, "setDisabled");
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, 
 				this, "setEnabled");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY,
+				this, "endTurn");
 	}
 
 	public JButton getRollButton() {
