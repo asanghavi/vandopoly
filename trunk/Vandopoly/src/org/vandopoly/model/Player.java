@@ -90,6 +90,7 @@ public class Player {
 	public void goToJail() {
 		setPosition(10);
 		state_.goToJail(this);
+		NotificationManager.getInstance().notifyObservers(Notification.END_TURN_EARLY, null);
 	}
 
 	public void getOutOfJail() {
