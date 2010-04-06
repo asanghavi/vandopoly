@@ -7,8 +7,8 @@ import org.vandopoly.model.PlayerInJail;
 public class PlayerTests {
 
 	public static void main(String[] args) {
-		Player A = new Player(0, "Bob", null, 0);
-		Player B = new Player(1, "Mark", null, 1);
+		Player A = new Player(0, "Bob");
+		Player B = new Player(1, "Mark");
 
 		A.goToJail();
 		
@@ -24,22 +24,22 @@ public class PlayerTests {
 		else
 			System.out.println("Test 2: FAIL");
 		
-		A.collectRent(12, B);
+		A.collectRent(100, B);
 		
-		if (A.getCash() == 0)
+		if (A.getCash() == 1600)
 			System.out.println("Test 3: PASS");
 		else
 			System.out.println("Test 3: FAIL");
 		
-		A.updateCash(50);
+		A.updateCash(10);
 		B.collectRent(10, A);
 		
-		if (A.getCash() == 40)
+		if (A.getCash() == 1600)
 			System.out.println("Test 4: PASS");
 		else
 			System.out.println("Test 4: FAIL");
 		
-		if (B.getCash() == 10)
+		if (B.getCash() == 1410)
 			System.out.println("Test 5: PASS");
 		else
 			System.out.println("Test 5: FAIL");

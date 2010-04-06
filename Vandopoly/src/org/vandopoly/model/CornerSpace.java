@@ -17,7 +17,6 @@ package org.vandopoly.model;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.ui.ActionMessage;
 
 /*
  * Model class that is a descendant of Space and represents a corner of the board
@@ -38,14 +37,14 @@ public class CornerSpace extends Space {
 		if (this.name_.equals("Scholarship Fund"))
 			NotificationManager.getInstance().notifyObservers(Notification.AWARD_SCHOLARSHIP_FUND, p);
 		else if (this.name_.equals("Go On Academic Probation")) {
-			ActionMessage.getInstance().newMessage(p.getName() + 
-					" has been put on Academic Probation!");
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					p.getName() + " has been put on Academic Probation!");
 			p.goToJail();
 		}
 		else if (this.name_.equals("GO")) {
 			p.updateCash(400);
-			ActionMessage.getInstance().newMessage(p.getName() +
-					" has been awarded $400 for landing on GO!");
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					p.getName() + " has been awarded $400 for landing on GO!");
 		}
 	}
 
