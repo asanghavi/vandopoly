@@ -176,11 +176,15 @@ public class GameController implements ActionListener {
 		}
 	}
 	
+	// Called by PIECE_MOVE_TO notification
+	// Avoids player needing access to piece to allow for unit testing
 	public void pieceMoveTo(Object obj) {
 		Integer spaceNum = (Integer) obj;
 		pieces_.get(currentPlayerNum_).moveToSpace(spaceNum);
 	}
 	
+	// Called by PIECE_MOVE_SPACES notification
+	// Avoids player needing access to piece to allow for unit testing
 	public void pieceMoveSpaces(Object obj) {
 		Integer spaceNum = (Integer) obj;
 		pieces_.get(currentPlayerNum_).move(spaceNum);
@@ -318,6 +322,7 @@ public class GameController implements ActionListener {
 		}
 	}
 	
+	// Called by Notification CARD_MOVE_TO
 	public void cardMoveTo(Object obj) {
 		System.out.println("cardmoveTo");
 		Integer num = (Integer)obj;
@@ -424,7 +429,8 @@ public class GameController implements ActionListener {
 		}
 	}
 	
-	public void cheatMode() {
+	// Called if Player 1's name is equal to "test"
+	private void cheatMode() {
 		int totalX = 150;
 		int buttonY = 20;
 		
@@ -432,9 +438,11 @@ public class GameController implements ActionListener {
 		cheatSpaces.setBounds(0, 0, (totalX * 2 / 3), buttonY);
 		cheatSpaces.setVisible(true);
 		
+		// Go button effectively rolls the dice the number given in the text field
 		JButton go = new JButton("Go");
 		go.setBounds(0, 0, (totalX / 3), buttonY);
 		go.setVisible(true);
+		
 		go.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				int num = Integer.parseInt(cheatSpaces.getText());
@@ -442,12 +450,14 @@ public class GameController implements ActionListener {
 			}
 		});
 		
+		// Creates an End Turn button to change players
 		JButton endTurn = new JButton("End Turn");
 		endTurn.setBounds(0, 0, totalX, buttonY);
 		endTurn.setVisible(true);
+		
+		// Simulates End Turn button in GameButtonPanel
 		endTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// Simulates End Turn button in GameButtonPanel
 				currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 				if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
@@ -455,14 +465,15 @@ public class GameController implements ActionListener {
 			}
 		});
 		
-		DisplayAssembler.getInstance().addComponent(go, DisplayAssembler.getScreenWidth()-50, 
-				DisplayAssembler.getScreenHeight()-40,
+		// Add the cheat control bar to display assembler
+		DisplayAssembler.getInstance().addComponent(go, DisplayAssembler.getScreenWidth() - (totalX / 3), 
+				DisplayAssembler.getScreenHeight() - (2 * buttonY),
 				JLayeredPane.POPUP_LAYER);
-		DisplayAssembler.getInstance().addComponent(cheatSpaces, DisplayAssembler.getScreenWidth()-150, 
-				DisplayAssembler.getScreenHeight()-40,
+		DisplayAssembler.getInstance().addComponent(cheatSpaces, DisplayAssembler.getScreenWidth() - totalX, 
+				DisplayAssembler.getScreenHeight() - (2 * buttonY),
 				JLayeredPane.POPUP_LAYER);
-		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth()-150, 
-				DisplayAssembler.getScreenHeight()-20,
+		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth() - totalX, 
+				DisplayAssembler.getScreenHeight() - buttonY,
 				JLayeredPane.POPUP_LAYER);
 	}
 }

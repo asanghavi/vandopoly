@@ -70,14 +70,6 @@ public class PropertySelectionPanel implements ListSelectionListener {
 		for (int i = 0; i < propertyList.size(); i++)
 			model.addElement(propertyList.get(i).getNameAndStatus());
 
-		/*
-		 * KeyListener keyTypedListener = new KeyAdapter() { public void
-		 * keyTyped(KeyEvent e) { if ((e.getKeyChar() == '\b') &&
-		 * (model.getSize() > 0)) { model.removeElementAt(model.getSize() - 1);
-		 * } else if (e.getKeyChar() != '\b') { model.addElement("Added " +
-		 * e.getKeyChar()); } } };
-		 */
-
 		final JList list = new JList(model);
 		// list.addKeyListener(keyTypedListener);
 		final ListSelectionModel listSelection = list.getSelectionModel();
@@ -91,6 +83,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 
 		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
 
+		// Set up the renovate button
 		renovate = new JButton("Renovate");
 		renovate.setFont(buttonFont);
 		renovate.setBounds(0, listHeight, (panelWidth / 2), buttonHeight);
@@ -118,6 +111,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 			}
 		});
 		
+		// Set up the downgrade button
 		downgrade = new JButton("Downgrade");
 		downgrade.setFont(buttonFont);
 		downgrade.setBounds((panelWidth / 2), listHeight, (panelWidth / 2),
@@ -139,13 +133,14 @@ public class PropertySelectionPanel implements ListSelectionListener {
 					int newIndex = findNextIndex(index);
 					list.setSelectedIndex(newIndex);
 					
-					// Toggle Buttons Appropriately
+					// Toggle Buttons Appropriately for the new index
 					PropertySelectionPanel.this.toggleButtons(propertyList.get(newIndex));
 				}
 			}
 
 		});
 		
+		// Set up the mortgage button
 		mortgage = new JButton("Mortgage");
 		mortgage.setFont(buttonFont);
 		mortgage.setBounds(0, listHeight + buttonHeight, panelWidth,
@@ -189,11 +184,17 @@ public class PropertySelectionPanel implements ListSelectionListener {
 		frame.setVisible(true);
 	}
 	
+	/**
+	 * Reloads all properties from the original property list.
+	 */
 	private void repaint() {
 		for (int i = 0; i < propertyList.size(); i++)
 			model.set(i, propertyList.get(i).getNameAndStatus());
 	}
 	
+	/**
+	 * After upgrading or degrading, findNext Index finds the next lowest property of the same type
+	 */
 	private int findNextIndex(int curIndex) {
 		int newIndex = curIndex - 1;
 		
@@ -221,21 +222,6 @@ public class PropertySelectionPanel implements ListSelectionListener {
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 
 		toggleButtons(propertyList.get(lsm.getMinSelectionIndex()));
-
-		/*
-		 * int firstIndex = e.getFirstIndex(); int lastIndex = e.getLastIndex();
-		 * boolean isAdjusting = e.getValueIsAdjusting();
-		 * System.out.println("Event for indexes " + firstIndex + " - " +
-		 * lastIndex + "; isAdjusting is " + isAdjusting +
-		 * "; selected indexes:");
-		 * 
-		 * if (lsm.isSelectionEmpty()) { System.out.println(" <none>"); } else {
-		 * // Find out which indexes are selected. int minIndex =
-		 * lsm.getMinSelectionIndex(); int maxIndex =
-		 * lsm.getMaxSelectionIndex(); for (int i = minIndex; i <= maxIndex;
-		 * i++) { if (lsm.isSelectedIndex(i)) { System.out.println(" " + i); } }
-		 * }
-		 */
 	}
 
 	private void toggleButtons(PropertySpace selectedProperty) {
@@ -280,4 +266,12 @@ public class PropertySelectionPanel implements ListSelectionListener {
  * int maxIndex = lsm.getMaxSelectionIndex(); for (int i = minIndex; i <=
  * maxIndex; i++) { if (lsm.isSelectedIndex(i)) { System.out.println(" " + i); }
  * } } } }
+ */
+
+/*
+ * KeyListener keyTypedListener = new KeyAdapter() { public void
+ * keyTyped(KeyEvent e) { if ((e.getKeyChar() == '\b') &&
+ * (model.getSize() > 0)) { model.removeElementAt(model.getSize() - 1);
+ * } else if (e.getKeyChar() != '\b') { model.addElement("Added " +
+ * e.getKeyChar()); } } };
  */

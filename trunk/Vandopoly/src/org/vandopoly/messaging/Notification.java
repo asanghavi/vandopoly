@@ -88,8 +88,12 @@ public class Notification {
 	// Sends a Player object to notify when players gain a get out of jail free card
 	public static final String GAINED_JAIL_CARD = "GainedJailCard";
 	
+	// Used by Player to move piece.  Notifies game controller and contains an integer
+	// referring to the space number the piece should be moved to
 	public static final String PIECE_MOVE_TO = "PieceMoveTo";
 	
+	// Used by Player to move piece a certian number of spaces.  Notifies game controller
+	// containing an integer pertaining to how many spaces to move
 	public static final String PIECE_MOVE_SPACES = "PieceMoveSpaces";
 	
 	// Sent when the "Roll Dice" button must be disabled early - like when a player

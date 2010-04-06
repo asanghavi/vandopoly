@@ -35,15 +35,18 @@ public class ActionMessage extends JLabel {
 	
 	private int screenWidth = DisplayAssembler.getScreenWidth();
 	
+	// Variables used for the bounds of the message
 	private int leftSide = DisplayAssembler.getBoxSize() + 7;
 	private int rightSide = leftSide + DisplayAssembler.getSpaceWidth() * 9;
 	private int totalSize = rightSide - leftSide;
 	
+	// Contains all of the fonts used during the animation
 	private Font actionFont[];
 	private int numOfFonts = 35;
 	
 	static final long serialVersionUID = 101;
 
+	// Singleton so that it can be used by all classes
 	public static ActionMessage getInstance() {
 		if (INSTANCE == null)
 			INSTANCE = new ActionMessage();
@@ -63,10 +66,12 @@ public class ActionMessage extends JLabel {
 		DisplayAssembler.getInstance().addComponent(this, 0, 0, JLayeredPane.POPUP_LAYER);
 	}
 	
+	// Main method used to present a message
 	public void newMessage(final String message) {
 		
 		final int maxFontSize = findProperSize(message);
 		
+		// Spawns a new thread for the animation
 		new Thread() {
 			public void run() {
 				// Used so that multiple threads do not display at the same time.
@@ -79,7 +84,7 @@ public class ActionMessage extends JLabel {
 					ActionMessage.this.setVisible(true);
 				
 					try {
-					
+						// Slowly increase font size and reset the location to center the text
 						for (int i = 0; i < maxFontSize; i++) {
 							setLocation(message, i);
 							ActionMessage.this.setFont(actionFont[i]);
@@ -87,6 +92,7 @@ public class ActionMessage extends JLabel {
 							Thread.sleep(8);
 						}
 						
+						// After the text is done displaying, pause before removing it.
 						Thread.sleep(2000);
 						
 					} catch (InterruptedException e) {
@@ -99,6 +105,8 @@ public class ActionMessage extends JLabel {
 		}.start();
 	}
 	
+	// Makes sure that the message will fit into the alotted range for the message
+	// If not, change the max size of the font so that the message will fit
 	private int findProperSize(String message) {
 		int size = numOfFonts - 1;
 		
@@ -109,13 +117,14 @@ public class ActionMessage extends JLabel {
 		return size;
 	}
 	
+	// Centers the message on the screen between the rightSide and the leftSide
 	private void setLocation(String message, int fontSelection) {
 		
+		// Font metrics are used because font letters are not all the same size
 		FontMetrics metrics = DisplayAssembler.getInstance().getFontMetrics(actionFont[fontSelection]);
+		
 		DisplayAssembler.getInstance().animateComponentLocation(this, 
 				(leftSide + ((rightSide - leftSide) / 2) - (metrics.stringWidth(message)) / 2), 
 				leftSide - metrics.getHeight() + 10);
-		
-		
 	}
 }
