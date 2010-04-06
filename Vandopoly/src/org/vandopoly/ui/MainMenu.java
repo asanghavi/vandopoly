@@ -39,8 +39,9 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class MainMenu extends JPanel {
 	
-	private JButton newGame_, loadGame_, rules_, quitGame_;
+	private JButton newGame_, loadGame_, rules_, quitGame_, networkGame_;
 	private GameOptions options_;
+	private NetworkedGame networkedGame_;
 	
 	static final long serialVersionUID = 2;
 	
@@ -95,10 +96,22 @@ public class MainMenu extends JPanel {
 				(buttonStart + betweenSpace + buttonHeight), buttonWidth, buttonHeight);
 		loadGame_.setFont(buttonFont);
 		
-		rules_ = new JButton("Rules");
-		rules_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
+		networkGame_ = new JButton("Network Game");
+		networkGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
 				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
-		rules_.setFont(buttonFont);
+		networkGame_.setFont(buttonFont);
+		networkGame_.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                if (networkedGame_ == null)
+                	networkedGame_ = new NetworkedGame(MainMenu.this);
+                else {
+                	networkedGame_.showSecondPagePanels();
+                	networkedGame_.setVisible(true);
+                }
+                hideMenu();
+            }
+
+        });
 		
 		quitGame_ = new JButton("Quit Game");
 		quitGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
@@ -115,7 +128,7 @@ public class MainMenu extends JPanel {
 		add(titleBar);
 		add(newGame_);
 		add(loadGame_);
-		add(rules_);
+		add(networkGame_);
 		add(quitGame_);
 		
 		// Add the Panel to the display
