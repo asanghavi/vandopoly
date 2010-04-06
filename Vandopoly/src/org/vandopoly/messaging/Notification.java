@@ -96,6 +96,9 @@ public class Notification {
 	// rolls doubles, but they land on the "Go to Academic Probation" space
 	public static final String END_TURN_EARLY = "EndTurnEarly";
 	
+	// Sent when an action message is needed - to decouple player from ui
+	public static final String ACTION_MESSAGE = "ActionMessage";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////
