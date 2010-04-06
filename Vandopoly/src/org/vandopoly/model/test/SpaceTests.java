@@ -39,7 +39,7 @@ public class SpaceTests extends TestCase {
 	
 	Player samplePlayer, samplePlayer2;
 	
-	Space board[] = new Space[4];
+	Space board[] = new Space[5];
 	
 	// Sets up "shared" objects among tests.
 	// Any changes to objects during a test is confined to that test
@@ -52,14 +52,14 @@ public class SpaceTests extends TestCase {
 		property.setPurchasePrice(100);
 		
 		board[0] = new UpgradeablePropertySpace("Memorial Gym", 0, 0, 100, 50, 25, 100, 200, 400, 500, 750);
-		board[1] = new PropertySpace();
-		board[2] = new CornerSpace("Scholarship Fund");
-		board[3] = new TaxSpace("Pay Tuition");
+		board[1] = new PropertySpace("Railroad", 8, 1, 200, 100, 25, 50, 100, 200);
+		board[2] = new PropertySpace("Railroad2", 8, 2, 200, 100, 25, 50, 100, 200);
+		board[3] = new CornerSpace("Scholarship Fund");
+		board[4] = new TaxSpace("Pay Tuition");
 		
-		samplePlayer = new Player(0, "James");
-		samplePlayer.setName("James");
+		samplePlayer = new Player(1, "James");
 		
-		samplePlayer2 = new Player(1, "Frank");
+		samplePlayer2 = new Player(2, "Frank");
 	}
 	
 	// Must be used to cleanup after a .setUp()
@@ -84,6 +84,7 @@ public class SpaceTests extends TestCase {
 	// Testing purchasing of property
 	public void testPurchase() {
 		samplePlayer.purchase((PropertySpace)board[0]);
+		System.out.println(samplePlayer.getCash());
 		assertTrue(samplePlayer.getCash() == 1400);
 	}
 	// Testing rent payments
@@ -94,7 +95,7 @@ public class SpaceTests extends TestCase {
 	}
 	// Testing tax space
 	public void testTaxSpace() {
-		board[3].landOn(samplePlayer);
+		board[4].landOn(samplePlayer);
 		assertTrue(samplePlayer.getCash() == 1350);
 	}
 	// Testing mortgage
@@ -110,5 +111,47 @@ public class SpaceTests extends TestCase {
 		samplePlayer.mortgage((PropertySpace)board[0]);
 		samplePlayer.unmortgage((PropertySpace)board[0]);
 		assertTrue(samplePlayer.getCash() == 1400);
+	}
+	// Test level increase
+	public void testLevelIncrease() {
+		UpgradeablePropertySpace property = (UpgradeablePropertySpace)board[0];
+		samplePlayer.purchase(property);
+		property.renovate();
+		property.landOn(samplePlayer2);
+		
+		assert(samplePlayer2.getCash() == 1400);
+		assert(samplePlayer.getCash() == 1350);
+	}
+	
+	// Test a property increasing in level then decreasing
+	public void testLevelIncreaseDecrease() {
+		UpgradeablePropertySpace p = (UpgradeablePropertySpace)board[0];
+		samplePlayer.purchase(p);
+		p.renovate();
+		p.downgrade();
+		p.landOn(samplePlayer2);
+		
+		assert(samplePlayer2.getCash() == 1475);
+		assert(samplePlayer.getCash() == 1375);
+	}
+	
+	// Test property
+	public void testPropertyOwns1() {
+		PropertySpace p = (PropertySpace)board[1];
+		PropertySpace p2 = (PropertySpace)board[1];
+		samplePlayer.purchase(p);
+		p.landOn(samplePlayer2);
+		assert(samplePlayer2.getCash() == 1475);
+	}
+	
+	// Test Property Auto increase with owning two properties
+	public void testPropertyOwns2() {
+		PropertySpace p = (PropertySpace)board[1];
+		PropertySpace p2 = (PropertySpace)board[1];
+		samplePlayer.purchase(p);
+		samplePlayer.purchase(p2);
+		p.landOn(samplePlayer2);
+		
+		assert(samplePlayer2.getCash() == 1450);
 	}
 }

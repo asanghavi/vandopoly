@@ -316,6 +316,11 @@ public class Player {
 		return newState;
 	}
 	
+	/**
+	 * Counts the number of properties owned of color type
+	 * @param type
+	 * @return number of type properties owned
+	 */
 	public int countProperties(int type) {
 		int counter = 0;
 		
@@ -327,6 +332,10 @@ public class Player {
 		return counter;
 	}
 	
+	/**
+	 * @param type
+	 * @return whether a monopoly is owned of this type by player
+	 */
 	public boolean hasMonopoly(int type) {
 		return (countProperties(type) == PropertySpace.propertiesForMonopoly_[type]);
 	}
