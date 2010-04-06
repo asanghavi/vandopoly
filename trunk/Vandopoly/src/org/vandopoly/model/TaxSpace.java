@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.ui.ActionMessage;
 
 /*
  * Model class that is a descendant of Space and represents a tax space on the board
@@ -76,7 +75,9 @@ public class TaxSpace extends Space {
 			p.updateCash(-value);
 			NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
 					new Integer(value));
-			ActionMessage.getInstance().newMessage(message);
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					message);
+			
 		}
 	}
 

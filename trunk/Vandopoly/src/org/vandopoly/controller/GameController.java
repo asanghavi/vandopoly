@@ -46,6 +46,7 @@ import org.vandopoly.model.Space;
 import org.vandopoly.model.TaxSpace;
 import org.vandopoly.model.UpgradeablePropertySpace;
 import org.vandopoly.model.UtilitySpace;
+import org.vandopoly.ui.ActionMessage;
 import org.vandopoly.ui.DicePanel;
 import org.vandopoly.ui.Display;
 import org.vandopoly.ui.DisplayAssembler;
@@ -110,6 +111,8 @@ public class GameController implements ActionListener {
 				this, "pieceMoveSpaces");
 		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
 				this, "pieceMoveTo");
+		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
+				this, "displayActionMessage");
 	}
 	
 	// Called by the START_GAME notification
@@ -396,6 +399,17 @@ public class GameController implements ActionListener {
 	
 		popup.show();	
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
+	}
+	
+	public void displayActionMessage(Object obj) {
+		try {
+			String message = (String) obj;
+			ActionMessage.getInstance().newMessage(message);
+			
+		}
+		catch (ClassCastException e) {
+			System.err.println("Unknown object passed to method displayActionMessage");
+		}
 	}
 	
 	//Called by the UNOWNED_PROPERTY notification to display a pop-up window

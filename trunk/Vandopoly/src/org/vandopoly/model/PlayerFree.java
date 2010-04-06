@@ -15,8 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.PlayerState;
-import org.vandopoly.ui.ActionMessage;
 
 /*
  * PlayerFree class implements the behavior associated with the player 
@@ -57,8 +58,8 @@ public class PlayerFree extends PlayerState{
 		if (payer.getIndex() != payee.getIndex()) {
 			payee.updateCash(amount);
 			payer.updateCash(-amount);
-			ActionMessage.getInstance().newMessage(payer.getName() + " paid $" + 
-					amount + " in rent to " + payee.getName());
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					payer.getName() + " paid $" + amount + " in rent to " + payee.getName());
 		}
 	}
 

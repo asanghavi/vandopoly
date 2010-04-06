@@ -15,7 +15,8 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.ui.ActionMessage;
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
 
 /*
  * PlayerFree class implements the behavior associated with the player 
@@ -48,9 +49,9 @@ public class PlayerInJail extends PlayerState {
 	public void movePiece(Player player, Dice dice) {
 		int i = player.getNumOfRolls();
 		player.setNumOfRolls(++i);
-		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {
-			ActionMessage.getInstance().newMessage(player.getName() + 
-					" has been removed from Academic Probation!");
+		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {			
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					player.getName() + " has been removed from Academic Probation!");
 			getOutOfJail(player);
 			player.updatePosition(dice.getTotalRoll());
 			player.setNumOfRolls(0);
@@ -59,13 +60,11 @@ public class PlayerInJail extends PlayerState {
 	
 	@Override
 	public void collectRent(Player payee, int amount, Player payer) {
-		// Empty - rent is not collected when players are in jail
-		// False
 		if (payer.getIndex() != payee.getIndex()) {
 			payee.updateCash(amount);
 			payer.updateCash(-amount);
-			ActionMessage.getInstance().newMessage(payer.getName() + " paid $" + 
-					amount + " in rent to " + payee.getName());
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					payer.getName() + " paid $" + amount + " in rent to " + payee.getName());
 		}
 	}
 	

@@ -20,8 +20,6 @@ import java.util.ListIterator;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.ui.ActionMessage;
-import org.vandopoly.ui.Piece;
 
 /*
  * Player class is a model class that represents a game player.
@@ -101,8 +99,8 @@ public class Player {
 		// care of in CornerSpace.java
 		if (((positionOnBoard_ + numOfSpaces) != 40) && (positionOnBoard_ + numOfSpaces) >= SPACES_ON_BOARD) {
 			updateCash(200);
-			ActionMessage.getInstance().newMessage(getName() + 
-					" has been awarded $200 for passing GO!");
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					getName() + " has been awarded $200 for passing GO!");
 		}
 		
 		positionOnBoard_ = (positionOnBoard_ + numOfSpaces) % SPACES_ON_BOARD;
@@ -195,7 +193,10 @@ public class Player {
 			// is updated... The railroads rely on it.
 			property.bePurchased(this);
 			updateProperties(property);
-			ActionMessage.getInstance().newMessage(name_ + " purchased " + property.getName());
+			
+			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+					name_ + " purchased " + property.getName());
+
 			NotificationManager.getInstance().notifyObservers(Notification.DISABLE_PURCHASE, null);
 		}
 	}
@@ -203,8 +204,6 @@ public class Player {
 	// Adds elements to the property list in the correct order -
 	// sorted first by type (color), and then by space number
 	public void updateProperties(PropertySpace property) {
-		System.out.println("Inserting: " + property.getName() + "type:" + 
-				property.getTypeInt() + " Space: " + property.getSpaceNumber());
 		if (properties_.size() == 0)
 			properties_.add(property);
 		else {
