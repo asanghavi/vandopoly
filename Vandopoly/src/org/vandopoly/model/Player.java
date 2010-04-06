@@ -34,18 +34,17 @@ public class Player {
 	private final int SPACES_ON_BOARD = 40;
 
 	private PlayerState state_;
-	private String name_, icon_;
+	private String name_;
 	private int cash_ = 1500, positionOnBoard_, index_;
 	private boolean getOutOfJail_;
 	private ArrayList<PropertySpace> properties_;
-	private Piece piece_;
+	
 	//Used to move player out of jail after three rolls
 	private int numOfRolls_ = 0;
 
 	protected Player() {
 		state_ = PlayerFree.Instance();
 		name_ = "ANONYMOUS";
-		icon_ = "NONE";
 		cash_ = 1500;
 		index_ = 0;
 		positionOnBoard_ = 0;
@@ -54,15 +53,13 @@ public class Player {
 		numOfRolls_ = 0;
 	}
 
-	public Player(int index, String name, String icon, int playerNum) {
+	public Player(int index, String name) {
 		state_ = PlayerFree.Instance();
 		name_ = name;
-		icon_ = icon;
 		cash_ = 1500;
 		index_ = index;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
-		piece_ = new Piece(icon, playerNum);
 		setProperties(new ArrayList<PropertySpace>());
 		numOfRolls_ = 0;
 	}
@@ -98,7 +95,7 @@ public class Player {
 	}
 
 	public void updatePosition(int numOfSpaces) {
-		piece_.move(numOfSpaces);
+		NotificationManager.getInstance().notifyObservers(Notification.PIECE_MOVE_SPACES, numOfSpaces);
 		
 		// Only award if the player did not previously land on 'GO' - that is taken
 		// care of in CornerSpace.java
@@ -114,7 +111,7 @@ public class Player {
 	public void setPosition(int space) {
 		if (space >= 0 && space < SPACES_ON_BOARD) {
 			positionOnBoard_ = space;
-			piece_.moveToSpace(space);
+			NotificationManager.getInstance().notifyObservers(Notification.PIECE_MOVE_TO, space);
 		}
 		else
 			System.err.println("Invalid space number for setPosition: " + space);
@@ -156,14 +153,6 @@ public class Player {
 
 	public String getName() {
 		return name_;
-	}
-
-	public void setIcon(String icon) {
-		icon_ = icon;
-	}
-
-	public String getIcon() {
-		return icon_;
 	}
 
 	public void setProperties(ArrayList<PropertySpace> properties) {

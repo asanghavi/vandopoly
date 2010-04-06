@@ -52,6 +52,7 @@ import org.vandopoly.ui.DisplayAssembler;
 import org.vandopoly.ui.GameButtonPanel;
 import org.vandopoly.ui.JailPopUp;
 import org.vandopoly.ui.MessagePopUp;
+import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
 
@@ -64,6 +65,7 @@ import org.vandopoly.ui.PropertySelectionPanel;
 public class GameController implements ActionListener {
 	Dice dice_;
 	ArrayList<Player> players_;
+	ArrayList<Piece> pieces_;
 	Space board_[];
 	int scholarshipFund_;
 	
@@ -104,6 +106,10 @@ public class GameController implements ActionListener {
 				this, "cardMoveTo");
 		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
 				this, "unownedProperty");
+		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, 
+				this, "pieceMoveSpaces");
+		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
+				this, "pieceMoveTo");
 	}
 	
 	// Called by the START_GAME notification
@@ -166,6 +172,16 @@ public class GameController implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+	
+	public void pieceMoveTo(Object obj) {
+		Integer spaceNum = (Integer) obj;
+		pieces_.get(currentPlayerNum_).moveToSpace(spaceNum);
+	}
+	
+	public void pieceMoveSpaces(Object obj) {
+		Integer spaceNum = (Integer) obj;
+		pieces_.get(currentPlayerNum_).move(spaceNum);
+	}
 
 	public void sendPlayerToJail() {
 		players_.get(currentPlayerNum_).goToJail();
@@ -193,9 +209,11 @@ public class GameController implements ActionListener {
 	
 	private void createPlayers() {
 		players_ = new ArrayList<Player>();
+		pieces_ = new ArrayList<Piece>();
 		
 		for (int i = 0; i < numOfPlayers_; i++) {
-			players_.add(new Player(i, namesAndIcons_[i + 1], namesAndIcons_[numOfPlayers_ + i + 1], (i + 1)));
+			players_.add(new Player(i, namesAndIcons_[i + 1]));
+			pieces_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], i + 1));
 		}
 		
 		//Enables easy testing
@@ -405,7 +423,6 @@ public class GameController implements ActionListener {
 		go.setVisible(true);
 		go.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				//
 				int num = Integer.parseInt(cheatSpaces.getText());
 				moveCurrentPlayerInteger(num);
 			}
