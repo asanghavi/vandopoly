@@ -102,11 +102,8 @@ public class PropertySelectionPanel implements ListSelectionListener {
 					player.renovateProperty((UpgradeablePropertySpace)propertyList.get(index));
 					model.set(index, propertyList.get(index).getNameAndStatus());
 					
-					int newIndex = findNextIndex(index);
+					int newIndex = findNextIndexDecrease(index);
 					list.setSelectedIndex(newIndex);
-					
-					// Toggle Buttons Appropriately
-					PropertySelectionPanel.this.toggleButtons(propertyList.get(newIndex));
 				}
 			}
 		});
@@ -130,11 +127,8 @@ public class PropertySelectionPanel implements ListSelectionListener {
 					player.downgradeProperty((UpgradeablePropertySpace)propertyList.get(index));
 					model.set(index, propertyList.get(index).getNameAndStatus());
 					
-					int newIndex = findNextIndex(index);
+					int newIndex = findNextIndexIncrease(index);
 					list.setSelectedIndex(newIndex);
-					
-					// Toggle Buttons Appropriately for the new index
-					PropertySelectionPanel.this.toggleButtons(propertyList.get(newIndex));
 				}
 			}
 
@@ -193,9 +187,9 @@ public class PropertySelectionPanel implements ListSelectionListener {
 	}
 	
 	/**
-	 * After upgrading or degrading, findNext Index finds the next lowest property of the same type
+	 * Used after upgrading findNext Index finds the next lowest property of the same type
 	 */
-	private int findNextIndex(int curIndex) {
+	private int findNextIndexDecrease(int curIndex) {
 		int newIndex = curIndex - 1;
 		
 		if(curIndex == 0 || propertyList.get(curIndex).getType() != propertyList.get(newIndex).getType()) {
@@ -208,6 +202,27 @@ public class PropertySelectionPanel implements ListSelectionListener {
 			
 			// Move down to the first property of that type that does match
 			newIndex--;
+		}
+		
+		return newIndex;
+	}
+	
+	/**
+	 * Used after degrading, findNext Index finds the next highest property of the same type
+	 */
+	private int findNextIndexIncrease(int curIndex) {
+		int newIndex = curIndex + 1;
+		
+		if(curIndex >= propertyList.size() - 1 || propertyList.get(curIndex).getType() != propertyList.get(newIndex).getType()) {
+			newIndex = curIndex - 1;
+			
+			// Then move down until the types no longer match
+			while((newIndex >= 0
+					&& propertyList.get(curIndex).getType() == propertyList.get(newIndex).getType()))
+				newIndex--;
+			
+			// Move up to the first property of that type that does match
+			newIndex++;
 		}
 		
 		return newIndex;

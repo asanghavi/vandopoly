@@ -138,7 +138,6 @@ public class SpaceTests extends TestCase {
 	// Test property
 	public void testPropertyOwns1() {
 		PropertySpace p = (PropertySpace)board[1];
-		PropertySpace p2 = (PropertySpace)board[1];
 		samplePlayer.purchase(p);
 		p.landOn(samplePlayer2);
 		assert(samplePlayer2.getCash() == 1475);
