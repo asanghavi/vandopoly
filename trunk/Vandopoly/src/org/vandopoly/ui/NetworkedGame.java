@@ -72,7 +72,9 @@ public class NetworkedGame extends JPanel {
 	private ButtonGroup icons_[];
 
 	private int numOfPieces_, maxPlayers_;
-
+	
+	int frameWidth_ = 730, frameHeight_ = 750;
+	
 	static final long serialVersionUID = 3;
 
 	private MainMenu mainMenu_;
@@ -86,10 +88,10 @@ public class NetworkedGame extends JPanel {
 		String zeppos = "Zeppos";
 		String cornelius = "Cornelius";
 
-		int frameWidth = 730, frameHeight = 750;
+		
 
 		// Set size of window
-		this.setSize(frameWidth, frameHeight);
+		this.setSize(frameWidth_, frameHeight_);
 
 		// Allows for automatic positioning
 		this.setLayout(null);
@@ -97,8 +99,8 @@ public class NetworkedGame extends JPanel {
 		// Center the frame on the user's screen
 		Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
-		Point location = new Point((int) (screen.getWidth() - frameWidth) / 2,
-				(int) (screen.getHeight() - frameHeight) / 2);
+		Point location = new Point((int) (screen.getWidth() - frameWidth_) / 2,
+				(int) (screen.getHeight() - frameHeight_) / 2);
 
 		// Set up the fonts used on this panel
 		Font subTitleFont = new Font("broadway", Font.PLAIN, 36);
@@ -111,7 +113,7 @@ public class NetworkedGame extends JPanel {
 		JLabel titleBar = new JLabel();
 		ImageIcon title = new ImageIcon("images/vandopoly-logo2.gif");
 		titleBar.setIcon(title);
-		titleBar.setBounds(0, 0, frameWidth, 159);
+		titleBar.setBounds(0, 0, frameWidth_, 159);
 
 		// Set up the Options header along with positioning and size
 		JLabel subTitleBar = new JLabel("Game Options");
@@ -254,28 +256,17 @@ public class NetworkedGame extends JPanel {
 		continue_.setFont(buttonFont);
 		continue_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				namesAndIcons_ = new String[(2 * numberOfPlayers_) + 1];
-
+				namesAndIcons_ = new String[3];
 				namesAndIcons_[0] = "" + numberOfPlayers_;
-
 				namesAndIcons_[1] = nameOne_.getText();
-
-				/*
-				 * namesAndIcons_[2] = nameTwo_.getText();
-				 * playerTwo_2_.setText(namesAndIcons_[2]+":");
-				 * 
-				 * if (numberOfPlayers_ > 2) { namesAndIcons_[3] =
-				 * nameThree_.getText();
-				 * playerThree_2_.setText(namesAndIcons_[3]+":");
-				 * 
-				 * if (numberOfPlayers_ == 4) { namesAndIcons_[4] =
-				 * nameFour_.getText();
-				 * playerFour_2_.setText(namesAndIcons_[4]+":"); } }
-				 */
-
+				for(int i=0; i<numOfPieces_; i++) {
+					if(player_[0][i].isSelected())
+						namesAndIcons_[2] = icons_[i].getSelection().getActionCommand();
+				}
 				if (noRepeatNames() && shortNames() && allHaveNames()) {
 					NetworkedGame.this.hidePlayerPagePanels();
 					NetworkedGame.this.showThirdPagePanels();
+					addPlayer();
 				}
 			}
 
@@ -458,6 +449,16 @@ public class NetworkedGame extends JPanel {
 				this, "backToMain");
 	}
 
+	public void addPlayer()
+	{
+		NotificationManager.getInstance().notifyObservers(Notification.PLAYER_SELECTED, namesAndIcons_);
+	}
+	
+	public void disableIcon(int i)
+	{
+		player_[0][i].setEnabled(false);
+	}
+	
 	public void hidePlayerPagePanels() {
 		playerOne_.setVisible(false);
 		nameOne_.setVisible(false);
@@ -534,7 +535,7 @@ public class NetworkedGame extends JPanel {
 			}
 		}.start();
 	}
-
+	
 	public void hideFourthPagePanels() {
 		selectGame_.setVisible(false);
 		gameIp_.setVisible(false);
