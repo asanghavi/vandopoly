@@ -121,9 +121,10 @@ public class PlayerPanel extends JPanel {
 		if (players_.size() > 2) {
 			panel_[2] = createPanel(players_.get(2), cashAmount_[2], getOffAcProFree_[2],scrollPane_[2], list_[2]);
 			infoPanel_.setIconAt(2, disabled_);
-			if (players_.size() == 4)
+			if (players_.size() == 4) {
 				panel_[3] = createPanel(players_.get(3), cashAmount_[3], getOffAcProFree_[3],scrollPane_[3], list_[3]);
 				infoPanel_.setIconAt(3, disabled_);
+			}
 		}
 		
 		Point location = new Point((int) (coordScaleX_ * width_) + DisplayAssembler.getRightEdge(), 
