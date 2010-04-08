@@ -103,6 +103,9 @@ public class Notification {
 	// Sent when an action message is needed - to decouple player from ui
 	public static final String ACTION_MESSAGE = "ActionMessage";
 	
+	// Sent when a user selects their player for a networked game
+	public static final String PLAYER_SELECTED = "PlayerSelected";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////
