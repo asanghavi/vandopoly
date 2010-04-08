@@ -453,6 +453,10 @@ public class GameOptions extends JPanel{
 			continue_.setFont(buttonFont);
 			continue_.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent event) {
+	            	noNameError_.setVisible(false);
+	            	longNameError_.setVisible(false);
+	            	repeatError_.setVisible(false);
+	            	
 	            	namesAndIcons_ = new String[(2 * numberOfPlayers_) + 1];
 	            	
 	            	namesAndIcons_[0] = "" + numberOfPlayers_;
@@ -491,8 +495,6 @@ public class GameOptions extends JPanel{
 	            			}
 	            		}
 	            	}
-	            	
-	            	repeatError_.setVisible(false);
 	            	return true;
 	            }
 	            
@@ -503,7 +505,6 @@ public class GameOptions extends JPanel{
 	            			return false;
 	            		}
 	            	}
-	            	longNameError_.setVisible(false);
 	            	return true;
 	            }
 	            
@@ -514,7 +515,6 @@ public class GameOptions extends JPanel{
 	            			return false;
 	            		}
 	            	}
-	            	noNameError_.setVisible(false);
 	            	return true;	
 	            }
 	        });		    
