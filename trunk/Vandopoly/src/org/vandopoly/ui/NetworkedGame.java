@@ -43,7 +43,7 @@ import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
 /*
- * NetworkedGame JPanel that allows user to customize current game
+ * NetworkedGame JPanel that allows user to start a networked game
  * 
  * @author Matt Gioia
  */
@@ -134,7 +134,7 @@ public class NetworkedGame extends JPanel {
 		waiting_.setFont(headerFont);
 		waiting_.setBounds(50, 200, 400, 100);
 
-		selectGame_ = new JLabel("Select a game to join:");
+		selectGame_ = new JLabel("Enter the IP of the game to join:");
 		selectGame_.setFont(headerFont);
 		selectGame_.setBounds(50, 200, 400, 100);
 
@@ -256,56 +256,41 @@ public class NetworkedGame extends JPanel {
 		continue_.setFont(buttonFont);
 		continue_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				namesAndIcons_ = new String[3];
-				namesAndIcons_[0] = "" + numberOfPlayers_;
-				namesAndIcons_[1] = nameOne_.getText();
-				for(int i=0; i<numOfPieces_; i++) {
-					if(player_[0][i].isSelected())
-						namesAndIcons_[2] = icons_[i].getSelection().getActionCommand();
-				}
-				if (noRepeatNames() && shortNames() && allHaveNames()) {
-					NetworkedGame.this.hidePlayerPagePanels();
-					NetworkedGame.this.showThirdPagePanels();
-					addPlayer();
-				}
-			}
-
-			// Check to see if any of the names given are duplicates
-			public boolean noRepeatNames() {
-				// Had to adjust for loops to compensate for blank first name
-				for (int i = 0; i <= numberOfPlayers_; i++) {
-					for (int j = i + 1; j <= numberOfPlayers_; j++) {
-						if (namesAndIcons_[i].equals(namesAndIcons_[j])) {
-							repeatError_.setVisible(true);
-							return false;
-						}
+				if(optionsPageNum_ == 4)
+				{
+					NetworkedGame.this.hideFourthPagePanels();
+					NetworkedGame.this.showPlayerPagePanels();
+					optionsPageNum_ = 6;
+				} else if(optionsPageNum_ == 6)
+				{
+					namesAndIcons_ = new String[3];
+					namesAndIcons_[0] = "" + numberOfPlayers_;
+					namesAndIcons_[1] = nameOne_.getText();
+					for(int i=0; i<numOfPieces_; i++) {
+						if(player_[0][i].isSelected())
+							namesAndIcons_[2] = icons_[0].getSelection().getActionCommand();
+					}
+					
+					if (shortNames() && allHaveNames()) {
+						NotificationManager.getInstance().notifyObservers(Notification.PLAYER_SELECTED, namesAndIcons_);
+						NetworkedGame.this.hidePlayerPagePanels();
+						NotificationManager.getInstance().notifyObservers(Notification.START_GAME, namesAndIcons_);
+		        		NetworkedGame.this.hideSecondPagePanels();
+		        		NetworkedGame.this.setVisible(false);
+					}
+				} else {
+					namesAndIcons_ = new String[3];
+					namesAndIcons_[0] = "" + numberOfPlayers_;
+					namesAndIcons_[1] = nameOne_.getText();
+					for(int i=0; i<numOfPieces_; i++) {
+						if(player_[0][i].isSelected())
+							namesAndIcons_[2] = icons_[0].getSelection().getActionCommand();
+					}
+					if (shortNames() && allHaveNames()) {
+						NetworkedGame.this.hidePlayerPagePanels();
+						NetworkedGame.this.showThirdPagePanels();
 					}
 				}
-
-				repeatError_.setVisible(false);
-				return true;
-			}
-
-			public boolean shortNames() {
-				for (int i = 1; i <= numberOfPlayers_; i++) {
-					if (namesAndIcons_[i].length() > 20) {
-						longNameError_.setVisible(true);
-						return false;
-					}
-				}
-				longNameError_.setVisible(false);
-				return true;
-			}
-
-			public boolean allHaveNames() {
-				for (int i = 1; i <= numberOfPlayers_; i++) {
-					if (namesAndIcons_[i].length() == 0) {
-						noNameError_.setVisible(true);
-						return false;
-					}
-				}
-				noNameError_.setVisible(false);
-				return true;
 			}
 		});
 
@@ -449,11 +434,60 @@ public class NetworkedGame extends JPanel {
 				this, "backToMain");
 	}
 
-	public void addPlayer()
-	{
-		NotificationManager.getInstance().notifyObservers(Notification.PLAYER_SELECTED, namesAndIcons_);
+	
+	public boolean shortNames() {
+		for (int i = 1; i <= numberOfPlayers_; i++) {
+			if (namesAndIcons_[i].length() > 20) {
+				longNameError_.setVisible(true);
+				return false;
+			}
+		}
+		longNameError_.setVisible(false);
+		return true;
+	}
+
+	public boolean allHaveNames() {
+		for (int i = 1; i <= numberOfPlayers_; i++) {
+			if (namesAndIcons_[i].length() == 0) {
+				noNameError_.setVisible(true);
+				return false;
+			}
+		}
+		noNameError_.setVisible(false);
+		return true;
 	}
 	
+	public boolean addPlayerArr(String[] nameAndIcon)
+	{
+		String[] namesAndIcons = new String[namesAndIcons_.length + 2];
+		namesAndIcons[0] = namesAndIcons_[0] + 1;
+		for(int x=1; x<namesAndIcons_.length; x++)
+		{
+			namesAndIcons[x] = namesAndIcons_[x];
+		}
+		namesAndIcons[namesAndIcons_.length] = nameAndIcon[1];
+		namesAndIcons[namesAndIcons_.length] = nameAndIcon[2];
+		if(noRepeatNames(namesAndIcons)) {
+			namesAndIcons_ = namesAndIcons;
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	// Check to see if any of the names given are duplicates
+	public boolean noRepeatNames(String[] arr) {
+		// Had to adjust for loops to compensate for blank first name
+		for (int i = 0; i <= numberOfPlayers_; i++) {
+			for (int j = i + 1; j <= numberOfPlayers_; j++) {
+				if (arr[i].equals(arr[j]))
+					return false;
+			}
+		}
+
+		return true;
+	}
+
 	public void disableIcon(int i)
 	{
 		player_[0][i].setEnabled(false);
@@ -515,6 +549,9 @@ public class NetworkedGame extends JPanel {
 		waiting_.setVisible(true);
 		optionsPageNum_ = 3;
 		
+		NotificationManager.getInstance().addObserver(Notification.PLAYER_SELECTED,
+				this, "addPlayerArr");
+		
 		new Thread("startGame") {
 			public void run() {
 				String data = "Game started";
@@ -539,13 +576,15 @@ public class NetworkedGame extends JPanel {
 	public void hideFourthPagePanels() {
 		selectGame_.setVisible(false);
 		gameIp_.setVisible(false);
+		continue_.setVisible(false);
 	}
 
 	public void showFourthPagePanels() {
 		selectGame_.setVisible(true);
 		gameIp_.setVisible(true);
 		optionsPageNum_ = 4;
-
+		continue_.setVisible(true);
+		
 		try {
 			Socket skt = new Socket("localhost", 3913);
 			BufferedReader in = new BufferedReader(new InputStreamReader(skt
