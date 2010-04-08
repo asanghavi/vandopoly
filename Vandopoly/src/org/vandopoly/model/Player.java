@@ -236,15 +236,19 @@ public class Player {
 			(Notification.UPDATE_PROPERTIES, this);
 	}
 	
-	public void renovateProperty(UpgradeablePropertySpace p) {
+	public boolean renovateProperty(UpgradeablePropertySpace p) {
 		if (cash_ >= 50 && p.getState().getLevel() < 4) {
 			updateCash(-50);
 			p.renovate();
+			return true;
 		}
 		else if (cash_ >= 200 && p.getState().getLevel() == 4) {
 			updateCash(-200);
 			p.renovate();
+			return true;
 		}
+		
+		return false;
 	}
 	
 	public void downgradeProperty(UpgradeablePropertySpace p) {

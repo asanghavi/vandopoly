@@ -99,11 +99,14 @@ public class PropertySelectionPanel implements ListSelectionListener {
 							+ index + " which is invalid");
 				}
 				else {
-					player.renovateProperty((UpgradeablePropertySpace)propertyList.get(index));
+					
+					boolean renovated = player.renovateProperty((UpgradeablePropertySpace)propertyList.get(index));
 					model.set(index, propertyList.get(index).getNameAndStatus());
 					
-					int newIndex = findNextIndexDecrease(index);
-					list.setSelectedIndex(newIndex);
+					if (renovated) {
+						int newIndex = findNextIndexDecrease(index);
+						list.setSelectedIndex(newIndex);
+					}
 				}
 			}
 		});
