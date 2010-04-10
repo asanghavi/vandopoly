@@ -34,14 +34,14 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class GameButtonPanel extends JPanel {
 	
-	JButton purchase_, mortgage_, endTurn_, quitGame_, renovate_;
+	JButton purchase_, mortgage_, trade_, endTurn_, quitGame_;
 	
 	Font buttonFont;
 	
 	GameController controller_;
 	
 	int buttonX = 221, buttonY = 50;
-	int frameWidth = buttonX * 4;
+	int frameWidth = buttonX * 5;
 	int frameHeight = buttonY;
 	
 	private boolean purchaseState_, endTurnState_;
@@ -70,15 +70,19 @@ public class GameButtonPanel extends JPanel {
 		mortgage_ = buttonCreator("Manage Properties", 1);
 		mortgage_.setEnabled(true);
 		
+		trade_ = buttonCreator("Trade", 2);
+		trade_.setEnabled(true);
+		
 		// Set up the end turn button
-		endTurn_ = buttonCreator("End Turn", 2);
+		endTurn_ = buttonCreator("End Turn", 3);
 		endTurn_.setEnabled(false);
 		
 		// Set up the quit game button
-		quitGame_ = buttonCreator("Quit Game", 3);
+		quitGame_ = buttonCreator("Quit Game", 4);
 				
 		this.add(purchase_);
 		this.add(mortgage_);
+		this.add(trade_);
 		this.add(endTurn_);
 		this.add(quitGame_);
 		

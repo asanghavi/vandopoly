@@ -56,6 +56,7 @@ import org.vandopoly.ui.MessagePopUp;
 import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
+import org.vandopoly.ui.TradeFrame;
 
 /*
  * GameController is meant to handle all complex button/model interactions. 
@@ -302,6 +303,9 @@ public class GameController implements ActionListener {
 				propertySelectionPanel_.dispose();
 			
 			propertySelectionPanel_ = new PropertySelectionPanel(players_.get(currentPlayerNum_));
+		}
+		else if (action.getActionCommand().equals("Trade")) {
+			new TradeFrame(players_, currentPlayerNum_);
 		}
 		else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
