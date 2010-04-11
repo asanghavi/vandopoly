@@ -106,6 +106,10 @@ public class Notification {
 	// Sent when a user selects their player for a networked game
 	public static final String PLAYER_SELECTED = "PlayerSelected";
 	
+	// Sent from Utility States to the game controller to charge appropriate rent based on the dice
+	// The property is sent along for rent collection information.
+	public static final String UTILITY_RENT = "UtilityRent";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////

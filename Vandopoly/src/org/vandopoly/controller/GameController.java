@@ -114,6 +114,8 @@ public class GameController implements ActionListener {
 				this, "pieceMoveTo");
 		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
 				this, "displayActionMessage");
+		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
+				this, "chargeUtilityRent");
 	}
 	
 	// Called by the START_GAME notification
@@ -227,6 +229,14 @@ public class GameController implements ActionListener {
 		//Enables easy testing
 		if(namesAndIcons_[1].equals("test"))
 			cheatMode();
+	}
+	
+	// Called by Notification UTILITY_RENT
+	public void chargeUtilityRent(Object obj) {
+		UtilitySpace property = (UtilitySpace) obj;
+		int fee = property.getMultiplier() * dice_.getTotalRoll();
+		
+		property.getOwner().collectRent(fee, players_.get(currentPlayerNum_));
 	}
 	
 	private void createSpaces() {

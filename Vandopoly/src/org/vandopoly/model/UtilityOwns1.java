@@ -15,6 +15,9 @@
 
 package org.vandopoly.model;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * UtilityOwns1 class implements the behavior associated with the 
  * utility property space being owned.
@@ -38,9 +41,16 @@ public class UtilityOwns1 extends UtilityState{
 		return INSTANCE;
 	}
 	
-	public void landOn(Player player, UtilitySpace property) {
-		//property.getOwner().collectRent(property.getRentValues()[4], player);
+	// This function is not called because it is short circuited in UtilitySpace as both states do the
+	// same action.  It is kept for consistency and could still technically be used
+	public void landOn(Player player, PropertySpace property) {
 		//Rent is 4 times amount shown on dice
+		System.out.println("Utility land on");
+		NotificationManager.getInstance().notifyObservers(Notification.UTILITY_RENT, property);
+	}
+	
+	public int getMultiplier() {
+		return 4;
 	}
 	
 	protected void ownershipIncrease(PropertySpace p) {
