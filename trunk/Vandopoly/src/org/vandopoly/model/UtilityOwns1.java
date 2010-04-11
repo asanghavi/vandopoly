@@ -41,8 +41,6 @@ public class UtilityOwns1 extends UtilityState{
 		return INSTANCE;
 	}
 	
-	// This function is not called because it is short circuited in UtilitySpace as both states do the
-	// same action.  It is kept for consistency and could still technically be used
 	public void landOn(Player player, PropertySpace property) {
 		//Rent is 4 times amount shown on dice
 		System.out.println("Utility land on");

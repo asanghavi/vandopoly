@@ -98,6 +98,7 @@ public class Notification {
 	
 	// Sent when the "Roll Dice" button must be disabled early - like when a player
 	// rolls doubles, but they land on the "Go to Academic Probation" space
+	// ** May be possible to combine this with "DoneRolling"
 	public static final String END_TURN_EARLY = "EndTurnEarly";
 	
 	// Sent when an action message is needed - to decouple player from ui

@@ -119,7 +119,7 @@ public class DicePanel extends JPanel {
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, 
 				this, "setEnabled");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY,
-				this, "endTurn");
+				this, "forceEndTurn");
 	}
 
 	public JButton getRollButton() {
@@ -155,7 +155,9 @@ public class DicePanel extends JPanel {
 					
 
 					if (dice.getNumInRowDoubles() == 0) {
+						// Let End Turn Button know the dice are done rolling for this turn
 						NotificationManager.getInstance().notifyObservers(Notification.DONE_ROLLING, null);
+						// Allows GameController to respond to the dice.  Used for timing issues...
 						NotificationManager.getInstance().notifyObservers(Notification.DICE_ANIMATION_DONE, dice);
 					}
 					// User should roll again
@@ -187,6 +189,13 @@ public class DicePanel extends JPanel {
 		rollDice_.setForeground(Color.black);
 		rollDice_.setText("Roll Dice");
 		rollDice_.setEnabled(true);
+	}
+	
+	// Force the end of a turn
+	public void forceEndTurn() {
+		rollDice_.setForeground(Color.black);
+		rollDice_.setText("Roll Dice");
+		rollDice_.setEnabled(false);
 	}
 	
 	public void setDisabled() {
