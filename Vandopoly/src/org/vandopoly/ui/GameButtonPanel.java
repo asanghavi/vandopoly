@@ -98,6 +98,7 @@ public class GameButtonPanel extends JPanel {
 		NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "disablePurchase");
 		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "setAllDisabled");
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "setEnabled");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "playerState");
 	}
 
 	// Responsible for creating all the buttons in GameButtonPanel

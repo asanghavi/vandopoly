@@ -42,8 +42,6 @@ public class UtilityOwns2 extends UtilityState{
 		return INSTANCE;
 	}
 	
-	// This function is not called because it is short circuited in UtilitySpace as both states do the
-	// same action.  It is kept for consistency and could still technically be used
 	public void landOn(Player player, PropertySpace property) {
 		// REnt is 10 times amount shown on dice
 		NotificationManager.getInstance().notifyObservers(Notification.UTILITY_RENT, property);

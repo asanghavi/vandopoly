@@ -58,7 +58,7 @@ public class UtilitySpace extends PropertySpace {
 	}
 	
 	public void landOn(Player p) {
-		NotificationManager.getInstance().notifyObservers(Notification.UTILITY_RENT, this);
+		state_.landOn(p, this);
 	}
 
 	// Getters and setters
