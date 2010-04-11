@@ -29,4 +29,5 @@ public class UtilityState extends SpaceState {
 	}
 	
 	protected void landOn(Player player, PropertySpace property) {}
+	
 }

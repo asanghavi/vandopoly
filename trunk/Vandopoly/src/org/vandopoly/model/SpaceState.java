@@ -39,7 +39,7 @@ public class SpaceState {
 		return false;
 	}
 	
-	// All normal properties do not consult the state for renovated info
+	// All normal properties (railroads/utilities) do not consult the state for renovated info
 	protected boolean isRenovated(UpgradeablePropertySpace p) {
 		return true;
 	}
@@ -62,6 +62,12 @@ public class SpaceState {
 	}
 	
 	public int getLevel() {
+		return 0;
+	}
+	
+	// Used by the utility states
+	protected int getMultiplier() {
+		// This should never get called
 		return 0;
 	}
 	
