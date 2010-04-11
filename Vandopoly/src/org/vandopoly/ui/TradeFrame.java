@@ -342,12 +342,13 @@ public class TradeFrame implements ListSelectionListener {
 					PropertySpace p = itr.previous();
 					tradePlayer.get(0).getProperties().remove(p);
 					tradePlayer.get(1).updateProperties(p);
-					
-					// Sends update notification because it isn't guaranteed tradePlayer0 
-					// will gain any properties but he certainly has lost properties
-					NotificationManager.getInstance().notifyObservers(
-							Notification.UPDATE_PROPERTIES, tradePlayer.get(0));
+					p.setOwner(tradePlayer.get(1));
 				}
+				
+				// Sends update notification because it isn't guaranteed tradePlayer0 
+				// will gain any properties
+				NotificationManager.getInstance().notifyObservers(
+						Notification.UPDATE_PROPERTIES, tradePlayer.get(0));
 				
 				itr = property.get(3).listIterator(property.get(3).size());
 				
@@ -356,12 +357,13 @@ public class TradeFrame implements ListSelectionListener {
 					PropertySpace p = itr.previous();
 					tradePlayer.get(0).updateProperties(p);
 					tradePlayer.get(1).getProperties().remove(p);
-					
-					// Sends update notification because it isn't guaranteed tradePlayer1 
-					// will gain any properties but he certainly has lost properties
-					NotificationManager.getInstance().notifyObservers(
-							Notification.UPDATE_PROPERTIES, tradePlayer.get(1));
+					p.setOwner(tradePlayer.get(0));
 				}
+				
+				// Sends update notification because it isn't guaranteed tradePlayer1 
+				// will gain any properties
+				NotificationManager.getInstance().notifyObservers(
+						Notification.UPDATE_PROPERTIES, tradePlayer.get(1));
 				
 				frame.dispose();
 			}
