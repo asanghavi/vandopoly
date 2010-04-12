@@ -19,6 +19,10 @@ import org.vandopoly.model.Player;
 import org.vandopoly.model.PlayerFree;
 import org.vandopoly.model.PlayerInJail;
 
+/*
+ * This class is used to test state transitions and
+ * rent collection/payment.
+ */
 public class PlayerTests {
 
 	public static void main(String[] args) {
@@ -27,12 +31,16 @@ public class PlayerTests {
 
 		A.goToJail();
 		
+		// Test 1 checks that the goToJail() function correctly
+		// sends a player to jail (ie changes their state to 'InJail')
 		if (A.getState() == PlayerInJail.Instance()) {
 			System.out.println("Test 1: PASS");
 		}
 		else
 			System.out.print("Test 1: FAIL");
 		
+		// Test 2 checks that players are created in the 
+		// correct state (ie Free)
 		if (B.getState() == PlayerFree.Instance()) {
 			System.out.println("Test 2: PASS");
 		}
@@ -41,6 +49,8 @@ public class PlayerTests {
 		
 		A.collectRent(100, B);
 		
+		// Test 3 checks that the collectRent() function adds
+		// the correct amount of cash to the correct player
 		if (A.getCash() == 1600)
 			System.out.println("Test 3: PASS");
 		else
@@ -49,6 +59,8 @@ public class PlayerTests {
 		A.updateCash(10);
 		B.collectRent(10, A);
 		
+		// Tests 4 and 5 check that updateCash() and 
+		// collectRent() work correctly for both players 
 		if (A.getCash() == 1600)
 			System.out.println("Test 4: PASS");
 		else
@@ -62,6 +74,8 @@ public class PlayerTests {
 		A.getOutOfJail();
 		B.goToJail();
 		
+		// Tests 6 and 7 check the goToJail() and getOutOfJail()
+		// functions
 		if (B.getState() == PlayerInJail.Instance()) {
 			System.out.println("Test 6: PASS");
 		}
