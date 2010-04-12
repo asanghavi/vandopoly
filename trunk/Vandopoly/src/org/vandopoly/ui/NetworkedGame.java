@@ -88,8 +88,6 @@ public class NetworkedGame extends JPanel {
 		String zeppos = "Zeppos";
 		String cornelius = "Cornelius";
 
-		
-
 		// Set size of window
 		this.setSize(frameWidth_, frameHeight_);
 
@@ -121,7 +119,6 @@ public class NetworkedGame extends JPanel {
 		subTitleBar.setBounds(240, 160, 500, 90);
 
 		// Set up the sub-headers & labels along with positioning and size
-
 		playerOne_ = new JLabel("Enter Your Name: ");
 		playerOne_.setFont(headerFont);
 		playerOne_.setBounds(480, 200, 250, 100);
@@ -256,12 +253,12 @@ public class NetworkedGame extends JPanel {
 		continue_.setFont(buttonFont);
 		continue_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if(optionsPageNum_ == 4)
+				if(optionsPageNum_ == 4) // join game, enter ip
 				{
 					NetworkedGame.this.hideFourthPagePanels();
 					NetworkedGame.this.showPlayerPagePanels();
 					optionsPageNum_ = 6;
-				} else if(optionsPageNum_ == 6)
+				} else if(optionsPageNum_ == 6) // join game, select player
 				{
 					namesAndIcons_ = new String[3];
 					namesAndIcons_[0] = "" + numberOfPlayers_;
@@ -274,7 +271,7 @@ public class NetworkedGame extends JPanel {
 					if (shortNames() && allHaveNames()) {
 						NotificationManager.getInstance().notifyObservers(Notification.PLAYER_SELECTED, namesAndIcons_);
 						NetworkedGame.this.hidePlayerPagePanels();
-						NotificationManager.getInstance().notifyObservers(Notification.START_GAME, namesAndIcons_);
+						NotificationManager.getInstance().notifyObservers(Notification.START_GAME, null);
 		        		NetworkedGame.this.hideSecondPagePanels();
 		        		NetworkedGame.this.setVisible(false);
 					}
@@ -550,7 +547,7 @@ public class NetworkedGame extends JPanel {
 		optionsPageNum_ = 3;
 		
 		NotificationManager.getInstance().addObserver(Notification.PLAYER_SELECTED,
-				this, "addPlayerArr");
+			this, "addPlayerArr");
 		
 		new Thread("startGame") {
 			public void run() {
@@ -558,16 +555,14 @@ public class NetworkedGame extends JPanel {
 				try {
 				     ServerSocket srvr = new ServerSocket(3913);
 				     Socket skt = srvr.accept();
-				     System.out.print("Server has connected!\n");
 				     PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
-				     System.out.print("Sending string: '" + data + "'\n");
 				     out.print(data);
 				     out.close();
 				     skt.close();
 				     srvr.close();
 				}
-				  catch(Exception e) {
-				     System.out.print("Error opening socket.\n");
+				catch(Exception e) {
+					System.out.print("Error opening socket.\n");
 				}
 			}
 		}.start();
@@ -584,18 +579,17 @@ public class NetworkedGame extends JPanel {
 		gameIp_.setVisible(true);
 		optionsPageNum_ = 4;
 		continue_.setVisible(true);
-		
+	
 		try {
-			Socket skt = new Socket("localhost", 3913);
+			Socket skt = new Socket(gameIp_.getText(), 3913);
 			BufferedReader in = new BufferedReader(new InputStreamReader(skt
 					.getInputStream()));
 			System.out.print("Received string: '");
 
 			while (!in.ready()) {
 			}
-			System.out.println(in.readLine()); // Read one line and output it
-
-			System.out.print("'\n");
+			in.readLine();
+			
 			in.close();
 		} catch (Exception e) {
 			System.out.print("Can't connect\n");
