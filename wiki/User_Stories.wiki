@@ -5,6 +5,7 @@ User stories for Vandopoly.
 = Cycle 6 User Stories =
     * User can trade properties with another player (James)
     * Utilities now charge appropriate rent based on the number of utilities active and the value of the dice (James)
+    * 2 players can start a networked game and see their pieces appear on the board (Allie, Matt)
 
 = Cycle 5 User Stories =
     * User can renovate and degrade properties appropriately by using a "Manage Properties" button (James)
