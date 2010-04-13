@@ -22,13 +22,13 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -45,39 +45,27 @@ import org.vandopoly.messaging.NotificationManager;
 /*
  * NetworkedGame JPanel that allows user to start a networked game
  * 
- * @author Matt Gioia
+ * @author Matt Gioia & Allie Mazzia
  */
 
 public class NetworkedGame extends JPanel {
 
-	private JRadioButton one_;
+	private JRadioButton one_, player_[];
 	private JTextField nameOne_, gameIp_;
-	private JLabel playerOne_;
+	private JLabel playerOne_, cannotFindHost_, selectPieces_, player1Piece_,
+			waiting_, loadPanel_, choose_, selectGame_, longNameError_, noNameError_, pieceError_;
 	private JButton continue_, back_, playGame_, createGame_, joinGame_;
 	private DisplayAssembler display;
-	private int numberOfPlayers_ = 1, optionsPageNum_ = 1;
+	private int optionsPageNum_ = 1, numOfPieces_ = 4;
 	private String namesAndIcons_[];
-
-	// Private data members for page 2 of options
-	// Holds the radio buttons for pieces of each player
-	private JRadioButton player_[][];
-
-	private JLabel selectPieces_, player1Piece_, waiting_, loadPanel_, choose_,
-			selectGame_;
+	private MainMenu mainMenu_;
 	private ImageIcon commodoreIcon_, squirrelIcon_, zepposIcon_,
 			corneliusIcon_;
+	private ButtonGroup icons_;
 
-	private JLabel repeatError_, longNameError_, noNameError_, pieceError_;
-
-	private ButtonGroup icons_[];
-
-	private int numOfPieces_, maxPlayers_;
-	
 	int frameWidth_ = 730, frameHeight_ = 750;
-	
-	static final long serialVersionUID = 3;
 
-	private MainMenu mainMenu_;
+	static final long serialVersionUID = 3;
 
 	public NetworkedGame(MainMenu mainMenu) {
 
@@ -127,7 +115,7 @@ public class NetworkedGame extends JPanel {
 		selectPieces_.setFont(headerFont);
 		selectPieces_.setBounds(50, 200, 300, 100);
 
-		waiting_ = new JLabel("Waiting for players to connect...");
+		waiting_ = new JLabel("Waiting for player to connect...");
 		waiting_.setFont(headerFont);
 		waiting_.setBounds(50, 200, 400, 100);
 
@@ -158,66 +146,64 @@ public class NetworkedGame extends JPanel {
 		player1Piece_.setBounds(105, 410, 100, 100);
 		this.add(player1Piece_);
 
-		maxPlayers_ = 4;
 		numOfPieces_ = 4;
 
-		player_ = new JRadioButton[maxPlayers_][numOfPieces_];
-		icons_ = new ButtonGroup[numOfPieces_];
+		player_ = new JRadioButton[numOfPieces_];
 
 		// Now set up the radio buttons
-		player_[0][0] = new JRadioButton(commodore);
-		player_[0][0].setBounds(100, 300, 150, 25);
-		player_[0][0].setFont(radioButtonFont);
-		player_[0][0].addActionListener(new ActionListener() {
+		player_[0] = new JRadioButton(commodore);
+		player_[0].setBounds(100, 300, 150, 25);
+		player_[0].setFont(radioButtonFont);
+		player_[0].addActionListener(new ActionListener() {
 			// Deselect all other player selections for the same piece
 			public void actionPerformed(ActionEvent event) {
 				player1Piece_.setIcon(commodoreIcon_);
 			}
 		});
 
-		player_[0][1] = new JRadioButton(cornelius);
-		player_[0][1].setBounds(100, 335, 150, 25);
-		player_[0][1].setFont(radioButtonFont);
-		player_[0][1].addActionListener(new ActionListener() {
+		player_[1] = new JRadioButton(cornelius);
+		player_[1].setBounds(100, 335, 150, 25);
+		player_[1].setFont(radioButtonFont);
+		player_[1].addActionListener(new ActionListener() {
 			// Deselect all other player selections for the same piece
 			public void actionPerformed(ActionEvent event) {
 				player1Piece_.setIcon(corneliusIcon_);
 			}
 		});
 
-		player_[0][2] = new JRadioButton(squirrel);
-		player_[0][2].setBounds(100, 370, 150, 25);
-		player_[0][2].setFont(radioButtonFont);
-		player_[0][2].addActionListener(new ActionListener() {
+		player_[2] = new JRadioButton(squirrel);
+		player_[2].setBounds(100, 370, 150, 25);
+		player_[2].setFont(radioButtonFont);
+		player_[2].addActionListener(new ActionListener() {
 			// Deselect all other player selections for the same piece
 			public void actionPerformed(ActionEvent event) {
 				player1Piece_.setIcon(squirrelIcon_);
 			}
 		});
 
-		player_[0][3] = new JRadioButton(zeppos);
-		player_[0][3].setBounds(100, 405, 150, 25);
-		player_[0][3].setFont(radioButtonFont);
-		player_[0][3].addActionListener(new ActionListener() {
+		player_[3] = new JRadioButton(zeppos);
+		player_[3].setBounds(100, 405, 150, 25);
+		player_[3].setFont(radioButtonFont);
+		player_[3].addActionListener(new ActionListener() {
 			// Deselect all other player selections for the same piece
 			public void actionPerformed(ActionEvent event) {
 				player1Piece_.setIcon(zepposIcon_);
 			}
 		});
 
-		icons_[0] = new ButtonGroup();
-		icons_[0].add(player_[0][0]);
-		icons_[0].add(player_[0][1]);
-		icons_[0].add(player_[0][2]);
-		icons_[0].add(player_[0][3]);
+		icons_ = new ButtonGroup();
+		icons_.add(player_[0]);
+		icons_.add(player_[1]);
+		icons_.add(player_[2]);
+		icons_.add(player_[3]);
 
 		// Set action commands for all radio buttons
 		// Helps identify proper icon when figuring out which button was pressed
 
-		player_[0][0].setActionCommand(commodore);
-		player_[0][1].setActionCommand(cornelius);
-		player_[0][2].setActionCommand(squirrel);
-		player_[0][3].setActionCommand(zeppos);
+		player_[0].setActionCommand(commodore);
+		player_[1].setActionCommand(cornelius);
+		player_[2].setActionCommand(squirrel);
+		player_[3].setActionCommand(zeppos);
 
 		createGame_ = new JButton("Create A Game");
 		createGame_.setBounds(220, 300, 300, 60);
@@ -253,40 +239,53 @@ public class NetworkedGame extends JPanel {
 		continue_.setFont(buttonFont);
 		continue_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				if(optionsPageNum_ == 4) // join game, enter ip
-				{
+				if (optionsPageNum_ == 4) {// join game, enter ip
+					cannotFindHost_.setVisible(false);
+					createJoinGameSocket();
 					NetworkedGame.this.hideFourthPagePanels();
 					NetworkedGame.this.showPlayerPagePanels();
 					optionsPageNum_ = 6;
-				} else if(optionsPageNum_ == 6) // join game, select player
-				{
-					namesAndIcons_ = new String[3];
-					namesAndIcons_[0] = "" + numberOfPlayers_;
-					namesAndIcons_[1] = nameOne_.getText();
-					for(int i=0; i<numOfPieces_; i++) {
-						if(player_[0][i].isSelected())
-							namesAndIcons_[2] = icons_[0].getSelection().getActionCommand();
+				} else if (optionsPageNum_ == 6) {// join game, select player
+					String joiningPlayerInfo[] = new String[2];
+
+					joiningPlayerInfo[0] = nameOne_.getText();
+					for (int i = 0; i < numOfPieces_; i++) {
+						if (player_[i].isSelected())
+							namesAndIcons_[1] = icons_.getSelection()
+									.getActionCommand();
 					}
-					
-					if (shortNames() && allHaveNames()) {
-						NotificationManager.getInstance().notifyObservers(Notification.PLAYER_SELECTED, namesAndIcons_);
+
+					pieceError_.setVisible(false);
+					if ((icons_.getSelection() != null) && allHaveNames()
+							&& shortNames()) {
+						NotificationManager.getInstance().notifyObservers(
+								Notification.PLAYER_SELECTED, namesAndIcons_);
 						NetworkedGame.this.hidePlayerPagePanels();
-						NotificationManager.getInstance().notifyObservers(Notification.START_GAME, null);
-		        		NetworkedGame.this.hideSecondPagePanels();
-		        		NetworkedGame.this.setVisible(false);
-					}
+						NotificationManager.getInstance().notifyObservers(
+								Notification.START_GAME, null);
+						NetworkedGame.this.hideSecondPagePanels();
+						NetworkedGame.this.setVisible(false);
+					} else if (icons_.getSelection() == null)
+						pieceError_.setVisible(true);
 				} else {
+
 					namesAndIcons_ = new String[3];
-					namesAndIcons_[0] = "" + numberOfPlayers_;
+					namesAndIcons_[0] = "" + 1;
 					namesAndIcons_[1] = nameOne_.getText();
-					for(int i=0; i<numOfPieces_; i++) {
-						if(player_[0][i].isSelected())
-							namesAndIcons_[2] = icons_[0].getSelection().getActionCommand();
+					// Add icon to array
+					for (int i = 0; i < numOfPieces_; i++) {
+						if (player_[i].isSelected())
+							namesAndIcons_[2] = icons_.getSelection()
+									.getActionCommand();
 					}
-					if (shortNames() && allHaveNames()) {
+					pieceError_.setVisible(false);
+					if ((icons_.getSelection() != null) && allHaveNames()
+							&& shortNames()) {
 						NetworkedGame.this.hidePlayerPagePanels();
 						NetworkedGame.this.showThirdPagePanels();
-					}
+					} else if (icons_.getSelection() == null)
+						pieceError_.setVisible(true);
+
 				}
 			}
 		});
@@ -308,72 +307,22 @@ public class NetworkedGame extends JPanel {
 		playGame_ = new JButton("PLAY GAME");
 		playGame_.setBounds(115, 500, 500, 75);
 		playGame_.setFont(buttonFont);
-		playGame_.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {
-			}
-
-			public void keyPressed(KeyEvent e) {
-			}
-
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if ((icons_[0].getSelection() == null || icons_[1]
-							.getSelection() == null)
-							|| (numberOfPlayers_ > 2 && icons_[2]
-									.getSelection() == null)
-							|| (numberOfPlayers_ > 3 && icons_[3]
-									.getSelection() == null)) {
-						pieceError_.setVisible(true);
-					}
-
-					else {
-						pieceError_.setVisible(false);
-						// Get all appropriate names for the buttons and puts
-						// them in the namesAndIcons_ array
-						for (int i = 0; i < numberOfPlayers_; i++) {
-							namesAndIcons_[numberOfPlayers_ + i + 1] = icons_[i]
-									.getSelection().getActionCommand();
-						}
-						NotificationManager.getInstance().notifyObservers(
-								Notification.START_GAME, namesAndIcons_);
-						NetworkedGame.this.hideSecondPagePanels();
-						NetworkedGame.this.setVisible(false);
-					}
-				}
-			}
-		});
-
 		playGame_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				// NotificationManager.getInstance().notifyObservers(
+				// Notification.START_GAME, namesAndIcons_);
+				// NetworkedGame.this.hideSecondPagePanels();
+				// NetworkedGame.this.setVisible(false);
 
-				if ((icons_[0].getSelection() == null || icons_[1]
-						.getSelection() == null)
-						|| (numberOfPlayers_ > 2 && icons_[2].getSelection() == null)
-						|| (numberOfPlayers_ > 3 && icons_[3].getSelection() == null)) {
-					pieceError_.setVisible(true);
-				} else {
-					pieceError_.setVisible(false);
-					// Get all appropriate names for the buttons and puts them
-					// in the namesAndIcons_ array
-					for (int i = 0; i < numberOfPlayers_; i++) {
-						namesAndIcons_[numberOfPlayers_ + i + 1] = icons_[i]
-								.getSelection().getActionCommand();
-					}
-					NotificationManager.getInstance().notifyObservers(
-							Notification.START_GAME, namesAndIcons_);
-					NetworkedGame.this.hideSecondPagePanels();
-					NetworkedGame.this.setVisible(false);
-				}
 			}
 
 		});
-
-		repeatError_ = new JLabel("Each Player must have a unique name");
-		repeatError_.setFont(errorFont);
-		repeatError_.setForeground(Color.red);
-		repeatError_.setBounds(138, 675, 600, 40);
-		repeatError_.setVisible(false);
-
+		/*
+		 * repeatError_ = new JLabel("Each Player must have a unique name");
+		 * repeatError_.setFont(errorFont);
+		 * repeatError_.setForeground(Color.red); repeatError_.setBounds(138,
+		 * 675, 600, 40); repeatError_.setVisible(false);
+		 */
 		longNameError_ = new JLabel(
 				"Please limit your name to a maximum of 20 characters");
 		longNameError_.setFont(errorFont);
@@ -393,6 +342,13 @@ public class NetworkedGame extends JPanel {
 		pieceError_.setBounds(143, 675, 600, 40);
 		pieceError_.setVisible(false);
 
+		cannotFindHost_ = new JLabel(
+				"Cannot find IP address given. Please try again.");
+		cannotFindHost_.setFont(errorFont);
+		cannotFindHost_.setForeground(Color.red);
+		cannotFindHost_.setBounds(25, 675, 700, 40);
+		cannotFindHost_.setVisible(false);
+
 		// Add some Components to the panel
 		this.add(titleBar);
 		this.add(subTitleBar);
@@ -410,10 +366,11 @@ public class NetworkedGame extends JPanel {
 		this.add(gameIp_);
 
 		for (int j = 0; j < numOfPieces_; j++)
-			this.add(player_[0][j]);
+			this.add(player_[j]);
 
 		this.add(selectPieces_);
 
+		this.add(cannotFindHost_);
 		this.add(longNameError_);
 		this.add(noNameError_);
 		this.add(pieceError_);
@@ -431,74 +388,49 @@ public class NetworkedGame extends JPanel {
 				this, "backToMain");
 	}
 
-	
 	public boolean shortNames() {
-		for (int i = 1; i <= numberOfPlayers_; i++) {
-			if (namesAndIcons_[i].length() > 20) {
-				longNameError_.setVisible(true);
-				return false;
-			}
+		if (namesAndIcons_[1].length() > 20) {
+			noNameError_.setVisible(false);
+			longNameError_.setVisible(true);
+			return false;
 		}
+
 		longNameError_.setVisible(false);
 		return true;
 	}
 
 	public boolean allHaveNames() {
-		for (int i = 1; i <= numberOfPlayers_; i++) {
-			if (namesAndIcons_[i].length() == 0) {
-				noNameError_.setVisible(true);
-				return false;
-			}
+		if (namesAndIcons_[1].length() == 0) {
+			longNameError_.setVisible(false);
+			noNameError_.setVisible(true);
+			return false;
 		}
+
 		noNameError_.setVisible(false);
 		return true;
 	}
-	
-	public boolean addPlayerArr(String[] nameAndIcon)
-	{
-		String[] namesAndIcons = new String[namesAndIcons_.length + 2];
-		namesAndIcons[0] = namesAndIcons_[0] + 1;
-		for(int x=1; x<namesAndIcons_.length; x++)
-		{
-			namesAndIcons[x] = namesAndIcons_[x];
-		}
-		namesAndIcons[namesAndIcons_.length] = nameAndIcon[1];
-		namesAndIcons[namesAndIcons_.length] = nameAndIcon[2];
-		if(noRepeatNames(namesAndIcons)) {
-			namesAndIcons_ = namesAndIcons;
-			return true;
-		}
-		else
-			return false;
-	}
-	
-	// Check to see if any of the names given are duplicates
-	public boolean noRepeatNames(String[] arr) {
-		// Had to adjust for loops to compensate for blank first name
-		for (int i = 0; i <= numberOfPlayers_; i++) {
-			for (int j = i + 1; j <= numberOfPlayers_; j++) {
-				if (arr[i].equals(arr[j]))
-					return false;
-			}
-		}
 
-		return true;
+	/*
+	 * public boolean addPlayerArr(String[] nameAndIcon) { String[]
+	 * namesAndIcons = new String[namesAndIcons_.length + 2]; namesAndIcons[0] =
+	 * namesAndIcons_[0] + 1; for(int x=1; x<namesAndIcons_.length; x++) {
+	 * namesAndIcons[x] = namesAndIcons_[x]; }
+	 * namesAndIcons[namesAndIcons_.length] = nameAndIcon[1];
+	 * namesAndIcons[namesAndIcons_.length] = nameAndIcon[2]; return true; }
+	 */
+	public void disableIcon(int i) {
+		player_[i].setEnabled(false);
 	}
 
-	public void disableIcon(int i)
-	{
-		player_[0][i].setEnabled(false);
-	}
-	
 	public void hidePlayerPagePanels() {
 		playerOne_.setVisible(false);
 		nameOne_.setVisible(false);
 		selectPieces_.setVisible(false);
 
-		player_[0][0].setVisible(false);
-		player_[0][1].setVisible(false);
-		player_[0][2].setVisible(false);
-		player_[0][3].setVisible(false);
+		player_[0].setVisible(false);
+		player_[1].setVisible(false);
+		player_[2].setVisible(false);
+		player_[3].setVisible(false);
 		player1Piece_.setVisible(false);
 
 		continue_.setVisible(false);
@@ -511,10 +443,10 @@ public class NetworkedGame extends JPanel {
 		nameOne_.setVisible(true);
 		selectPieces_.setVisible(true);
 
-		player_[0][0].setVisible(true);
-		player_[0][1].setVisible(true);
-		player_[0][2].setVisible(true);
-		player_[0][3].setVisible(true);
+		player_[0].setVisible(true);
+		player_[1].setVisible(true);
+		player_[2].setVisible(true);
+		player_[3].setVisible(true);
 		player1Piece_.setVisible(true);
 
 		continue_.setVisible(true);
@@ -545,29 +477,40 @@ public class NetworkedGame extends JPanel {
 		loadPanel_.setVisible(true);
 		waiting_.setVisible(true);
 		optionsPageNum_ = 3;
-		
-		NotificationManager.getInstance().addObserver(Notification.PLAYER_SELECTED,
-			this, "addPlayerArr");
-		
+
+		// NotificationManager.getInstance().addObserver(Notification.PLAYER_SELECTED,
+		// this, "addPlayerArr");
+
 		new Thread("startGame") {
 			public void run() {
 				String data = "Game started";
+				DataOutputStream outFromServer = null;
+				DataInputStream inToServer = null;
 				try {
-				     ServerSocket srvr = new ServerSocket(3913);
-				     Socket skt = srvr.accept();
-				     PrintWriter out = new PrintWriter(skt.getOutputStream(), true);
-				     out.print(data);
-				     out.close();
-				     skt.close();
-				     srvr.close();
-				}
-				catch(Exception e) {
-					System.out.print("Error opening socket.\n");
+					
+					// Initialize the ServerSocket, which listens to the socket
+					ServerSocket serverSocket = new ServerSocket(3913);
+					// Blocks until a connection is made
+					Socket clientSocket = serverSocket.accept();
+					outFromServer = new DataOutputStream(clientSocket.getOutputStream());
+					inToServer = new DataInputStream(clientSocket.getInputStream());
+					
+					outFromServer.writeChars("ACCEPTED\n");
+					
+					outFromServer.close();
+					inToServer.close();
+					serverSocket.close();
+					clientSocket.close();
+				} catch (UnknownHostException e) {
+					System.out.println("Cannot find host");
+
+				} catch (IOException e) {
+					System.out.println("IO Exception occurred");
 				}
 			}
 		}.start();
 	}
-	
+
 	public void hideFourthPagePanels() {
 		selectGame_.setVisible(false);
 		gameIp_.setVisible(false);
@@ -579,29 +522,47 @@ public class NetworkedGame extends JPanel {
 		gameIp_.setVisible(true);
 		optionsPageNum_ = 4;
 		continue_.setVisible(true);
-	
-		try {
-			Socket skt = new Socket(gameIp_.getText(), 3913);
-			BufferedReader in = new BufferedReader(new InputStreamReader(skt
-					.getInputStream()));
-			System.out.print("Received string: '");
 
-			while (!in.ready()) {
+	}
+
+	public void createJoinGameSocket() {
+		// Create an ArrayList to hold the bytes since we do not know how
+		// long the byte array will be
+		ArrayList<Byte> image = new ArrayList<Byte>();
+		int temp = 0;
+		Socket clientSocket = null;
+		DataOutputStream outToServer = null;
+		DataInputStream inFromServer = null;
+
+		try {
+			// Create a new socket connection
+			clientSocket = new Socket(gameIp_.getText(), 3913);
+
+			// Create the data input and output streams
+			outToServer = new DataOutputStream(clientSocket.getOutputStream());
+			inFromServer = new DataInputStream(clientSocket.getInputStream());
+
+			// Send the request to the server
+			outToServer.writeChars("JOIN GAME\n");
+
+			// Read bytes until the end of the stream is detected
+			while ((temp = inFromServer.read()) != -1) {
+				image.add((byte) temp);
 			}
-			in.readLine();
-			
-			in.close();
-		} catch (Exception e) {
-			System.out.print("Can't connect\n");
+		} catch (UnknownHostException e) {
+			System.out.println("Cannot find host");
+
+		} catch (IOException e) {
+			System.out.println("IO Exception occurred");
+			cannotFindHost_.setVisible(true);
 		}
+
 	}
 
 	public void backToMain() {
 		nameOne_.setText(null);
-		numberOfPlayers_ = 1;
 
 		longNameError_.setVisible(false);
-		repeatError_.setVisible(false);
 		noNameError_.setVisible(false);
 		mainMenu_.showMenu();
 		this.setVisible(false);
