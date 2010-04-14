@@ -619,9 +619,11 @@ public class NetworkedGame extends JPanel {
 	public boolean createJoinGameSocket() {
 		// Create an ArrayList to hold the bytes since we do not know how
 		// long the byte array will be
-		String temp = null;
 		
+		new Thread("startClient") {
+			public void run() {
 		try {
+			String temp = null;
 			// Create a new socket connection
 			clientSocket_ = new Socket(InetAddress.getByName(gameIp_.getText()), 3913);
 			
@@ -649,13 +651,14 @@ public class NetworkedGame extends JPanel {
 		} catch (UnknownHostException e) {
 			System.out.println("Cannot find host");
 			cannotFindHost_.setVisible(true);
-			return false;
+		//	return false;
 
 		} catch (IOException e) {
 			System.out.println("IO Exception occurred");
 			unsuccessfulConnection_.setVisible(true);
-			return false;	
+		//	return false;	
 		}
+			}}.start();
 		
 		// Connection was successful
 		return true;
