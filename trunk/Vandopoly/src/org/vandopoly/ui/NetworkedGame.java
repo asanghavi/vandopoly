@@ -54,7 +54,8 @@ public class NetworkedGame extends JPanel {
 	private JRadioButton one_, player_[];
 	private JTextField nameOne_, gameIp_;
 	private JLabel playerOne_, cannotFindHost_, selectPieces_, player1Piece_, unsuccessfulConnection_,
-			waiting_, loadPanel_, choose_, selectGame_, longNameError_, noNameError_, pieceError_;
+			waiting_, loadPanel_, choose_, selectGame_, longNameError_, noNameError_, pieceError_,
+			repeatError_;
 	private JButton continue_, back_, playGame_, createGame_, joinGame_;
 	private DisplayAssembler display;
 	private int optionsPageNum_ = 1, numOfPieces_ = 4;
@@ -258,18 +259,20 @@ public class NetworkedGame extends JPanel {
 						// We have joined successfully, so go to the next page
 						NetworkedGame.this.hideFourthPagePanels();
 						NetworkedGame.this.showPlayerPagePanels();
+						
+						// Disable the piece that player 1 (server) has selected
+						for (int i = 0; i < numOfPieces_; ++i) {
+							if (player_[i].getActionCommand().equals(namesAndIcons_[3]))
+								player_[i].setEnabled(false);
+						}
 						optionsPageNum_ = 6;
 					}
 				} else if (optionsPageNum_ == 6) {// join game, select player
 					
 					namesAndIcons_[2] = nameOne_.getText();
+
 					
-					// Disable the piece that player 1 (server) has selected
-					for (int i = 0; i < numOfPieces_; ++i) {
-						if (player_[i].getActionCommand() == namesAndIcons_[4])
-							player_[i].setEnabled(false);
-					}
-					//
+					// Find the piece that player 2 (this, the client) has selected
 					for (int i = 0; i < numOfPieces_; ++i) {
 						if (player_[i].isSelected())
 							namesAndIcons_[4] = icons_.getSelection()
@@ -277,15 +280,23 @@ public class NetworkedGame extends JPanel {
 					}
 								
 					pieceError_.setVisible(false);
+					repeatError_.setVisible(false);
 					if ((icons_.getSelection() != null) && allHaveNames()
-							&& shortNames()) {
+							&& shortNames() && noRepeatNames()) {
+						printOut_.println(namesAndIcons_[2]);
+						printOut_.println(namesAndIcons_[4]);
 						NotificationManager.getInstance().notifyObservers(
 								Notification.PLAYER_SELECTED, namesAndIcons_);
-						NetworkedGame.this.hidePlayerPagePanels();
-						NotificationManager.getInstance().notifyObservers(
-								Notification.START_GAME, null);
-						NetworkedGame.this.hideSecondPagePanels();
-						NetworkedGame.this.setVisible(false);
+						
+						printOut_.println("START");
+			
+			//			START GAME			
+						
+			//			NetworkedGame.this.hidePlayerPagePanels();
+			//			NotificationManager.getInstance().notifyObservers(
+			//					Notification.START_GAME, null);
+			//			NetworkedGame.this.hideSecondPagePanels();
+			//			NetworkedGame.this.setVisible(false);
 					} else if (icons_.getSelection() == null)
 						pieceError_.setVisible(true);
 				} else {
@@ -378,6 +389,12 @@ public class NetworkedGame extends JPanel {
 		unsuccessfulConnection_.setForeground(Color.red);
 		unsuccessfulConnection_.setBounds(25, 675, 700, 40);
 		unsuccessfulConnection_.setVisible(false);
+		
+		repeatError_ = new JLabel("Player 1 has already chosen that name");
+		repeatError_.setFont(errorFont);
+		repeatError_.setForeground(Color.red);
+		repeatError_.setBounds(138, 675, 600, 40);
+		repeatError_.setVisible(false);
 
 		// Add some Components to the panel
 		this.add(titleBar);
@@ -405,6 +422,8 @@ public class NetworkedGame extends JPanel {
 		this.add(longNameError_);
 		this.add(noNameError_);
 		this.add(pieceError_);
+		this.add(repeatError_);
+		
 
 		// Add the Panel to the display
 		display = DisplayAssembler.getInstance();
@@ -419,9 +438,20 @@ public class NetworkedGame extends JPanel {
 				this, "backToMain");
 	}
 
+	public boolean noRepeatNames() {
+		System.out.println(namesAndIcons_[1]+" " + namesAndIcons_[2]);
+		if (namesAndIcons_[1].equals(namesAndIcons_[2])) {
+			repeatError_.setVisible(true);
+			return false;
+		}
+			
+		return true;
+	}
+	
 	public boolean shortNames() {
 		if (namesAndIcons_[1].length() > 20) {
 			noNameError_.setVisible(false);
+			repeatError_.setVisible(false);
 			longNameError_.setVisible(true);
 			return false;
 		}
@@ -433,6 +463,7 @@ public class NetworkedGame extends JPanel {
 	public boolean allHaveNames() {
 		if (namesAndIcons_[1].length() == 0) {
 			longNameError_.setVisible(false);
+			repeatError_.setVisible(false);
 			noNameError_.setVisible(true);
 			return false;
 		}
@@ -504,7 +535,7 @@ public class NetworkedGame extends JPanel {
 	}
 
 	public void showThirdPagePanels() {
-		playGame_.setVisible(true);
+	//	playGame_.setVisible(true);
 		loadPanel_.setVisible(true);
 		waiting_.setVisible(true);
 		optionsPageNum_ = 3;
@@ -532,28 +563,30 @@ public class NetworkedGame extends JPanel {
 					
 					// Read from the socket to accept a join game request
 					temp = readIn_.readLine();
-					while (true) {
-						System.out.println("temp:" + temp + "...");
+
+					if (temp.equals("JOIN")) {
+						System.out.println("Server read join game");
+						printOut_.println("ACCEPTED");
 						
-						if (temp.equalsIgnoreCase("JOIN")) {
-							System.out.println("Server read join game");
-							printOut_.println("ACCEPTED");
-							
-							// Send player 1's name and piece info
-							printOut_.println(namesAndIcons_[1]);
-							printOut_.println(namesAndIcons_[3]);
-							
-							// Receive player 2's name and piece info
-							namesAndIcons_[2] = readIn_.readLine();
-							namesAndIcons_[4] = readIn_.readLine();
-							
-							break;
-							// START GAME
-						}
+						// Send player 1's name and piece info
+						printOut_.println(namesAndIcons_[1]);
+						printOut_.println(namesAndIcons_[3]);
+						
+						// Receive player 2's name and piece info
+						namesAndIcons_[2] = readIn_.readLine();
+						namesAndIcons_[4] = readIn_.readLine();
+						
+						System.out.println("Name: " + namesAndIcons_[2]);
+						System.out.println("Icon: " + namesAndIcons_[4]);
 						
 						temp = readIn_.readLine();
+						if (temp.equals("START")) {
+							// START GAME
+							loadPanel_.setVisible(false);
+						}
+						
+						
 					}
-					
 					printOut_.close();
 					readIn_.close();
 					serverSocket.close();
@@ -602,11 +635,13 @@ public class NetworkedGame extends JPanel {
 			// Read a line
 			temp = readIn_.readLine();
 			System.out.println("Client temp: " + temp);
-			if (temp.equalsIgnoreCase("ACCEPTED")) {
+			if (temp.equals("ACCEPTED")) {
 				System.out.println("Accepted");
 				
-				namesAndIcons_[2] = readIn_.readLine();
-				namesAndIcons_[4] = readIn_.readLine();
+				namesAndIcons_[1] = readIn_.readLine();
+				namesAndIcons_[3] = readIn_.readLine();
+				System.out.println("Name: " + namesAndIcons_[1]);
+				System.out.println("Icon: " + namesAndIcons_[3]);
 			}
 			else 
 				System.out.println("Connect failed");
