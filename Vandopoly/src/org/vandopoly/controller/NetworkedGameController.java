@@ -23,6 +23,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -40,6 +42,7 @@ import javax.swing.PopupFactory;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import org.vandopoly.messaging.NetworkedMessage;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.ChanceCardSpace;
@@ -101,47 +104,85 @@ public class NetworkedGameController implements ActionListener {
 	private Socket clientSocket_;
 	private PrintWriter printOut_ = null;
 	private BufferedReader readIn_ = null;
+	private ObjectInputStream objectInput_ = null;
+	private ObjectOutputStream objectOutput_ = null;
 	
-	public NetworkedGameController(Display display, String[] namesAndIcons) {
+	private boolean localControl_ = true;
+	
+	public NetworkedGameController(Display display, String[] namesAndIcons, boolean isServer) {
 		namesAndIcons_ = namesAndIcons;
-		createServer();
+		if (isServer) {
+			createServer();
+			localControl_ = true;
+		}
+		else 
+			localControl_ = false;
+			
+			dice_ = new Dice();
+			board_ = new Space[NUM_OF_SPACES];
+			
+			display_ = display;
+			
+			NotificationManager.getInstance().addObserver(Notification.START_GAME, 
+					this, "startGame");
+			NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, 
+					this, "updateFund");
+			NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
+					this, "awardFund");
+			NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
+					this, "moveCurrentPlayer");
+			NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
+					this, "sendPlayerToJail");
+			NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
+					this, "cardMoveTo");
+			NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
+					this, "unownedProperty");
+			NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, 
+					this, "pieceMoveSpaces");
+			NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
+					this, "pieceMoveTo");
+			NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
+					this, "displayActionMessage");
+			NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
+					this, "chargeUtilityRent");
 		
-		dice_ = new Dice();
-		board_ = new Space[NUM_OF_SPACES];
-		
-		display_ = display;
-		
-		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
-				this, "startGame");
-		NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, 
-				this, "updateFund");
-		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
-				this, "awardFund");
-		NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
-				this, "moveCurrentPlayer");
-		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
-				this, "sendPlayerToJail");
-		NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
-				this, "cardMoveTo");
-		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
-				this, "unownedProperty");
-		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, 
-				this, "pieceMoveSpaces");
-		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
-				this, "pieceMoveTo");
-		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
-				this, "displayActionMessage");
-		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
-				this, "chargeUtilityRent");
 	}
 	
-	public void clientListen() {
+	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, 
+			ObjectOutputStream output) {
+
+		NetworkedMessage message = null;
+		readIn_ = reader;
+		printOut_ = writer;
+		objectInput_ = input;
+		objectOutput_ = output;
+
+		// Create the object streams to pass messages along
+		try {
+			// Listen for objects (messages)
+			while (true) {
+				message = (NetworkedMessage) objectInput_.readObject();
+				
+				System.out.println("Notifying of:" + message.getString());
+				NotificationManager.getInstance().notifyObservers(
+						message.getString(), message.getObject());
+				
+				// Do things based on message.getString()
+
+			}
+		}
+		catch (IOException e) {
+			System.out.println("IO Exception in clientListen()");
+		}
+		catch (ClassNotFoundException e) {
+			System.out.println("ClassNotFoundException in clientListen()");
+		}
 		
 	}
 	
 	// Called by the START_GAME notification
 	public void startGame(Object obj) {
-		namesAndIcons_ =(String[]) obj;
+		
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
 		
 		createPlayers();
@@ -154,6 +195,11 @@ public class NetworkedGameController implements ActionListener {
 		buttonPanel_ = new GameButtonPanel(this);
 		
 		scholarshipFund_ = 500;
+		
+		if (localControl_ == false) {
+			dicePanel_.setDisabled();
+			buttonPanel_.setAllDisabled();
+		}
 	}
 	
 	public void createServer() {
@@ -170,7 +216,11 @@ public class NetworkedGameController implements ActionListener {
 					// Blocks until a connection is made
 					clientSocket_ = serverSocket.accept();
 					System.out.println("Recieved connection attempt");
-	
+
+					// Create the object streams to pass messages along\
+					objectOutput_ = new ObjectOutputStream(clientSocket_.getOutputStream());
+					objectOutput_.flush();
+					objectInput_ = new ObjectInputStream(clientSocket_.getInputStream());
 					printOut_ = new PrintWriter(clientSocket_.getOutputStream(), true);
 					readIn_ = new BufferedReader(new InputStreamReader(clientSocket_.getInputStream()));
 					System.out.println("Created streams");
@@ -197,18 +247,25 @@ public class NetworkedGameController implements ActionListener {
 						if (temp.equals("START")) {
 							// START GAME
 							System.out.println("STARTING GAME");
+							NotificationManager.getInstance().notifyObservers(
+									Notification.START_GAME, namesAndIcons_);
+							
+							objectOutput_.writeObject(new NetworkedMessage(Notification.START_GAME, null));
+							
+							// Continue sending notifications across to the client
+							// Read in from the client 
 						}
-						
-						
 					}
 					printOut_.close();
 					readIn_.close();
 					serverSocket.close();
 					clientSocket_.close();
-				} catch (UnknownHostException e) {
+				} 
+				catch (UnknownHostException e) {
 					System.out.println("Cannot find host");
 	
-				} catch (IOException e) {
+				} 
+				catch (IOException e) {
 					System.out.println("IO Exception occurred");
 				}
 			}
@@ -402,6 +459,12 @@ public class NetworkedGameController implements ActionListener {
 		else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+			
+			localControl_ = !localControl_;
+			if (localControl_ == false) {
+				dicePanel_.setDisabled();
+				buttonPanel_.setAllDisabled();
+			}
 			
 			// Get rid of current propertySelectionPanel
 			if(propertySelectionPanel_ != null) {

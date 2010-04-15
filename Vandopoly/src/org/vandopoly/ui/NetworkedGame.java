@@ -25,6 +25,8 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -75,6 +77,8 @@ public class NetworkedGame extends JPanel {
 	private Socket clientSocket_;
 	private PrintWriter printOut_ = null;
 	private BufferedReader readIn_ = null;
+	private ObjectInputStream input_ = null;
+	private ObjectOutputStream output_ = null;
 	
 	NetworkedGameController networkedController_;
 
@@ -301,18 +305,14 @@ public class NetworkedGame extends JPanel {
 							&& shortNames() && noRepeatNames()) {
 						printOut_.println(namesAndIcons_[2]);
 						printOut_.println(namesAndIcons_[4]);
-						NotificationManager.getInstance().notifyObservers(
-								Notification.PLAYER_SELECTED, namesAndIcons_);
 
 						printOut_.println("START");
 						
-						networkedController_ = new NetworkedGameController(mainMenu_.display_, namesAndIcons_);
+						networkedController_ = new NetworkedGameController(mainMenu_.display_, namesAndIcons_, false);
 						
-						// NetworkedGame.this.hidePlayerPagePanels();
-						// NotificationManager.getInstance().notifyObservers(
-						// Notification.START_GAME, null);
-						// NetworkedGame.this.hideSecondPagePanels();
-						// NetworkedGame.this.setVisible(false);
+						 NetworkedGame.this.hidePlayerPagePanels();
+						 NetworkedGame.this.hideSecondPagePanels();
+						 NetworkedGame.this.setVisible(false);
 					} else if (icons_.getSelection() == null)
 						pieceError_.setVisible(true);
 				} else {
@@ -469,7 +469,11 @@ public class NetworkedGame extends JPanel {
 							clientSocket_.getOutputStream(), true);
 					readIn_ = new BufferedReader(new InputStreamReader(
 							clientSocket_.getInputStream()));
-
+					
+					input_ = new ObjectInputStream(clientSocket_.getInputStream());
+					output_ = new ObjectOutputStream(clientSocket_.getOutputStream());
+					output_.flush();
+					
 					// Send the request to the server
 					printOut_.println("JOIN");
 
@@ -487,15 +491,16 @@ public class NetworkedGame extends JPanel {
 						
 						connected_ = "CONNECTED";
 						
-						while (networkedController_ != null) {
+						while (networkedController_ == null) {
+							System.out.println("Sleeping");
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
-						networkedController_.clientListen();
+						System.out.println("Calling clientListen()");
+						networkedController_.clientListen(readIn_, printOut_, input_, output_);
 						
 					} else
 						System.out.println("Connect failed");
@@ -621,7 +626,7 @@ public class NetworkedGame extends JPanel {
 	}
 
 	public void startNetworkedGame() {
-		new NetworkedGameController(mainMenu_.display_, namesAndIcons_);
+		new NetworkedGameController(mainMenu_.display_, namesAndIcons_, true);
 	}
 
 	public void hideFourthPagePanels() {
