@@ -23,6 +23,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
 import org.vandopoly.controller.GameController;
+import org.vandopoly.controller.NetworkedGameController;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -39,6 +40,7 @@ public class GameButtonPanel extends JPanel {
 	Font buttonFont;
 	
 	GameController controller_;
+	NetworkedGameController networkedController_;
 	
 	int buttonX = 221, buttonY = 50;
 	int frameWidth = buttonX * 5;
@@ -53,6 +55,57 @@ public class GameButtonPanel extends JPanel {
 	public GameButtonPanel(GameController controller) {
 		
 		controller_ = controller;
+		
+		buttonFont = new Font("broadway", Font.PLAIN, 18);
+		
+		// Set size of window
+		this.setSize(frameWidth, frameHeight);
+		
+		// Allows for automatic positioning
+		this.setLayout(null);
+		
+		// Set up the purchase button
+		purchase_ = buttonCreator("Purchase", 0);
+		purchase_.setEnabled(false);
+		
+		// Set up the mortgage button
+		mortgage_ = buttonCreator("Manage Properties", 1);
+		mortgage_.setEnabled(true);
+		
+		trade_ = buttonCreator("Trade", 2);
+		trade_.setEnabled(true);
+		
+		// Set up the end turn button
+		endTurn_ = buttonCreator("End Turn", 3);
+		endTurn_.setEnabled(false);
+		
+		// Set up the quit game button
+		quitGame_ = buttonCreator("Quit Game", 4);
+				
+		this.add(purchase_);
+		this.add(mortgage_);
+		this.add(trade_);
+		this.add(endTurn_);
+		this.add(quitGame_);
+		
+		// Add the buttons to the screen
+		DisplayAssembler.getInstance().addComponent(this, 
+				new Point(0, ((int)DisplayAssembler.getScreenHeight()) - 50),
+				JLayeredPane.PALETTE_LAYER);
+		
+		// Sign up for the appropriate notifications
+		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
+		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
+		NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "disablePurchase");
+		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "setAllDisabled");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "setEnabled");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "playerState");
+	}
+
+	public GameButtonPanel(NetworkedGameController networkedGameController) {
+		
+		networkedController_ = networkedGameController;
 		
 		buttonFont = new Font("broadway", Font.PLAIN, 18);
 		

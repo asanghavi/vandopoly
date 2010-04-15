@@ -40,13 +40,14 @@ import org.vandopoly.messaging.NotificationManager;
 public class MainMenu extends JPanel {
 	
 	private JButton newGame_, loadGame_, rules_, quitGame_, networkGame_;
+	Display display_;
 	private GameOptions options_;
 	private NetworkedGame networkedGame_;
 	
 	static final long serialVersionUID = 2;
 	
-	public MainMenu() {
-		
+	public MainMenu(Display d) {
+		display_ = d;
 		int frameWidth = 529, frameHeight = 560;
 		int buttonWidth = 350, buttonHeight = 75;
 		
@@ -161,7 +162,7 @@ public class MainMenu extends JPanel {
 	
 	public static void main(String[] args) {
 		Display display = new Display();
-		new MainMenu();
-		new GameController(display);
+		new MainMenu(display);
+
 	}
 }

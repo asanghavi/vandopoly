@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -40,6 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import org.vandopoly.controller.NetworkedGameController;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -53,8 +53,9 @@ public class NetworkedGame extends JPanel {
 
 	private JRadioButton one_, player_[];
 	private JTextField nameOne_, gameIp_;
-	private JLabel playerOne_, cannotFindHost_, selectPieces_, player1Piece_, unsuccessfulConnection_,
-			waiting_, loadPanel_, choose_, selectGame_, longNameError_, noNameError_, pieceError_,
+	private JLabel playerOne_, cannotFindHost_, selectPieces_, player1Piece_,
+			unsuccessfulConnection_, waiting_, loadPanel_, choose_,
+			selectGame_, longNameError_, noNameError_, pieceError_,
 			repeatError_;
 	private JButton continue_, back_, playGame_, createGame_, joinGame_;
 	private DisplayAssembler display;
@@ -65,13 +66,15 @@ public class NetworkedGame extends JPanel {
 			corneliusIcon_;
 	private ButtonGroup icons_;
 	
-	private Socket clientSocket_;
-	private PrintWriter printOut_ = null;
-	private BufferedReader readIn_ = null;
+	private String connected_ = null;
 
 	int frameWidth_ = 730, frameHeight_ = 750;
 
 	static final long serialVersionUID = 3;
+
+	private Socket clientSocket_;
+	private PrintWriter printOut_ = null;
+	private BufferedReader readIn_ = null;
 
 	public NetworkedGame(MainMenu mainMenu) {
 
@@ -250,35 +253,46 @@ public class NetworkedGame extends JPanel {
 					// player 1 to it when we connect
 					namesAndIcons_ = new String[5];
 					namesAndIcons_[0] = "" + 2;
-					
+
 					cannotFindHost_.setVisible(false);
 					unsuccessfulConnection_.setVisible(false);
-					
+
 					// Attempt to join the game
-					if (createJoinGameSocket()) {
-						// We have joined successfully, so go to the next page
-						NetworkedGame.this.hideFourthPagePanels();
-						NetworkedGame.this.showPlayerPagePanels();
-						
-						// Disable the piece that player 1 (server) has selected
-						for (int i = 0; i < numOfPieces_; ++i) {
-							if (player_[i].getActionCommand().equals(namesAndIcons_[3]))
-								player_[i].setEnabled(false);
-						}
-						optionsPageNum_ = 6;
-					}
-				} else if (optionsPageNum_ == 6) {// join game, select player
+					createJoinGameSocket();
 					
+					while (true) {
+						if (connected_ == null)
+							continue;
+						else if (connected_.equals("CONNECTED")) {
+							// We have joined successfully, so go to the next page
+							NetworkedGame.this.hideFourthPagePanels();
+							NetworkedGame.this.showPlayerPagePanels();
+								
+
+							// Disable the piece that player 1 (server) has selected
+							for (int i = 0; i < numOfPieces_; ++i) {
+								if (player_[i].getActionCommand().equals(
+										namesAndIcons_[3]))
+									player_[i].setEnabled(false);
+							}
+							optionsPageNum_ = 6;
+						}
+						else 
+							break;
+					}
+					
+				} else if (optionsPageNum_ == 6) {// join game, select player
+
 					namesAndIcons_[2] = nameOne_.getText();
 
-					
-					// Find the piece that player 2 (this, the client) has selected
+					// Find the piece that player 2 (this, the client) has
+					// selected
 					for (int i = 0; i < numOfPieces_; ++i) {
 						if (player_[i].isSelected())
 							namesAndIcons_[4] = icons_.getSelection()
 									.getActionCommand();
 					}
-								
+
 					pieceError_.setVisible(false);
 					repeatError_.setVisible(false);
 					if ((icons_.getSelection() != null) && allHaveNames()
@@ -287,16 +301,16 @@ public class NetworkedGame extends JPanel {
 						printOut_.println(namesAndIcons_[4]);
 						NotificationManager.getInstance().notifyObservers(
 								Notification.PLAYER_SELECTED, namesAndIcons_);
-						
+
 						printOut_.println("START");
-			
-			//			START GAME			
-						
-			//			NetworkedGame.this.hidePlayerPagePanels();
-			//			NotificationManager.getInstance().notifyObservers(
-			//					Notification.START_GAME, null);
-			//			NetworkedGame.this.hideSecondPagePanels();
-			//			NetworkedGame.this.setVisible(false);
+
+						// START GAME
+
+						// NetworkedGame.this.hidePlayerPagePanels();
+						// NotificationManager.getInstance().notifyObservers(
+						// Notification.START_GAME, null);
+						// NetworkedGame.this.hideSecondPagePanels();
+						// NetworkedGame.this.setVisible(false);
 					} else if (icons_.getSelection() == null)
 						pieceError_.setVisible(true);
 				} else {
@@ -383,13 +397,14 @@ public class NetworkedGame extends JPanel {
 		cannotFindHost_.setForeground(Color.red);
 		cannotFindHost_.setBounds(25, 675, 700, 40);
 		cannotFindHost_.setVisible(false);
-		
-		unsuccessfulConnection_ = new JLabel("Unsuccessful connection attempt. Please try again.");
+
+		unsuccessfulConnection_ = new JLabel(
+				"Unsuccessful connection attempt. Please try again.");
 		unsuccessfulConnection_.setFont(errorFont);
 		unsuccessfulConnection_.setForeground(Color.red);
 		unsuccessfulConnection_.setBounds(25, 675, 700, 40);
 		unsuccessfulConnection_.setVisible(false);
-		
+
 		repeatError_ = new JLabel("Player 1 has already chosen that name");
 		repeatError_.setFont(errorFont);
 		repeatError_.setForeground(Color.red);
@@ -423,7 +438,6 @@ public class NetworkedGame extends JPanel {
 		this.add(noNameError_);
 		this.add(pieceError_);
 		this.add(repeatError_);
-		
 
 		// Add the Panel to the display
 		display = DisplayAssembler.getInstance();
@@ -438,16 +452,64 @@ public class NetworkedGame extends JPanel {
 				this, "backToMain");
 	}
 
+	public void createJoinGameSocket() {
+
+		new Thread("startClient") {
+			public void run() {
+				try {
+					String temp = null;
+					// Create a new socket connection
+					clientSocket_ = new Socket(InetAddress.getByName(gameIp_
+							.getText()), 3913);
+
+					// Create the data input and output streams
+					printOut_ = new PrintWriter(
+							clientSocket_.getOutputStream(), true);
+					readIn_ = new BufferedReader(new InputStreamReader(
+							clientSocket_.getInputStream()));
+
+					// Send the request to the server
+					printOut_.println("JOIN");
+
+					// Read a line
+					temp = readIn_.readLine();
+					System.out.println("Client temp: " + temp);
+					if (temp.equals("ACCEPTED")) {
+						System.out.println("Accepted");
+						connected_ = "CONNECTED";
+						
+						namesAndIcons_[1] = readIn_.readLine();
+						namesAndIcons_[3] = readIn_.readLine();
+						System.out.println("Name: " + namesAndIcons_[1]);
+						System.out.println("Icon: " + namesAndIcons_[3]);
+					} else
+						System.out.println("Connect failed");
+
+				} catch (UnknownHostException e) {
+					System.out.println("Cannot find host");
+					cannotFindHost_.setVisible(true);
+					connected_ = "NO";
+
+				} catch (IOException e) {
+					System.out.println("IO Exception occurred");
+					unsuccessfulConnection_.setVisible(true);
+					connected_ = "NO";
+				}
+			}
+		}.start();
+
+	}
+
 	public boolean noRepeatNames() {
-		System.out.println(namesAndIcons_[1]+" " + namesAndIcons_[2]);
+		System.out.println(namesAndIcons_[1] + " " + namesAndIcons_[2]);
 		if (namesAndIcons_[1].equals(namesAndIcons_[2])) {
 			repeatError_.setVisible(true);
 			return false;
 		}
-			
+
 		return true;
 	}
-	
+
 	public boolean shortNames() {
 		if (namesAndIcons_[1].length() > 20) {
 			noNameError_.setVisible(false);
@@ -535,70 +597,16 @@ public class NetworkedGame extends JPanel {
 	}
 
 	public void showThirdPagePanels() {
-	//	playGame_.setVisible(true);
+		// playGame_.setVisible(true);
 		loadPanel_.setVisible(true);
 		waiting_.setVisible(true);
 		optionsPageNum_ = 3;
 
-		// NotificationManager.getInstance().addObserver(Notification.PLAYER_SELECTED,
-		// this, "addPlayerArr");
+		startNetworkedGame();
+	}
 
-		new Thread("startGame") {
-			public void run() {
-				String temp = null;
-
-				try {
-
-					// Initialize the ServerSocket, which listens to the socket
-					ServerSocket serverSocket = new ServerSocket(3913);
-					System.out.println("Created serversocket");
-				
-					// Blocks until a connection is made
-					clientSocket_ = serverSocket.accept();
-					System.out.println("Recieved connection attempt");
-
-					printOut_ = new PrintWriter(clientSocket_.getOutputStream(), true);
-					readIn_ = new BufferedReader(new InputStreamReader(clientSocket_.getInputStream()));
-					System.out.println("Created streams");
-					
-					// Read from the socket to accept a join game request
-					temp = readIn_.readLine();
-
-					if (temp.equals("JOIN")) {
-						System.out.println("Server read join game");
-						printOut_.println("ACCEPTED");
-						
-						// Send player 1's name and piece info
-						printOut_.println(namesAndIcons_[1]);
-						printOut_.println(namesAndIcons_[3]);
-						
-						// Receive player 2's name and piece info
-						namesAndIcons_[2] = readIn_.readLine();
-						namesAndIcons_[4] = readIn_.readLine();
-						
-						System.out.println("Name: " + namesAndIcons_[2]);
-						System.out.println("Icon: " + namesAndIcons_[4]);
-						
-						temp = readIn_.readLine();
-						if (temp.equals("START")) {
-							// START GAME
-							loadPanel_.setVisible(false);
-						}
-						
-						
-					}
-					printOut_.close();
-					readIn_.close();
-					serverSocket.close();
-					clientSocket_.close();
-				} catch (UnknownHostException e) {
-					System.out.println("Cannot find host");
-
-				} catch (IOException e) {
-					System.out.println("IO Exception occurred");
-				}
-			}
-		}.start();
+	public void startNetworkedGame() {
+		new NetworkedGameController(mainMenu_.display_, 0);
 	}
 
 	public void hideFourthPagePanels() {
@@ -612,56 +620,6 @@ public class NetworkedGame extends JPanel {
 		gameIp_.setVisible(true);
 		optionsPageNum_ = 4;
 		continue_.setVisible(true);
-
-	}
-
-	// Creates the client socket
-	public boolean createJoinGameSocket() {
-		// Create an ArrayList to hold the bytes since we do not know how
-		// long the byte array will be
-		
-		new Thread("startClient") {
-			public void run() {
-		try {
-			String temp = null;
-			// Create a new socket connection
-			clientSocket_ = new Socket(InetAddress.getByName(gameIp_.getText()), 3913);
-			
-			// Create the data input and output streams
-			printOut_ = new PrintWriter(clientSocket_.getOutputStream(), true);
-			readIn_ = new BufferedReader(new InputStreamReader(clientSocket_.getInputStream()));
-	
-			// Send the request to the server
-			printOut_.println("JOIN");
-			
-			// Read a line
-			temp = readIn_.readLine();
-			System.out.println("Client temp: " + temp);
-			if (temp.equals("ACCEPTED")) {
-				System.out.println("Accepted");
-				
-				namesAndIcons_[1] = readIn_.readLine();
-				namesAndIcons_[3] = readIn_.readLine();
-				System.out.println("Name: " + namesAndIcons_[1]);
-				System.out.println("Icon: " + namesAndIcons_[3]);
-			}
-			else 
-				System.out.println("Connect failed");
-			
-		} catch (UnknownHostException e) {
-			System.out.println("Cannot find host");
-			cannotFindHost_.setVisible(true);
-		//	return false;
-
-		} catch (IOException e) {
-			System.out.println("IO Exception occurred");
-			unsuccessfulConnection_.setVisible(true);
-		//	return false;	
-		}
-			}}.start();
-		
-		// Connection was successful
-		return true;
 
 	}
 
