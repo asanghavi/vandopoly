@@ -160,7 +160,7 @@ public class GameButtonPanel extends JPanel {
 		newButton.setBounds((buttonX * buttonNumber), 0, buttonX, buttonY);
 		newButton.setFont(buttonFont);
 		newButton.setActionCommand(name);
-		newButton.addActionListener(controller_);
+		newButton.addActionListener(networkedController_);
 		newButton.setVisible(true);
 		return newButton;
 	}
