@@ -102,9 +102,10 @@ public class NetworkedGameController implements ActionListener {
 	private PrintWriter printOut_ = null;
 	private BufferedReader readIn_ = null;
 	
-	// Constructor: 
-	// client = 1, server = 0
-	public NetworkedGameController(Display display, int clientOrServer) {
+	public NetworkedGameController(Display display, String[] namesAndIcons) {
+		namesAndIcons_ = namesAndIcons;
+		createServer();
+		
 		dice_ = new Dice();
 		board_ = new Space[NUM_OF_SPACES];
 		

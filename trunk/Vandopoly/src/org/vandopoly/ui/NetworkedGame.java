@@ -276,6 +276,7 @@ public class NetworkedGame extends JPanel {
 									player_[i].setEnabled(false);
 							}
 							optionsPageNum_ = 6;
+							break;
 						}
 						else 
 							break;
@@ -606,7 +607,7 @@ public class NetworkedGame extends JPanel {
 	}
 
 	public void startNetworkedGame() {
-		new NetworkedGameController(mainMenu_.display_, 0);
+		new NetworkedGameController(mainMenu_.display_, namesAndIcons_);
 	}
 
 	public void hideFourthPagePanels() {
