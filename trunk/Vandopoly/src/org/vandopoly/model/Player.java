@@ -20,6 +20,7 @@ import java.util.ListIterator;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.ui.PropertySelectionSellPanel;
 
 /*
  * Player class is a model class that represents a game player.
@@ -36,6 +37,7 @@ public class Player {
 	private int cash_ = 1500, positionOnBoard_, index_;
 	private boolean getOutOfJail_;
 	private ArrayList<PropertySpace> properties_;
+	public PropertySelectionSellPanel propertySelectionSellPanel_;
 	
 	//Used to move player out of jail after three rolls
 	private int numOfRolls_ = 0;
@@ -121,6 +123,10 @@ public class Player {
 
 	public void updateCash(int value) {
 		cash_ += value;
+		if(cash_ < 0) {
+			propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
+			NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
+		}
 		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_CASH, this);
 	}
 
