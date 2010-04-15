@@ -268,7 +268,6 @@ public class NetworkedGame extends JPanel {
 							NetworkedGame.this.hideFourthPagePanels();
 							NetworkedGame.this.showPlayerPagePanels();
 								
-
 							// Disable the piece that player 1 (server) has selected
 							for (int i = 0; i < numOfPieces_; ++i) {
 								if (player_[i].getActionCommand().equals(
@@ -477,12 +476,14 @@ public class NetworkedGame extends JPanel {
 					System.out.println("Client temp: " + temp);
 					if (temp.equals("ACCEPTED")) {
 						System.out.println("Accepted");
-						connected_ = "CONNECTED";
+						
 						
 						namesAndIcons_[1] = readIn_.readLine();
 						namesAndIcons_[3] = readIn_.readLine();
 						System.out.println("Name: " + namesAndIcons_[1]);
 						System.out.println("Icon: " + namesAndIcons_[3]);
+						
+						connected_ = "CONNECTED";
 					} else
 						System.out.println("Connect failed");
 
