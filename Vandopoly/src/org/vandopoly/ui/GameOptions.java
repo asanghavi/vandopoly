@@ -34,6 +34,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import org.vandopoly.controller.GameController;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -74,7 +75,7 @@ public class GameOptions extends JPanel {
 
 	private MainMenu mainMenu_;
 
-	public GameOptions(MainMenu mainMenu) {
+	public GameOptions(final MainMenu mainMenu) {
 
 		mainMenu_ = mainMenu;
 
@@ -535,40 +536,6 @@ public class GameOptions extends JPanel {
 		playGame_ = new JButton("PLAY GAME");
 		playGame_.setBounds(115, 500, 500, 75);
 		playGame_.setFont(buttonFont);
-		playGame_.addKeyListener(new KeyListener() {
-			public void keyTyped(KeyEvent e) {
-			}
-
-			public void keyPressed(KeyEvent e) {
-			}
-
-			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if ((icons_[0].getSelection() == null || icons_[1]
-							.getSelection() == null)
-							|| (numberOfPlayers_ > 2 && icons_[2]
-									.getSelection() == null)
-							|| (numberOfPlayers_ > 3 && icons_[3]
-									.getSelection() == null)) {
-						pieceError_.setVisible(true);
-					}
-
-					else {
-						pieceError_.setVisible(false);
-						// Get all appropriate names for the buttons and puts
-						// them in the namesAndIcons_ array
-						for (int i = 0; i < numberOfPlayers_; i++) {
-							namesAndIcons_[numberOfPlayers_ + i + 1] = icons_[i]
-									.getSelection().getActionCommand();
-						}
-						NotificationManager.getInstance().notifyObservers(
-								Notification.START_GAME, namesAndIcons_);
-						GameOptions.this.hideSecondPagePanels();
-						GameOptions.this.setVisible(false);
-					}
-				}
-			}
-		});
 		playGame_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 
@@ -580,6 +547,7 @@ public class GameOptions extends JPanel {
 				}
 
 				else {
+					new GameController(mainMenu.display_);
 					pieceError_.setVisible(false);
 					// Get all appropriate names for the buttons and puts them
 					// in the namesAndIcons_ array
@@ -591,6 +559,7 @@ public class GameOptions extends JPanel {
 							Notification.START_GAME, namesAndIcons_);
 					GameOptions.this.hideSecondPagePanels();
 					GameOptions.this.setVisible(false);
+					
 				}
 			}
 
