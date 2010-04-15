@@ -75,6 +75,8 @@ public class NetworkedGame extends JPanel {
 	private Socket clientSocket_;
 	private PrintWriter printOut_ = null;
 	private BufferedReader readIn_ = null;
+	
+	NetworkedGameController networkedController_;
 
 	public NetworkedGame(MainMenu mainMenu) {
 
@@ -303,9 +305,9 @@ public class NetworkedGame extends JPanel {
 								Notification.PLAYER_SELECTED, namesAndIcons_);
 
 						printOut_.println("START");
-
-						// START GAME
-
+						
+						networkedController_ = new NetworkedGameController(mainMenu_.display_, namesAndIcons_);
+						
 						// NetworkedGame.this.hidePlayerPagePanels();
 						// NotificationManager.getInstance().notifyObservers(
 						// Notification.START_GAME, null);
@@ -484,6 +486,17 @@ public class NetworkedGame extends JPanel {
 						System.out.println("Icon: " + namesAndIcons_[3]);
 						
 						connected_ = "CONNECTED";
+						
+						while (networkedController_ != null) {
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						networkedController_.clientListen();
+						
 					} else
 						System.out.println("Connect failed");
 

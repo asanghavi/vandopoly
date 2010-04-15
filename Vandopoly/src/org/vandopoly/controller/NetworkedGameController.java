@@ -135,6 +135,10 @@ public class NetworkedGameController implements ActionListener {
 				this, "chargeUtilityRent");
 	}
 	
+	public void clientListen() {
+		
+	}
+	
 	// Called by the START_GAME notification
 	public void startGame(Object obj) {
 		namesAndIcons_ =(String[]) obj;
