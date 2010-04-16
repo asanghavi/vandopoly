@@ -76,6 +76,7 @@ public class GameController implements ActionListener {
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
 	PropertySelectionPanel propertySelectionPanel_;
+	TradeFrame tradeFrame_;
 
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
@@ -299,8 +300,7 @@ public class GameController implements ActionListener {
 		if (action.getActionCommand().equals("Purchase")) {
 			// This stops players from opening a propertySelectionPanel, then buying a property
 			// and adjusting the levels inappropriately
-			if(propertySelectionPanel_ != null)
-				propertySelectionPanel_.dispose();
+			disposeFrames();
 			
 			int position = players_.get(currentPlayerNum_).getPosition();
 			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[position]);
@@ -309,23 +309,21 @@ public class GameController implements ActionListener {
 			// If the propertySelectionPanel has already been created, dispose and get a new one
 			// This makes sure the panel is fully updated, and allows only a single propertySelection
 			// panel at a time
-			if(propertySelectionPanel_ != null)
-				propertySelectionPanel_.dispose();
+			disposeFrames();
 			
 			propertySelectionPanel_ = new PropertySelectionPanel(players_.get(currentPlayerNum_));
 		}
 		else if (action.getActionCommand().equals("Trade")) {
-			new TradeFrame(players_, currentPlayerNum_);
+			disposeFrames();
+			
+			tradeFrame_ = new TradeFrame(players_, currentPlayerNum_);
 		}
 		else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 			
 			// Get rid of current propertySelectionPanel
-			if(propertySelectionPanel_ != null) {
-				propertySelectionPanel_.dispose();
-				propertySelectionPanel_ = null;
-			}
+			disposeFrames();
 			
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 			if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
@@ -333,6 +331,18 @@ public class GameController implements ActionListener {
 		}
 		else if (action.getActionCommand().equals("Quit Game")) {
 			confirmationPopUp();
+		}
+	}
+	
+	// Kill off all floating frames
+	public void disposeFrames() {
+		if (propertySelectionPanel_ != null) {
+			propertySelectionPanel_.dispose();
+			propertySelectionPanel_ = null;
+		}
+		if (tradeFrame_ != null) {
+			tradeFrame_.dispose();
+			tradeFrame_ = null;
 		}
 	}
 	

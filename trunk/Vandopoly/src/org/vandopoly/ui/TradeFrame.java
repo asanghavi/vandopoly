@@ -30,6 +30,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
@@ -59,6 +60,8 @@ public class TradeFrame implements ListSelectionListener {
 	Player2SelectionListener listListener2;
 	
 	JButton trade, add1_, remove1_, add2_, remove2_,accept_, cancel_;
+	
+	// List of all players in the game
 	ArrayList<Player> players_;
 	
 	// Players that actually trade
@@ -67,6 +70,11 @@ public class TradeFrame implements ListSelectionListener {
 	// Lists % 2 == 0 are what the player keeps
 	// Odd list numbers are properties the player is trading
 	LinkedList<LinkedList<PropertySpace>> property;
+	// Cash Array index % 2 is money the player keeps
+	// Odd indicies are cash involved in the trade
+	int cash_[];
+	
+	int CASH_MOVEMENT = 50;
 	
 	JFrame frame;
 	
@@ -101,6 +109,7 @@ public class TradeFrame implements ListSelectionListener {
 		
 		comboBox = new JComboBox();
 		comboBox.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight, 150, 30);
+		comboBox.setFont(nameFont);
 		for (int i = 0; i < players_.size(); i++) {
 			if (currentPlayer != i)
 				comboBox.addItem(players_.get(i).getName());
@@ -132,10 +141,6 @@ public class TradeFrame implements ListSelectionListener {
 		trade.setVisible(false);
 		comboBox.setVisible(false);
 		intro.setVisible(false);
-		/*
-		for (int i = 0; i < players_.size(); i++) {
-			playerCheck[i].setVisible(false);
-		}*/
 	}
 	
 	private void setUpTradeScreen(Player player1, Player player2) {
@@ -163,6 +168,12 @@ public class TradeFrame implements ListSelectionListener {
 		// Trade offer for player 2
 		property.add(new LinkedList<PropertySpace>());
 		
+		cash_ = new int[4];
+		cash_[0] = tradePlayer.get(0).getCash();
+		cash_[1] = 0;
+		cash_[2] = tradePlayer.get(1).getCash();
+		cash_[3] = 0;
+		
 		// Add both players names to the top of the board
 		JLabel player1Name = new JLabel(player1.getName());
 		player1Name.setFont(nameFont);
@@ -186,8 +197,9 @@ public class TradeFrame implements ListSelectionListener {
 				
 				// Represents case when no properties are selected
 				if (index < 0) {
+					return;
 				}
-				else {
+				else if (index < property.get(0).size()){
 					// Remove property from initial property list and add it to trade offer
 					PropertySpace p = property.get(0).remove(index);
 					addProperty(property.get(1), p);
@@ -198,23 +210,39 @@ public class TradeFrame implements ListSelectionListener {
 					// Refresh the list
 					for (int i = 0; i < property.get(1).size(); i++)
 						model[0][1].set(i, property.get(1).get(i).getNameAndStatus());
+					if (cash_[1] > 0)
+						model[0][1].set( property.get(1).size(), "Cash: " + cash_[1]);
 					
 					model[0][0].remove(index);
 					
-					// Now set up the new selected index
-					if (model[0][0].size() > index)
-						list[0][0].setSelectedIndex(index);
+				}
+				// Item selected was cash
+				else {
+					int actualMovement;
 					
-					// Currently selected index can be decreased
-					else if (index > 0)
-						list[0][0].setSelectedIndex(index - 1);
-					
-					// list is empty...
-					else {
-						list[0][0].setSelectedIndex(-1);
-						add1_.setEnabled(false);
-						remove1_.setEnabled(false);
+					if (cash_[0] > CASH_MOVEMENT) {
+						actualMovement = CASH_MOVEMENT;
+						cash_[0] -= actualMovement;
+						model[0][0].set(property.get(0).size(), "Cash: " + cash_[0]);
 					}
+					else {
+						actualMovement = cash_[0];
+						cash_[0] -= actualMovement;
+						model[0][0].removeElementAt(property.get(0).size());
+					}
+					
+					cash_[1] += actualMovement;
+					
+					// Signifies this is the initial movement
+					if (cash_[1] == actualMovement)
+						model[0][1].addElement("Cash: " + cash_[1]);
+					else
+						model[0][1].set(property.get(1).size(), "Cash: " + cash_[1]);
+				}
+				
+				if (!TradeFrame.this.selectNextIndex(0, 0, index)) {
+					add1_.setEnabled(false);
+					remove1_.setEnabled(false);
 				}
 			}
 
@@ -230,28 +258,48 @@ public class TradeFrame implements ListSelectionListener {
 				// Represents case when no properties are selected
 				if (index < 0) {
 				}
-				else {
+				else if (index < property.get(1).size()) {
 					PropertySpace p = property.get(1).remove(index);
 					addProperty(property.get(0), p);
 					
 					model[0][0].addElement("");
 					for (int i = 0; i < property.get(0).size(); i++)
 						model[0][0].set(i, property.get(0).get(i).getNameAndStatus());
+					if (cash_[0] > 0)
+						model[0][0].set( property.get(0).size(), "Cash: " + cash_[0]);
 					
 					model[0][1].remove(index);
 					
-					// Now set up the new selected index
-					if (model[0][1].size() > index)
-						list[0][1].setSelectedIndex(index);
-					// Currently selected index can be decreased
-					else if (index > 0)
-						list[0][1].setSelectedIndex(index - 1);
-					// list is empty...
-					else {
-						list[0][1].setSelectedIndex(-1);
-						add1_.setEnabled(false);
-						remove1_.setEnabled(false);
+				}
+				// Item selected was cash
+				else {
+					int actualMovement;
+					
+					if (cash_[1] > CASH_MOVEMENT) {
+						actualMovement = CASH_MOVEMENT;
+						cash_[1] -= actualMovement;
+						model[0][1].set(property.get(1).size(), "Cash: " + cash_[1]);
 					}
+					else {
+						actualMovement = cash_[1];
+						cash_[1] -= actualMovement;
+						model[0][1].removeElementAt(property.get(1).size());
+					}
+					
+					cash_[0] += actualMovement;
+					
+					// Signifies this is the initial movement
+					if (cash_[0] == actualMovement) {
+						model[0][0].addElement("Cash: " + cash_[0]);
+						ActionMessage.getInstance().newMessage("Add to end");
+					}
+					else
+						model[0][0].set(property.get(0).size(), "Cash: " + cash_[0]);
+				}
+				
+				if (!TradeFrame.this.selectNextIndex(0, 1, index)) {
+					add1_.setEnabled(false);
+					remove1_.setEnabled(false);
 				}
 			}
 
@@ -266,28 +314,45 @@ public class TradeFrame implements ListSelectionListener {
 				// Represents case when no properties are selected
 				if (index < 0) {
 				}
-				else {
+				else if (index < property.get(2).size()){
 					PropertySpace p = property.get(2).remove(index);
 					addProperty(property.get(3), p);
 					
 					model[1][1].addElement("");
 					for (int i = 0; i < property.get(3).size(); i++)
 						model[1][1].set(i, property.get(3).get(i).getNameAndStatus());
+					if (cash_[3] > 0)
+						model[1][1].set(property.get(3).size(), "Cash: " + cash_[3]);
 					
 					model[1][0].remove(index);
+				}
+				// Item selected was cash
+				else {
+					int actualMovement;
 					
-					// Now set up the new selected index
-					if (model[1][0].size() > index)
-						list[1][0].setSelectedIndex(index);
-					// Currently selected index can be decreased
-					else if (index > 0)
-						list[1][0].setSelectedIndex(index - 1);
-					// list is empty...
-					else {
-						list[1][0].setSelectedIndex(-1);
-						add2_.setEnabled(false);
-						remove2_.setEnabled(false);
+					if (cash_[2] > CASH_MOVEMENT) {
+						actualMovement = CASH_MOVEMENT;
+						cash_[2] -= actualMovement;
+						model[1][0].set(property.get(2).size(), "Cash: " + cash_[2]);
 					}
+					else {
+						actualMovement = cash_[2];
+						cash_[2] -= actualMovement;
+						model[1][0].removeElementAt(property.get(2).size());
+					}
+					
+					cash_[3] += actualMovement;
+					
+					// Signifies this is the initial movement
+					if (cash_[3] == actualMovement)
+						model[1][1].addElement("Cash: " + cash_[3]);
+					else
+						model[1][1].set(property.get(3).size(), "Cash: " + cash_[3]);
+				}
+				
+				if (!TradeFrame.this.selectNextIndex(1, 0, index)) {
+					add2_.setEnabled(false);
+					remove2_.setEnabled(false);
 				}
 			}
 
@@ -301,28 +366,45 @@ public class TradeFrame implements ListSelectionListener {
 				// Represents case when no properties are selected
 				if (index < 0) {
 				}
-				else {
+				else if (index < property.get(3).size()){
 					PropertySpace p = property.get(3).remove(index);
 					addProperty(property.get(2), p);
 					
 					model[1][0].addElement("");
 					for (int i = 0; i < property.get(2).size(); i++)
 						model[1][0].set(i, property.get(2).get(i).getNameAndStatus());
+					if (cash_[2] > 0)
+						model[1][0].set(property.get(2).size(), "Cash: " + cash_[2]);
 					
 					model[1][1].remove(index);
+				}
+				// Item selected was cash
+				else {
+					int actualMovement;
 					
-					// Now set up the new selected index
-					if (model[1][1].size() > index)
-						list[1][1].setSelectedIndex(index);
-					// Currently selected index can be decreased
-					else if (index > 0)
-						list[1][1].setSelectedIndex(index - 1);
-					// list is empty...
-					else {
-						list[1][1].setSelectedIndex(-1);
-						add2_.setEnabled(false);
-						remove2_.setEnabled(false);
+					if (cash_[3] > CASH_MOVEMENT) {
+						actualMovement = CASH_MOVEMENT;
+						cash_[3] -= actualMovement;
+						model[1][1].set(property.get(3).size(), "Cash: " + cash_[3]);
 					}
+					else {
+						actualMovement = cash_[3];
+						cash_[3] -= actualMovement;
+						model[1][1].removeElementAt(property.get(3).size());
+					}
+					
+					cash_[2] += actualMovement;
+					
+					// Signifies this is the initial movement
+					if (cash_[2] == actualMovement)
+						model[1][0].addElement("Cash: " + cash_[2]);
+					else
+						model[1][0].set(property.get(2).size(), "Cash: " + cash_[2]);
+				}
+				
+				if (!TradeFrame.this.selectNextIndex(1, 1, index)) {
+					add2_.setEnabled(false);
+					remove2_.setEnabled(false);
 				}
 			}
 
@@ -360,6 +442,10 @@ public class TradeFrame implements ListSelectionListener {
 					p.setOwner(tradePlayer.get(0));
 				}
 				
+				// Transfer cash
+				tradePlayer.get(0).updateCash(cash_[3] - cash_[1]);
+				tradePlayer.get(1).updateCash(cash_[1] - cash_[3]);
+				
 				// Sends update notification because it isn't guaranteed tradePlayer1 
 				// will gain any properties
 				NotificationManager.getInstance().notifyObservers(
@@ -395,6 +481,10 @@ public class TradeFrame implements ListSelectionListener {
 			// Make models imitate property lists
 			for (int j = 0; j < tradePlayer.get(i).getProperties().size(); j++)
 				model[i][0].add(j, tradePlayer.get(i).getProperties().get(j).getNameAndStatus());
+			
+			// Add appropriate cash value onto last space of model
+			if (cash_[i * 2] > 0)
+				model[i][0].add(tradePlayer.get(i).getProperties().size(), "Cash: " + cash_[i * 2]);
 			
 			// initialize lists and scroll panes with the lists
 			list[i][0] = new JList(model[i][0]);
@@ -516,6 +606,21 @@ public class TradeFrame implements ListSelectionListener {
 		}
 		
 	}
+	
+	public boolean selectNextIndex(int player, int listType, int index) {
+		// Now set up the new selected index
+		if (model[player][listType].size() > index)
+			list[player][listType].setSelectedIndex(index);
+		// Currently selected index can be decreased
+		else if (index > 0)
+			list[player][listType].setSelectedIndex(index - 1);
+		// list is empty...
+		else {
+			list[player][listType].setSelectedIndex(-1);
+			return false;
+		}
+		return true;
+	}
 
 	// Adds elements to the property list in the correct order -
 	// sorted first by type (color), and then by space number
@@ -549,172 +654,8 @@ public class TradeFrame implements ListSelectionListener {
 				properties.add(itr.nextIndex(), p);
 		}
 	}
+	
+	public void dispose() {
+		frame.dispose();
+	}
 }
-
-/*import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.ListSelectionModel;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-public class TradeFrame extends JPanel {
-    JTextArea output;
-    JList list; 
-    JTable table;
-    String newline = "\n";
-    ListSelectionModel listSelectionModel;
-
-    public TradeFrame() {
-        super(new BorderLayout());
-
-        String[] listData = { "one", "two", "three", "four",
-                              "five", "six", "seven" };
-        String[] columnNames = { "French", "Spanish", "Italian" };
-        list = new JList(listData);
-
-        listSelectionModel = list.getSelectionModel();
-        listSelectionModel.addListSelectionListener(
-                new SharedListSelectionHandler());
-        JScrollPane listPane = new JScrollPane(list);
-
-        JPanel controlPane = new JPanel();
-        String[] modes = { "SINGLE_SELECTION",
-                           "SINGLE_INTERVAL_SELECTION",
-                           "MULTIPLE_INTERVAL_SELECTION" };
-
-        final JComboBox comboBox = new JComboBox(modes);
-        comboBox.setSelectedIndex(2);
-        comboBox.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String newMode = (String)comboBox.getSelectedItem();
-                if (newMode.equals("SINGLE_SELECTION")) {
-                    listSelectionModel.setSelectionMode(
-                        ListSelectionModel.SINGLE_SELECTION);
-                } else if (newMode.equals("SINGLE_INTERVAL_SELECTION")) {
-                    listSelectionModel.setSelectionMode(
-                        ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-                } else {
-                    listSelectionModel.setSelectionMode(
-                        ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-                }
-                output.append("----------"
-                              + "Mode: " + newMode
-                              + "----------" + newline);
-            }
-        });
-        controlPane.add(new JLabel("Selection mode:"));
-        controlPane.add(comboBox);
-
-        //Build output area.
-        output = new JTextArea(1, 10);
-        output.setEditable(false);
-        JScrollPane outputPane = new JScrollPane(output,
-                         ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                         ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-        //Do the layout.
-        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        add(splitPane, BorderLayout.CENTER);
-
-        JPanel topHalf = new JPanel();
-        topHalf.setLayout(new BoxLayout(topHalf, BoxLayout.LINE_AXIS));
-        JPanel listContainer = new JPanel(new GridLayout(1,1));
-        listContainer.setBorder(BorderFactory.createTitledBorder(
-                                                "List"));
-        listContainer.add(listPane);
-        
-	topHalf.setBorder(BorderFactory.createEmptyBorder(5,5,0,5));
-        topHalf.add(listContainer);
-        //topHalf.add(tableContainer);
-
-        topHalf.setMinimumSize(new Dimension(100, 50));
-        topHalf.setPreferredSize(new Dimension(100, 110));
-        splitPane.add(topHalf);
-
-        JPanel bottomHalf = new JPanel(new BorderLayout());
-        bottomHalf.add(controlPane, BorderLayout.PAGE_START);
-        bottomHalf.add(outputPane, BorderLayout.CENTER);
-        //XXX: next line needed if bottomHalf is a scroll pane:
-        //bottomHalf.setMinimumSize(new Dimension(400, 50));
-        bottomHalf.setPreferredSize(new Dimension(450, 135));
-        splitPane.add(bottomHalf);
-    }
-*/
-
-    /**
-     * Create the GUI and show it.  For thread safety,
-     * this method should be invoked from the
-     * event-dispatching thread.
-     */
-/*
-    private static void createAndShowGUI() {
-        //Create and set up the window.
-        JFrame frame = new JFrame("ListSelectionDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        //Create and set up the content pane.
-        TradeFrame demo = new TradeFrame();
-        demo.setOpaque(true);
-        frame.setContentPane(demo);
-
-        //Display the window.
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        //Schedule a job for the event-dispatching thread:
-        //creating and showing this application's GUI.
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-
-    class SharedListSelectionHandler implements ListSelectionListener {
-        public void valueChanged(ListSelectionEvent e) { 
-            ListSelectionModel lsm = (ListSelectionModel)e.getSource();
-
-            int firstIndex = e.getFirstIndex();
-            int lastIndex = e.getLastIndex();
-            boolean isAdjusting = e.getValueIsAdjusting(); 
-            output.append("Event for indexes "
-                          + firstIndex + " - " + lastIndex
-                          + "; isAdjusting is " + isAdjusting
-                          + "; selected indexes:");
-
-            if (lsm.isSelectionEmpty()) {
-                output.append(" <none>");
-            } else {
-                // Find out which indexes are selected.
-                int minIndex = lsm.getMinSelectionIndex();
-                int maxIndex = lsm.getMaxSelectionIndex();
-                for (int i = minIndex; i <= maxIndex; i++) {
-                    if (lsm.isSelectedIndex(i)) {
-                        output.append(" " + i);
-                    }
-                }
-            }
-            output.append(newline);
-            output.setCaretPosition(output.getDocument().getLength());
-        }
-    }
-}
-*/
