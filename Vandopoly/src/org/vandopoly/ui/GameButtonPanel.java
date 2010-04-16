@@ -116,22 +116,22 @@ public class GameButtonPanel extends JPanel {
 		this.setLayout(null);
 		
 		// Set up the purchase button
-		purchase_ = buttonCreator("Purchase", 0);
+		purchase_ = networkedButtonCreator("Purchase", 0);
 		purchase_.setEnabled(false);
 		
 		// Set up the mortgage button
-		mortgage_ = buttonCreator("Manage Properties", 1);
+		mortgage_ = networkedButtonCreator("Manage Properties", 1);
 		mortgage_.setEnabled(true);
 		
-		trade_ = buttonCreator("Trade", 2);
+		trade_ = networkedButtonCreator("Trade", 2);
 		trade_.setEnabled(true);
 		
 		// Set up the end turn button
-		endTurn_ = buttonCreator("End Turn", 3);
+		endTurn_ = networkedButtonCreator("End Turn", 3);
 		endTurn_.setEnabled(false);
 		
 		// Set up the quit game button
-		quitGame_ = buttonCreator("Quit Game", 4);
+		quitGame_ = networkedButtonCreator("Quit Game", 4);
 				
 		this.add(purchase_);
 		this.add(mortgage_);
@@ -156,6 +156,17 @@ public class GameButtonPanel extends JPanel {
 
 	// Responsible for creating all the buttons in GameButtonPanel
 	private JButton buttonCreator(String name, int buttonNumber) {
+		JButton newButton = new JButton(name);
+		newButton.setBounds((buttonX * buttonNumber), 0, buttonX, buttonY);
+		newButton.setFont(buttonFont);
+		newButton.setActionCommand(name);
+		newButton.addActionListener(controller_);
+		newButton.setVisible(true);
+		return newButton;
+	}
+	
+	// Responsible for creating all the buttons in GameButtonPanel
+	private JButton networkedButtonCreator(String name, int buttonNumber) {
 		JButton newButton = new JButton(name);
 		newButton.setBounds((buttonX * buttonNumber), 0, buttonX, buttonY);
 		newButton.setFont(buttonFont);
