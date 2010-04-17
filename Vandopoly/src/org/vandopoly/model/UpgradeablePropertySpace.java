@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -24,7 +26,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Allie Mazzia
  */
-public class UpgradeablePropertySpace extends PropertySpace {
+public class UpgradeablePropertySpace extends PropertySpace implements Serializable {
 	
 	public UpgradeablePropertySpace() {
 		name_ = "NONE";

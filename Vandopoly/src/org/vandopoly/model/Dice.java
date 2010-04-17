@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.vandopoly.messaging.Notification;
@@ -25,7 +26,8 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author James Kasten
  */
-public class Dice {
+public class Dice implements Serializable {
+	private static final long serialVersionUID = 107;
 	private int die1_, die2_;
 	private int numInRowDoubles_;
 	private Random generator_ = new Random();

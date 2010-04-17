@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Allie Mazzia
  */
-public class Card {
+public class Card implements Serializable {
 	protected String message_;
 	
 	public void setMessage(String message) {
