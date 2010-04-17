@@ -43,6 +43,9 @@ public class NotificationManager {
 	private HashMap<String, ArrayList<EventCallback>> listsOfEventObservers_ = null;
 	private static NotificationManager INSTANCE = null;
 	
+	Class oneParameter[] = {Object.class};
+	Class twoParameters[] = {Object.class, String.class};
+	
 	private NotificationManager() {
 		listsOfEventObservers_ = new HashMap<String, ArrayList<EventCallback>>();
 	}
@@ -74,9 +77,18 @@ public class NotificationManager {
 		
 		// Attempt to find a method with the same name and an Object as the parameter
 		try {
-			callbackMethod = subscriber.getClass().getMethod(callbackMethodName, Object.class);
+			callbackMethod = subscriber.getClass().getMethod(callbackMethodName, oneParameter);
 		}
 		catch(Exception e) {
+		}
+		
+		// Try to find a method with 2 parameters
+		if (callbackMethod == null) {
+			try {
+				callbackMethod = subscriber.getClass().getMethod(callbackMethodName, twoParameters);
+			}
+			catch(Exception e) {
+			}
 		}
 		
 		// If the previous try didn't work, look for a method that does not have any parameters
@@ -136,7 +148,7 @@ public class NotificationManager {
 
 		if (observerList != null) {
 			for (int i = observerList.size() - 1; i >= 0; i--)
-				observerList.get(i).notifyObserver(updatedObject);
+				observerList.get(i).notifyObserver(updatedObject , event);
 		}
 		else
 			System.err.println("No Observers have ever subscribed to event "+event);
