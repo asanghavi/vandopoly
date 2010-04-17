@@ -35,12 +35,14 @@ public class EventCallback {
 		method_ = method;
 	}
 
-	public void notifyObserver(Object updatedObject) {
+	public void notifyObserver(Object updatedObject, String event) {
 		try {
 			if (method_.getParameterTypes().length == 1)
 				method_.invoke(object_, updatedObject);
 			else if (method_.getParameterTypes().length == 0)
 				method_.invoke(object_);
+			else if (method_.getParameterTypes().length == 2)
+				method_.invoke(object_, updatedObject, event);
 			else
 				System.err.println(this + " does not contain 0 or 1 parameter");
 		} catch (IllegalAccessException e) {

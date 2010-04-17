@@ -33,10 +33,13 @@ public class MessagingTests extends TestCase {
 	
 	private String EVENT1 = "Test";
 	private String EVENT2 = "Test2";
+	private String EVENT3 = "Test3";
 	
 	private Boolean withParameter = false;
 	private Boolean withParameter2 = false;
 	private Boolean noParameter = false;
+	
+	private Boolean twoParameters = false;
 	
 	// Sets up "shared" objects among tests.
 	// Any changes to objects during a test is confined to that test
@@ -47,6 +50,7 @@ public class MessagingTests extends TestCase {
 		manager.addObserver(EVENT1, this, "callbackWithParameter");
 		manager.addObserver(EVENT1, this, "callbackNoParameter");
 		manager.addObserver(EVENT2, this, "callbackWithParameter2");
+		manager.addObserver(EVENT3, this, "cb2Parameters");
 	}
 	
 	// Must be used to cleanup after a .setUp()
@@ -61,16 +65,27 @@ public class MessagingTests extends TestCase {
 		return new TestSuite(MessagingTests.class);
 	}
 	
+	
 	public void testNotifyObservers1() {
 		NotificationManager.getInstance().notifyObservers(EVENT1, null);
 		assertTrue(withParameter);
 		assertTrue(noParameter);
 		assertTrue(!withParameter2);
+		assertTrue(!twoParameters);
 	}
 	
 	public void testNotifyObservers2() {
 		NotificationManager.getInstance().notifyObservers(EVENT2, null);
 		assertTrue(withParameter2);
+		assertTrue(!withParameter);
+		assertTrue(!noParameter);
+		assertTrue(!twoParameters);
+	}
+	
+	public void testTwoParameter() {
+		NotificationManager.getInstance().notifyObservers(EVENT3, null);
+		assertTrue(twoParameters);
+		assertTrue(!withParameter2);
 		assertTrue(!withParameter);
 		assertTrue(!noParameter);
 	}
@@ -99,5 +114,9 @@ public class MessagingTests extends TestCase {
 	}
 	public void callbackWithParameter2(Object updatedObject) {
 		withParameter2 = true;
+	}
+	public void cb2Parameters(Object obj, String event) {
+		if(event.equals(EVENT3))
+			twoParameters = true;
 	}
 }
