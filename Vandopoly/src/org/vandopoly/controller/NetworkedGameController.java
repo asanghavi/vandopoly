@@ -43,8 +43,8 @@ import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 import org.vandopoly.messaging.NetworkedMessage;
+import org.vandopoly.messaging.NetworkedNotificationManager;
 import org.vandopoly.messaging.Notification;
-import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.ChanceCardSpace;
 import org.vandopoly.model.CommCardSpace;
 import org.vandopoly.model.CornerSpace;
@@ -118,34 +118,33 @@ public class NetworkedGameController implements ActionListener {
 		else 
 			localControl_ = false;
 			
-			dice_ = new Dice();
-			board_ = new Space[NUM_OF_SPACES];
-			
-			display_ = display;
-			
-			NotificationManager.getInstance().addObserver(Notification.START_GAME, 
-					this, "startGame");
-			NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, 
-					this, "updateFund");
-			NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
-					this, "awardFund");
-			NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
-					this, "moveCurrentPlayer");
-			NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
-					this, "sendPlayerToJail");
-			NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
-					this, "cardMoveTo");
-			NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
-					this, "unownedProperty");
-			NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, 
-					this, "pieceMoveSpaces");
-			NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
-					this, "pieceMoveTo");
-			NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
-					this, "displayActionMessage");
-			NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
-					this, "chargeUtilityRent");
+		dice_ = new Dice();
+		board_ = new Space[NUM_OF_SPACES];
 		
+		display_ = display;
+		
+		NetworkedNotificationManager.getInstance().addObserver(Notification.START_GAME, 
+				this, "startGame", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, 
+				this, "updateFund", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
+				this, "awardFund", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
+				this, "moveCurrentPlayer", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
+				this, "sendPlayerToJail", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
+				this, "cardMoveTo", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
+				this, "unownedProperty", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, 
+				this, "pieceMoveSpaces", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
+				this, "pieceMoveTo", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
+				this, "displayActionMessage", false);
+		NetworkedNotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
+				this, "chargeUtilityRent", false);
 	}
 	
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, 
@@ -164,7 +163,7 @@ public class NetworkedGameController implements ActionListener {
 				message = (NetworkedMessage) objectInput_.readObject();
 				
 				System.out.println("Notifying of:" + message.getString());
-				NotificationManager.getInstance().notifyObservers(
+				NetworkedNotificationManager.getInstance().notifyObservers(
 						message.getString(), message.getObject());
 				
 				// Do things based on message.getString()
@@ -247,7 +246,7 @@ public class NetworkedGameController implements ActionListener {
 						if (temp.equals("START")) {
 							// START GAME
 							System.out.println("STARTING GAME");
-							NotificationManager.getInstance().notifyObservers(
+							NetworkedNotificationManager.getInstance().notifyObservers(
 									Notification.START_GAME, namesAndIcons_);
 							
 							objectOutput_.writeObject(new NetworkedMessage(Notification.START_GAME, null));
@@ -271,8 +270,6 @@ public class NetworkedGameController implements ActionListener {
 			}
 		}.start();
 	}
-	
-	
 	
 	public void moveCurrentPlayer(Object obj) {
 		
@@ -472,7 +469,7 @@ public class NetworkedGameController implements ActionListener {
 				propertySelectionPanel_ = null;
 			}
 			
-			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
+			NetworkedNotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 			if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
 				new JailPopUp(players_.get(currentPlayerNum_));
 		}
@@ -550,19 +547,19 @@ public class NetworkedGameController implements ActionListener {
 		quit.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {
 	        	popup.hide();
-	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+	        	NetworkedNotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
 	        	System.exit(0);
 	        }
 		});
 		cancel.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {
 	        	popup.hide();
-	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+	        	NetworkedNotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
 	        }
 	    });
 	
 		popup.show();	
-		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
+		NetworkedNotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
 	}
 	
 	public void displayActionMessage(Object obj) {
@@ -618,7 +615,7 @@ public class NetworkedGameController implements ActionListener {
 		endTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
-				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
+				NetworkedNotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 				if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
 					new JailPopUp(players_.get(currentPlayerNum_));
 			}
