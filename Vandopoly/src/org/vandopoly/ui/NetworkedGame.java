@@ -483,7 +483,6 @@ public class NetworkedGame extends JPanel {
 					if (temp.equals("ACCEPTED")) {
 						System.out.println("Accepted");
 						
-						
 						namesAndIcons_[1] = readIn_.readLine();
 						namesAndIcons_[3] = readIn_.readLine();
 						System.out.println("Name: " + namesAndIcons_[1]);
