@@ -32,6 +32,7 @@ import javax.swing.JPanel;
 
 import org.vandopoly.messaging.NetworkedNotificationManager;
 import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
 
 /**
  * Main Menu for Vandopoly
@@ -141,6 +142,9 @@ public class MainMenu extends JPanel {
 		// Add "this" to necessary event observer lists
 		NetworkedNotificationManager.getInstance().addObserver(Notification.START_GAME,
 				this, "hideMenu", false);
+		
+		NotificationManager.getInstance().addObserver(Notification.START_GAME,
+				this, "hideMenu");
 	}
 	
 	// Can be used to remove all Buttons within the MainMenu class
