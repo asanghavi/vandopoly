@@ -18,12 +18,13 @@ package org.vandopoly.messaging;
 import java.util.ArrayList;
 
 /*
- * NetworkedMessageFilter is class used to subscribe to all notifications
+ * NetworkedMessageFilter is a class used to subscribe to all notifications
  * and push them onto a message queue to be sent over the socket connection
  * to the client.
  * 
- * @author Allie Mazzia
+ * @author Allie Mazzia and Matt Gioia
  */
+
 public class NetworkedMessageFilter {
 	ArrayList<NetworkedMessage> messageQueue_ = null;
 	
@@ -32,10 +33,30 @@ public class NetworkedMessageFilter {
 		
 		// Subscribe to all notifications and have each call 
 		// addToQueue()
+		
+		String arr[] = new String[10];
+		arr[0] = Notification.START_GAME;
+		arr[1] = Notification.UPDATE_SCHOLARSHIP_FUND;
+		arr[2] = Notification.AWARD_SCHOLARSHIP_FUND;
+		arr[3] = Notification.DICE_ANIMATION_DONE;
+		arr[4] = Notification.GO_TO_JAIL;
+		arr[5] = Notification.CARD_MOVE;
+		arr[6] = Notification.UNOWNED_PROPERTY;
+		arr[7] = Notification.PIECE_MOVE_SPACES;
+		arr[8] = Notification.PIECE_MOVE_TO;
+		arr[9] = Notification.ACTION_MESSAGE;
+		arr[10] = Notification.UTILITY_RENT;
+		
+		for(int x = 0; x < arr.length; x++) {
+			NotificationManager.getInstance().addObserver(arr[x], 
+					this, "addToQueue");
+		}
 	}
 	
-	public void addToQueue(Object obj) {
+	public void addToQueue(Object obj, String eventName) {
 		// Encapsulate each object in a NetworkedMessage and
 		// add it to the queue
+		
+		messageQueue_.add(new NetworkedMessage(eventName, obj));
 	}
 }
