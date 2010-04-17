@@ -15,12 +15,14 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * Model class to represent a space on the board
  * 
  * @author Allie Mazzia
  */
-public class Space {
+public class Space implements Serializable {
 	
 	protected String name_;
 	

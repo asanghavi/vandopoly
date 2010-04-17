@@ -16,47 +16,86 @@
 package org.vandopoly.messaging;
 
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 /*
  * NetworkedMessageFilter is a class used to subscribe to all notifications
  * and push them onto a message queue to be sent over the socket connection
  * to the client.
  * 
- * @author Allie Mazzia and Matt Gioia
+ * @author Allie Mazzia
  */
 
 public class NetworkedMessageFilter {
-	ArrayList<NetworkedMessage> messageQueue_ = null;
+	public ArrayList<NetworkedMessage> messageQueue_ = null;
+	
+	// For ensuring that two methods are not both attempting to add/remove
+	// at the same time
+	private Semaphore addRemoveLock;
 	
 	public NetworkedMessageFilter () {
 		messageQueue_ = new ArrayList<NetworkedMessage>(20);
 		
 		// Subscribe to all notifications and have each call 
 		// addToQueue()
-		
-		String arr[] = new String[10];
-		arr[0] = Notification.START_GAME;
-		arr[1] = Notification.UPDATE_SCHOLARSHIP_FUND;
-		arr[2] = Notification.AWARD_SCHOLARSHIP_FUND;
-		arr[3] = Notification.DICE_ANIMATION_DONE;
-		arr[4] = Notification.GO_TO_JAIL;
-		arr[5] = Notification.CARD_MOVE;
-		arr[6] = Notification.UNOWNED_PROPERTY;
-		arr[7] = Notification.PIECE_MOVE_SPACES;
-		arr[8] = Notification.PIECE_MOVE_TO;
-		arr[9] = Notification.ACTION_MESSAGE;
-		arr[10] = Notification.UTILITY_RENT;
-		
-		for(int x = 0; x < arr.length; x++) {
-			NetworkedNotificationManager.getInstance().addObserver(arr[x], 
-					this, "addToQueue", true);
-		}
+
+		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.ROLL_DICE, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_PROPERTIES, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_CASH, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.CHANGED_OWNER, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.USED_JAIL_CARD, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.GAINED_JAIL_CARD, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "addToQueue");
+	
+		addRemoveLock = new Semaphore(1);
 	}
 	
 	public void addToQueue(Object obj, String eventName) {
 		// Encapsulate each object in a NetworkedMessage and
 		// add it to the queue
+		NetworkedMessage temp = new NetworkedMessage(eventName, obj);
+		queueAdd(temp);
+	}
+	
+	public void queueAdd(NetworkedMessage message) {
+		try {
+			addRemoveLock.acquire();
+			messageQueue_.add(message);
+			addRemoveLock.release();
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public NetworkedMessage queueRemove() {
+		NetworkedMessage temp = null;
+		try {
+			addRemoveLock.acquire();
+			if (!messageQueue_.isEmpty())
+				temp = messageQueue_.remove(0);
+		}
+		catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		
-		messageQueue_.add(new NetworkedMessage(eventName, obj));
+		addRemoveLock.release();
+		
+		return temp;
 	}
 }
