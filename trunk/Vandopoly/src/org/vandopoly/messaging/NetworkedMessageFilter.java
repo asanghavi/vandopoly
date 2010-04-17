@@ -48,8 +48,8 @@ public class NetworkedMessageFilter {
 		arr[10] = Notification.UTILITY_RENT;
 		
 		for(int x = 0; x < arr.length; x++) {
-			NotificationManager.getInstance().addObserver(arr[x], 
-					this, "addToQueue");
+			NetworkedNotificationManager.getInstance().addObserver(arr[x], 
+					this, "addToQueue", true);
 		}
 	}
 	
