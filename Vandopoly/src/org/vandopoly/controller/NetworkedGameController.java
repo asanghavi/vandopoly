@@ -471,16 +471,20 @@ public class NetworkedGameController implements ActionListener {
 		} else if (action.getActionCommand().equals("Trade")) {
 			new TradeFrame(players_, currentPlayerNum_);
 		} else if (action.getActionCommand().equals("End Turn")) {
-			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
+			// Change the current player
+			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+			
+			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 		} else if (action.getActionCommand().equals("Quit Game")) {
 			confirmationPopUp();
 		}
 	}
 
 	// Change the player's turn. Called by Notification END_TURN
-	public void endTurn() {
-		// Change the current player
-		currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+	public void endTurn(Object obj) {
+		
+		int newPlayer = (Integer)obj;
+		currentPlayerNum_ = newPlayer;
 		
 		localControl_ = !localControl_;
 		if (localControl_ == false) {
