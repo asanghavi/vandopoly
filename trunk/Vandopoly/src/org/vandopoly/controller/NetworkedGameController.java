@@ -137,6 +137,7 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO, this, "pieceMoveTo");
 		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "displayActionMessage");
 		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "chargeUtilityRent");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -473,26 +474,30 @@ public class NetworkedGameController implements ActionListener {
 			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 
-			localControl_ = !localControl_;
-			if (localControl_ == false) {
-				dicePanel_.setDisabled();
-				buttonPanel_.setAllDisabled();
-			}
-
-			// Get rid of current propertySelectionPanel
-			if (propertySelectionPanel_ != null) {
-				propertySelectionPanel_.dispose();
-				propertySelectionPanel_ = null;
-			}
-
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
-			if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
-				new JailPopUp(players_.get(currentPlayerNum_));
 		} else if (action.getActionCommand().equals("Quit Game")) {
 			confirmationPopUp();
 		}
 	}
 
+	// Change the player's turn. Called by Notification END_TURN
+	public void endTurn(int turn) {
+		localControl_ = !localControl_;
+		if (localControl_ == false) {
+			dicePanel_.setDisabled();
+			buttonPanel_.setAllDisabled();
+		}
+
+		// Get rid of current propertySelectionPanel
+		if (propertySelectionPanel_ != null) {
+			propertySelectionPanel_.dispose();
+			propertySelectionPanel_ = null;
+		}
+
+		if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
+			new JailPopUp(players_.get(currentPlayerNum_));
+	}
+	
 	// Called by Notification CARD_MOVE_TO
 	public void cardMoveTo(Object obj) {
 		System.out.println("cardmoveTo");
