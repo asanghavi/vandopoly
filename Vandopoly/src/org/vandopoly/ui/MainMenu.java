@@ -140,9 +140,6 @@ public class MainMenu extends JPanel {
 		setVisible(true);
 		
 		// Add "this" to necessary event observer lists
-		NetworkedNotificationManager.getInstance().addObserver(Notification.START_GAME,
-				this, "hideMenu", false);
-		
 		NotificationManager.getInstance().addObserver(Notification.START_GAME,
 				this, "hideMenu");
 	}
