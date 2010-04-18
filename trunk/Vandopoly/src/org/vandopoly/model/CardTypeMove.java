@@ -29,6 +29,7 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class CardTypeMove extends Card implements Serializable {
 	private int space_;
+	final static long serialVersionUID = 201;
 	
 	public CardTypeMove() {
 		message_ = "NONE";

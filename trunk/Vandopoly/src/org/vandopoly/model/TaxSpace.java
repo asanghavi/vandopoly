@@ -30,6 +30,8 @@ public class TaxSpace extends Space implements Serializable {
 	private int fee_;
 	private double percentageFee_;
 	
+	final static long serialVersionUID = 222;
+	
 	public TaxSpace() {
 		name_ = "NONE";
 		fee_ = 0;

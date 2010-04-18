@@ -29,6 +29,7 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class CardTypePayFund extends Card implements Serializable {
 	private int amount_;
+	final static long serialVersionUID = 203;
 	
 	public CardTypePayFund() {
 		message_ = "NONE";

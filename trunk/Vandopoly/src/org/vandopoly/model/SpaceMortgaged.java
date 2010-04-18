@@ -29,6 +29,7 @@ import java.io.Serializable;
 public class SpaceMortgaged extends SpaceState implements Serializable {
 	
 	private static SpaceMortgaged INSTANCE = null;
+	final static long serialVersionUID = 220;
 	
 	protected SpaceMortgaged() {
 		// Exists to disable instantiation

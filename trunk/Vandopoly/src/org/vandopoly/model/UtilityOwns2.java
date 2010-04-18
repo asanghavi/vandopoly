@@ -31,6 +31,7 @@ import org.vandopoly.messaging.NotificationManager;
 public class UtilityOwns2 extends UtilityState implements Serializable {
 
 	private static UtilityOwns2 INSTANCE = null;
+	final static long serialVersionUID = 231;
 	
 	protected UtilityOwns2() {
 		// Exists to disable instantiation

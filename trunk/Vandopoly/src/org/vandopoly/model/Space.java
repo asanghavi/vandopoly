@@ -23,6 +23,7 @@ import java.io.Serializable;
  * @author Allie Mazzia
  */
 public class Space implements Serializable {
+	final static long serialVersionUID = 219;
 	
 	protected String name_;
 	

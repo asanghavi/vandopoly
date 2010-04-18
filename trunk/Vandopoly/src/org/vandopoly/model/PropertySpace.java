@@ -26,6 +26,8 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 public class PropertySpace extends Space implements Serializable {
+	final static long serialVersionUID = 217;
+	
 	protected SpaceState state_;
 	protected int rentValues_[];
 	

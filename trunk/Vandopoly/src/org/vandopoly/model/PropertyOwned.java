@@ -29,6 +29,8 @@ import java.io.Serializable;
 
 public class PropertyOwned extends SpaceState implements Serializable {
 	
+	final static long serialVersionUID = 213;
+	
 	private static PropertyOwned INSTANCE = null;
 	
 	protected PropertyOwned() {

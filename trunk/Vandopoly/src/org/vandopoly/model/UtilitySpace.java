@@ -27,6 +27,8 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class UtilitySpace extends PropertySpace implements Serializable {
 	
+	final static long serialVersionUID = 232;
+	
 	public UtilitySpace() {
 		name_ = "NONE";
 		purchasePrice_ = 0;

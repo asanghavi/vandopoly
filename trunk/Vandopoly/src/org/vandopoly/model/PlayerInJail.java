@@ -30,6 +30,7 @@ import org.vandopoly.messaging.NotificationManager;
 public class PlayerInJail extends PlayerState implements Serializable{
 
 	private static PlayerInJail INSTANCE = null;
+	final static long serialVersionUID = 211;
 	
 	protected PlayerInJail() {
 		// Exists to disable instantiation

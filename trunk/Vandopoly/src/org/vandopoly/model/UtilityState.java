@@ -25,6 +25,8 @@ import java.io.Serializable;
  * @author Allie Mazzia
  */
 public class UtilityState extends SpaceState implements Serializable {
+	
+	final static long serialVersionUID = 233;
 
 	protected void changeState(UtilitySpace space, SpaceState newState) {
 		space.changeState(newState);

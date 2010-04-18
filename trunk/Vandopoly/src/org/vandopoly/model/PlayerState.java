@@ -26,6 +26,8 @@ import java.io.Serializable;
  */
 public class PlayerState implements Serializable{
 	
+	final static long serialVersionUID = 212;
+	
 	public void movePiece(Player player, int spaces) {};
 	
 	public void movePiece(Player player, Dice dice) {};

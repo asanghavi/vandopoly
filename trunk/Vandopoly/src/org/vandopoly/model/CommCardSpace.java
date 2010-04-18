@@ -38,6 +38,8 @@ public class CommCardSpace extends Space implements Serializable {
 	ListIterator<Card> itr_;
 	private static CommCardSpace INSTANCE = null;
 	public static final int NUMBER = 12;
+	
+	final static long serialVersionUID = 207;
 
 	protected CommCardSpace(ArrayList<Player> players) {
 		stack_ = new Vector<Card>(NUMBER);

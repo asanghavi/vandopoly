@@ -31,6 +31,8 @@ import org.vandopoly.ui.PropertySelectionSellPanel;
  */
 public class Player implements Serializable {
 
+	final static long serialVersionUID = 209;
+	
 	private final int SPACES_ON_BOARD = 40;
 
 	private PlayerState state_;
