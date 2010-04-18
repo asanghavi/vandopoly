@@ -58,7 +58,7 @@ public class EventCallback {
 			String error = "An IllegalArgumentException has occured while trying to"
 					+ "notify " + object_.getClass() + " with method " + method_.getName()
 					+ "\n Remember all methods that are updated are expected to have either"
-					+ " an object parameter (the updated object) or no parameters at all";
+					+ " an object parameter, an object and String parameter, or no parameters at all";
 			System.err.println(error);
 		}
 	}

@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.vandopoly.messaging.Notification;
@@ -26,7 +27,7 @@ import org.vandopoly.messaging.NotificationManager;
  *
  * @author Allie Mazzia
  */
-public class CardTypePayFund extends Card {
+public class CardTypePayFund extends Card implements Serializable {
 	private int amount_;
 	
 	public CardTypePayFund() {

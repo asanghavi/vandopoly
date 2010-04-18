@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -23,7 +25,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Allie Mazzia
  */
-public class PropertySpace extends Space {
+public class PropertySpace extends Space implements Serializable {
 	protected SpaceState state_;
 	protected int rentValues_[];
 	

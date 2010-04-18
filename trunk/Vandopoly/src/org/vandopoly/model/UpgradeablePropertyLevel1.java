@@ -16,6 +16,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * UpgradeablePropertyLevel1 class implements the behavior associated with the 
  * upgradeable property space being upgraded to level 1.
@@ -23,7 +25,7 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState {
+public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState implements Serializable {
 	
 	private static UpgradeablePropertyLevel1 INSTANCE = null;
 	

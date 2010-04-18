@@ -510,7 +510,7 @@ public class NetworkedGame extends JPanel {
 					connected_ = "NO";
 
 				} catch (IOException e) {
-					System.out.println("IO Exception occurred");
+					e.printStackTrace();
 					unsuccessfulConnection_.setVisible(true);
 					connected_ = "NO";
 				}

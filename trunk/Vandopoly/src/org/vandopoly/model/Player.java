@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
@@ -28,7 +29,7 @@ import org.vandopoly.ui.PropertySelectionSellPanel;
  * 
  * @author Allie Mazzia
  */
-public class Player {
+public class Player implements Serializable {
 
 	private final int SPACES_ON_BOARD = 40;
 

@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * UpgradeablePropertyState class defines an interface for encapsulating the behavior
  * associated with a particular Concrete State.
@@ -22,7 +24,7 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class UpgradeablePropertyState extends SpaceState {
+public class UpgradeablePropertyState extends SpaceState implements Serializable{
 	
 	protected void changeState(UpgradeablePropertySpace space, SpaceState newState) {
 		space.changeState(newState);

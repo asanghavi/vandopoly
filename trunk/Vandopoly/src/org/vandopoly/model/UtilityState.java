@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * UtilityState class defines an interface for encapsulating the behavior
  * associated with a particular Concrete State.
@@ -22,7 +24,7 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class UtilityState extends SpaceState {
+public class UtilityState extends SpaceState implements Serializable {
 
 	protected void changeState(UtilitySpace space, SpaceState newState) {
 		space.changeState(newState);

@@ -16,6 +16,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * PropertyOwned class implements the behavior associated with the 
  * property space being owned, but not upgraded. All spaces (except utilities)
@@ -25,7 +27,7 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 
-public class PropertyOwned extends SpaceState {
+public class PropertyOwned extends SpaceState implements Serializable {
 	
 	private static PropertyOwned INSTANCE = null;
 	

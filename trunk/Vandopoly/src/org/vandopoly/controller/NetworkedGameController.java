@@ -84,7 +84,7 @@ public class NetworkedGameController implements ActionListener {
 	ArrayList<Piece> pieces_;
 	Space board_[];
 	int scholarshipFund_;
-	
+
 	Display display_;
 	DicePanel dicePanel_;
 	GameButtonPanel buttonPanel_;
@@ -93,64 +93,51 @@ public class NetworkedGameController implements ActionListener {
 
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
-	
+
 	ChanceCardSpace chance_;
 	CommCardSpace commChest_;
-	
+
 	final int NUM_OF_SPACES = 40;
-	
+
 	// Suggested integer for keeping track of the state of game
 	int currentPlayerNum_;
-	
+
 	private Socket clientSocket_;
 	private PrintWriter printOut_ = null;
 	private BufferedReader readIn_ = null;
 	private ObjectInputStream objectInput_ = null;
 	private ObjectOutputStream objectOutput_ = null;
 	private NetworkedMessageFilter filter_ = null;
-	
+
 	private boolean localControl_ = true;
-	
+
 	public NetworkedGameController(Display display, String[] namesAndIcons, boolean isServer) {
 		namesAndIcons_ = namesAndIcons;
 		if (isServer) {
 			createServer();
 			localControl_ = true;
-		}
-		else 
+		} else
 			localControl_ = false;
-			
+
 		dice_ = new Dice();
 		board_ = new Space[NUM_OF_SPACES];
-		
+
 		display_ = display;
-		
-		NotificationManager.getInstance().addObserver(Notification.START_GAME, 
-				this, "startGame");
-		NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, 
-				this, "updateFund");
-		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, 
-				this, "awardFund");
-		NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE,
-				this, "moveCurrentPlayer");
-		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL,
-				this, "sendPlayerToJail");
-		NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, 
-				this, "cardMoveTo");
-		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, 
-				this, "unownedProperty");
-		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, 
-				this, "pieceMoveSpaces");
-		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO,
-				this, "pieceMoveTo");
-		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE,
-				this, "displayActionMessage");
-		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
-				this, "chargeUtilityRent");
+
+		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
+		NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, this, "updateFund");
+		NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, this, "awardFund");
+		NotificationManager.getInstance().addObserver(Notification.DICE_ANIMATION_DONE, this, "moveCurrentPlayer");
+		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL, this, "sendPlayerToJail");
+		NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, this, "cardMoveTo");
+		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "unownedProperty");
+		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, this, "pieceMoveSpaces");
+		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO, this, "pieceMoveTo");
+		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "displayActionMessage");
+		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "chargeUtilityRent");
 	}
-	
-	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, 
-			ObjectOutputStream output) {
+
+	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
 
 		NetworkedMessage message = null;
 		readIn_ = reader;
@@ -158,62 +145,59 @@ public class NetworkedGameController implements ActionListener {
 		objectInput_ = input;
 		objectOutput_ = output;
 
-		// Create the object streams to pass messages along
-		try {
-			// Listen for objects (messages)
-			while (true) {
+		while (true) {
+			// Create the object streams to pass messages along
+			try {
+				// Listen for objects (messages)
 				message = (NetworkedMessage) objectInput_.readObject();
-				
+
 				System.out.println("Notifying of:" + message.getString());
-				NotificationManager.getInstance().notifyObservers(
-						message.getString(), message.getObject());
-				
+				NotificationManager.getInstance().notifyObservers(message.getString(), message.getObject());
+
 				// Do things based on message.getString()
 
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				System.out.println("ClassNotFoundException in clientListen()");
 			}
 		}
-		catch (IOException e) {
-			System.out.println("IO Exception in clientListen()");
-		}
-		catch (ClassNotFoundException e) {
-			System.out.println("ClassNotFoundException in clientListen()");
-		}
-		
+
 	}
-	
+
 	// Called by the START_GAME notification
 	public void startGame(Object obj) {
-		
+
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
-		
+
 		createPlayers();
 		createSpaces();
-			
+
 		shuffleCards();
-		
+
 		playerPanel_ = new PlayerPanel(players_);
 		dicePanel_ = new DicePanel(dice_);
 		buttonPanel_ = new GameButtonPanel(this);
-		
+
 		scholarshipFund_ = 500;
-		
+
 		if (localControl_ == false) {
 			dicePanel_.setDisabled();
 			buttonPanel_.setAllDisabled();
 		}
 	}
-	
+
 	public void createServer() {
 		new Thread("startGame") {
 			public void run() {
 				String temp = null;
-	
+
 				try {
-	
+
 					// Initialize the ServerSocket, which listens to the socket
 					ServerSocket serverSocket = new ServerSocket(3913);
 					System.out.println("Created serversocket");
-				
+
 					// Blocks until a connection is made
 					clientSocket_ = serverSocket.accept();
 					System.out.println("Recieved connection attempt");
@@ -225,59 +209,58 @@ public class NetworkedGameController implements ActionListener {
 					printOut_ = new PrintWriter(clientSocket_.getOutputStream(), true);
 					readIn_ = new BufferedReader(new InputStreamReader(clientSocket_.getInputStream()));
 					System.out.println("Created streams");
-					
+
 					// Read from the socket to accept a join game request
 					temp = readIn_.readLine();
-	
+
 					if (temp.equals("JOIN")) {
 						System.out.println("Server read join game");
 						printOut_.println("ACCEPTED");
-						
+
 						// Send player 1's name and piece info
 						printOut_.println(namesAndIcons_[1]);
 						printOut_.println(namesAndIcons_[3]);
-						
+
 						// Receive player 2's name and piece info
 						namesAndIcons_[2] = readIn_.readLine();
 						namesAndIcons_[4] = readIn_.readLine();
-						
+
 						System.out.println("Name: " + namesAndIcons_[2]);
 						System.out.println("Icon: " + namesAndIcons_[4]);
-						
+
 						temp = readIn_.readLine();
 						if (temp.equals("START")) {
 							// START GAME
 							System.out.println("STARTING GAME");
-							NotificationManager.getInstance().notifyObservers(
-									Notification.START_GAME, namesAndIcons_);
-							
+							NotificationManager.getInstance().notifyObservers(Notification.START_GAME, namesAndIcons_);
+
 							objectOutput_.writeObject(new NetworkedMessage(Notification.START_GAME, null));
-							
-							// Continue sending notifications across to the client
+
+							// Continue sending notifications across to the
+							// client
 							filter_ = new NetworkedMessageFilter();
 							new Thread("sendToClient") {
 								public void run() {
 									try {
 										while (true) {
 											NetworkedMessage tempMessage = filter_.queueRemove();
+											System.out.println(tempMessage);
 											if (tempMessage != null) {
 												objectOutput_.writeObject(tempMessage);
 												System.out.println("Sending object: " + tempMessage.getString());
 											}
 										}
-									}
-									catch (IOException e) {
+									} catch (IOException e) {
 										e.printStackTrace();
 									}
 								}
 							}.start();
-							
-							// Read in from the client 
+
+							// Read in from the client
 							while (true) {
 								NetworkedMessage tempMessage = null;
-								tempMessage = (NetworkedMessage)objectInput_.readObject();
-								NotificationManager.getInstance().notifyObservers(
-										tempMessage.getString(), tempMessage.getObject());
+								tempMessage = (NetworkedMessage) objectInput_.readObject();
+								NotificationManager.getInstance().notifyObservers(tempMessage.getString(), tempMessage.getObject());
 							}
 						}
 					}
@@ -285,70 +268,71 @@ public class NetworkedGameController implements ActionListener {
 					readIn_.close();
 					serverSocket.close();
 					clientSocket_.close();
-				} 
-				catch (UnknownHostException e) {
+				} catch (UnknownHostException e) {
 					System.out.println("Cannot find host");
-				} 
-				catch (IOException e) {
-					System.out.println("IO Exception occurred");
+				} catch (IOException e) {
+					e.printStackTrace();
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 			}
 		}.start();
 	}
-	
+
 	public void moveCurrentPlayer(Object obj) {
-		
+
 		try {
-			Dice dice = (Dice)obj;
+			Dice dice = (Dice) obj;
 			Player currentPlayer = players_.get(currentPlayerNum_);
-			
+
 			// Update current position of player model
 			currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			//currentPlayer.movePiece(1);
-			
-			/*//Print out some statements that help testing
-			System.out.println("Current Player: "+currentPlayer.getName());
-			System.out.println("Dice Roll: "+dice.getTotalRoll());
-			System.out.println("Giving a position of: "+currentPlayer.getPosition()+
-					" which is "+board_[currentPlayer.getPosition()].getName());
+			// currentPlayer.movePiece(1);
+
+			/*
+			 * //Print out some statements that help testing
+			 * System.out.println("Current Player: "+currentPlayer.getName());
+			 * System.out.println("Dice Roll: "+dice.getTotalRoll());
+			 * System.out.
+			 * println("Giving a position of: "+currentPlayer.getPosition()+
+			 * " which is "+board_[currentPlayer.getPosition()].getName());
 			 */
-			
+
 			// Have currentPlayer landOn the appropriate board position
 			board_[currentPlayer.getPosition()].landOn(currentPlayer);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	// Same as moveCurrentPlayer except that it expects an Integer to be passed to it
+
+	// Same as moveCurrentPlayer except that it expects an Integer to be passed
+	// to it
 	public void moveCurrentPlayerInteger(Object obj) {
-		
+
 		try {
-			Integer numSpaces = (Integer)obj;
+			Integer numSpaces = (Integer) obj;
 			Player currentPlayer = players_.get(currentPlayerNum_);
-			
+
 			// Update current position of player model
 			currentPlayer.movePiece(numSpaces);
-			
+
 			// Have currentPlayer landOn the appropriate board position
 			board_[currentPlayer.getPosition()].landOn(currentPlayer);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// Called by PIECE_MOVE_TO notification
 	// Avoids player needing access to piece to allow for unit testing
 	public void pieceMoveTo(Object obj) {
 		Integer spaceNum = (Integer) obj;
 		pieces_.get(currentPlayerNum_).moveToSpace(spaceNum);
 	}
-	
+
 	// Called by PIECE_MOVE_SPACES notification
 	// Avoids player needing access to piece to allow for unit testing
 	public void pieceMoveSpaces(Object obj) {
@@ -359,61 +343,60 @@ public class NetworkedGameController implements ActionListener {
 	public void sendPlayerToJail() {
 		players_.get(currentPlayerNum_).goToJail();
 	}
-	
+
 	// Called by the UpdateScholarship notification
 	public void updateFund(Object obj) {
-		Integer value = (Integer)obj;
-		
-		if((scholarshipFund_ + value.intValue()) > 0)
+		Integer value = (Integer) obj;
+
+		if ((scholarshipFund_ + value.intValue()) > 0)
 			scholarshipFund_ += value.intValue();
 		else
 			System.err.println("Attempted to remove more money from scholarship than there currently is");
 	}
-	
+
 	// Called by the Award Scholarship Fund notification
 	public void awardFund(Object obj) {
-		Player player = (Player)obj;
-		
-		new MessagePopUp(player.getName()+" has been awarded $"+scholarshipFund_
-				+" from the Scholarship Fund");
+		Player player = (Player) obj;
+
+		new MessagePopUp(player.getName() + " has been awarded $" + scholarshipFund_ + " from the Scholarship Fund");
 		player.updateCash(scholarshipFund_);
 		scholarshipFund_ = 500;
 	}
-	
+
 	private void createPlayers() {
 		players_ = new ArrayList<Player>();
 		pieces_ = new ArrayList<Piece>();
-		
+
 		for (int i = 0; i < numOfPlayers_; i++) {
 			players_.add(new Player(i, namesAndIcons_[i + 1]));
 			pieces_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], i + 1));
 		}
-		
-		//Enables easy testing
-		if(namesAndIcons_[1].equals("test"))
+
+		// Enables easy testing
+		if (namesAndIcons_[1].equals("test"))
 			cheatMode();
 	}
-	
+
 	// Called by Notification UTILITY_RENT
 	public void chargeUtilityRent(Object obj) {
 		UtilitySpace property = (UtilitySpace) obj;
 		int fee = property.getMultiplier() * dice_.getTotalRoll();
-		
+
 		property.getOwner().collectRent(fee, players_.get(currentPlayerNum_));
 	}
-	
+
 	private void createSpaces() {
 		chance_ = ChanceCardSpace.Instance(players_);
 		commChest_ = CommCardSpace.Instance(players_);
-		
+
 		// set 1
 		board_[0] = new CornerSpace("GO");
 		board_[1] = new UpgradeablePropertySpace("Dyer Hall", 0, 1, 60, 30, 2, 10, 30, 90, 160, 250);
 		board_[2] = commChest_;
-		board_[3] = new UpgradeablePropertySpace("Mims Hall", 0, 3, 60, 30, 4, 20,	60,	180, 320, 450);
+		board_[3] = new UpgradeablePropertySpace("Mims Hall", 0, 3, 60, 30, 4, 20, 60, 180, 320, 450);
 		board_[4] = new TaxSpace("Pay Tuition");
 		board_[5] = new PropertySpace("Vandy Van Reverse Route", 8, 5, 200, 100, 25, 50, 100, 200);
-		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 1, 6, 100, 30, 6,	30,	90,	270, 400, 550);
+		board_[6] = new UpgradeablePropertySpace("Tolman Hall", 1, 6, 100, 30, 6, 30, 90, 270, 400, 550);
 		board_[7] = chance_;
 		board_[8] = new UpgradeablePropertySpace("Cole Hall", 1, 8, 100, 30, 6, 30, 90, 270, 400, 550);
 		board_[9] = new UpgradeablePropertySpace("McGill Hall", 1, 9, 120, 30, 8, 40, 100, 300, 450, 600);
@@ -426,7 +409,7 @@ public class NetworkedGameController implements ActionListener {
 		board_[16] = new UpgradeablePropertySpace("Lewis House", 3, 16, 180, 90, 14, 70, 200, 550, 750, 950);
 		board_[17] = commChest_;
 		board_[18] = new UpgradeablePropertySpace("Morgan House", 3, 18, 180, 90, 14, 70, 200, 550, 750, 950);
-		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 3, 19, 200,100, 16, 80, 220, 600, 800, 1000);
+		board_[19] = new UpgradeablePropertySpace("Chaffin Place", 3, 19, 200, 100, 16, 80, 220, 600, 800, 1000);
 		board_[20] = new CornerSpace("Scholarship Fund");
 		board_[21] = new UpgradeablePropertySpace("Kirkland Hall", 4, 21, 220, 110, 18, 90, 250, 700, 875, 1050);
 		board_[22] = chance_;
@@ -447,197 +430,191 @@ public class NetworkedGameController implements ActionListener {
 		board_[37] = new UpgradeablePropertySpace("McGugin Center", 7, 37, 350, 175, 35, 175, 500, 1100, 1300, 1500);
 		board_[38] = new TaxSpace("Parking Ticket");
 		board_[39] = new UpgradeablePropertySpace("Commons Center", 7, 39, 400, 200, 50, 200, 600, 1400, 1700, 2000);
-		
+
 		display_.showBoard(board_);
-		
+
 	}
-	
+
 	public void shuffleCards() {
 		chance_.shuffleCards();
 		commChest_.shuffleCards();
 	}
-	
+
 	// Represents the logic for the GameButtonPanel class
 	public void actionPerformed(ActionEvent action) {
 		if (action.getActionCommand().equals("Purchase")) {
-			// This stops players from opening a propertySelectionPanel, then buying a property
+			// This stops players from opening a propertySelectionPanel, then
+			// buying a property
 			// and adjusting the levels inappropriately
-			if(propertySelectionPanel_ != null)
+			if (propertySelectionPanel_ != null)
 				propertySelectionPanel_.dispose();
-			
+
 			int position = players_.get(currentPlayerNum_).getPosition();
-			players_.get(currentPlayerNum_).purchase((PropertySpace)board_[position]);
-		}
-		else if (action.getActionCommand().equals("Manage Properties")) {
-			// If the propertySelectionPanel has already been created, dispose and get a new one
-			// This makes sure the panel is fully updated, and allows only a single propertySelection
+			players_.get(currentPlayerNum_).purchase((PropertySpace) board_[position]);
+		} else if (action.getActionCommand().equals("Manage Properties")) {
+			// If the propertySelectionPanel has already been created, dispose
+			// and get a new one
+			// This makes sure the panel is fully updated, and allows only a
+			// single propertySelection
 			// panel at a time
-			if(propertySelectionPanel_ != null)
+			if (propertySelectionPanel_ != null)
 				propertySelectionPanel_.dispose();
-			
+
 			propertySelectionPanel_ = new PropertySelectionPanel(players_.get(currentPlayerNum_));
-		}
-		else if (action.getActionCommand().equals("Trade")) {
+		} else if (action.getActionCommand().equals("Trade")) {
 			new TradeFrame(players_, currentPlayerNum_);
-		}
-		else if (action.getActionCommand().equals("End Turn")) {
+		} else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
-			
+
 			localControl_ = !localControl_;
 			if (localControl_ == false) {
 				dicePanel_.setDisabled();
 				buttonPanel_.setAllDisabled();
 			}
-			
+
 			// Get rid of current propertySelectionPanel
-			if(propertySelectionPanel_ != null) {
+			if (propertySelectionPanel_ != null) {
 				propertySelectionPanel_.dispose();
 				propertySelectionPanel_ = null;
 			}
-			
+
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 			if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
 				new JailPopUp(players_.get(currentPlayerNum_));
-		}
-		else if (action.getActionCommand().equals("Quit Game")) {
+		} else if (action.getActionCommand().equals("Quit Game")) {
 			confirmationPopUp();
 		}
 	}
-	
+
 	// Called by Notification CARD_MOVE_TO
 	public void cardMoveTo(Object obj) {
 		System.out.println("cardmoveTo");
-		Integer num = (Integer)obj;
-		board_[(int)num].landOn(players_.get(currentPlayerNum_));
-		
+		Integer num = (Integer) obj;
+		board_[(int) num].landOn(players_.get(currentPlayerNum_));
+
 	}
-	
+
 	// Used to create the pop-up window to confirm quitting the game
 	public void confirmationPopUp() {
 		JPanel basePanel = new JPanel();
 		JPanel panel1 = new JPanel();
 		JPanel panel2 = new JPanel();
-		
-		//Create layouts and buttons
+
+		// Create layouts and buttons
 		int hGap = 10, vGap = 10;
 		GridLayout baseGridLayout = new GridLayout(2, 1, hGap, vGap);
 		GridLayout gridLayout1 = new GridLayout(1, 1, 0, 0);
 		GridLayout gridLayout2 = new GridLayout(1, 2, 0, 0);
-		
+
 		basePanel.setLayout(null);
 		panel1.setLayout(null);
 		panel2.setLayout(null);
 		Font labelFont = new Font("broadway", Font.PLAIN, 20);
 		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
 		Font titleFont = new Font("broadway", Font.PLAIN, 14);
-		
+
 		JLabel label = new JLabel("Are you sure you want to quit?");
 		label.setFont(labelFont);
 		panel1.setLayout(gridLayout1);
 		panel1.add(label);
 		panel1.setBackground(new Color(236, 234, 166));
-		
+
 		JButton quit = new JButton("Quit");
 		quit.setFont(buttonFont);
 		quit.setVisible(true);
-		
+
 		JButton cancel = new JButton("Cancel");
 		cancel.setFont(buttonFont);
 		cancel.setVisible(true);
-		
+
 		panel2.add(quit);
 		panel2.add(cancel);
 		panel2.setLayout(gridLayout2);
-		
+
 		basePanel.setLayout(baseGridLayout);
 		basePanel.setBackground(new Color(236, 234, 166));
-		
+
 		Border blackline = BorderFactory.createLineBorder(Color.black, 2);
-		TitledBorder title = BorderFactory.createTitledBorder(
-			       blackline, "Quit Game");
+		TitledBorder title = BorderFactory.createTitledBorder(blackline, "Quit Game");
 		title.setTitleFont(titleFont);
 		title.setTitleJustification(TitledBorder.LEFT);
 		basePanel.setBorder(title);
 		basePanel.add(panel1);
 		basePanel.add(panel2);
 		basePanel.setVisible(true);
-	
-		int xCoord = (int)(DisplayAssembler.getScreenWidth() - 
-				basePanel.getPreferredSize().getWidth()) / 2;
-		int yCoord = (int)(DisplayAssembler.getScreenHeight() - 
-				basePanel.getPreferredSize().getHeight()) / 2;
-		
+
+		int xCoord = (int) (DisplayAssembler.getScreenWidth() - basePanel.getPreferredSize().getWidth()) / 2;
+		int yCoord = (int) (DisplayAssembler.getScreenHeight() - basePanel.getPreferredSize().getHeight()) / 2;
+
 		PopupFactory factory = PopupFactory.getSharedInstance();
 		final Popup popup = factory.getPopup(null, basePanel, xCoord, yCoord);
-		
+
 		quit.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent event) {
-	        	popup.hide();
-	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
-	        	System.exit(0);
-	        }
+			public void actionPerformed(ActionEvent event) {
+				popup.hide();
+				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+				System.exit(0);
+			}
 		});
 		cancel.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent event) {
-	        	popup.hide();
-	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
-	        }
-	    });
-	
-		popup.show();	
+			public void actionPerformed(ActionEvent event) {
+				popup.hide();
+				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+			}
+		});
+
+		popup.show();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
 	}
-	
+
 	public void displayActionMessage(Object obj) {
 		try {
 			String message = (String) obj;
 			ActionMessage.getInstance().newMessage(message);
-			
-		}
-		catch (ClassCastException e) {
+
+		} catch (ClassCastException e) {
 			System.err.println("Unknown object passed to method displayActionMessage");
 		}
 	}
-	
-	//Called by the UNOWNED_PROPERTY notification to display a pop-up window
+
+	// Called by the UNOWNED_PROPERTY notification to display a pop-up window
 	public void unownedProperty(Object obj) {
 		try {
 			PropertySpace property = (PropertySpace) obj;
-			new MessagePopUp(property.getName() + " is unowned. To purchase it for $"
-					+ property.getPurchasePrice() + ", use the purchase button.");
-		} 		
-		catch (ClassCastException e) {
+			new MessagePopUp(property.getName() + " is unowned. To purchase it for $" + property.getPurchasePrice() + ", use the purchase button.");
+		} catch (ClassCastException e) {
 			System.err.println("Unknown object passed to method unownedProperty");
 		}
 	}
-	
+
 	// Called if Player 1's name is equal to "test"
 	private void cheatMode() {
 		int totalX = 150;
 		int buttonY = 20;
-		
+
 		final JTextField cheatSpaces = new JTextField();
 		cheatSpaces.setBounds(0, 0, (totalX * 2 / 3), buttonY);
 		cheatSpaces.setVisible(true);
-		
-		// Go button effectively rolls the dice the number given in the text field
+
+		// Go button effectively rolls the dice the number given in the text
+		// field
 		JButton go = new JButton("Go");
 		go.setBounds(0, 0, (totalX / 3), buttonY);
 		go.setVisible(true);
-		
+
 		go.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				int num = Integer.parseInt(cheatSpaces.getText());
 				moveCurrentPlayerInteger(num);
 			}
 		});
-		
+
 		// Creates an End Turn button to change players
 		JButton endTurn = new JButton("End Turn");
 		endTurn.setBounds(0, 0, totalX, buttonY);
 		endTurn.setVisible(true);
-		
+
 		// Simulates End Turn button in GameButtonPanel
 		endTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -647,16 +624,10 @@ public class NetworkedGameController implements ActionListener {
 					new JailPopUp(players_.get(currentPlayerNum_));
 			}
 		});
-		
+
 		// Add the cheat control bar to display assembler
-		DisplayAssembler.getInstance().addComponent(go, DisplayAssembler.getScreenWidth() - (totalX / 3), 
-				DisplayAssembler.getScreenHeight() - (2 * buttonY),
-				JLayeredPane.POPUP_LAYER);
-		DisplayAssembler.getInstance().addComponent(cheatSpaces, DisplayAssembler.getScreenWidth() - totalX, 
-				DisplayAssembler.getScreenHeight() - (2 * buttonY),
-				JLayeredPane.POPUP_LAYER);
-		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth() - totalX, 
-				DisplayAssembler.getScreenHeight() - buttonY,
-				JLayeredPane.POPUP_LAYER);
+		DisplayAssembler.getInstance().addComponent(go, DisplayAssembler.getScreenWidth() - (totalX / 3), DisplayAssembler.getScreenHeight() - (2 * buttonY), JLayeredPane.POPUP_LAYER);
+		DisplayAssembler.getInstance().addComponent(cheatSpaces, DisplayAssembler.getScreenWidth() - totalX, DisplayAssembler.getScreenHeight() - (2 * buttonY), JLayeredPane.POPUP_LAYER);
+		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth() - totalX, DisplayAssembler.getScreenHeight() - buttonY, JLayeredPane.POPUP_LAYER);
 	}
 }

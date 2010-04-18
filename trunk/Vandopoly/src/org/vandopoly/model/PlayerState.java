@@ -15,7 +15,7 @@
 
 package org.vandopoly.model;
 
-import org.vandopoly.model.Player;
+import java.io.Serializable;
 
 /*
  * PlayerState class defines an interface for encapsulating the behavior
@@ -24,7 +24,7 @@ import org.vandopoly.model.Player;
  * 
  * @author Allie Mazzia
  */
-public class PlayerState {
+public class PlayerState implements Serializable{
 	
 	public void movePiece(Player player, int spaces) {};
 	
