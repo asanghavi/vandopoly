@@ -25,6 +25,7 @@ import java.util.ArrayList;
  * @author Allie Mazzia
  */
 public class CardTypeOutOfJail extends Card implements Serializable{
+	final static long serialVersionUID = 202;
 	
 	public CardTypeOutOfJail() {
 		message_ = "Get off Academic Probation FREE!";

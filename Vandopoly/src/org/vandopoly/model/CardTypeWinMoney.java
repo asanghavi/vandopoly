@@ -26,6 +26,7 @@ import java.util.ArrayList;
  */
 public class CardTypeWinMoney extends Card implements Serializable {
 	private int amount_;
+	final static long serialVersionUID = 205;
 	
 	public CardTypeWinMoney() {
 		message_ = "NONE";

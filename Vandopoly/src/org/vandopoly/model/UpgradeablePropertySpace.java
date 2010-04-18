@@ -28,6 +28,8 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class UpgradeablePropertySpace extends PropertySpace implements Serializable {
 	
+	final static long serialVersionUID = 228;
+	
 	public UpgradeablePropertySpace() {
 		name_ = "NONE";
 		state_ = SpaceUnowned.Instance();

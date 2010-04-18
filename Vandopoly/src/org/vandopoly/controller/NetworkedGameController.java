@@ -243,17 +243,16 @@ public class NetworkedGameController implements ActionListener {
 							filter_ = new NetworkedMessageFilter();
 							new Thread("sendToClient") {
 								public void run() {
-									try {
-										while (true) {
+									while (true) {
+										try {
 											NetworkedMessage tempMessage = filter_.queueRemove();
-											System.out.println(tempMessage);
 											if (tempMessage != null) {
 												objectOutput_.writeObject(tempMessage);
 												System.out.println("Sending object: " + tempMessage.getString());
 											}
+										} catch (IOException e) {
+											e.printStackTrace();
 										}
-									} catch (IOException e) {
-										e.printStackTrace();
 									}
 								}
 							}.start();

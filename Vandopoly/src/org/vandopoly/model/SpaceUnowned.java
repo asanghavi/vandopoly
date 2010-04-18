@@ -32,6 +32,7 @@ import org.vandopoly.messaging.NotificationManager;
 public class SpaceUnowned extends SpaceState implements Serializable{
 
 	private static SpaceUnowned INSTANCE = null;
+	final static long serialVersionUID = 221;
 	
 	protected SpaceUnowned() {
 		// Exists to disable instantiation

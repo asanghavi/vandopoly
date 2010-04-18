@@ -27,6 +27,8 @@ import java.util.ArrayList;
 public class Card implements Serializable {
 	protected String message_;
 	
+	final static long serialVersionUID = 200;
+	
 	public void setMessage(String message) {
 		message_ = message;
 	}

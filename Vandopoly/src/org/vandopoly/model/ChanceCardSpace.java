@@ -38,6 +38,8 @@ public class ChanceCardSpace extends Space implements Serializable {
 	ArrayList<Player> players_;
 	private static ChanceCardSpace INSTANCE = null;
 	public static final int NUMBER = 15;
+	
+	final static long serialVersionUID = 206;
 
 	protected ChanceCardSpace(ArrayList<Player> players) {
 		stack_ = new Vector<Card>(NUMBER);

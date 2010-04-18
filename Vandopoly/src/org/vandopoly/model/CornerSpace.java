@@ -26,6 +26,7 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 public class CornerSpace extends Space implements Serializable {
+	final static long serialVersionUID = 208;
 	
 	public CornerSpace() {
 		name_ = "NONE";

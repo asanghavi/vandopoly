@@ -30,6 +30,7 @@ import org.vandopoly.messaging.NotificationManager;
 public class PlayerFree extends PlayerState implements Serializable{
 
 	private static PlayerFree INSTANCE = null;
+	final static long serialVersionUID = 210;
 	
 	protected PlayerFree() {
 		// Exists to disable instantiation

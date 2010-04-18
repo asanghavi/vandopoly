@@ -24,7 +24,9 @@ import java.io.Serializable;
  * 
  * @author Allie Mazzia
  */
-public class UpgradeablePropertyState extends SpaceState implements Serializable{
+public class UpgradeablePropertyState extends SpaceState implements Serializable {
+	
+	final static long serialVersionUID = 229;
 	
 	protected void changeState(UpgradeablePropertySpace space, SpaceState newState) {
 		space.changeState(newState);

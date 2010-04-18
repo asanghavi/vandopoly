@@ -28,6 +28,7 @@ import java.io.Serializable;
 public class PropertyOwns2 extends PropertyState implements Serializable{
 
 	private static PropertyOwns2 INSTANCE = null;
+	final static long serialVersionUID = 214;
 	
 	protected PropertyOwns2() {
 		// Exists to disable instantiation

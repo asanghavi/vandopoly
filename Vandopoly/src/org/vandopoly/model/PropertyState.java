@@ -26,6 +26,8 @@ import java.io.Serializable;
  */
 public class PropertyState extends SpaceState implements Serializable {
 	
+	final static long serialVersionUID = 218;
+	
 	protected void changeState(PropertySpace space, SpaceState newState) {
 		space.changeState(newState);
 	}

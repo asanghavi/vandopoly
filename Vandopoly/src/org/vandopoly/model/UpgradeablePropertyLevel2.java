@@ -29,6 +29,7 @@ import java.io.Serializable;
 public class UpgradeablePropertyLevel2 extends UpgradeablePropertyState implements Serializable {
 	
 	private static UpgradeablePropertyLevel2 INSTANCE = null;
+	final static long serialVersionUID = 224;
 	
 	protected UpgradeablePropertyLevel2() {
 		// Exists to disable instantiation

@@ -28,6 +28,8 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 public class UtilityOwns1 extends UtilityState implements Serializable {
+	
+	final static long serialVersionUID = 230;
 
 	private static UtilityOwns1 INSTANCE = null;
 	
