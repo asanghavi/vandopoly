@@ -35,7 +35,7 @@ public class EventCallback {
 		method_ = method;
 	}
 
-	public void notifyObserver(Object updatedObject, String event) {
+	public void notifyObserver(Object updatedObject, String event, boolean terminal) {
 		try {
 			if (method_.getParameterTypes().length == 1)
 				method_.invoke(object_, updatedObject);
@@ -43,6 +43,8 @@ public class EventCallback {
 				method_.invoke(object_);
 			else if (method_.getParameterTypes().length == 2)
 				method_.invoke(object_, updatedObject, event);
+			else if (method_.getParameterTypes().length == 3)
+				method_.invoke(object_, updatedObject, event, terminal);
 			else
 				System.err.println(this + " does not contain 0 or 1 parameter");
 		} catch (IllegalAccessException e) {
@@ -51,7 +53,8 @@ public class EventCallback {
 			System.err.println(error);
 		} catch (InvocationTargetException e) {
 			String error = "An InvocationTargetException has occured while trying to"
-					+ "notify " + object_.getClass() + " with method " + method_.getName();
+					+ "notify " + object_.getClass() + " with method " + method_.getName()
+					+ "\n I suggest going to target method, catching exception and printing stack trace";
 			System.err.println(error);
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {

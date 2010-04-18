@@ -44,6 +44,7 @@ public class NotificationManager {
 	private static NotificationManager INSTANCE = null;
 	
 	Class twoParameters[] = {Object.class, String.class};
+	Class threeParameters[] = {Object.class, String.class, boolean.class};
 	
 	private NotificationManager() {
 		listsOfEventObservers_ = new HashMap<String, ArrayList<EventCallback>>();
@@ -81,7 +82,16 @@ public class NotificationManager {
 		catch(Exception e) {
 		}
 		
-		// Try to find a method with 2 parameters
+		// If the previous try didn't work, look for a method that does not have any parameters
+		if (callbackMethod == null) {
+			try {
+				callbackMethod = subscriber.getClass().getMethod(callbackMethodName);
+			}
+			catch(Exception e) {
+			}
+		}
+		
+		// Try to find a method with 2 parameters... Object and event name
 		if (callbackMethod == null) {
 			try {
 				callbackMethod = subscriber.getClass().getMethod(callbackMethodName, twoParameters);
@@ -90,12 +100,12 @@ public class NotificationManager {
 			}
 		}
 		
-		// If the previous try didn't work, look for a method that does not have any parameters
+		// Finally for networking check if there method is looking for a terminal flag.
 		if (callbackMethod == null) {
 			try {
-				callbackMethod = subscriber.getClass().getMethod(callbackMethodName);
+				callbackMethod = subscriber.getClass().getMethod(callbackMethodName, threeParameters);
 			}
-			catch(Exception e) {
+			catch (Exception e) {
 			}
 			
 			// Print error message if still cannot find an appropriate method
@@ -143,11 +153,16 @@ public class NotificationManager {
 	// This will cause errors - suggestion - use some sort of synchronized or semaphore
 	// Typical use player.notifyObservers(PURCHASE_PROPERTY, this);
 	public void notifyObservers(String event, Object updatedObject) {
+		notifyObservers(event, updatedObject, false);
+	}
+	
+	// Used for networking and effectively stopping the notification from propagating over the wire
+	public void notifyObservers(String event, Object updatedObject, boolean terminal) {
 		ArrayList<EventCallback> observerList = listsOfEventObservers_.get(event);
 
 		if (observerList != null) {
 			for (int i = observerList.size() - 1; i >= 0; i--)
-				observerList.get(i).notifyObserver(updatedObject , event);
+				observerList.get(i).notifyObserver(updatedObject , event, terminal);
 		}
 		else
 			System.err.println("No Observers have ever subscribed to event "+event);

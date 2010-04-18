@@ -34,12 +34,14 @@ public class MessagingTests extends TestCase {
 	private String EVENT1 = "Test";
 	private String EVENT2 = "Test2";
 	private String EVENT3 = "Test3";
+	private String EVENT4 = "Test4";
 	
 	private Boolean withParameter = false;
 	private Boolean withParameter2 = false;
 	private Boolean noParameter = false;
 	
 	private Boolean twoParameters = false;
+	private Boolean threeParameters = false;
 	
 	// Sets up "shared" objects among tests.
 	// Any changes to objects during a test is confined to that test
@@ -49,8 +51,10 @@ public class MessagingTests extends TestCase {
 		
 		manager.addObserver(EVENT1, this, "callbackWithParameter");
 		manager.addObserver(EVENT1, this, "callbackNoParameter");
+		manager.addObserver(EVENT1, this, "cb3Parameters");
 		manager.addObserver(EVENT2, this, "callbackWithParameter2");
 		manager.addObserver(EVENT3, this, "cb2Parameters");
+		manager.addObserver(EVENT4, this, "cb3Parameters");
 	}
 	
 	// Must be used to cleanup after a .setUp()
@@ -65,15 +69,18 @@ public class MessagingTests extends TestCase {
 		return new TestSuite(MessagingTests.class);
 	}
 	
-	
+	// Tests both a parameter function and a no parameter function
 	public void testNotifyObservers1() {
 		NotificationManager.getInstance().notifyObservers(EVENT1, null);
 		assertTrue(withParameter);
 		assertTrue(noParameter);
 		assertTrue(!withParameter2);
 		assertTrue(!twoParameters);
+		// Terminal should be false so this should return false
+		assertTrue(!threeParameters);
 	}
 	
+	// Test if the parameter function is recognized and is called appropriately while not calling any others
 	public void testNotifyObservers2() {
 		NotificationManager.getInstance().notifyObservers(EVENT2, null);
 		assertTrue(withParameter2);
@@ -82,6 +89,7 @@ public class MessagingTests extends TestCase {
 		assertTrue(!twoParameters);
 	}
 	
+	// Test if the 2 parameter function is recognized and is called appropriately
 	public void testTwoParameter() {
 		NotificationManager.getInstance().notifyObservers(EVENT3, null);
 		assertTrue(twoParameters);
@@ -90,6 +98,17 @@ public class MessagingTests extends TestCase {
 		assertTrue(!noParameter);
 	}
 	
+	// Test if the 3 parameter function is recognized and is called appropriately
+	public void testThreeParameter() {
+		NotificationManager.getInstance().notifyObservers(EVENT4, null, true);
+		assertTrue(threeParameters);
+		assertTrue(!twoParameters);
+		assertTrue(!withParameter2);
+		assertTrue(!withParameter);
+		assertTrue(!noParameter);
+	}
+	
+	// Should print out a red line that no observers were subscribed
 	public void testNoObservers() {
 		NotificationManager.getInstance().notifyObservers("NoObservers", null);
 		System.out.println("Should Print out \"No observers have ever subscribed "+
@@ -118,5 +137,8 @@ public class MessagingTests extends TestCase {
 	public void cb2Parameters(Object obj, String event) {
 		if(event.equals(EVENT3))
 			twoParameters = true;
+	}
+	public void cb3Parameters(Object obj, String event, boolean terminal) {
+		threeParameters = terminal;
 	}
 }
