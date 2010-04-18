@@ -110,8 +110,10 @@ public class NetworkedGameController implements ActionListener {
 	private NetworkedMessageFilter filter_ = null;
 
 	private boolean localControl_ = true;
-
+	public boolean isServer_;
+	
 	public NetworkedGameController(Display display, String[] namesAndIcons, boolean isServer) {
+		isServer_ = isServer;
 		namesAndIcons_ = namesAndIcons;
 		if (isServer) {
 			createServer();
@@ -377,6 +379,11 @@ public class NetworkedGameController implements ActionListener {
 			cheatMode();
 	}
 
+	// Return the int of who's turn it is
+	public int getTurn() {
+		return currentPlayerNum_;
+	}
+	
 	// Called by Notification UTILITY_RENT
 	public void chargeUtilityRent(Object obj) {
 		UtilitySpace property = (UtilitySpace) obj;
