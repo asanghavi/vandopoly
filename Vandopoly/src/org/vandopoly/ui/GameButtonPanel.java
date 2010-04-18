@@ -93,7 +93,7 @@ public class GameButtonPanel extends JPanel {
 				new Point(0, ((int)DisplayAssembler.getScreenHeight()) - 50),
 				JLayeredPane.PALETTE_LAYER);
 		
-		// Sign up for the appropriate notificationsz
+		// Sign up for the appropriate notifications
 		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
 		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
@@ -145,23 +145,13 @@ public class GameButtonPanel extends JPanel {
 				JLayeredPane.PALETTE_LAYER);
 		
 		// Sign up for the appropriate notifications
-		if(networkedController_.getTurn() == 0 && networkedController_.isServer_
-				|| networkedController_.getTurn() == 1 && !networkedController_.isServer_) {
-			NotificationManager.getInstance().addObserver(
-					Notification.DONE_ROLLING, this, "playerState");
-			NotificationManager.getInstance().addObserver(
-					Notification.UNOWNED_PROPERTY, this, "enablePurchase");
-			NotificationManager.getInstance().addObserver(
-					Notification.END_TURN, this, "rollingState");
-			NotificationManager.getInstance().addObserver(
-					Notification.DISABLE_PURCHASE, this, "disablePurchase");
-			NotificationManager.getInstance().addObserver(
-					Notification.SHOW_CARD, this, "setAllDisabled");
-			NotificationManager.getInstance().addObserver(
-					Notification.REMOVE_CARD, this, "setEnabled");
-			NotificationManager.getInstance().addObserver(
-					Notification.END_TURN_EARLY, this, "playerState");
-		}
+		NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "playerState");
+		NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "enablePurchase");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "rollingState");
+		NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "disablePurchase");
+		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "setAllDisabled");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "setEnabled");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "playerState");
 	}
 
 	// Responsible for creating all the buttons in GameButtonPanel
