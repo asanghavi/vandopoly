@@ -15,9 +15,10 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
-import org.vandopoly.model.PlayerState;
 
 /*
  * PlayerFree class implements the behavior associated with the player 
@@ -26,7 +27,7 @@ import org.vandopoly.model.PlayerState;
  * 
  * @author Allie Mazzia
  */
-public class PlayerFree extends PlayerState{
+public class PlayerFree extends PlayerState implements Serializable{
 
 	private static PlayerFree INSTANCE = null;
 	

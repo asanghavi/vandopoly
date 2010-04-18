@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -26,7 +28,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Allie Mazzia
  */
-public class UtilityOwns2 extends UtilityState{
+public class UtilityOwns2 extends UtilityState implements Serializable {
 
 	private static UtilityOwns2 INSTANCE = null;
 	

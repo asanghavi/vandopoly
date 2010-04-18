@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Allie Mazzia
  */
-public class CardTypeOutOfJail extends Card {
+public class CardTypeOutOfJail extends Card implements Serializable{
 	
 	public CardTypeOutOfJail() {
 		message_ = "Get off Academic Probation FREE!";

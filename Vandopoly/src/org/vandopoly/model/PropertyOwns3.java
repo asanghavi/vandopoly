@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * PropertyOwns3 class implements the behavior associated with the 
  * property space being owned by a player who also owns two other property
@@ -23,7 +25,7 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class PropertyOwns3 extends PropertyState {
+public class PropertyOwns3 extends PropertyState implements Serializable {
 
 	private static PropertyOwns3 INSTANCE = null;
 	

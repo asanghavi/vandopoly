@@ -43,7 +43,6 @@ public class NotificationManager {
 	private HashMap<String, ArrayList<EventCallback>> listsOfEventObservers_ = null;
 	private static NotificationManager INSTANCE = null;
 	
-	Class oneParameter[] = {Object.class};
 	Class twoParameters[] = {Object.class, String.class};
 	
 	private NotificationManager() {
@@ -77,7 +76,7 @@ public class NotificationManager {
 		
 		// Attempt to find a method with the same name and an Object as the parameter
 		try {
-			callbackMethod = subscriber.getClass().getMethod(callbackMethodName, oneParameter);
+			callbackMethod = subscriber.getClass().getMethod(callbackMethodName, Object.class);
 		}
 		catch(Exception e) {
 		}

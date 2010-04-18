@@ -51,4 +51,8 @@ public class NetworkedMessage implements Serializable {
 		return obj_;
 	}
 	
+	public String toString() {
+		return "Event: " + message_ + " Object: " + obj_;
+	}
+	
 }

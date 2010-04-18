@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.vandopoly.messaging.Notification;
@@ -25,7 +26,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Allie Mazzia
  */
-public class TaxSpace extends Space {
+public class TaxSpace extends Space implements Serializable {
 	private int fee_;
 	private double percentageFee_;
 	

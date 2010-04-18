@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -25,7 +27,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Allie Mazzia
  */
-public class PlayerInJail extends PlayerState {
+public class PlayerInJail extends PlayerState implements Serializable{
 
 	private static PlayerInJail INSTANCE = null;
 	

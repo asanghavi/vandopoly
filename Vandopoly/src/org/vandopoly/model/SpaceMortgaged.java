@@ -16,6 +16,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * SpaceMortgaged class implements the behavior associated with the 
  * property space being owned and mortgaged.
@@ -24,7 +26,7 @@ package org.vandopoly.model;
  * @author Allie Mazzia
  */
 
-public class SpaceMortgaged extends SpaceState {
+public class SpaceMortgaged extends SpaceState implements Serializable {
 	
 	private static SpaceMortgaged INSTANCE = null;
 	

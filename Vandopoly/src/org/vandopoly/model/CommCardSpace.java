@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ListIterator;
@@ -30,7 +31,7 @@ import org.vandopoly.ui.MessagePopUp;
  * 
  * @author Allie Mazzia
  */
-public class CommCardSpace extends Space {
+public class CommCardSpace extends Space implements Serializable {
 	
 	ArrayList<Player> players_;
 	Vector<Card> stack_;

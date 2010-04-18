@@ -15,6 +15,7 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Allie Mazzia
  */
-public class CardTypePayPlayers extends Card {
+public class CardTypePayPlayers extends Card implements Serializable {
 	private int amount_;
 	
 	public CardTypePayPlayers() {

@@ -16,6 +16,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -27,7 +29,7 @@ import org.vandopoly.messaging.NotificationManager;
  * @author Allie Mazzia
  */
 
-public class SpaceUnowned extends SpaceState {
+public class SpaceUnowned extends SpaceState implements Serializable{
 
 	private static SpaceUnowned INSTANCE = null;
 	

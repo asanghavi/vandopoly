@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
@@ -23,7 +25,7 @@ import org.vandopoly.messaging.NotificationManager;
  * 
  * @author Allie Mazzia
  */
-public class CornerSpace extends Space {
+public class CornerSpace extends Space implements Serializable {
 	
 	public CornerSpace() {
 		name_ = "NONE";
