@@ -129,18 +129,7 @@ public class SpacePanel extends JPanel {
 			
 			String status = "";
 			
-			status += spaceObj_ + ", ";
-			status += "On this space: ";
-			
-			/*if(onSpace_.size() == 0)
-				status += "Nobody";
-			else {
-				String spacelist = "";
-				for (String s : onSpace_) {
-					spacelist += ", " + s;
-				}
-				status += spacelist.substring(3);
-			}*/
+			status += spaceObj_;
 			
 			label.setToolTipText(status);
 		}

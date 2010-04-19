@@ -26,7 +26,7 @@ import java.util.HashMap;
  * was chosen to make networked games a feasible task in the future. 
  * 
  * To ensure that messaging doesn't grow out of control, objects will have the opportunity
- * to subscribe to general classes, individual objects, and specific events.  The flexibility
+ * to subscribe to specific events.  The flexibility
  * in subscribing should allow the NotificationManager to work for all of the 
  * projects messaging needs.
  * 
@@ -76,9 +76,11 @@ public class NotificationManager {
 		Method callbackMethod = null;
 		
 		// Attempt to find a method with the same name and an Object as the parameter
+		// Throws an exception if there isn't a method of this type
 		try {
 			callbackMethod = subscriber.getClass().getMethod(callbackMethodName, Object.class);
 		}
+		// Essentially catch the potential exception and continue trying to find the type of method
 		catch(Exception e) {
 		}
 		
