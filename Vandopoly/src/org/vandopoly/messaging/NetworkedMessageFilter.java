@@ -58,7 +58,7 @@ public class NetworkedMessageFilter {
 		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "addToQueue");
