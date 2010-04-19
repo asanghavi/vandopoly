@@ -92,7 +92,7 @@ public class Notification {
 	// referring to the space number the piece should be moved to
 	public static final String PIECE_MOVE_TO = "PieceMoveTo";
 	
-	// Used by Player to move piece a certian number of spaces.  Notifies game controller
+	// Used by Player to move piece a certain number of spaces.  Notifies game controller
 	// containing an integer pertaining to how many spaces to move
 	public static final String PIECE_MOVE_SPACES = "PieceMoveSpaces";
 	
@@ -110,6 +110,10 @@ public class Notification {
 	// Sent from Utility States to the game controller to charge appropriate rent based on the dice
 	// The property is sent along for rent collection information.
 	public static final String UTILITY_RENT = "UtilityRent";
+	
+	// Sent during a networked game to update the connected player on the status of the game
+	// after a turn has ended
+	public static final String END_TURN_UPDATE = "EndTurnUpdate";
 	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality

@@ -61,15 +61,21 @@ public class NetworkedMessageFilter {
 		//NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "addToQueue");
-	
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "addToQueue");
+		
 		addRemoveLock = new Semaphore(1);
 	}
 	
-	public void addToQueue(Object obj, String eventName) {
+	public void addToQueue(Object obj, String eventName, boolean isTerminal) {
 		// Encapsulate each object in a NetworkedMessage and
 		// add it to the queue
-		NetworkedMessage temp = new NetworkedMessage(eventName, obj);
-		queueAdd(temp);
+		
+		System.out.println("NMFilter received: " + eventName + " terminal:" + isTerminal);
+		
+		if (!isTerminal) {
+			NetworkedMessage temp = new NetworkedMessage(eventName, obj);
+			queueAdd(temp);
+		}
 	}
 	
 	public void queueAdd(NetworkedMessage message) {
