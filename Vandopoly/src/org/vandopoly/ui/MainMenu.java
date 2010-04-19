@@ -30,7 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import org.vandopoly.messaging.NetworkedNotificationManager;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 

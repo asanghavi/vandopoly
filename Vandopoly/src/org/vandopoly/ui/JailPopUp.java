@@ -117,7 +117,7 @@ public class JailPopUp {
 	        	popup.hide();
 	        	NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
 	        	player_.getOutOfJail();
-	        	player_.setGetOutOfJail(false);
+	        	player_.usedGetOutOfJail();
 	        }
 		});
 		pay.addActionListener(new ActionListener() {
