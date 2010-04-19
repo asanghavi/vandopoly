@@ -60,7 +60,7 @@ public class UpgradeablePropertySpace extends PropertySpace implements Serializa
 		owner_ = null;
 	}
 	
-	void changeState(SpaceState newState) {
+	public void changeState(SpaceState newState) {
 		state_ = newState;
 	}
 	

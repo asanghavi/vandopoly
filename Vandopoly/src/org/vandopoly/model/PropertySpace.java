@@ -76,7 +76,7 @@ public class PropertySpace extends Space implements Serializable {
 		return string;
 	}
 	
-	void changeState(SpaceState newState) {
+	public void changeState(SpaceState newState) {
 		state_ = newState;
 	}
 	
