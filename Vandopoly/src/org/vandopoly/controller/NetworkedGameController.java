@@ -160,6 +160,7 @@ public class NetworkedGameController implements ActionListener {
 						NetworkedMessage tempMessage = filter_.queueRemove();
 						if (tempMessage != null) {
 							objectOutput_.writeObject(tempMessage);
+							objectOutput_.reset();
 							System.out.println("Client: Sending object: " + tempMessage.getString());
 						}
 					} catch (IOException e) {
@@ -268,6 +269,7 @@ public class NetworkedGameController implements ActionListener {
 											NetworkedMessage tempMessage = filter_.queueRemove();
 											if (tempMessage != null) {
 												objectOutput_.writeObject(tempMessage);
+												objectOutput_.reset();
 												System.out.println("Server: Sending object: " + tempMessage.getString());
 											}
 										} catch (IOException e) {
@@ -592,6 +594,17 @@ public class NetworkedGameController implements ActionListener {
 			
 			playerPanel_.updateCash(players_.get(i));
 			playerPanel_.updateProperties(players_.get(i));
+			
+		}
+		System.out.println("*******Finished****************");
+		for (int i = 0; i < players_.size(); ++i) {
+			System.out.println("Player: " + players_.get(i).getName());
+			System.out.println("Cash: " + players_.get(i).getCash());
+			System.out.println("Properties: ");
+			for (int j = 0; j < players_.get(i).getProperties().size(); ++j) {
+				System.out.println(players_.get(i).getProperties().get(j).getName());
+			}
+			System.out.println("*****************************");
 		}
 	}
 	

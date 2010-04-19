@@ -15,6 +15,8 @@
 
 package org.vandopoly.model;
 
+import java.io.Serializable;
+
 /*
  * SpaceState class defines an interface for encapsulating the behavior
  * associated with a particular Concrete State.
@@ -24,7 +26,9 @@ package org.vandopoly.model;
  * 
  * @author Allie Mazzia
  */
-public class SpaceState {
+public class SpaceState implements Serializable {
+	final static long serialVersionUID = 238;
+	
 	protected void changeState(PropertySpace space, SpaceState newState) {
 		space.changeState(newState);
 	}
