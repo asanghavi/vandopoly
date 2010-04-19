@@ -52,7 +52,7 @@ public class Player implements Serializable {
 		index_ = 0;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
-		setProperties(new ArrayList<PropertySpace>());
+		properties_ = new ArrayList<PropertySpace>();
 		numOfRolls_ = 0;
 	}
 
@@ -63,11 +63,11 @@ public class Player implements Serializable {
 		index_ = index;
 		positionOnBoard_ = 0;
 		getOutOfJail_ = false;
-		setProperties(new ArrayList<PropertySpace>());
+		properties_ = new ArrayList<PropertySpace>();
 		numOfRolls_ = 0;
 	}
 
-	void changeState(PlayerState newState) {
+	public void changeState(PlayerState newState) {
 		state_ = newState;
 	}
 
@@ -119,6 +119,15 @@ public class Player implements Serializable {
 		else
 			System.err.println("Invalid space number for setPosition: " + space);
 	}
+	
+	// Sets the position of the player, but does not send a notification.
+	// Used for networking 
+	public void setPosition_NoNotify(int space) {
+		if (space >= 0 && space < SPACES_ON_BOARD) 
+			positionOnBoard_ = space;
+		else
+			System.err.println("Invalid space number for setPosition: " + space);
+	}
 
 	public int getPosition() {
 		return positionOnBoard_;
@@ -130,6 +139,8 @@ public class Player implements Serializable {
 			propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
 			NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
 		}
+		
+		System.out.println(name_ + " called updateCash");
 		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_CASH, this);
 	}
 
@@ -143,11 +154,18 @@ public class Player implements Serializable {
 
 	public void setGetOutOfJail(boolean hasCard) {
 		getOutOfJail_ = hasCard;
+			
+	}
+	
+	public void usedGetOutOfJail() {
+		getOutOfJail_ = false;
+		NotificationManager.getInstance().notifyObservers(Notification.USED_JAIL_CARD, this);
+	}
+	
+	public void gainedGetOutOfJail() {
+		getOutOfJail_ = true;
+		NotificationManager.getInstance().notifyObservers(Notification.GAINED_JAIL_CARD, this);
 		
-		if (hasCard)
-			NotificationManager.getInstance().notifyObservers(Notification.GAINED_JAIL_CARD, this);
-		else
-			NotificationManager.getInstance().notifyObservers(Notification.USED_JAIL_CARD, this);
 	}
 
 	public boolean hasGetOutOfJail() {
@@ -241,6 +259,7 @@ public class Player implements Serializable {
 			if (property.getTypeInt() < tempSpace.getTypeInt())
 				properties_.add(itr.nextIndex(), property);
 		}
+		
 		NotificationManager.getInstance().notifyObservers
 			(Notification.UPDATE_PROPERTIES, this);
 	}

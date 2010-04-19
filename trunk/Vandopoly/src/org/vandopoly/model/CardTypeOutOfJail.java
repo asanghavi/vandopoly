@@ -32,7 +32,7 @@ public class CardTypeOutOfJail extends Card implements Serializable{
 	}
 	
 	public void landOn(Player p, ArrayList<Player> players) {
-		p.setGetOutOfJail(true);
+		p.gainedGetOutOfJail();
 	}
 
 }
