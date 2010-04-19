@@ -197,7 +197,6 @@ public class MessagePopUp extends JPanel {
 		{
 			trimmedWords.addElement(words.nextToken());
 		}
-		System.out.println("Words:\n" + trimmedWords);
 		
 		//Iterate through the Vector, printing an error message if a word is reached
 		// that is longer than <maxpos> and storing a count of how many characters
@@ -207,7 +206,6 @@ public class MessagePopUp extends JPanel {
 		for (int i = 0; i < trimmedWords.size(); i = i + 1)
 		{
 			String currentWord = trimmedWords.elementAt(i);
-			System.out.println(currentWord);
 			if(currentWord.length() > maxpos)
 			{
 				System.out.print("Error: word found longer than " + maxpos + " characters. Exiting.");
@@ -235,7 +233,6 @@ public class MessagePopUp extends JPanel {
 			}
 		}
 		lines.add(temp);
-		System.out.println(lines);
 		return lines;
 	}
 
