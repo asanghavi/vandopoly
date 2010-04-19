@@ -113,6 +113,7 @@ public class NetworkedGameController implements ActionListener {
 	public boolean isServer_;
 	
 	public NetworkedGameController(Display display, String[] namesAndIcons, boolean isServer) {
+			
 		isServer_ = isServer;
 		namesAndIcons_ = namesAndIcons;
 		if (isServer) {
@@ -138,6 +139,7 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "displayActionMessage");
 		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "chargeUtilityRent");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "endTurnUpdate");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -147,6 +149,25 @@ public class NetworkedGameController implements ActionListener {
 		printOut_ = writer;
 		objectInput_ = input;
 		objectOutput_ = output;
+		
+		filter_ = new NetworkedMessageFilter();
+		
+		// Create a new thread to send objects as necessary
+		new Thread("sendToServer") {
+			public void run() {
+				while (true) {
+					try {
+						NetworkedMessage tempMessage = filter_.queueRemove();
+						if (tempMessage != null) {
+							objectOutput_.writeObject(tempMessage);
+							System.out.println("Client: Sending object: " + tempMessage.getString());
+						}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 
 		while (true) {
 			// Create the object streams to pass messages along
@@ -154,10 +175,8 @@ public class NetworkedGameController implements ActionListener {
 				// Listen for objects (messages)
 				message = (NetworkedMessage) objectInput_.readObject();
 
-				System.out.println("Notifying of:" + message.getString());
-				NotificationManager.getInstance().notifyObservers(message.getString(), message.getObject());
-
-				// Do things based on message.getString()
+				System.out.println("Client: Notifying of:" + message.getString());
+				NotificationManager.getInstance().notifyObservers(message.getString(), message.getObject(), true);
 
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -249,7 +268,7 @@ public class NetworkedGameController implements ActionListener {
 											NetworkedMessage tempMessage = filter_.queueRemove();
 											if (tempMessage != null) {
 												objectOutput_.writeObject(tempMessage);
-												System.out.println("Sending object: " + tempMessage.getString());
+												System.out.println("Server: Sending object: " + tempMessage.getString());
 											}
 										} catch (IOException e) {
 											e.printStackTrace();
@@ -262,7 +281,8 @@ public class NetworkedGameController implements ActionListener {
 							while (true) {
 								NetworkedMessage tempMessage = null;
 								tempMessage = (NetworkedMessage) objectInput_.readObject();
-								NotificationManager.getInstance().notifyObservers(tempMessage.getString(), tempMessage.getObject());
+								System.out.println("Server: Notifying of: " + tempMessage.getString());
+								NotificationManager.getInstance().notifyObservers(tempMessage.getString(), tempMessage.getObject(), true);
 							}
 						}
 					}
@@ -475,13 +495,14 @@ public class NetworkedGameController implements ActionListener {
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 			
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
+			
 		} else if (action.getActionCommand().equals("Quit Game")) {
 			confirmationPopUp();
 		}
 	}
 
 	// Change the player's turn. Called by Notification END_TURN
-	public void endTurn(Object obj) {
+	public void endTurn(Object obj, String string, boolean isTerminal) {
 		
 		int newPlayer = (Integer)obj;
 		currentPlayerNum_ = newPlayer;
@@ -500,11 +521,91 @@ public class NetworkedGameController implements ActionListener {
 
 		if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
 			new JailPopUp(players_.get(currentPlayerNum_));
+		
+		if (!isTerminal) {
+			System.out.println("Sending player info:");
+			for (int i = 0; i < players_.size(); ++i) {
+				System.out.println("Player: " + players_.get(i).getName());
+				System.out.println("Cash: " + players_.get(i).getCash());
+				System.out.println("Properties: ");
+				for (int j = 0; j < players_.get(i).getProperties().size(); ++j) {
+					System.out.print(players_.get(i).getProperties().get(j).getName());
+				}
+			}
+			filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
+		}
+	}
+	
+	// Called by Notification END_TURN_UPDATE
+	public void endTurnUpdate(Object obj) {
+		ArrayList<Player> players = (ArrayList<Player>) obj;
+		
+		System.out.println("*******Current****************");
+		for (int i = 0; i < players_.size(); ++i) {
+			System.out.println("Player: " + players_.get(i).getName());
+			System.out.println("Cash: " + players_.get(i).getCash());
+			System.out.println("Properties: ");
+			for (int j = 0; j < players_.get(i).getProperties().size(); ++j) {
+				System.out.print(players_.get(i).getProperties().get(j).getName());
+			}
+			System.out.println("*******");
+		}
+		System.out.println("*********Received**************");
+		for (int i = 0; i < players.size(); ++i) {
+			System.out.println("Player: " + players.get(i).getName());
+			System.out.println("Cash: " + players.get(i).getCash());
+			System.out.println("Properties: ");
+			for (int j = 0; j < players.get(i).getProperties().size(); ++j) {
+				System.out.print(players.get(i).getProperties().get(j).getName());
+			}
+			System.out.println("*******");
+		}
+		System.out.println("*****************************");
+		for (int i = 0; i < players.size(); ++i) {
+			
+			
+			players_.get(i).setCash(players.get(i).getCash());
+			players_.get(i).setGetOutOfJail(players.get(i).hasGetOutOfJail());
+			players_.get(i).setNumOfRolls(players.get(i).getNumOfRolls());
+			players_.get(i).setPosition_NoNotify(players.get(i).getPosition());
+			players_.get(i).changeState(players.get(i).getState());
+			
+			
+			for (int j = 0; j < players_.get(i).getProperties().size(); ++j) {
+				System.out.println("**" + players_.get(i).getProperties().get(j).getName());
+			}
+			ArrayList<PropertySpace> currentProperties = new ArrayList<PropertySpace>(players.get(i).getProperties().size());
+			
+			// Make sure all properties are updated
+			for (int j = 0; j < players.get(i).getProperties().size(); ++j) {
+				for (int k = 0; k < board_.length; ++k) {
+					System.out.println(players.get(i).getProperties().get(j).getName());
+					if (players.get(i).getProperties().get(j).getName().equals(board_[k].getName()))
+						currentProperties.add((PropertySpace) board_[k]);
+				}
+			}
+			
+			System.out.println("**CurrentProperties: ");
+			for (int j = 0; j < players.get(i).getProperties().size(); ++j) {
+				currentProperties.get(j).setOwner(players.get(i));
+				currentProperties.get(j).changeState(players.get(i).getProperties().get(j).getState());
+				System.out.println("**" + currentProperties.get(j).getName() + "**");
+			}
+			
+			players_.get(i).setProperties(currentProperties);
+			System.out.println("**Updated Properties:");
+			for (int j = 0; j < currentProperties.size(); ++j) {
+				System.out.print("**" + players_.get(i).getProperties().get(j).getName()+ "**");
+			}
+			
+			playerPanel_.updateCash(players_.get(i));
+			playerPanel_.updateProperties(players_.get(i));
+		}
 	}
 	
 	// Called by Notification CARD_MOVE_TO
 	public void cardMoveTo(Object obj) {
-		System.out.println("cardmoveTo");
+	
 		Integer num = (Integer) obj;
 		board_[(int) num].landOn(players_.get(currentPlayerNum_));
 
