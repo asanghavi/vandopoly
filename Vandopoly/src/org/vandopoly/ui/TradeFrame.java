@@ -37,6 +37,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import org.vandopoly.messaging.NetworkedMessageFilter;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Player;
@@ -60,6 +61,9 @@ public class TradeFrame implements ListSelectionListener {
 	
 	JButton trade, add1_, remove1_, add2_, remove2_,accept_, cancel_;
 	
+	boolean isNetworked_ = false;
+	NetworkedMessageFilter filter_ = null;
+	
 	// List of all players in the game
 	ArrayList<Player> players_;
 	
@@ -70,7 +74,7 @@ public class TradeFrame implements ListSelectionListener {
 	// Odd list numbers are properties the player is trading
 	LinkedList<LinkedList<PropertySpace>> property;
 	// Cash Array index % 2 is money the player keeps
-	// Odd indicies are cash involved in the trade
+	// Odd indices are cash involved in the trade
 	int cash_[];
 	
 	int CASH_MOVEMENT = 50;
@@ -91,9 +95,57 @@ public class TradeFrame implements ListSelectionListener {
 	
 	Font nameFont = new Font("broadway", Font.PLAIN, 18);
 	
-	public TradeFrame(ArrayList<Player> players, final int currentPlayer) {
+	public TradeFrame(ArrayList<Player> players, final int currentPlayer, boolean isNetworked) {
 		
 		players_ = players;
+		isNetworked_ = isNetworked;	
+		
+		frame = new JFrame("Trade Properties");
+		frame.setSize(panelWidth, panelHeight);
+		frame.setLayout(null);
+		
+		frame.setLocation((int)((DisplayAssembler.getScreenWidth() - panelWidth) / 2),
+				(int)((DisplayAssembler.getScreenHeight() - panelHeight) / 2));
+		
+		intro = new JLabel("Trade with");
+		intro.setFont(nameFont);
+		intro.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight - 30, 150, 30);
+		
+		comboBox = new JComboBox();
+		comboBox.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight, 150, 30);
+		comboBox.setFont(nameFont);
+		for (int i = 0; i < players_.size(); i++) {
+			if (currentPlayer != i)
+				comboBox.addItem(players_.get(i).getName());
+		}
+		
+		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
+		trade = new JButton("Trade");
+		trade.setFont(buttonFont);
+		trade.setBounds(0, panelHeight - (buttonHeight + 40), panelWidth, buttonHeight);
+		trade.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				int i = 0;
+				
+				while (!players_.get(i).getName().equals(comboBox.getSelectedItem()))
+					i++;
+				
+				setUpTradeScreen(players_.get(currentPlayer), players_.get(i));
+			}
+		});
+		
+		frame.add(intro);
+		frame.add(comboBox);
+		frame.add(trade);
+		
+		frame.setVisible(true);
+	}
+	
+	public TradeFrame(ArrayList<Player> players, final int currentPlayer, boolean isNetworked, NetworkedMessageFilter filter) {
+		filter_ = filter; 
+		
+		players_ = players;
+		isNetworked_ = isNetworked;	
 		
 		frame = new JFrame("Trade Properties");
 		frame.setSize(panelWidth, panelHeight);
@@ -415,42 +467,86 @@ public class TradeFrame implements ListSelectionListener {
 				newHeight - ((acceptBuffer + buttonHeight) / 2), buttonWidth, buttonHeight);
 		accept_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				
 				// Gets iterator for Player 1's trade offer
 				ListIterator<PropertySpace> itr = property.get(1).listIterator(property.get(1).size());
 				
-				// Add the trade offer to player 2's properties and remove them from Player 1's
-				while (itr.hasPrevious()) {
-					PropertySpace p = itr.previous();
-					tradePlayer.get(0).getProperties().remove(p);
-					tradePlayer.get(1).updateProperties(p);
-					p.setOwner(tradePlayer.get(1));
+				if (!isNetworked_) {
+										
+					// Add the trade offer to player 2's properties and remove them from Player 1's
+					while (itr.hasPrevious()) {
+						PropertySpace p = itr.previous();
+						tradePlayer.get(0).getProperties().remove(p);
+						tradePlayer.get(1).updateProperties(p);
+						p.setOwner(tradePlayer.get(1));
+					}
+					
+					// Sends update notification because it isn't guaranteed tradePlayer0 
+					// will gain any properties
+					NotificationManager.getInstance().notifyObservers(
+							Notification.UPDATE_PROPERTIES, tradePlayer.get(0));
+					
+					itr = property.get(3).listIterator(property.get(3).size());
+					
+					// Add the trade offer to player 1's properties and remove them from Player 2's
+					while (itr.hasPrevious()) {
+						PropertySpace p = itr.previous();
+						tradePlayer.get(0).updateProperties(p);
+						tradePlayer.get(1).getProperties().remove(p);
+						p.setOwner(tradePlayer.get(0));
+					}
+					
+					// Transfer cash
+					tradePlayer.get(0).updateCash(cash_[3] - cash_[1]);
+					tradePlayer.get(1).updateCash(cash_[1] - cash_[3]);
+					
+					// Sends update notification because it isn't guaranteed tradePlayer1 
+					// will gain any properties
+					NotificationManager.getInstance().notifyObservers(
+							Notification.UPDATE_PROPERTIES, tradePlayer.get(1));
+					
+					frame.dispose();
 				}
-				
-				// Sends update notification because it isn't guaranteed tradePlayer0 
-				// will gain any properties
-				NotificationManager.getInstance().notifyObservers(
-						Notification.UPDATE_PROPERTIES, tradePlayer.get(0));
-				
-				itr = property.get(3).listIterator(property.get(3).size());
-				
-				// Add the trade offer to player 1's properties and remove them from Player 2's
-				while (itr.hasPrevious()) {
-					PropertySpace p = itr.previous();
-					tradePlayer.get(0).updateProperties(p);
-					tradePlayer.get(1).getProperties().remove(p);
-					p.setOwner(tradePlayer.get(0));
+				else {
+					// Create an ArrayList to pass over the wire
+					ArrayList<String[]> tradeList = new ArrayList<String[]>(4);
+					
+					// Create the array of trade properties for player 2
+					String player0_properties[] = new String[property.get(1).size()];
+					int i = 0;
+					while (itr.hasPrevious()) {
+						PropertySpace p = itr.previous();
+						player0_properties[i] = p.getName();
+						++i;
+					}
+					
+					itr = property.get(3).listIterator(property.get(3).size());
+					
+					// Create the array of trade properties for player 1
+					String player1_properties[] = new String[property.get(3).size()];
+					i = 0;
+					while (itr.hasPrevious()) {
+						PropertySpace p = itr.previous();
+						player1_properties[i] = p.getName();
+						++i;
+					}
+					
+					// Create single-element arrays to hold cash
+					String player0_cash[] = new String[1];
+					player0_cash[0] = "" + cash_[1];
+					String player1_cash[] = new String[1];
+					player1_cash[0] = "" + cash_[3];
+					
+					// Add the arrays to the ArrayList for sending over the wire
+					tradeList.add(player0_cash);
+					tradeList.add(player0_properties);
+					tradeList.add(player1_cash);
+					tradeList.add(player1_properties);
+					
+					filter_.addToQueue(tradeList, Notification.TRADE_PROPOSED, false);
+					
+					frame.dispose();
 				}
-				
-				// Transfer cash
-				tradePlayer.get(0).updateCash(cash_[3] - cash_[1]);
-				tradePlayer.get(1).updateCash(cash_[1] - cash_[3]);
-				
-				// Sends update notification because it isn't guaranteed tradePlayer1 
-				// will gain any properties
-				NotificationManager.getInstance().notifyObservers(
-						Notification.UPDATE_PROPERTIES, tradePlayer.get(1));
-				
-				frame.dispose();
 			}
 
 		});

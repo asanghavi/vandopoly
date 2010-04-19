@@ -115,6 +115,12 @@ public class Notification {
 	// after a turn has ended
 	public static final String END_TURN_UPDATE = "EndTurnUpdate";
 	
+	// Sent when a trade is proposed in a networked game
+	public static final String TRADE_PROPOSED = "TradeProposed";
+	
+	// Sent when a trade is accepted in a networked game
+	public static final String TRADE_ACCEPTED = "TradeAccepted";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////
