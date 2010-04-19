@@ -68,6 +68,7 @@ import org.vandopoly.ui.Piece;
 import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
 import org.vandopoly.ui.TradeFrame;
+import org.vandopoly.ui.TradeProposalPopUp;
 
 /*
  * NetworkedGameController is meant to handle all complex button/model 
@@ -111,6 +112,7 @@ public class NetworkedGameController implements ActionListener {
 
 	private boolean localControl_ = true;
 	public boolean isServer_;
+	Player localPlayer_;
 	
 	public NetworkedGameController(Display display, String[] namesAndIcons, boolean isServer) {
 			
@@ -140,6 +142,8 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "chargeUtilityRent");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "endTurnUpdate");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "tradeProposal");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "tradeAccepted");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -194,6 +198,11 @@ public class NetworkedGameController implements ActionListener {
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
 
 		createPlayers();
+		if (isServer_)
+			localPlayer_ = players_.get(0);
+		else
+			localPlayer_ = players_.get(1);
+		
 		createSpaces();
 
 		shuffleCards();
@@ -491,7 +500,7 @@ public class NetworkedGameController implements ActionListener {
 
 			propertySelectionPanel_ = new PropertySelectionPanel(players_.get(currentPlayerNum_));
 		} else if (action.getActionCommand().equals("Trade")) {
-			new TradeFrame(players_, currentPlayerNum_);
+			new TradeFrame(players_, currentPlayerNum_, true, filter_);
 		} else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
@@ -503,6 +512,93 @@ public class NetworkedGameController implements ActionListener {
 		}
 	}
 
+	// Used to display a message containing a trade from the other player. 
+	// Called by Notification TRADE_PROPOSED
+	public void tradeProposal(Object obj) {
+		ArrayList<String[]> trades = (ArrayList<String[]>) obj;
+		
+		Player proposingPlayer = null;
+		if (isServer_)
+			proposingPlayer = players_.get(1);
+		else
+			proposingPlayer = players_.get(0);
+		
+		new TradeProposalPopUp(trades, proposingPlayer);
+	}
+	
+	// Used to update players after a trade. Called by Notification TRADE_ACCEPTED
+	public void tradeAccepted(Object obj) {
+		System.out.println("Called acceptTrade");
+		System.out.println("Player0 = " + players_.get(0).getName());
+		System.out.println("Player1 = " + players_.get(1).getName());
+		ArrayList<String[]> trades = (ArrayList<String[]>) obj;
+		
+		int proposingPlayerIndex = 0;
+		int receivingPlayerIndex = 0;
+		if (players_.get(0).getName() == trades.get(4)[0]) {
+			System.out.println("Proposing Player = " + players_.get(0).getName());
+			proposingPlayerIndex = 0;
+			receivingPlayerIndex = 1;
+		}
+		else {
+			System.out.println("Proposing Player = " + players_.get(1).getName());
+			proposingPlayerIndex = 1;
+			receivingPlayerIndex = 0;
+		}
+		int cash0 = Integer.parseInt(trades.get(0)[0]);
+		String[] properties0 = trades.get(1);
+		int cash1 = Integer.parseInt(trades.get(2)[0]);
+		String[] properties1 = trades.get(3);
+		
+		System.out.println("Properties0:");
+		for (int i = 0; i < properties0.length; ++i) {
+			System.out.println(properties0[i]);
+		}
+		System.out.println("Properties1:");
+		for (int i = 0; i < properties1.length; ++i) {
+			System.out.println(properties1[i]);
+		}
+		
+		// Add the trade offer to player 2's properties and remove them from Player 1's
+		for (int i = 0; i < properties0.length; ++i) {
+			for (int k = 0; k < board_.length; ++k) {
+				if (properties0[i].equalsIgnoreCase(board_[k].getName())) {
+					System.out.println("0************************\n" + board_[k].getName());
+					players_.get(proposingPlayerIndex).getProperties().remove(board_[k]);
+					players_.get(receivingPlayerIndex).updateProperties((PropertySpace)board_[k]);
+					((PropertySpace)board_[k]).setOwner(players_.get(receivingPlayerIndex));
+				}
+			}
+		}
+		
+		// Sends update notification because it isn't guaranteed tradePlayer0 
+		// will gain any properties
+		NotificationManager.getInstance().notifyObservers(
+				Notification.UPDATE_PROPERTIES, players_.get(proposingPlayerIndex));
+		
+		// Add the trade offer to player 1's properties and remove them from Player 2's
+		for (int i = 0; i < properties1.length; ++i) {
+			for (int k = 0; k < board_.length; ++k) {
+				if (properties1[i].equalsIgnoreCase(board_[k].getName())) {
+					System.out.println("1************************\n" + board_[k].getName());
+					players_.get(receivingPlayerIndex).getProperties().remove(board_[k]);
+					players_.get(proposingPlayerIndex).updateProperties((PropertySpace)board_[k]);
+					((PropertySpace)board_[k]).setOwner(players_.get(proposingPlayerIndex));
+				}
+			}
+		}
+		
+		// Transfer cash
+		players_.get(proposingPlayerIndex).updateCash(cash1 - cash0);
+		players_.get(receivingPlayerIndex).updateCash(cash0 - cash1);
+		
+		// Sends update notification because it isn't guaranteed tradePlayer1 
+		// will gain any properties
+		NotificationManager.getInstance().notifyObservers(
+				Notification.UPDATE_PROPERTIES, players_.get(receivingPlayerIndex));
+		
+	}
+	
 	// Change the player's turn. Called by Notification END_TURN
 	public void endTurn(Object obj, String string, boolean isTerminal) {
 		

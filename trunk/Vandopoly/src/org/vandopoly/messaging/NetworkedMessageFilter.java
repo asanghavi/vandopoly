@@ -48,7 +48,7 @@ public class NetworkedMessageFilter {
 		//NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.UPDATE_PROPERTIES, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.UPDATE_CASH, this, "addToQueue");
-		NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "addToQueue");
+		//NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.CHANGED_OWNER, this, "addToQueue");
@@ -62,6 +62,8 @@ public class NetworkedMessageFilter {
 		//NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "addToQueue");
 		//NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "addToQueue");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "addToQueue");
 		
 		addRemoveLock = new Semaphore(1);
 	}

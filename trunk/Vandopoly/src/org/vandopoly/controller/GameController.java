@@ -316,7 +316,7 @@ public class GameController implements ActionListener {
 		else if (action.getActionCommand().equals("Trade")) {
 			disposeFrames();
 			
-			tradeFrame_ = new TradeFrame(players_, currentPlayerNum_);
+			tradeFrame_ = new TradeFrame(players_, currentPlayerNum_, false);
 		}
 		else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player

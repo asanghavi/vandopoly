@@ -46,7 +46,7 @@ public class GameButtonPanel extends JPanel {
 	int frameWidth = buttonX * 5;
 	int frameHeight = buttonY;
 	
-	private boolean purchaseState_, endTurnState_;
+	private boolean purchaseState_, endTurnState_, tradeState_, mortgageState_;
 	
 	static final long serialVersionUID = 11;
 	
@@ -198,23 +198,30 @@ public class GameButtonPanel extends JPanel {
 	public void rollingState() {
 		purchase_.setEnabled(false);
 		endTurn_.setEnabled(false);
+		
+		mortgage_.setEnabled(true);
+		trade_.setEnabled(true);
 	}
 	
 	public void setAllDisabled() {
 		purchaseState_ = purchase_.isEnabled();
-		System.out.println("Purchase: " + purchaseState_);
 		purchase_.setEnabled(false);
 		
+		mortgageState_ = mortgage_.isEnabled();
 		mortgage_.setEnabled(false);
 		
+		tradeState_ = trade_.isEnabled();
+		trade_.setEnabled(false);
+		
 		endTurnState_ = endTurn_.isEnabled();
-		System.out.println("End turn: " + endTurnState_);
 		endTurn_.setEnabled(false);
 	}
 	
 	public void setEnabled() {
 		purchase_.setEnabled(purchaseState_);
-		mortgage_.setEnabled(true);
+		mortgage_.setEnabled(mortgageState_);
+		trade_.setEnabled(tradeState_);
 		endTurn_.setEnabled(endTurnState_);
 	}
+	
 }
