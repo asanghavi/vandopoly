@@ -264,6 +264,39 @@ public class Player implements Serializable {
 			(Notification.UPDATE_PROPERTIES, this);
 	}
 	
+	// Copy of updateProperties, just without the notification. 
+	// Used for networking
+	public void updateProperties_withoutNotification(PropertySpace property) {
+		if (properties_.size() == 0)
+			properties_.add(property);
+		else {
+			//Start iterator at the end of the list - for proper insertion we must traverse
+			// the list from right to left
+			ListIterator<PropertySpace> itr = properties_.listIterator(properties_.size());
+			PropertySpace tempSpace = null;
+			while (itr.hasPrevious()) {
+				tempSpace = itr.previous(); 
+				//Found properties of the same type, so insert based on space number
+				if (property.getTypeInt() == tempSpace.getTypeInt()) {
+					if (property.getSpaceNumber() < tempSpace.getSpaceNumber())
+						properties_.add(itr.nextIndex(), property);
+					else
+						properties_.add(1 + itr.nextIndex(), property);
+					
+					break;
+				}
+				// Found property with a type less than 'property''s type - add after
+				else if (property.getTypeInt() > tempSpace.getTypeInt()) {
+					properties_.add(1 + (itr.nextIndex()), property);
+					break;
+				}
+			}
+			// Property has the least type on the list, insert at the beginning
+			if (property.getTypeInt() < tempSpace.getTypeInt())
+				properties_.add(itr.nextIndex(), property);
+		}
+	}
+	
 	public boolean renovateProperty(UpgradeablePropertySpace p) {
 		if (cash_ >= 50 && p.getState().getLevel() < 4) {
 			updateCash(-50);

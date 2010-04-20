@@ -141,7 +141,7 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "displayActionMessage");
 		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "chargeUtilityRent");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "endTurn");
-		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "endTurnUpdate");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "overwrite");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "tradeProposal");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "tradeAccepted");
 	}
@@ -563,9 +563,8 @@ public class NetworkedGameController implements ActionListener {
 		for (int i = 0; i < properties0.length; ++i) {
 			for (int k = 0; k < board_.length; ++k) {
 				if (properties0[i].equalsIgnoreCase(board_[k].getName())) {
-					System.out.println("0************************\n" + board_[k].getName());
 					players_.get(proposingPlayerIndex).getProperties().remove(board_[k]);
-					players_.get(receivingPlayerIndex).updateProperties((PropertySpace)board_[k]);
+					players_.get(receivingPlayerIndex).updateProperties_withoutNotification((PropertySpace)board_[k]);
 					((PropertySpace)board_[k]).setOwner(players_.get(receivingPlayerIndex));
 				}
 			}
@@ -580,15 +579,18 @@ public class NetworkedGameController implements ActionListener {
 		for (int i = 0; i < properties1.length; ++i) {
 			for (int k = 0; k < board_.length; ++k) {
 				if (properties1[i].equalsIgnoreCase(board_[k].getName())) {
-					System.out.println("1************************\n" + board_[k].getName());
 					players_.get(receivingPlayerIndex).getProperties().remove(board_[k]);
-					players_.get(proposingPlayerIndex).updateProperties((PropertySpace)board_[k]);
+					players_.get(proposingPlayerIndex).updateProperties_withoutNotification((PropertySpace)board_[k]);
 					((PropertySpace)board_[k]).setOwner(players_.get(proposingPlayerIndex));
 				}
 			}
 		}
 		
 		// Transfer cash
+		System.out.println(players_.get(proposingPlayerIndex).getName() + " is updated to be: " + 
+				(cash1-cash0)+ " from current");
+		System.out.println(players_.get(receivingPlayerIndex).getName() + " is updated to be: " + 
+				(cash0-cash1)+ " from current");
 		players_.get(proposingPlayerIndex).updateCash(cash1 - cash0);
 		players_.get(receivingPlayerIndex).updateCash(cash0 - cash1);
 		
@@ -597,6 +599,13 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().notifyObservers(
 				Notification.UPDATE_PROPERTIES, players_.get(receivingPlayerIndex));
 		
+		playerPanel_.updateCash(players_.get(proposingPlayerIndex));
+		playerPanel_.updateCash(players_.get(receivingPlayerIndex));
+		playerPanel_.updateProperties(players_.get(proposingPlayerIndex));
+		playerPanel_.updateProperties(players_.get(receivingPlayerIndex));
+		
+		// All should be updated correctly, so send an overwrite to the other player
+		filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
 	}
 	
 	// Change the player's turn. Called by Notification END_TURN
@@ -635,7 +644,7 @@ public class NetworkedGameController implements ActionListener {
 	}
 	
 	// Called by Notification END_TURN_UPDATE
-	public void endTurnUpdate(Object obj) {
+	public void overwrite(Object obj) {
 		ArrayList<Player> players = (ArrayList<Player>) obj;
 		
 		System.out.println("*******Current****************");

@@ -18,6 +18,9 @@ package org.vandopoly.model;
 
 import java.io.Serializable;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * UpgradeablePropertyLevel1 class implements the behavior associated with the 
  * upgradeable property space being upgraded to level 1.
@@ -48,10 +51,15 @@ public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState implemen
 	
 	protected void renovate(UpgradeablePropertySpace p) {
 		p.changeState(UpgradeablePropertyLevel2.Instance());
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_PROPERTIES, p.getOwner());
+		
 	}
 	
 	protected void downgrade(UpgradeablePropertySpace p) {
 		p.changeState(PropertyOwned.Instance());
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_PROPERTIES, p.getOwner());
 	}
 	
 	protected boolean isUpgradeable(UpgradeablePropertySpace p) {

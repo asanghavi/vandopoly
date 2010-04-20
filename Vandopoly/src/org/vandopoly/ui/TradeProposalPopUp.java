@@ -32,6 +32,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
+import org.vandopoly.messaging.NetworkedMessageFilter;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Player;
@@ -183,7 +184,7 @@ public class TradeProposalPopUp {
 				String proposerName[] = {proposingPlayer.getName()};
 				trades.add(proposerName);
 				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
-				NotificationManager.getInstance().notifyObservers(Notification.TRADE_ACCEPTED, trades);
+				NotificationManager.getInstance().notifyObservers(Notification.TRADE_ACCEPTED, trades, true);
 			}
 		});
 		reject.addActionListener(new ActionListener() {
