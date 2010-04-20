@@ -66,6 +66,17 @@ public class Player implements Serializable {
 		properties_ = new ArrayList<PropertySpace>();
 		numOfRolls_ = 0;
 	}
+	
+	public Player(Player player) {
+		state_ = player.state_;
+		name_ = player.getName();
+		cash_ = player.getCash();
+		index_ = player.getIndex();
+		positionOnBoard_ = player.getPosition();
+		getOutOfJail_ = player.hasGetOutOfJail();
+		properties_ = new ArrayList<PropertySpace>(player.getProperties());
+		numOfRolls_ = player.getNumOfRolls();
+	}
 
 	public void changeState(PlayerState newState) {
 		state_ = newState;
@@ -141,7 +152,9 @@ public class Player implements Serializable {
 		}
 		
 		System.out.println(name_ + " called updateCash");
-		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_CASH, this);
+		
+		Player tempPlayer = new Player(this);
+		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_CASH, tempPlayer);
 	}
 
 	public void setCash(int value) {
@@ -260,8 +273,9 @@ public class Player implements Serializable {
 				properties_.add(itr.nextIndex(), property);
 		}
 		
+		Player tempPlayer = new Player(this);
 		NotificationManager.getInstance().notifyObservers
-			(Notification.UPDATE_PROPERTIES, this);
+			(Notification.UPDATE_PROPERTIES, tempPlayer);
 	}
 	
 	// Copy of updateProperties, just without the notification. 
