@@ -375,6 +375,8 @@ public class NetworkedGameController implements ActionListener {
 
 	public void sendPlayerToJail() {
 		players_.get(currentPlayerNum_).goToJail();
+		NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+				(players_.get(currentPlayerNum_).getName() + " has been sent to Academic Probation!"));
 	}
 
 	// Called by the UpdateScholarship notification
@@ -391,7 +393,10 @@ public class NetworkedGameController implements ActionListener {
 	public void awardFund(Object obj) {
 		Player player = (Player) obj;
 
-		new MessagePopUp(player.getName() + " has been awarded $" + scholarshipFund_ + " from the Scholarship Fund");
+		new MessagePopUp(player.getName() + " has been awarded $" + 
+				scholarshipFund_ + " from the Scholarship Fund");
+		filter_.addToQueue(player.getName() + " has been awarded $" + 
+				scholarshipFund_ + " from the Scholarship Fund", Notification.ACTION_MESSAGE, false);
 		player.updateCash(scholarshipFund_);
 		scholarshipFund_ = 500;
 	}
@@ -515,6 +520,7 @@ public class NetworkedGameController implements ActionListener {
 	// Used to display a message containing a trade from the other player. 
 	// Called by Notification TRADE_PROPOSED
 	public void tradeProposal(Object obj) {
+
 		ArrayList<String[]> trades = (ArrayList<String[]>) obj;
 		
 		Player proposingPlayer = null;
@@ -524,6 +530,7 @@ public class NetworkedGameController implements ActionListener {
 			proposingPlayer = players_.get(0);
 		
 		new TradeProposalPopUp(trades, proposingPlayer);
+
 	}
 	
 	// Used to update players after a trade. Called by Notification TRADE_ACCEPTED
