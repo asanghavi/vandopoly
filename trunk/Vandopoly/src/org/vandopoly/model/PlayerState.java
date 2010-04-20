@@ -41,5 +41,5 @@ public class PlayerState implements Serializable{
 	protected void changeState(Player player, PlayerState newState) {
 		player.changeState(newState);
 	}
-	
+
 }

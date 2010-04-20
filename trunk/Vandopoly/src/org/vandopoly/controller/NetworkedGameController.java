@@ -327,9 +327,9 @@ public class NetworkedGameController implements ActionListener {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 
 			// Update current position of player model
-			currentPlayer.movePiece(dice);
+			//currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			// currentPlayer.movePiece(1);
+			 currentPlayer.movePiece(10);
 
 			/*
 			 * //Print out some statements that help testing
@@ -655,7 +655,7 @@ public class NetworkedGameController implements ActionListener {
 			propertySelectionPanel_ = null;
 		}
 
-		if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
+		if (players_.get(currentPlayerNum_).getState().toString().equals(PlayerInJail.Instance().toString()))
 			new JailPopUp(players_.get(currentPlayerNum_));
 		
 		if (!isTerminal) {

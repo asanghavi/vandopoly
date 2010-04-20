@@ -49,4 +49,8 @@ public class SpaceUnowned extends SpaceState implements Serializable{
 	public void landOn(Player player, PropertySpace property) {
 		NotificationManager.getInstance().notifyObservers(Notification.UNOWNED_PROPERTY, property);
 	}
+	
+	public String toString() {
+		return "SpaceUnowned";
+	}
 }

@@ -81,4 +81,8 @@ public class PropertyOwned extends SpaceState implements Serializable {
 	protected void ownershipDecrease(PropertySpace p) {
 		System.err.println("PropertyOwned ownershipDecrease called - Not supposed to happen");
 	}
+	
+	public String toString() {
+		return "PropertyOwned";
+	}
 }

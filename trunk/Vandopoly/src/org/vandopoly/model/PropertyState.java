@@ -33,4 +33,5 @@ public class PropertyState extends SpaceState implements Serializable {
 	}
 	
 	protected void landOn(Player player, PropertySpace property) {}
+	
 }

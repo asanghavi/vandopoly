@@ -80,5 +80,9 @@ public class PlayerInJail extends PlayerState implements Serializable{
 	public void getOutOfJail(Player player) {
 		player.changeState(PlayerFree.Instance());
 	}
+	
+	public String toString() {
+		return "PlayerInJail";
+	}
 
 }
