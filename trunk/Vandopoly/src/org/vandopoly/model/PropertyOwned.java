@@ -18,6 +18,9 @@ package org.vandopoly.model;
 
 import java.io.Serializable;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * PropertyOwned class implements the behavior associated with the 
  * property space being owned, but not upgraded. All spaces (except utilities)
@@ -51,6 +54,8 @@ public class PropertyOwned extends SpaceState implements Serializable {
 	
 	protected void renovate(UpgradeablePropertySpace p) {
 		p.changeState(UpgradeablePropertyLevel1.Instance());
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_PROPERTIES, p.getOwner());
 	}
 	
 	protected void downgrade(UpgradeablePropertySpace p) {

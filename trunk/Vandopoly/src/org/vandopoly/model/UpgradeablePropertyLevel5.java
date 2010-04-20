@@ -18,6 +18,9 @@ package org.vandopoly.model;
 
 import java.io.Serializable;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
+
 /*
  * UpgradeablePropertyLevel5 class implements the behavior associated with the 
  * upgradeable property space being upgraded to level 5 (highest).
@@ -53,6 +56,8 @@ public class UpgradeablePropertyLevel5 extends UpgradeablePropertyState implemen
 	
 	protected void downgrade(UpgradeablePropertySpace p) {
 		p.changeState(UpgradeablePropertyLevel4.Instance());
+		NotificationManager.getInstance().notifyObservers
+		(Notification.UPDATE_PROPERTIES, p.getOwner());
 	}
 	
 	protected boolean isUpgradeable(UpgradeablePropertySpace p) {
