@@ -167,6 +167,8 @@ public class NetworkedGameController implements ActionListener {
 							objectOutput_.reset();
 							System.out.println("Client: Sending object: " + tempMessage.getString());
 						}
+						else
+							Thread.yield();
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -281,6 +283,9 @@ public class NetworkedGameController implements ActionListener {
 												objectOutput_.reset();
 												System.out.println("Server: Sending object: " + tempMessage.getString());
 											}
+											else
+												Thread.yield();
+											
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
