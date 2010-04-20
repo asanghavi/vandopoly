@@ -91,6 +91,7 @@ public class NetworkedGameController implements ActionListener {
 	GameButtonPanel buttonPanel_;
 	PlayerPanel playerPanel_;
 	PropertySelectionPanel propertySelectionPanel_;
+	TradeFrame tradeFrame_;
 
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
@@ -491,29 +492,31 @@ public class NetworkedGameController implements ActionListener {
 	// Represents the logic for the GameButtonPanel class
 	public void actionPerformed(ActionEvent action) {
 		if (action.getActionCommand().equals("Purchase")) {
-			// This stops players from opening a propertySelectionPanel, then
-			// buying a property
+			// This stops players from opening a propertySelectionPanel, then buying a property
 			// and adjusting the levels inappropriately
-			if (propertySelectionPanel_ != null)
-				propertySelectionPanel_.dispose();
+			disposeFrames();
 
 			int position = players_.get(currentPlayerNum_).getPosition();
 			players_.get(currentPlayerNum_).purchase((PropertySpace) board_[position]);
 		} else if (action.getActionCommand().equals("Manage Properties")) {
-			// If the propertySelectionPanel has already been created, dispose
-			// and get a new one
-			// This makes sure the panel is fully updated, and allows only a
-			// single propertySelection
+			// If the propertySelectionPanel has already been created, dispose and get a new one
+			// This makes sure the panel is fully updated, and allows only a single propertySelection
 			// panel at a time
-			if (propertySelectionPanel_ != null)
-				propertySelectionPanel_.dispose();
+			disposeFrames();
 
 			propertySelectionPanel_ = new PropertySelectionPanel(players_.get(currentPlayerNum_));
 		} else if (action.getActionCommand().equals("Trade")) {
-			new TradeFrame(players_, currentPlayerNum_, true, filter_);
+			disposeFrames();
+			// All should be updated correctly before trading, so send  
+			// an overwrite to the other player
+			filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
+			tradeFrame_ = new TradeFrame(players_, currentPlayerNum_, true, filter_);
+			
 		} else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
 			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+			
+			disposeFrames();
 			
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 			
@@ -522,10 +525,22 @@ public class NetworkedGameController implements ActionListener {
 		}
 	}
 
+	// Kill off all floating frames
+	public void disposeFrames() {
+		if (propertySelectionPanel_ != null) {
+			propertySelectionPanel_.dispose();
+			propertySelectionPanel_ = null;
+		}
+		if (tradeFrame_ != null) {
+			tradeFrame_.dispose();
+			tradeFrame_ = null;
+		}
+	}
+	
 	// Used to display a message containing a trade from the other player. 
 	// Called by Notification TRADE_PROPOSED
 	public void tradeProposal(Object obj) {
-
+		
 		ArrayList<String[]> trades = (ArrayList<String[]>) obj;
 		
 		Player proposingPlayer = null;
@@ -535,7 +550,7 @@ public class NetworkedGameController implements ActionListener {
 			proposingPlayer = players_.get(0);
 		
 		new TradeProposalPopUp(trades, proposingPlayer);
-
+		
 	}
 	
 	// Used to update players after a trade. Called by Notification TRADE_ACCEPTED
@@ -600,9 +615,9 @@ public class NetworkedGameController implements ActionListener {
 		
 		// Transfer cash
 		System.out.println(players_.get(proposingPlayerIndex).getName() + " is updated to be: " + 
-				(cash1-cash0)+ " from current");
+				(cash1-cash0)+ " from current:" + players_.get(proposingPlayerIndex).getCash());
 		System.out.println(players_.get(receivingPlayerIndex).getName() + " is updated to be: " + 
-				(cash0-cash1)+ " from current");
+				(cash0-cash1)+ " from current:" + players_.get(receivingPlayerIndex).getCash());
 		players_.get(proposingPlayerIndex).updateCash(cash1 - cash0);
 		players_.get(receivingPlayerIndex).updateCash(cash0 - cash1);
 		
