@@ -32,7 +32,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-import org.vandopoly.messaging.NetworkedMessageFilter;
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Player;
@@ -61,7 +60,7 @@ public class TradeProposalPopUp {
 		JPanel panel3 = new JPanel();
 	
 		// Create layouts and buttons
-		int hGap = 15, vGap = 10;
+		int hGap = 15;
 		GridLayout baseGridLayout = new GridLayout(3, 1, 0, 0);
 		GridLayout gridLayout1 = new GridLayout(1, 1, 0, 0);
 		GridLayout gridLayout2 = new GridLayout(1, 2, 0, 0);

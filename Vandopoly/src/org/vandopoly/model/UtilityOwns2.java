@@ -65,5 +65,9 @@ public class UtilityOwns2 extends UtilityState implements Serializable {
 	protected String getNameAndStatus() {
 		return " (2 Owned)";
 	}
+	
+	public String toString() {
+		return "UtilityOwns2";
+	}
 
 }

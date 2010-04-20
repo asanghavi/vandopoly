@@ -67,4 +67,7 @@ public class UtilityOwns1 extends UtilityState implements Serializable {
 		return "";
 	}
 
+	public String toString() {
+		return "UtilityOwns1";
+	}
 }

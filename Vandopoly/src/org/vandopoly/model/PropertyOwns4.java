@@ -58,4 +58,8 @@ public class PropertyOwns4 extends PropertyState implements Serializable {
 	protected String getNameAndStatus() {
 		return " (4 Owned)";
 	}
+	
+	public String toString() {
+		return "PropertyOwns4";
+	}
 }

@@ -37,4 +37,5 @@ public class UpgradeablePropertyState extends SpaceState implements Serializable
 	public int getLevel() {
 		return 0;
 	}
+	
 }

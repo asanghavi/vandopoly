@@ -63,4 +63,8 @@ public class SpaceMortgaged extends SpaceState implements Serializable {
 	protected void ownershipDecrease(PropertySpace p) {
 		// Do nothing
 	}
+	
+	public String toString() {
+		return "SpaceMortgaged";
+	}
 }

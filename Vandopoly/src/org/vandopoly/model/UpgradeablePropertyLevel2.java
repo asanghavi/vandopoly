@@ -77,4 +77,8 @@ public class UpgradeablePropertyLevel2 extends UpgradeablePropertyState implemen
 	public int getLevel() {
 		return 2;
 	}
+	
+	public String toString() {
+		return "UpgradeablePropertyLevel2";
+	}
 }

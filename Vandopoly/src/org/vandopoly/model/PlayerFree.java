@@ -74,4 +74,8 @@ public class PlayerFree extends PlayerState implements Serializable{
 	public void getOutOfJail(Player player) {
 		// Empty - player is not in jail
 	}
+	
+	public String toString() {
+		return "PlayerFree";
+	}
 }
