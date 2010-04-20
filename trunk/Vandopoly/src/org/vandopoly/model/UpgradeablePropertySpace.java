@@ -60,6 +60,25 @@ public class UpgradeablePropertySpace extends PropertySpace implements Serializa
 		owner_ = null;
 	}
 	
+	public UpgradeablePropertySpace(UpgradeablePropertySpace space) {
+		name_ = space.getName();
+		state_ = space.getState();
+		purchasePrice_ = space.getPurchasePrice();
+		mortgageValue_ = space.getMortgageValue();
+		rentValues_ = new int[6];
+		rentValues_[0] = space.getRentValues()[0];
+		rentValues_[1] = space.getRentValues()[1];
+		rentValues_[2] = space.getRentValues()[2];
+		rentValues_[3] = space.getRentValues()[3];
+		rentValues_[4] = space.getRentValues()[4];
+		rentValues_[5] = space.getRentValues()[5];
+		
+		type_ = space.getTypeInt();
+		spaceNumber_ = space.getSpaceNumber();
+		
+		owner_ = space.getOwner();
+	}
+	
 	public void changeState(SpaceState newState) {
 		state_ = newState;
 	}

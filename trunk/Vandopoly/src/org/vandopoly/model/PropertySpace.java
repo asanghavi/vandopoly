@@ -66,6 +66,22 @@ public class PropertySpace extends Space implements Serializable {
 		spaceNumber_ = spaceNumber;
 	}
 	
+	public PropertySpace(PropertySpace space) {
+		name_ = space.getName();
+		purchasePrice_ = space.getPurchasePrice();
+		mortgageValue_ = space.getMortgageValue();
+		state_ = space.getState();
+		rentValues_ = new int[4];
+		rentValues_[0] = space.getRentValues()[0];
+		rentValues_[1] = space.getRentValues()[1];
+		rentValues_[2] = space.getRentValues()[2];
+		rentValues_[3] = space.getRentValues()[3];
+		
+		owner_ = space.getOwner();
+		type_ = space.getTypeInt();
+		spaceNumber_ = space.getSpaceNumber();
+	}
+	
 	public String toString() {
 		String string = "Property Name: " + name_;
 		if (owner_ == null)

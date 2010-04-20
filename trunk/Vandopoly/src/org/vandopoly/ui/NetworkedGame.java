@@ -31,6 +31,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.rmi.ConnectException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -262,7 +263,9 @@ public class NetworkedGame extends JPanel {
 
 					cannotFindHost_.setVisible(false);
 					unsuccessfulConnection_.setVisible(false);
-
+					
+					connected_ = null;
+					
 					// Attempt to join the game
 					createJoinGameSocket();
 					
@@ -284,7 +287,7 @@ public class NetworkedGame extends JPanel {
 							break;
 						}
 						else 
-							break;
+							return;
 					}
 					
 				} else if (optionsPageNum_ == 6) {// join game, select player
@@ -482,7 +485,7 @@ public class NetworkedGame extends JPanel {
 					System.out.println("Client temp: " + temp);
 					if (temp.equals("ACCEPTED")) {
 						System.out.println("Accepted");
-						
+
 						namesAndIcons_[1] = readIn_.readLine();
 						namesAndIcons_[3] = readIn_.readLine();
 						System.out.println("Name: " + namesAndIcons_[1]);
@@ -504,15 +507,28 @@ public class NetworkedGame extends JPanel {
 					} else
 						System.out.println("Connect failed");
 
+				} catch (ConnectException e) {
+					e.printStackTrace();
+					try {
+						clientSocket_.close();
+						printOut_.close();
+						readIn_.close();
+						output_.close();
+						input_.close();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
 				} catch (UnknownHostException e) {
 					System.out.println("Cannot find host");
 					cannotFindHost_.setVisible(true);
 					connected_ = "NO";
-
+					
 				} catch (IOException e) {
 					e.printStackTrace();
 					unsuccessfulConnection_.setVisible(true);
 					connected_ = "NO";
+					
 				}
 			}
 		}.start();

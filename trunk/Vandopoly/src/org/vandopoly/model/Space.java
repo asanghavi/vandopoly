@@ -27,6 +27,14 @@ public class Space implements Serializable {
 	
 	protected String name_;
 	
+	public Space() {
+		name_ = "NONE";
+	}
+	
+	public Space(Space space) {
+		name_ = space.getName();
+	}
+	
 	public void landOn(Player p) {}
 	
 	public String toString() {
