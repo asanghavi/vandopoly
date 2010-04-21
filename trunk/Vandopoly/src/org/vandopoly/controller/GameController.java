@@ -208,7 +208,7 @@ public class GameController implements ActionListener {
 		pieces_.remove(currentPlayerNum_);
 		players_.remove(currentPlayerNum_);
 		playerPanel_.removePanel(currentPlayerNum_);
-		
+		numOfPlayers_--;
 		/*ArrayList<PropertySpace> ps = players_.get(currentPlayerNum_).getProperties();
 		while(!ps.isEmpty()) {
 			
