@@ -249,7 +249,12 @@ public class PlayerPanel extends JPanel {
 			e.printStackTrace();
 		}
 	}
-
+	
+	// Remove a player's panel
+	public void removePanel(Object i) {
+		infoPanel_.remove((Integer) i);
+	}
+	
 	// Used to automatically switch to the player who is currently rolling
 	public void switchPanel(Object i) {
 		try {
