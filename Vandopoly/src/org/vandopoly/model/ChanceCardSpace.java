@@ -84,6 +84,8 @@ public class ChanceCardSpace extends Space implements Serializable {
 	public void landOn(Player p) {
 		Card card = drawCard();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, card);
+		NotificationManager.getInstance().notifyObservers(Notification.MESSAGE_POPUP, 
+				p.getName() + " drew the following Chance card: " + card.getMessage(), false);
 		new MessagePopUp(card, p, players_, "Chance");
 	}
 	

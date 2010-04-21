@@ -54,9 +54,13 @@ public class PlayerInJail extends PlayerState implements Serializable{
 		int i = player.getNumOfRolls();
 		player.setNumOfRolls(++i);
 		
-		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {	
+		if ((dice.getDie1() == dice.getDie2()) || (i > 2)) {	
 			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
 					player.getName() + " has been removed from Academic Probation!");
+			// If they got out because they rolled three times, they are forced 
+			// to pay 50
+			if (i == 3)
+				player.updateCash(-50);
 			getOutOfJail(player);
 			player.updatePosition(dice.getTotalRoll());
 			player.setNumOfRolls(0);
