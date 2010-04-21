@@ -15,6 +15,7 @@
 
 package org.vandopoly.ui;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,10 +29,13 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.vandopoly.messaging.Notification;
+import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Player;
 import org.vandopoly.model.PropertySpace;
 import org.vandopoly.model.SpaceMortgaged;
@@ -63,6 +67,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener {
 
 		panel = new JPanel();
 		panel.setLayout(null);
+		panel.setBackground(Color.PINK);
 		panel.setSize(panelWidth, panelHeight);
 		panel.setLocation((int)((DisplayAssembler.getScreenWidth() - panelWidth) / 2),
 				(int)((DisplayAssembler.getScreenHeight() - panelHeight) / 2));
@@ -82,6 +87,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener {
 
 		JScrollPane scrollPane = new JScrollPane(list);
 		scrollPane.setBorder(new TitledBorder("Select Properties"));
+		scrollPane.setBackground(Color.PINK);
 		scrollPane.setBounds(0, titleHeight + padding, panelWidth, listHeight);
 		scrollPane.setVisible(true);
 
@@ -98,6 +104,15 @@ public class PropertySelectionSellPanel implements ListSelectionListener {
 		defeat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// remove player
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
+				panel.setVisible(false);
+				ActionMessage.getInstance().newMessage("You Lost!");
+				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 			}
 		});
 		
@@ -164,7 +179,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener {
 		Font titleFont = new Font("broadway", Font.PLAIN, 26);
 		JLabel titleBar = new JLabel("You Are Out of Money!");
 		titleBar.setFont(titleFont);
-		titleBar.setBounds(padding, 0, panelWidth, titleHeight);
+		titleBar.setBounds(titleHeight - padding * 2, 0, panelWidth, titleHeight);
 		
 		panel.add(titleBar);
 		panel.add(scrollPane);
