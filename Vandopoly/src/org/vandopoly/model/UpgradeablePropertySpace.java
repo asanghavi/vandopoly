@@ -157,4 +157,12 @@ public class UpgradeablePropertySpace extends PropertySpace implements Serializa
 	public void unmortgage() {
 		state_.changeState(this, PropertyOwned.Instance());
 	}
+	
+	public void ownershipIncrease() {
+		// Do nothing
+	}
+	
+	public void ownershipDecrease() {
+		// Do nothing
+	}
 }
