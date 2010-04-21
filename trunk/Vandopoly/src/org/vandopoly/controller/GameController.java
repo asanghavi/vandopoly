@@ -326,7 +326,8 @@ public class GameController implements ActionListener {
 			disposeFrames();
 			
 			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
-			if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
+			if ((players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
+					&& (players_.get(currentPlayerNum_).getNumOfRolls() < 2))
 				new JailPopUp(players_.get(currentPlayerNum_));
 		}
 		else if (action.getActionCommand().equals("Quit Game")) {
