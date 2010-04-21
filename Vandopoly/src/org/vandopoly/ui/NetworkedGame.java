@@ -30,6 +30,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.rmi.ConnectException;
 
@@ -60,7 +61,7 @@ public class NetworkedGame extends JPanel {
 			unsuccessfulConnection_, waiting_, loadPanel_, choose_,
 			selectGame_, longNameError_, noNameError_, pieceError_,
 			repeatError_;
-	private JButton continue_, back_, playGame_, createGame_, joinGame_;
+	private JButton continue_, back_, playGame_, createGame_, joinGame_, quit_;
 	private DisplayAssembler display;
 	private int optionsPageNum_ = 1, numOfPieces_ = 4;
 	private String namesAndIcons_[];
@@ -318,8 +319,8 @@ public class NetworkedGame extends JPanel {
 						 NetworkedGame.this.setVisible(false);
 					} else if (icons_.getSelection() == null)
 						pieceError_.setVisible(true);
-				} else {
-
+				} else { // Create a new networked game
+					System.out.println("Created names and Icons_");
 					namesAndIcons_ = new String[5];
 					namesAndIcons_[0] = "" + 2;
 					namesAndIcons_[1] = nameOne_.getText();
@@ -329,6 +330,8 @@ public class NetworkedGame extends JPanel {
 							namesAndIcons_[3] = icons_.getSelection()
 									.getActionCommand();
 					}
+					System.err.println(namesAndIcons_[3]);
+					
 					pieceError_.setVisible(false);
 					if ((icons_.getSelection() != null) && allHaveNames()
 							&& shortNames()) {
@@ -348,12 +351,26 @@ public class NetworkedGame extends JPanel {
 			public void actionPerformed(ActionEvent event) {
 				if (optionsPageNum_ == 2)
 					NetworkedGame.this.backToMain();
-				else if (optionsPageNum_ == 3)
+				else if (optionsPageNum_ == 3) {
 					NetworkedGame.this.backToPlayerPage();
+					
+				}
 				else {
 					cannotFindHost_.setVisible(false);
 					unsuccessfulConnection_.setVisible(false);
 					NetworkedGame.this.backToSecondPage();
+				}
+			}
+		});
+		
+		quit_ = new JButton("Quit");
+		quit_.setBounds(115, 580, 500, 75);
+		quit_.setFont(buttonFont);
+		quit_.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				if (optionsPageNum_ == 3) {
+					networkedController_.closeSockets();
+					System.exit(0);
 				}
 			}
 		});
@@ -423,6 +440,7 @@ public class NetworkedGame extends JPanel {
 		this.add(nameOne_);
 		this.add(continue_);
 		this.add(back_);
+		this.add(quit_);
 		this.add(playGame_);
 		this.add(waiting_);
 		this.add(loadPanel_);
@@ -488,20 +506,20 @@ public class NetworkedGame extends JPanel {
 
 						namesAndIcons_[1] = readIn_.readLine();
 						namesAndIcons_[3] = readIn_.readLine();
-						System.out.println("Name: " + namesAndIcons_[1]);
-						System.out.println("Icon: " + namesAndIcons_[3]);
+					//	System.out.println("Name: " + namesAndIcons_[1]);
+					//	System.out.println("Icon: " + namesAndIcons_[3]);
 						
 						connected_ = "CONNECTED";
 						
 						while (networkedController_ == null) {
-							System.out.println("Sleeping");
+						//	System.out.println("Sleeping");
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
 						}
-						System.out.println("Calling clientListen()");
+					//	System.out.println("Calling clientListen()");
 						networkedController_.clientListen(readIn_, printOut_, input_, output_);
 						
 					} else
@@ -524,12 +542,15 @@ public class NetworkedGame extends JPanel {
 					cannotFindHost_.setVisible(true);
 					connected_ = "NO";
 					
-				} catch (IOException e) {
+				} catch (SocketException e) {
+					// The server has quit - handle appropriately
+					System.out.println("Server has quit game");
+				}catch (IOException e) {
 					e.printStackTrace();
 					unsuccessfulConnection_.setVisible(true);
 					connected_ = "NO";
 					
-				}
+				} 
 			}
 		}.start();
 
@@ -569,14 +590,6 @@ public class NetworkedGame extends JPanel {
 		return true;
 	}
 
-	/*
-	 * public boolean addPlayerArr(String[] nameAndIcon) { String[]
-	 * namesAndIcons = new String[namesAndIcons_.length + 2]; namesAndIcons[0] =
-	 * namesAndIcons_[0] + 1; for(int x=1; x<namesAndIcons_.length; x++) {
-	 * namesAndIcons[x] = namesAndIcons_[x]; }
-	 * namesAndIcons[namesAndIcons_.length] = nameAndIcon[1];
-	 * namesAndIcons[namesAndIcons_.length] = nameAndIcon[2]; return true; }
-	 */
 	public void disableIcon(int i) {
 		player_[i].setEnabled(false);
 	}
@@ -593,6 +606,7 @@ public class NetworkedGame extends JPanel {
 		player1Piece_.setVisible(false);
 
 		continue_.setVisible(false);
+		quit_.setVisible(false);
 		hideThirdPagePanels();
 		hideFourthPagePanels();
 	}
@@ -607,7 +621,8 @@ public class NetworkedGame extends JPanel {
 		player_[2].setVisible(true);
 		player_[3].setVisible(true);
 		player1Piece_.setVisible(true);
-
+		
+		quit_.setVisible(false);
 		continue_.setVisible(true);
 		optionsPageNum_ = 5;
 	}
@@ -615,6 +630,7 @@ public class NetworkedGame extends JPanel {
 	public void showSecondPagePanels() {
 		choose_.setVisible(true);
 		createGame_.setVisible(true);
+		quit_.setVisible(false);
 		joinGame_.setVisible(true);
 		optionsPageNum_ = 2;
 	}
@@ -622,6 +638,7 @@ public class NetworkedGame extends JPanel {
 	public void hideSecondPagePanels() {
 		choose_.setVisible(false);
 		createGame_.setVisible(false);
+		quit_.setVisible(false);
 		joinGame_.setVisible(false);
 	}
 
@@ -629,25 +646,30 @@ public class NetworkedGame extends JPanel {
 		loadPanel_.setVisible(false);
 		waiting_.setVisible(false);
 		playGame_.setVisible(false);
+		quit_.setVisible(false);
 	}
 
 	public void showThirdPagePanels() {
 		// playGame_.setVisible(true);
 		loadPanel_.setVisible(true);
 		waiting_.setVisible(true);
+		quit_.setVisible(true);
+		back_.setVisible(false);
 		optionsPageNum_ = 3;
 
 		startNetworkedGame();
 	}
 
 	public void startNetworkedGame() {
-		new NetworkedGameController(mainMenu_.display_, namesAndIcons_, true);
+		networkedController_ = new NetworkedGameController
+				(mainMenu_.display_, namesAndIcons_, true);
 	}
 
 	public void hideFourthPagePanels() {
 		selectGame_.setVisible(false);
 		gameIp_.setVisible(false);
 		continue_.setVisible(false);
+		quit_.setVisible(false);
 	}
 
 	public void showFourthPagePanels() {
@@ -655,6 +677,7 @@ public class NetworkedGame extends JPanel {
 		gameIp_.setVisible(true);
 		optionsPageNum_ = 4;
 		continue_.setVisible(true);
+		quit_.setVisible(false);
 
 	}
 
@@ -665,11 +688,13 @@ public class NetworkedGame extends JPanel {
 		noNameError_.setVisible(false);
 		mainMenu_.showMenu();
 		this.setVisible(false);
+		quit_.setVisible(false);
 	}
 
 	public void backToPlayerPage() {
 		hideThirdPagePanels();
 		showPlayerPagePanels();
+
 	}
 
 	public void backToSecondPage() {
