@@ -665,8 +665,11 @@ public class NetworkedGameController implements ActionListener {
 			propertySelectionPanel_ = null;
 		}
 
-		if ((players_.get(currentPlayerNum_).getState().toString()
-				.equals(PlayerInJail.Instance().toString())) && localControl_)
+		// Show the jail pop-up only if the player is in jail, they are
+		// playing on the local machine and they have rolled less than 2 times
+		if (((players_.get(currentPlayerNum_).getState().toString()
+				.equals(PlayerInJail.Instance().toString())) && localControl_
+				&& (players_.get(currentPlayerNum_).getNumOfRolls() < 2)))
 			new JailPopUp(players_.get(currentPlayerNum_));
 		
 		if (!isTerminal) {
