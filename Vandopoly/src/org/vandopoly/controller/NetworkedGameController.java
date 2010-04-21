@@ -148,6 +148,8 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "tradeProposal");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "tradeAccepted");
 		NotificationManager.getInstance().addObserver(Notification.MESSAGE_POPUP, this, "messagePopUp");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, this, "removePlayer");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "gameOver");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -202,6 +204,27 @@ public class NetworkedGameController implements ActionListener {
 
 	}
 
+	// Called by REMOVE_PLAYER to remove the current player
+	public void removePlayer() {
+		pieces_.get(currentPlayerNum_).removePiece();
+		pieces_.remove(currentPlayerNum_);
+		players_.remove(currentPlayerNum_);
+		playerPanel_.removePanel(currentPlayerNum_);
+		numOfPlayers_--;
+		/*ArrayList<PropertySpace> ps = players_.get(currentPlayerNum_).getProperties();
+		while(!ps.isEmpty()) {
+			
+		}*/
+	}
+	
+	public void gameOver() {
+		if(players_.size() == 1) {
+			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
+			buttonPanel_.setAllDisabled();
+			dicePanel_.setDisabled();
+		}
+	}
+	
 	// Called by the START_GAME notification
 	public void startGame(Object obj) {
 		System.out.println("StartGame called");
