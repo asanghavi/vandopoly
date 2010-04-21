@@ -149,7 +149,6 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "tradeAccepted");
 		NotificationManager.getInstance().addObserver(Notification.MESSAGE_POPUP, this, "messagePopUp");
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, this, "removePlayer");
-		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "gameOver");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
