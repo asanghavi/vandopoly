@@ -50,15 +50,19 @@ public class PlayerInJail extends PlayerState implements Serializable{
 	}
 	
 	public void movePiece(Player player, Dice dice) {
+		System.out.println("Entered movePiece");
 		int i = player.getNumOfRolls();
 		player.setNumOfRolls(++i);
-		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {			
+		if ((dice.getDie1() == dice.getDie2()) || (i > 3)) {	
+			System.out.println("Rolled Doubles (or rolled 3 times)");
 			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
 					player.getName() + " has been removed from Academic Probation!");
 			getOutOfJail(player);
 			player.updatePosition(dice.getTotalRoll());
 			player.setNumOfRolls(0);
 		}
+		else
+			System.out.println("Did not roll doubles");
 	}
 	
 	@Override

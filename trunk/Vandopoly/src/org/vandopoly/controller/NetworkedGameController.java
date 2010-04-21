@@ -28,6 +28,7 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -104,7 +105,8 @@ public class NetworkedGameController implements ActionListener {
 	// Suggested integer for keeping track of the state of game
 	int currentPlayerNum_;
 
-	private Socket clientSocket_;
+	private ServerSocket serverSocket_ = null;
+	private Socket clientSocket_ = null;
 	private PrintWriter printOut_ = null;
 	private BufferedReader readIn_ = null;
 	private ObjectInputStream objectInput_ = null;
@@ -170,9 +172,11 @@ public class NetworkedGameController implements ActionListener {
 						}
 						else
 							Thread.yield();
+					} catch (SocketException e) {
+						System.out.println("Send to server: Server socket closed");
 					} catch (IOException e) {
 						e.printStackTrace();
-					}
+					} 
 				}
 			}
 		}.start();
@@ -186,9 +190,11 @@ public class NetworkedGameController implements ActionListener {
 				System.out.println("Client: Notifying of:" + message.getString());
 				NotificationManager.getInstance().notifyObservers(message.getString(), message.getObject(), true);
 
-			} catch (IOException e) {
+			} catch (SocketException e) {
+				System.out.println("listen to server: Server Socket closed.");
+			}catch (IOException e) {
 				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			}  catch (ClassNotFoundException e) {
 				System.out.println("ClassNotFoundException in clientListen()");
 			}
 		}
@@ -197,10 +203,11 @@ public class NetworkedGameController implements ActionListener {
 
 	// Called by the START_GAME notification
 	public void startGame(Object obj) {
-
+		System.out.println("StartGame called");
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
-
+		System.out.println("Called create Players");
 		createPlayers();
+		System.out.println("Returned from create Players");
 		if (isServer_)
 			localPlayer_ = players_.get(0);
 		else
@@ -230,11 +237,11 @@ public class NetworkedGameController implements ActionListener {
 				try {
 
 					// Initialize the ServerSocket, which listens to the socket
-					ServerSocket serverSocket = new ServerSocket(3913);
+					serverSocket_ = new ServerSocket(3913);
 					System.out.println("Created serversocket");
 
 					// Blocks until a connection is made
-					clientSocket_ = serverSocket.accept();
+					clientSocket_ = serverSocket_.accept();
 					System.out.println("Recieved connection attempt");
 
 					// Create the object streams to pass messages along\
@@ -305,10 +312,9 @@ public class NetworkedGameController implements ActionListener {
 							}
 						}
 					}
-					printOut_.close();
-					readIn_.close();
-					serverSocket.close();
-					clientSocket_.close();
+					closeSockets();
+				} catch (SocketException e) { 
+					System.out.println("ServerSocket has closed");
 				} catch (UnknownHostException e) {
 					System.out.println("Cannot find host");
 				} catch (IOException e) {
@@ -327,9 +333,9 @@ public class NetworkedGameController implements ActionListener {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 
 			// Update current position of player model
-			//currentPlayer.movePiece(dice);
+			currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			 currentPlayer.movePiece(10);
+			 //currentPlayer.movePiece(10);
 
 			/*
 			 * //Print out some statements that help testing
@@ -413,7 +419,11 @@ public class NetworkedGameController implements ActionListener {
 		players_ = new ArrayList<Player>();
 		pieces_ = new ArrayList<Piece>();
 
+		for (int i = 0; i < namesAndIcons_.length; i++)
+			System.out.println(namesAndIcons_[i]);
+		
 		for (int i = 0; i < numOfPlayers_; i++) {
+			
 			players_.add(new Player(i, namesAndIcons_[i + 1]));
 			pieces_.add(new Piece(namesAndIcons_[numOfPlayers_ + i + 1], i + 1));
 		}
@@ -655,7 +665,8 @@ public class NetworkedGameController implements ActionListener {
 			propertySelectionPanel_ = null;
 		}
 
-		if (players_.get(currentPlayerNum_).getState().toString().equals(PlayerInJail.Instance().toString()))
+		if ((players_.get(currentPlayerNum_).getState().toString()
+				.equals(PlayerInJail.Instance().toString())) && localControl_)
 			new JailPopUp(players_.get(currentPlayerNum_));
 		
 		if (!isTerminal) {
@@ -884,5 +895,22 @@ public class NetworkedGameController implements ActionListener {
 		DisplayAssembler.getInstance().addComponent(go, DisplayAssembler.getScreenWidth() - (totalX / 3), DisplayAssembler.getScreenHeight() - (2 * buttonY), JLayeredPane.POPUP_LAYER);
 		DisplayAssembler.getInstance().addComponent(cheatSpaces, DisplayAssembler.getScreenWidth() - totalX, DisplayAssembler.getScreenHeight() - (2 * buttonY), JLayeredPane.POPUP_LAYER);
 		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth() - totalX, DisplayAssembler.getScreenHeight() - buttonY, JLayeredPane.POPUP_LAYER);
+	}
+	
+	public void closeSockets() {
+		try {
+			if (printOut_ != null)
+				printOut_.close();
+			if (readIn_ != null)
+				readIn_.close();
+			if (serverSocket_ != null)
+				serverSocket_.close();
+			if (clientSocket_ != null)	
+				clientSocket_.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			System.err.println("Error closing sockets");
+		}
 	}
 }
