@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -29,7 +30,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -48,8 +48,10 @@ import org.vandopoly.model.UpgradeablePropertySpace;
  * 
  * @author Matt Gioia
  */
-public class PropertySelectionSellPanel implements ListSelectionListener {
+public class PropertySelectionSellPanel implements ListSelectionListener, Serializable {
 
+	final static long serialVersionUID = 336;
+	
 	private final ArrayList<PropertySpace> propertyList;
 	private JButton mortgage, defeat, downgrade;
 
