@@ -367,7 +367,7 @@ public class Player implements Serializable {
 		
 		for (int i = 0; i < properties_.size(); i++) {
 			if (type_ == properties_.get(i).getTypeInt() 
-					&& !properties_.get(i).getState().equals(SpaceMortgaged.Instance())) {
+					&& !properties_.get(i).getState().toString().equals(SpaceMortgaged.Instance().toString())) {
 				properties_.get(i).ownershipIncrease();
 				newState = properties_.get(i).getState();
 			}
@@ -387,7 +387,7 @@ public class Player implements Serializable {
 		
 		for (int i = 0; i < properties_.size(); i++) {
 			if (type_ == properties_.get(i).getTypeInt() 
-					&& !properties_.get(i).getState().equals(SpaceMortgaged.Instance())) {
+					&& !properties_.get(i).getState().toString().equals(SpaceMortgaged.Instance().toString())) {
 				properties_.get(i).ownershipDecrease();
 				newState = properties_.get(i).getState();
 			}
@@ -436,7 +436,7 @@ public class Player implements Serializable {
 				// Check to make sure that other properties in monopoly are not in lower state
 				// Then checks to make sure that no other properties of this type are mortgaged
 				if (properties_.get(i).getState().getLevel() < p.getState().getLevel()
-						|| properties_.get(i).getState().equals(SpaceMortgaged.Instance())) {
+						|| properties_.get(i).getState().toString().equals(SpaceMortgaged.Instance().toString())) {
 					return false;
 				}
 			}

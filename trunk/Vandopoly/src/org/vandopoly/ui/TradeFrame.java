@@ -42,6 +42,7 @@ import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 import org.vandopoly.model.Player;
 import org.vandopoly.model.PropertySpace;
+import org.vandopoly.model.UtilitySpace;
 
 /*
  * Trade Frame allows players to trade with one another.  Currently, it only supports 2 player property
@@ -476,6 +477,14 @@ public class TradeFrame implements ListSelectionListener {
 					// Add the trade offer to player 2's properties and remove them from Player 1's
 					while (itr.hasPrevious()) {
 						PropertySpace p = itr.previous();
+						
+						if (p.getClass().equals(PropertySpace.class) || p.getClass().equals(UtilitySpace.class)) {
+							p.getOwner().updateTypeDecrease(p.getTypeInt());
+							
+							// This changes all relevant states owned by the player
+							p.bePurchased(tradePlayer.get(1));
+						}
+						
 						tradePlayer.get(0).getProperties().remove(p);
 						tradePlayer.get(1).updateProperties(p);
 						p.setOwner(tradePlayer.get(1));
@@ -491,6 +500,14 @@ public class TradeFrame implements ListSelectionListener {
 					// Add the trade offer to player 1's properties and remove them from Player 2's
 					while (itr.hasPrevious()) {
 						PropertySpace p = itr.previous();
+						
+						if (p.getClass().equals(PropertySpace.class) || p.getClass().equals(UtilitySpace.class)) {
+							p.getOwner().updateTypeDecrease(p.getTypeInt());
+							
+							// This changes all relevant states owned by the player
+							p.bePurchased(tradePlayer.get(0));
+						}
+						
 						tradePlayer.get(0).updateProperties(p);
 						tradePlayer.get(1).getProperties().remove(p);
 						p.setOwner(tradePlayer.get(0));
