@@ -162,6 +162,11 @@ public class Piece {
 		return state_;
 	}
 	
+	// Remove piece from the board
+	public void removePiece() {
+		DisplayAssembler.getInstance().removeComponent(icon_);
+	}
+
 	// Move to a specific space
 	public void moveToSpace(int spaceNum) {
 
