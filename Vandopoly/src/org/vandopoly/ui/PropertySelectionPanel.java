@@ -154,14 +154,14 @@ public class PropertySelectionPanel implements ListSelectionListener {
 							+ index + " which is invalid");
 				}
 				// If property selected is currently being mortgaged
-				else if (!propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
+				else if (!propertyList.get(index).getState().toString().equals(SpaceMortgaged.Instance().toString())) {
 					player.mortgage(propertyList.get(index));
 					repaint();
 					
 					// Toggle Buttons Appropriately
 					PropertySelectionPanel.this.toggleButtons(propertyList.get(index));
 				} 
-				else if (propertyList.get(index).getState().equals(SpaceMortgaged.Instance())) {
+				else if (propertyList.get(index).getState().toString().equals(SpaceMortgaged.Instance().toString())) {
 					player.unmortgage(propertyList.get(index));
 					repaint();
 					
@@ -263,7 +263,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 			mortgage.setEnabled(true);
 
 		// Update the button words based on state of property
-		if (selectedProperty.getState().equals(SpaceMortgaged.Instance()))
+		if (selectedProperty.getState().toString().equals(SpaceMortgaged.Instance().toString()))
 			mortgage.setText("Unmortgage");
 		 else
 			mortgage.setText("Mortgage");
