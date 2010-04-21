@@ -117,6 +117,10 @@ public class GameController implements ActionListener {
 				this, "displayActionMessage");
 		NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, 
 				this, "chargeUtilityRent");
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, 
+				this, "removePlayer");
+		NotificationManager.getInstance().addObserver(Notification.END_TURN, 
+				this, "gameOver");
 	}
 	
 	// Called by the START_GAME notification
@@ -196,6 +200,27 @@ public class GameController implements ActionListener {
 
 	public void sendPlayerToJail() {
 		players_.get(currentPlayerNum_).goToJail();
+	}
+	
+	// Called by REMOVE_PLAYER to remove the current player
+	public void removePlayer() {
+		pieces_.get(currentPlayerNum_).removePiece();
+		pieces_.remove(currentPlayerNum_);
+		players_.remove(currentPlayerNum_);
+		playerPanel_.removePanel(currentPlayerNum_);
+		
+		/*ArrayList<PropertySpace> ps = players_.get(currentPlayerNum_).getProperties();
+		while(!ps.isEmpty()) {
+			
+		}*/
+	}
+	
+	public void gameOver() {
+		if(players_.size() == 1) {
+			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
+			buttonPanel_.setAllDisabled();
+			dicePanel_.setDisabled();
+		}
 	}
 	
 	// Called by the UpdateScholarship notification
