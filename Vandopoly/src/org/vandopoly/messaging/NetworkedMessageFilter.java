@@ -64,7 +64,8 @@ public class NetworkedMessageFilter {
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "addToQueue");
-
+		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, this, "addToQueue");
+		
 		addRemoveLock = new Semaphore(1);
 	}
 	
