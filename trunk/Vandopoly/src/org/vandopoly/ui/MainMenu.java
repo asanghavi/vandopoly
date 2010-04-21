@@ -38,7 +38,7 @@ import org.vandopoly.messaging.NotificationManager;
  */
 public class MainMenu extends JPanel {
 	
-	private JButton newGame_, loadGame_, rules_, quitGame_, networkGame_;
+	private JButton newGame_, rules_, quitGame_, networkGame_;
 	Display display_;
 	private GameOptions options_;
 	private NetworkedGame networkedGame_;
@@ -47,7 +47,7 @@ public class MainMenu extends JPanel {
 	
 	public MainMenu(Display d) {
 		display_ = d;
-		int frameWidth = 529, frameHeight = 560;
+		int frameWidth = 529, frameHeight = 480;
 		int buttonWidth = 350, buttonHeight = 75;
 		
 		// Space between buttons and the Y component of first button
@@ -90,15 +90,10 @@ public class MainMenu extends JPanel {
             }
 
         });
-		
-		loadGame_ = new JButton("Load Game");
-		loadGame_.setBounds(((frameWidth - buttonWidth) / 2), 
-				(buttonStart + betweenSpace + buttonHeight), buttonWidth, buttonHeight);
-		loadGame_.setFont(buttonFont);
-		
+
 		networkGame_ = new JButton("Network Game");
 		networkGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
-				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
+				(betweenSpace + buttonHeight), buttonWidth, buttonHeight);
 		networkGame_.setFont(buttonFont);
 		networkGame_.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
@@ -115,7 +110,7 @@ public class MainMenu extends JPanel {
 		
 		quitGame_ = new JButton("Quit Game");
 		quitGame_.setBounds(((frameWidth - buttonWidth) / 2), buttonStart + 
-				(betweenSpace + buttonHeight) * 3, buttonWidth, buttonHeight);
+				(betweenSpace + buttonHeight) * 2, buttonWidth, buttonHeight);
 		quitGame_.setFont(buttonFont);
 		
 		quitGame_.addActionListener(new ActionListener() {
@@ -127,7 +122,6 @@ public class MainMenu extends JPanel {
 		// Add some Components to the panel
 		add(titleBar);
 		add(newGame_);
-		add(loadGame_);
 		add(networkGame_);
 		add(quitGame_);
 		
@@ -146,7 +140,6 @@ public class MainMenu extends JPanel {
 	// Can be used to remove all Buttons within the MainMenu class
 	public void hidePanels() {
 		newGame_.setVisible(false);
-        loadGame_.setVisible(false);
         rules_.setVisible(false);
         quitGame_.setVisible(false);
 	}
