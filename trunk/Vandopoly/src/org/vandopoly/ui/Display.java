@@ -74,7 +74,7 @@ public class Display extends JFrame {
 	public Display () {
 		this.setSize(screen_.width, screen_.height);
 		this.setTitle("Vandopoly");
-	//	this.setUndecorated(true);
+		this.setUndecorated(true);
 
 		ToolTipManager.sharedInstance().setInitialDelay(0); 
 		

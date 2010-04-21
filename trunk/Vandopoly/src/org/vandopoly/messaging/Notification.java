@@ -121,6 +121,10 @@ public class Notification {
 	// Sent when a trade is accepted in a networked game
 	public static final String TRADE_ACCEPTED = "TradeAccepted";
 	
+	// Sent over the network when a player lands on a card space so that
+	// the other player can see their card.
+	public static final String MESSAGE_POPUP = "MessagePopUp";
+	
 	////////////////////////////////////////////////////////////////////////////////////////////
 	// Button Functionality
 	////////////////////////////////////////////////////////////////////////////////////////////

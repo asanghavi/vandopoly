@@ -147,6 +147,7 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "overwrite");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "tradeProposal");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "tradeAccepted");
+		NotificationManager.getInstance().addObserver(Notification.MESSAGE_POPUP, this, "messagePopUp");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -333,9 +334,9 @@ public class NetworkedGameController implements ActionListener {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 
 			// Update current position of player model
-			currentPlayer.movePiece(dice);
+			//currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			 //currentPlayer.movePiece(10);
+			 currentPlayer.movePiece(2);
 
 			/*
 			 * //Print out some statements that help testing
@@ -914,6 +915,14 @@ public class NetworkedGameController implements ActionListener {
 		catch (IOException e) {
 			e.printStackTrace();
 			System.err.println("Error closing sockets");
+		}
+	}
+	
+	public void messagePopUp(Object obj, String eventName, boolean isTerminal) {
+		if (isTerminal) 
+			new MessagePopUp((String) obj);
+		else {
+			filter_.addToQueue(obj, eventName, false);
 		}
 	}
 }
