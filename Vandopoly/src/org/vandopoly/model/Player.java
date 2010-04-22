@@ -167,7 +167,7 @@ public class Player implements Serializable {
 			if(cash_ + propertyValue > 0) {
 				if (!sellPanelVisible_) {
 					propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
-					NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
+					NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, new Player(this));
 					sellPanelVisible_ = true;
 				}
 			} else

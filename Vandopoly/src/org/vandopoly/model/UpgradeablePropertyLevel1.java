@@ -52,14 +52,14 @@ public class UpgradeablePropertyLevel1 extends UpgradeablePropertyState implemen
 	protected void renovate(UpgradeablePropertySpace p) {
 		p.changeState(UpgradeablePropertyLevel2.Instance());
 		NotificationManager.getInstance().notifyObservers
-		(Notification.UPDATE_PROPERTIES, p.getOwner());
+		(Notification.UPDATE_PROPERTIES, new Player(p.getOwner()));
 		
 	}
 	
 	protected void downgrade(UpgradeablePropertySpace p) {
 		p.changeState(PropertyOwned.Instance());
 		NotificationManager.getInstance().notifyObservers
-		(Notification.UPDATE_PROPERTIES, p.getOwner());
+		(Notification.UPDATE_PROPERTIES, new Player(p.getOwner()));
 	}
 	
 	protected boolean isUpgradeable(UpgradeablePropertySpace p) {

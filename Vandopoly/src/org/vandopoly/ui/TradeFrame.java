@@ -469,6 +469,15 @@ public class TradeFrame implements ListSelectionListener {
 		accept_.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				
+				// Check if it is a valid trade
+				if (!validTrade()) {
+					NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+							"You Cannot Trade Renovated Properties", true);
+					
+					// Not an acceptable trade so do nothing else
+					return;
+				}
+				
 				// Gets iterator for Player 1's trade offer
 				ListIterator<PropertySpace> itr = property.get(1).listIterator(property.get(1).size());
 				
@@ -566,6 +575,26 @@ public class TradeFrame implements ListSelectionListener {
 				}
 			}
 
+			public boolean validTrade() {
+				ListIterator<PropertySpace> itr = property.get(1).listIterator(property.get(1).size());
+				
+				// Check to make sure there are no renovated properties in trade offer
+				while (itr.hasPrevious()) {
+					PropertySpace p = itr.previous();
+					if (p.isRenovated())
+						return false;
+				}
+				
+				itr = property.get(3).listIterator(property.get(3).size());
+				
+				while (itr.hasPrevious()) {
+					PropertySpace p = itr.previous();
+					if (p.isRenovated())
+						return false;
+				}
+				
+				return true;
+			}
 		});
 		cancel_ = new JButton("Cancel");
 		

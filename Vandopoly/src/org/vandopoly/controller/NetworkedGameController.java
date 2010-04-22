@@ -210,17 +210,21 @@ public class NetworkedGameController implements ActionListener {
 
 	// Called by REMOVE_PLAYER to remove the current player
 	public void removePlayer() {
-		pieces_.get(currentPlayerNum_).removePiece();
-		pieces_.remove(currentPlayerNum_);
-		players_.remove(currentPlayerNum_);
-		playerPanel_.removePanel(currentPlayerNum_);
-		
-		if(players_.size() == 1) {
-			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
-			buttonPanel_.setAllDisabled();
-			dicePanel_.setDisabled();
-		} else {
-			NotificationManager.getInstance().notifyObservers(Notification.REMOVED_PLAYER, null);
+		try {
+			pieces_.get(currentPlayerNum_).removePiece();
+			pieces_.remove(currentPlayerNum_);
+			players_.remove(currentPlayerNum_);
+			playerPanel_.removePanel(currentPlayerNum_);
+			
+			if(players_.size() == 1) {
+				ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
+				buttonPanel_.setAllDisabled();
+				dicePanel_.setDisabled();
+			} else {
+				NotificationManager.getInstance().notifyObservers(Notification.REMOVED_PLAYER, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
