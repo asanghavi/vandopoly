@@ -162,7 +162,7 @@ public class Player implements Serializable {
 			
 			if (cash_ + propertyValue > 0) {
 				propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
-				NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
+				NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, new Player(this));
 			} else
 			{
 				ActionMessage.getInstance().newMessage("You Lost!");
@@ -191,12 +191,12 @@ public class Player implements Serializable {
 	
 	public void usedGetOutOfJail() {
 		getOutOfJail_ = false;
-		NotificationManager.getInstance().notifyObservers(Notification.USED_JAIL_CARD, this);
+		NotificationManager.getInstance().notifyObservers(Notification.USED_JAIL_CARD, new Player(this));
 	}
 	
 	public void gainedGetOutOfJail() {
 		getOutOfJail_ = true;
-		NotificationManager.getInstance().notifyObservers(Notification.GAINED_JAIL_CARD, this);
+		NotificationManager.getInstance().notifyObservers(Notification.GAINED_JAIL_CARD, new Player(this));
 		
 	}
 
@@ -360,7 +360,7 @@ public class Player implements Serializable {
 		updateCash(property.getMortgageValue());
 		property.beMortgaged();
 		NotificationManager.getInstance().notifyObservers
-		(Notification.UPDATE_PROPERTIES, this);
+		(Notification.UPDATE_PROPERTIES, new Player(this));
 	}
 
 	public void unmortgage(PropertySpace property) {
@@ -368,7 +368,7 @@ public class Player implements Serializable {
 			updateCash(-property.getMortgageValue());
 			property.unmortgage();
 			NotificationManager.getInstance().notifyObservers
-			(Notification.UPDATE_PROPERTIES, this);
+			(Notification.UPDATE_PROPERTIES, new Player(this));
 		}
 		else
 			System.out.println("Can't Unmortgage "+getName()+", not enough cash");
