@@ -146,7 +146,7 @@ public class Player implements Serializable {
 
 	public void updateCash(int value) {
 		cash_ += value;
-		if(cash_ < 0) {
+		if(cash_ < 1450) {
 			propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
 			NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
 		}
