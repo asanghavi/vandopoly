@@ -94,6 +94,7 @@ public class NetworkedGameController implements ActionListener {
 	PlayerPanel playerPanel_;
 	PropertySelectionPanel propertySelectionPanel_;
 	TradeFrame tradeFrame_;
+	WaitingMessage tradeWait;
 
 	String[] namesAndIcons_;
 	int numOfPlayers_ = 2;
@@ -132,6 +133,8 @@ public class NetworkedGameController implements ActionListener {
 		board_ = new Space[NUM_OF_SPACES];
 
 		display_ = display;
+		
+		tradeWait = new WaitingMessage("Waiting for opponent to make a decision regarding the trade");
 
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "startGame");
 		NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, this, "updateFund");
@@ -152,6 +155,7 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, this, "removePlayer");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_FINALIZED, this, "tradeOverwrite");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_REJECTED, this, "tradeRejected");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_WAIT_MESSAGE, this, "showTradeWaitMessage");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -593,6 +597,11 @@ public class NetworkedGameController implements ActionListener {
 		}
 	}
 	
+	// Called by Notification TRADE_WAIT_MESSAGE
+	public void showTradeWaitMessage() {
+		tradeWait.showWaitingMessage();
+	}
+	
 	// Used to display a message containing a trade from the other player. 
 	// Called by Notification TRADE_PROPOSED
 	public void tradeProposal(Object obj) {
@@ -771,8 +780,7 @@ public class NetworkedGameController implements ActionListener {
 		if(obj != null)
 			overwrite(obj);
 		
-		NotificationManager.getInstance().notifyObservers(Notification.REMOVE_WAIT_MESSAGE, 
-				null, true);
+		tradeWait.hideWaitingMessage();
 	}
 	
 	// Called by Notification END_TURN_UPDATE
