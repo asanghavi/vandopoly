@@ -70,6 +70,7 @@ import org.vandopoly.ui.PlayerPanel;
 import org.vandopoly.ui.PropertySelectionPanel;
 import org.vandopoly.ui.TradeFrame;
 import org.vandopoly.ui.TradeProposalPopUp;
+import org.vandopoly.ui.WaitingMessage;
 
 /*
  * NetworkedGameController is meant to handle all complex button/model 
@@ -149,6 +150,8 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "tradeAccepted");
 		NotificationManager.getInstance().addObserver(Notification.MESSAGE_POPUP, this, "messagePopUp");
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, this, "removePlayer");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_FINALIZED, this, "tradeOverwrite");
+		NotificationManager.getInstance().addObserver(Notification.TRADE_REJECTED, this, "tradeRejected");
 	}
 
 	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
@@ -715,7 +718,14 @@ public class NetworkedGameController implements ActionListener {
 			System.out.println(players_.get(1).getProperties().get(i).getNameAndStatus());
 		
 		// All should be updated correctly, so send an overwrite to the other player
-		filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
+		filter_.addToQueue(players_, Notification.TRADE_FINALIZED, false);
+	}
+	
+	// Called by notification Trade Rejected
+	// Used to remove opponents waiting screen
+	public void tradeRejected() {
+		// Sends no new players which indicates trade was denied.
+		filter_.addToQueue(null, Notification.TRADE_FINALIZED, false);
 	}
 	
 	// Change the player's turn. Called by Notification END_TURN
@@ -754,6 +764,15 @@ public class NetworkedGameController implements ActionListener {
 			}
 			filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
 		}
+	}
+	
+	// Called by Notification TRADE_FINALIZED
+	public void tradeOverwrite(Object obj) {
+		if(obj != null)
+			overwrite(obj);
+		
+		NotificationManager.getInstance().notifyObservers(Notification.REMOVE_WAIT_MESSAGE, 
+				null, true);
 	}
 	
 	// Called by Notification END_TURN_UPDATE

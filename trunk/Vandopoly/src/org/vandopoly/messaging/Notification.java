@@ -121,9 +121,18 @@ public class Notification {
 	// Sent when a trade is accepted in a networked game
 	public static final String TRADE_ACCEPTED = "TradeAccepted";
 	
+	// Used to reject a trade and remove the waiting message from the opponents computer
+	public static final String TRADE_REJECTED = "TradeRejected";
+	
+	// Trade Finalized
+	public static final String TRADE_FINALIZED = "TradeFinalized";
+	
 	// Sent over the network when a player lands on a card space so that
 	// the other player can see their card.
 	public static final String MESSAGE_POPUP = "MessagePopUp";
+	
+	// Used to close a waiting message
+	public static final String REMOVE_WAIT_MESSAGE = "RemoveWaitMessage";
 	
 	// Sent when a player loses the game
 	public static final String REMOVE_PLAYER = "RemovePlayer";
