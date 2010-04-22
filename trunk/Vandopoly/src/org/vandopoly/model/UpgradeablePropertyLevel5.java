@@ -57,7 +57,7 @@ public class UpgradeablePropertyLevel5 extends UpgradeablePropertyState implemen
 	protected void downgrade(UpgradeablePropertySpace p) {
 		p.changeState(UpgradeablePropertyLevel4.Instance());
 		NotificationManager.getInstance().notifyObservers
-		(Notification.UPDATE_PROPERTIES, p.getOwner());
+		(Notification.UPDATE_PROPERTIES, new Player(p.getOwner()));
 	}
 	
 	protected boolean isUpgradeable(UpgradeablePropertySpace p) {
