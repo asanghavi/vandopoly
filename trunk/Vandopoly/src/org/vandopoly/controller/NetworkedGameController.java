@@ -209,7 +209,6 @@ public class NetworkedGameController implements ActionListener {
 		pieces_.remove(currentPlayerNum_);
 		players_.remove(currentPlayerNum_);
 		playerPanel_.removePanel(currentPlayerNum_);
-		numOfPlayers_--;
 		
 		if(players_.size() == 1) {
 			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
@@ -227,6 +226,8 @@ public class NetworkedGameController implements ActionListener {
 	
 	// Called by REMOVED_PLAYER notification to update the player's turn
 	public void removedPlayer() {
+		numOfPlayers_--;
+		
 		currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 		
 		disposeFrames();
