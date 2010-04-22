@@ -195,7 +195,7 @@ public class NetworkedGameController implements ActionListener {
 
 			} catch (SocketException e) {
 				System.out.println("listen to server: Server Socket closed.");
-				new MessagePopUp("Your Opponent Left! You Won!");
+				new MessagePopUp("Your opponent has left the game!");
 				buttonPanel_.setAllDisabled();
 				dicePanel_.setDisabled();
 				break;
@@ -354,7 +354,7 @@ public class NetworkedGameController implements ActionListener {
 					closeSockets();
 				} catch (SocketException e) { 
 					System.out.println("ServerSocket has closed");
-					new MessagePopUp("Your Opponent Left! You Won!");
+					new MessagePopUp("Your has left the game");
 					buttonPanel_.setAllDisabled();
 					dicePanel_.setDisabled();
 				} catch (UnknownHostException e) {
