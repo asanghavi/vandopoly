@@ -222,11 +222,6 @@ public class NetworkedGameController implements ActionListener {
 		} else {
 			NotificationManager.getInstance().notifyObservers(Notification.REMOVED_PLAYER, null);
 		}
-		
-		/*ArrayList<PropertySpace> ps = players_.get(currentPlayerNum_).getProperties();
-		while(!ps.isEmpty()) {
-			
-		}*/
 	}
 	
 	// Called by REMOVED_PLAYER notification to update the player's turn
