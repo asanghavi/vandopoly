@@ -71,17 +71,13 @@ public class TaxSpace extends Space implements Serializable {
 			message += value + " in parking tickets";
 		}
 		
-		if (p.getCash() < value) {
-			// Window telling the user they owe x dollars in tax and must mortgage properties
-		}
-		else {
-			p.updateCash(-value);
-			NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
-					new Integer(value));
-			NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
-					message);
+		
+		p.updateCash(-value);
+		NotificationManager.getInstance().notifyObservers(Notification.UPDATE_SCHOLARSHIP_FUND, 
+				new Integer(value));
+		NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
+				message);
 			
-		}
 	}
 
 	// Getters and setters
