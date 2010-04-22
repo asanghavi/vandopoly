@@ -54,7 +54,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 	
 	private final ArrayList<PropertySpace> propertyList;
 	private JButton mortgage, defeat, downgrade;
-
+	
 	JPanel panel;
 	final DefaultListModel model;
 
@@ -105,15 +105,16 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 		
 		defeat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				// remove player
-				ActionMessage.getInstance().newMessage("You Lost!");
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+				if(player.getCash() > 0) {
+					panel.setVisible(false);
+					NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
 				}
-				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
-				panel.setVisible(false);
+				else {
+					// remove player
+					ActionMessage.getInstance().newMessage("You Lost!");
+					NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
+					panel.setVisible(false);
+				}
 			}
 		});
 		
@@ -139,6 +140,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 					int newIndex = findNextIndexIncrease(index);
 					list.setSelectedIndex(newIndex);
 				}
+				checkCash(player);
 			}
 
 		});
@@ -173,6 +175,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 					// Toggle Buttons Appropriately
 					PropertySelectionSellPanel.this.toggleButtons(propertyList.get(index));
 				}
+				checkCash(player);
 			}
 
 		});
@@ -231,6 +234,12 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 		toggleButtons(propertyList.get(lsm.getMinSelectionIndex()));
 	}
 
+	private void checkCash(Player player) {
+		if(player.getCash() > 0) {
+			defeat.setText("Join Back In The Game");
+		}
+	}
+	
 	private void toggleButtons(PropertySpace selectedProperty) {
 		// Control downgrade button
 		if (selectedProperty.isDowngradeable())

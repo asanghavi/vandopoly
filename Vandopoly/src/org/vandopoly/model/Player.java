@@ -21,6 +21,7 @@ import java.util.ListIterator;
 
 import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
+import org.vandopoly.ui.ActionMessage;
 import org.vandopoly.ui.PropertySelectionSellPanel;
 
 /*
@@ -146,9 +147,27 @@ public class Player implements Serializable {
 
 	public void updateCash(int value) {
 		cash_ += value;
+		int propertyValue = 0;
 		if(cash_ < 0) {
-			propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
-			NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
+			for(int x=0; x < properties_.size(); x++) {
+				if(!properties_.get(x).getState().toString().equals(SpaceMortgaged.Instance().toString()))
+					propertyValue += properties_.get(x).getMortgageValue();
+				if(properties_.get(x).isRenovated()) {
+					if(properties_.get(x).getState().getLevel() == 5)
+						propertyValue += 100;
+					else
+						propertyValue += properties_.get(x).getState().getLevel() * 25;
+				}
+			}
+			
+			if (cash_ + propertyValue > 0) {
+				propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
+				NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
+			} else
+			{
+				ActionMessage.getInstance().newMessage("You Lost!");
+				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
+			}
 		}
 		
 		System.out.println(name_ + " called updateCash");
