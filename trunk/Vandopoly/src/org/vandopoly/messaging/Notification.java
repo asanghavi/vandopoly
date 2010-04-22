@@ -127,12 +127,13 @@ public class Notification {
 	// Trade Finalized
 	public static final String TRADE_FINALIZED = "TradeFinalized";
 	
+	// Used to open the trade waiting message
+	// It must be closed with a TradeFinalized notification
+	public static final String TRADE_WAIT_MESSAGE = "TRADE_WAIT_MESSAGE";
+	
 	// Sent over the network when a player lands on a card space so that
 	// the other player can see their card.
 	public static final String MESSAGE_POPUP = "MessagePopUp";
-	
-	// Used to close a waiting message
-	public static final String REMOVE_WAIT_MESSAGE = "RemoveWaitMessage";
 	
 	// Sent when a player loses the game
 	public static final String REMOVE_PLAYER = "RemovePlayer";

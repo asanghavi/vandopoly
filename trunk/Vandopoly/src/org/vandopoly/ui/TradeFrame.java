@@ -571,7 +571,8 @@ public class TradeFrame implements ListSelectionListener {
 					
 					filter_.addToQueue(tradeList, Notification.TRADE_PROPOSED, false);
 					
-					new WaitingMessage("Waiting for opponent to make a decision regarding the trade");
+					NotificationManager.getInstance().notifyObservers(Notification.TRADE_WAIT_MESSAGE,
+							null, true);
 					
 					frame.dispose();
 					

@@ -78,7 +78,7 @@ public class WaitingMessage extends JPanel {
 		
 		Border blackline = BorderFactory.createLineBorder(Color.black, 2);
 		TitledBorder title = BorderFactory.createTitledBorder(
-			       blackline, "Please Wait");
+			       blackline, "Waiting");
 		title.setTitleFont(titleFont);
 		title.setTitleJustification(TitledBorder.LEFT);
 		basePanel.setBorder(title);
@@ -92,13 +92,12 @@ public class WaitingMessage extends JPanel {
 		
 		PopupFactory factory = PopupFactory.getSharedInstance();
 		popup = factory.getPopup(this, basePanel, xCoord, yCoord);
-		
-		NotificationManager.getInstance().addObserver(Notification.REMOVE_WAIT_MESSAGE, this, "hideWaitingMessage");
-		
-		popup.show();
-		
-		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
     }
+	
+	public void showWaitingMessage() {
+		popup.show();
+		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
+	}
 	
 	public void hideWaitingMessage() {
 		try {
