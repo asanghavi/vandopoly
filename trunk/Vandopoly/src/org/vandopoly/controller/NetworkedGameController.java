@@ -210,20 +210,30 @@ public class NetworkedGameController implements ActionListener {
 		players_.remove(currentPlayerNum_);
 		playerPanel_.removePanel(currentPlayerNum_);
 		numOfPlayers_--;
+		
+		if(players_.size() == 1) {
+			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
+			buttonPanel_.setAllDisabled();
+			dicePanel_.setDisabled();
+		} else {
+			NotificationManager.getInstance().notifyObservers(Notification.REMOVED_PLAYER, null);
+		}
+		
 		/*ArrayList<PropertySpace> ps = players_.get(currentPlayerNum_).getProperties();
 		while(!ps.isEmpty()) {
 			
 		}*/
 	}
 	
-	public void gameOver() {
-		if(players_.size() == 1) {
-			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
-			buttonPanel_.setAllDisabled();
-			dicePanel_.setDisabled();
-		}
+	// Called by REMOVED_PLAYER notification to update the player's turn
+	public void removedPlayer() {
+		currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+		
+		disposeFrames();
+		
+		NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 	}
-	
+
 	// Called by the START_GAME notification
 	public void startGame(Object obj) {
 		System.out.println("StartGame called");
@@ -356,9 +366,9 @@ public class NetworkedGameController implements ActionListener {
 			Player currentPlayer = players_.get(currentPlayerNum_);
 
 			// Update current position of player model
-			//currentPlayer.movePiece(dice);
+			currentPlayer.movePiece(dice);
 			// Kept for testing purposes
-			 currentPlayer.movePiece(2);
+			// currentPlayer.movePiece(2);
 
 			/*
 			 * //Print out some statements that help testing
@@ -672,7 +682,6 @@ public class NetworkedGameController implements ActionListener {
 	
 	// Change the player's turn. Called by Notification END_TURN
 	public void endTurn(Object obj, String string, boolean isTerminal) {
-		
 		int newPlayer = (Integer)obj;
 		currentPlayerNum_ = newPlayer;
 		
