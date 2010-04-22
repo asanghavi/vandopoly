@@ -190,6 +190,8 @@ public class TradeProposalPopUp {
 			public void actionPerformed(ActionEvent event) {
 				popup.hide();
 				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_CARD, null);
+				// Sends trade decision of "No Trade"
+				NotificationManager.getInstance().notifyObservers(Notification.TRADE_REJECTED, null, true);
 			}
 		});
 	
