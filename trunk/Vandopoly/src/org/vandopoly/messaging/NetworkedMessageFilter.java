@@ -72,9 +72,6 @@ public class NetworkedMessageFilter {
 	public void addToQueue(Object obj, String eventName, boolean isTerminal) {
 		// Encapsulate each object in a NetworkedMessage and
 		// add it to the queue
-		
-		System.out.println("NMFilter received: " + eventName + " terminal:" + isTerminal);
-		
 		if (!isTerminal) {
 			NetworkedMessage temp = new NetworkedMessage(eventName, obj);
 			queueAdd(temp);

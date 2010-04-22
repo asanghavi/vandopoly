@@ -146,7 +146,7 @@ public class Player implements Serializable {
 
 	public void updateCash(int value) {
 		cash_ += value;
-		if(cash_ < 1450) {
+		if(cash_ < 0) {
 			propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
 			NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
 		}
@@ -437,6 +437,9 @@ public class Player implements Serializable {
 				// Then checks to make sure that no other properties of this type are mortgaged
 				if (properties_.get(i).getState().getLevel() < p.getState().getLevel()
 						|| properties_.get(i).getState().toString().equals(SpaceMortgaged.Instance().toString())) {
+					
+					System.err.println(properties_.get(i).getState().getLevel());
+					System.err.println(properties_.get(i).getNameAndStatus());
 					return false;
 				}
 			}
