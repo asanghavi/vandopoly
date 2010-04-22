@@ -173,6 +173,9 @@ public class Player implements Serializable {
 			} else
 			{
 				ActionMessage.getInstance().newMessage("You Lost!");
+				for(int x=0; x < properties_.size(); x++) {
+					properties_.get(x).changeState(SpaceUnowned.Instance());
+				}
 				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
 			}
 		} else
