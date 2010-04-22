@@ -39,7 +39,7 @@ public class Player implements Serializable {
 	private PlayerState state_;
 	private String name_;
 	private int cash_ = 1500, positionOnBoard_, index_;
-	private boolean getOutOfJail_;
+	private boolean getOutOfJail_, sellPanelVisible_;
 	private ArrayList<PropertySpace> properties_;
 	public PropertySelectionSellPanel propertySelectionSellPanel_;
 	
@@ -55,6 +55,7 @@ public class Player implements Serializable {
 		getOutOfJail_ = false;
 		properties_ = new ArrayList<PropertySpace>();
 		numOfRolls_ = 0;
+		sellPanelVisible_ = false;
 	}
 
 	public Player(int index, String name) {
@@ -66,6 +67,7 @@ public class Player implements Serializable {
 		getOutOfJail_ = false;
 		properties_ = new ArrayList<PropertySpace>();
 		numOfRolls_ = 0;
+		sellPanelVisible_ = false;
 	}
 	
 	public Player(Player player) {
@@ -77,6 +79,7 @@ public class Player implements Serializable {
 		getOutOfJail_ = player.hasGetOutOfJail();
 		properties_ = new ArrayList<PropertySpace>(player.getProperties());
 		numOfRolls_ = player.getNumOfRolls();
+		sellPanelVisible_ = false;
 	}
 
 	public void changeState(PlayerState newState) {
@@ -160,16 +163,20 @@ public class Player implements Serializable {
 						propertyValue += properties_.get(x).getState().getLevel() * 25;
 				}
 			}
-			
-			if (cash_ + propertyValue > 0) {
-				propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
-				NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, new Player(this));
+
+			if(cash_ + propertyValue > 0) {
+				if (!sellPanelVisible_) {
+					propertySelectionSellPanel_ = new PropertySelectionSellPanel(this);
+					NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, this);
+					sellPanelVisible_ = true;
+				}
 			} else
 			{
 				ActionMessage.getInstance().newMessage("You Lost!");
 				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
 			}
-		}
+		} else
+			sellPanelVisible_ = false;
 		
 		System.out.println(name_ + " called updateCash");
 		
