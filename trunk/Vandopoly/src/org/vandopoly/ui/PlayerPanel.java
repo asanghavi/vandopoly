@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.vandopoly.messaging.Notification;
@@ -184,43 +185,50 @@ public class PlayerPanel extends JPanel {
 	}
 
 	// Called by the updateCash notification
-	public void updateCash(Object object) {
-		try {
-			Player player = (Player) object;
-			String cash = "" + player.getCash();
-
-			cashAmount_[player.getIndex()].setText(cash);
-
-		} catch (ClassCastException e) {
-			System.err.println("Unexpected object passed to updateCash");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	public void updateCash(final Object object) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Player player = (Player) object;
+					String cash = "" + player.getCash();
+		
+					cashAmount_[player.getIndex()].setText(cash);
+		
+				} catch (ClassCastException e) {
+					System.err.println("Unexpected object passed to updateCash");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	// Called by the updateProperties notification
-	public void updateProperties(Object object) {
-		try {
-			Player player = (Player) object;
-			int i = player.getIndex();
+	public void updateProperties(final Object object) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Player player = (Player) object;
+					int i = player.getIndex();
 
-			list_[i].setListData(player.getPropertyArray());
-			list_[i].setVisibleRowCount(16);
-			list_[i].setFont(propertyFont_);
+					list_[i].setListData(player.getPropertyArray());
+					list_[i].setVisibleRowCount(16);
+					list_[i].setFont(propertyFont_);
 
-			scrollPane_[i].setViewportView(list_[i]);
-			scrollPane_[i].setBackground(new Color(240, 240, 240));
-			scrollPane_[i].setBounds(5, 110, (int) (panelScaleX_ * width_) - 10, (int) (panelScaleY_ * height_) - 150);
-			scrollPane_[i].setVisible(true);
-			scrollPane_[i].setFont(propertyFont_);
+					scrollPane_[i].setViewportView(list_[i]);
+					scrollPane_[i].setBackground(new Color(240, 240, 240));
+					scrollPane_[i].setBounds(5, 110, (int) (panelScaleX_ * width_) - 10, (int) (panelScaleY_ * height_) - 150);
+					scrollPane_[i].setVisible(true);
+					scrollPane_[i].setFont(propertyFont_);
 
-			panel_[i].add(scrollPane_[i]);
-		} catch (ClassCastException e) {
-			System.err.println("Unexpected object passed to updateCash");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+					panel_[i].add(scrollPane_[i]);
+				} catch (ClassCastException e) {
+					System.err.println("Unexpected object passed to updateCash");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	public void gainedCard(Object object) {
@@ -256,20 +264,24 @@ public class PlayerPanel extends JPanel {
 	}
 	
 	// Used to automatically switch to the player who is currently rolling
-	public void switchPanel(Object i) {
-		try {
-			Integer number = (Integer) i;
-			for (int j = 0; j < players_.size(); ++j) {
-				if (number == j) {
-					infoPanel_.setSelectedIndex((int)number);
-					infoPanel_.setIconAt(number, enabled_);
-				}
-				else {
-					infoPanel_.setIconAt(j, disabled_);
+	public void switchPanel(final Object i) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Integer number = (Integer) i;
+					for (int j = 0; j < players_.size(); ++j) {
+						if (number == j) {
+							infoPanel_.setSelectedIndex((int)number);
+							infoPanel_.setIconAt(number, enabled_);
+						}
+						else {
+							infoPanel_.setIconAt(j, disabled_);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		});
 	}
 }
