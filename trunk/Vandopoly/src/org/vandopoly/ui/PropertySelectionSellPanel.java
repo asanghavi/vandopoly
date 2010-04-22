@@ -42,9 +42,8 @@ import org.vandopoly.model.SpaceMortgaged;
 import org.vandopoly.model.UpgradeablePropertySpace;
 
 /*
- * PropertySelectionPanel is meant to provide a generic way to present an ArrayList of properties.
- * It should be usable for all presentations of multiple properties and should be adaptable to 
- * mortgaging, renovating, and selling renovations.
+ * PropertySelectionPanel is allows the user to sell or downgrade his properties if he runs out of money
+ * so he can join back in the game.
  * 
  * @author Matt Gioia
  */
