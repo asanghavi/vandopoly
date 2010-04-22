@@ -215,7 +215,7 @@ public class GameController implements ActionListener {
 			buttonPanel_.setAllDisabled();
 			dicePanel_.setDisabled();
 		} else {
-			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
+			currentPlayerNum_ = (currentPlayerNum_ + 2) % numOfPlayers_;
 			
 			disposeFrames();
 			
