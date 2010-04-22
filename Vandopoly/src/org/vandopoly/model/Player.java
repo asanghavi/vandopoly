@@ -154,7 +154,8 @@ public class Player implements Serializable {
 					propertyValue += properties_.get(x).getMortgageValue();
 				if(properties_.get(x).isRenovated()) {
 					if(properties_.get(x).getState().getLevel() == 5)
-						propertyValue += 100;
+						// 100 + (4 * 25)
+						propertyValue += 200;
 					else
 						propertyValue += properties_.get(x).getState().getLevel() * 25;
 				}
