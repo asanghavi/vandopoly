@@ -106,6 +106,7 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 		defeat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				// remove player
+				ActionMessage.getInstance().newMessage("You Lost!");
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -113,8 +114,6 @@ public class PropertySelectionSellPanel implements ListSelectionListener, Serial
 				}
 				NotificationManager.getInstance().notifyObservers(Notification.REMOVE_PLAYER, null);
 				panel.setVisible(false);
-				ActionMessage.getInstance().newMessage("You Lost!");
-				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, null);
 			}
 		});
 		

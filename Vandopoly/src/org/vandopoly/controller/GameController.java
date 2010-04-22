@@ -209,10 +209,18 @@ public class GameController implements ActionListener {
 		players_.remove(currentPlayerNum_);
 		playerPanel_.removePanel(currentPlayerNum_);
 		numOfPlayers_--;
-		/*ArrayList<PropertySpace> ps = players_.get(currentPlayerNum_).getProperties();
-		while(!ps.isEmpty()) {
+		
+		if(players_.size() == 1) {
+			ActionMessage.getInstance().newMessage(players_.get(0).getName() + " Won!");
+			buttonPanel_.setAllDisabled();
+			dicePanel_.setDisabled();
+		} else {
+			currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 			
-		}*/
+			disposeFrames();
+			
+			NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
+		}
 	}
 	
 	public void gameOver() {
