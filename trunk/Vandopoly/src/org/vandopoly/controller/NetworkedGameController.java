@@ -353,7 +353,7 @@ public class NetworkedGameController implements ActionListener {
 					closeSockets();
 				} catch (SocketException e) { 
 					System.out.println("ServerSocket has closed");
-					new MessagePopUp("Your has left the game");
+					new MessagePopUp("Your opponent has left the game!");
 					buttonPanel_.setAllDisabled();
 					dicePanel_.setDisabled();
 				} catch (UnknownHostException e) {
@@ -784,7 +784,6 @@ public class NetworkedGameController implements ActionListener {
 		}
 		System.out.println("*****************************"); 
 		
-		System.err.println("OVERRIDING NOW -------1-1-1-2--2-2-1-2-2-2-33=2--3");
 		for (int i = 0; i < players.size(); ++i) {
 			//Update the player fields
 			players_.get(i).setCash(players.get(i).getCash());
