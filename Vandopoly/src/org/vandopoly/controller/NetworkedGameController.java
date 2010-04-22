@@ -232,7 +232,7 @@ public class NetworkedGameController implements ActionListener {
 	public void removedPlayer() {
 		numOfPlayers_--;
 		
-		currentPlayerNum_ = (currentPlayerNum_ + 2) % numOfPlayers_;
+		currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
 		
 		disposeFrames();
 		
