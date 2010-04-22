@@ -3,7 +3,7 @@
 User stories for Vandopoly.
 
 = Cycle 6 User Stories =
-    * User can trade properties with another player (James)
+    * User can trade properties and cash with another player (James)
     * Utilities now charge appropriate rent based on the number of utilities active and the value of the dice (James)
     * User can create a networked game and play against another player (networking will only be supported for two-player games) (Allie & Matt)
     * If user runs out of money, they will be given the option to either sell property or lose game. When there is only one player left, he wins the game. (Matt)
