@@ -471,7 +471,7 @@ public class NetworkedGameController implements ActionListener {
 		}
 
 		// Enables easy testing
-		if (namesAndIcons_[1].equals("test"))
+		if (namesAndIcons_[1].equals("test") || namesAndIcons_[1].equals("James"))
 			cheatMode();
 	}
 
@@ -644,6 +644,17 @@ public class NetworkedGameController implements ActionListener {
 		for (int i = 0; i < properties0.length; ++i) {
 			for (int k = 0; k < board_.length; ++k) {
 				if (properties0[i].equalsIgnoreCase(board_[k].getName())) {
+					
+					PropertySpace p = (PropertySpace)board_[k];
+					
+					if (p.getClass().equals(PropertySpace.class) || p.getClass().equals(UtilitySpace.class)) {
+						
+						p.getOwner().updateTypeDecrease(p.getTypeInt());
+						
+						// This changes all relevant states owned by the player
+						p.bePurchased(players_.get(receivingPlayerIndex));
+					}
+					
 					players_.get(proposingPlayerIndex).getProperties().remove(board_[k]);
 					players_.get(receivingPlayerIndex).updateProperties_withoutNotification((PropertySpace)board_[k]);
 					((PropertySpace)board_[k]).setOwner(players_.get(receivingPlayerIndex));
@@ -654,12 +665,23 @@ public class NetworkedGameController implements ActionListener {
 		// Sends update notification because it isn't guaranteed tradePlayer0 
 		// will gain any properties
 		NotificationManager.getInstance().notifyObservers(
-				Notification.UPDATE_PROPERTIES, players_.get(proposingPlayerIndex));
+				Notification.UPDATE_PROPERTIES, new Player(players_.get(proposingPlayerIndex)));
 		
 		// Add the trade offer to player 1's properties and remove them from Player 2's
 		for (int i = 0; i < properties1.length; ++i) {
 			for (int k = 0; k < board_.length; ++k) {
 				if (properties1[i].equalsIgnoreCase(board_[k].getName())) {
+					
+					PropertySpace p = (PropertySpace)board_[k];
+					
+					if (p.getClass().equals(PropertySpace.class) || p.getClass().equals(UtilitySpace.class)) {
+						
+						p.getOwner().updateTypeDecrease(p.getTypeInt());
+						
+						// This changes all relevant states owned by the player
+						p.bePurchased(players_.get(proposingPlayerIndex));
+					}
+					
 					players_.get(receivingPlayerIndex).getProperties().remove(board_[k]);
 					players_.get(proposingPlayerIndex).updateProperties_withoutNotification((PropertySpace)board_[k]);
 					((PropertySpace)board_[k]).setOwner(players_.get(proposingPlayerIndex));
@@ -678,12 +700,20 @@ public class NetworkedGameController implements ActionListener {
 		// Sends update notification because it isn't guaranteed tradePlayer1 
 		// will gain any properties
 		NotificationManager.getInstance().notifyObservers(
-				Notification.UPDATE_PROPERTIES, players_.get(receivingPlayerIndex));
+				Notification.UPDATE_PROPERTIES, new Player(players_.get(receivingPlayerIndex)));
 		
 		playerPanel_.updateCash(players_.get(proposingPlayerIndex));
 		playerPanel_.updateCash(players_.get(receivingPlayerIndex));
 		playerPanel_.updateProperties(players_.get(proposingPlayerIndex));
 		playerPanel_.updateProperties(players_.get(receivingPlayerIndex));
+		
+		System.out.println(players_.get(0).getName() + "'s Properties After Trade:");
+		for(int i = 0; i < players_.get(0).getProperties().size(); i++)
+			System.out.println(players_.get(0).getProperties().get(i).getNameAndStatus());
+		
+		System.out.println(players_.get(1).getName() + "'s Properties After Trade:");
+		for(int i = 0; i < players_.get(1).getProperties().size(); i++)
+			System.out.println(players_.get(1).getProperties().get(i).getNameAndStatus());
 		
 		// All should be updated correctly, so send an overwrite to the other player
 		filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
@@ -753,9 +783,10 @@ public class NetworkedGameController implements ActionListener {
 			}
 			System.out.println("*******");
 		}
-		System.out.println("*****************************");
+		System.out.println("*****************************"); 
+		
+		System.err.println("OVERRIDING NOW -------1-1-1-2--2-2-1-2-2-2-33=2--3");
 		for (int i = 0; i < players.size(); ++i) {
-			
 			//Update the player fields
 			players_.get(i).setCash(players.get(i).getCash());
 			players_.get(i).setGetOutOfJail(players.get(i).hasGetOutOfJail());
@@ -775,7 +806,7 @@ public class NetworkedGameController implements ActionListener {
 			}
 
 			for (int j = 0; j < players.get(i).getProperties().size(); ++j) {
-				currentProperties.get(j).setOwner(players.get(i));
+				currentProperties.get(j).setOwner(players_.get(i));
 				currentProperties.get(j).changeState(players.get(i).getProperties().get(j).getState());
 			}
 			
@@ -783,7 +814,6 @@ public class NetworkedGameController implements ActionListener {
 			
 			playerPanel_.updateCash(players_.get(i));
 			playerPanel_.updateProperties(players_.get(i));
-			
 		}
 		System.out.println("*******Finished****************");
 		for (int i = 0; i < players_.size(); ++i) {
@@ -799,10 +829,8 @@ public class NetworkedGameController implements ActionListener {
 	
 	// Called by Notification CARD_MOVE_TO
 	public void cardMoveTo(Object obj) {
-	
 		Integer num = (Integer) obj;
 		board_[(int) num].landOn(players_.get(currentPlayerNum_));
-
 	}
 
 	// Used to create the pop-up window to confirm quitting the game
@@ -917,6 +945,8 @@ public class NetworkedGameController implements ActionListener {
 			public void actionPerformed(ActionEvent event) {
 				int num = Integer.parseInt(cheatSpaces.getText());
 				moveCurrentPlayerInteger(num);
+				//NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE,
+				//		cheatSpaces.getText());
 			}
 		});
 
@@ -929,9 +959,8 @@ public class NetworkedGameController implements ActionListener {
 		endTurn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				currentPlayerNum_ = (currentPlayerNum_ + 1) % numOfPlayers_;
-				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
-				if (players_.get(currentPlayerNum_).getState() == PlayerInJail.Instance())
-					new JailPopUp(players_.get(currentPlayerNum_));
+				disposeFrames();
+				NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));;
 			}
 		});
 

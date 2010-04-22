@@ -54,6 +54,8 @@ public class PropertyOwned extends SpaceState implements Serializable {
 	
 	protected void renovate(UpgradeablePropertySpace p) {
 		p.changeState(UpgradeablePropertyLevel1.Instance());
+		//System.out.println("Renovating Now **********************************************");
+		//System.out.println(p.getNameAndStatus());
 		NotificationManager.getInstance().notifyObservers
 		(Notification.UPDATE_PROPERTIES, p.getOwner());
 	}

@@ -56,7 +56,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 	int listHeight = 120;
 
 	public PropertySelectionPanel(final Player player) {
-
+		
 		frame = new JFrame("Vandopoly Properties Owned");
 		frame.setLayout(null);
 		frame.setSize(panelWidth, panelHeight);
@@ -64,7 +64,7 @@ public class PropertySelectionPanel implements ListSelectionListener {
 				(int)((DisplayAssembler.getScreenHeight() - panelHeight) / 2));
 
 		propertyList = player.getProperties();
-
+		
 		model = new DefaultListModel();
 
 		for (int i = 0; i < propertyList.size(); i++)
@@ -269,27 +269,3 @@ public class PropertySelectionPanel implements ListSelectionListener {
 			mortgage.setText("Mortgage");
 	}
 }
-/*
- * class SharedListSelectionHandler implements ListSelectionListener { public
- * void valueChanged(ListSelectionEvent e) { ListSelectionModel lsm =
- * (ListSelectionModel)e.getSource();
- * 
- * int firstIndex = e.getFirstIndex(); int lastIndex = e.getLastIndex(); boolean
- * isAdjusting = e.getValueIsAdjusting();
- * System.out.println("Event for indexes " + firstIndex + " - " + lastIndex +
- * "; isAdjusting is " + isAdjusting + "; selected indexes:");
- * 
- * if (lsm.isSelectionEmpty()) { System.out.println(" <none>"); } else { // Find
- * out which indexes are selected. int minIndex = lsm.getMinSelectionIndex();
- * int maxIndex = lsm.getMaxSelectionIndex(); for (int i = minIndex; i <=
- * maxIndex; i++) { if (lsm.isSelectedIndex(i)) { System.out.println(" " + i); }
- * } } } }
- */
-
-/*
- * KeyListener keyTypedListener = new KeyAdapter() { public void
- * keyTyped(KeyEvent e) { if ((e.getKeyChar() == '\b') &&
- * (model.getSize() > 0)) { model.removeElementAt(model.getSize() - 1);
- * } else if (e.getKeyChar() != '\b') { model.addElement("Added " +
- * e.getKeyChar()); } } };
- */
