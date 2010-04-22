@@ -124,7 +124,7 @@ public class NetworkedGameController implements ActionListener {
 		if (isServer) {
 			createServer();
 			localControl_ = true;
-		} else
+		} else	
 			localControl_ = false;
 
 		dice_ = new Dice();
@@ -164,7 +164,7 @@ public class NetworkedGameController implements ActionListener {
 		// Create a new thread to send objects as necessary
 		new Thread("sendToServer") {
 			public void run() {
-				while (true) {
+				while (true) {	
 					try {
 						NetworkedMessage tempMessage = filter_.queueRemove();
 						if (tempMessage != null) {
@@ -176,6 +176,7 @@ public class NetworkedGameController implements ActionListener {
 							Thread.yield();
 					} catch (SocketException e) {
 						System.out.println("Send to server: Server socket closed");
+						System.out.println("listen to server: Server Socket closed.");
 					} catch (IOException e) {
 						e.printStackTrace();
 					} 
@@ -194,6 +195,10 @@ public class NetworkedGameController implements ActionListener {
 
 			} catch (SocketException e) {
 				System.out.println("listen to server: Server Socket closed.");
+				new MessagePopUp("Your Opponent Left! You Won!");
+				buttonPanel_.setAllDisabled();
+				dicePanel_.setDisabled();
+				break;
 			}catch (IOException e) {
 				e.printStackTrace();
 			}  catch (ClassNotFoundException e) {
@@ -349,6 +354,9 @@ public class NetworkedGameController implements ActionListener {
 					closeSockets();
 				} catch (SocketException e) { 
 					System.out.println("ServerSocket has closed");
+					new MessagePopUp("Your Opponent Left! You Won!");
+					buttonPanel_.setAllDisabled();
+					dicePanel_.setDisabled();
 				} catch (UnknownHostException e) {
 					System.out.println("Cannot find host");
 				} catch (IOException e) {
