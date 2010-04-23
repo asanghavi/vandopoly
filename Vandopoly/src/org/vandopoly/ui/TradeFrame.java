@@ -139,6 +139,7 @@ public class TradeFrame implements ListSelectionListener {
 		frame.add(comboBox);
 		frame.add(trade);
 		
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 	
