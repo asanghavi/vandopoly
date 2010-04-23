@@ -43,6 +43,9 @@ import org.vandopoly.messaging.NotificationManager;
 public class WaitingMessage extends JPanel {
 	
 	Popup popup;
+	PopupFactory factory;
+	JPanel basePanel;
+	int xCoord, yCoord;
 	
 	static final long serialVersionUID = 183;
 	
@@ -50,7 +53,9 @@ public class WaitingMessage extends JPanel {
 		Vector<String> lines = processText(message);
 		int numOfLabels = lines.size();
 		
-		JPanel basePanel = new JPanel();
+		factory = PopupFactory.getSharedInstance();
+		
+		basePanel = new JPanel();
 		JPanel messagePanel = new JPanel();
 		JLabel labels[] = new JLabel[numOfLabels];
 				
@@ -84,16 +89,17 @@ public class WaitingMessage extends JPanel {
 		basePanel.add(messagePanel);
 		basePanel.setVisible(true);
 	
-		int xCoord = (int)(DisplayAssembler.getScreenWidth() - 
+		xCoord = (int)(DisplayAssembler.getScreenWidth() - 
 				basePanel.getPreferredSize().getWidth()) / 2;
-		int yCoord = (int)(DisplayAssembler.getScreenHeight() - 
+		yCoord = (int)(DisplayAssembler.getScreenHeight() - 
 				basePanel.getPreferredSize().getHeight()) / 2;
 		
-		PopupFactory factory = PopupFactory.getSharedInstance();
+		factory = PopupFactory.getSharedInstance();
 		popup = factory.getPopup(this, basePanel, xCoord, yCoord);
     }
 	
 	public void showWaitingMessage() {
+		popup = factory.getPopup(this, basePanel, xCoord, yCoord);
 		popup.show();
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
 	}
