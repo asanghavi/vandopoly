@@ -194,7 +194,7 @@ public class DicePanel extends JPanel {
 	// Force the end of a turn
 	public void forceEndTurn() {
 		rollDice_.setForeground(Color.black);
-		rollDice_.setText("Roll Dice");
+		rollDice_.setText("Go To Jail");
 		rollDice_.setEnabled(false);
 	}
 	

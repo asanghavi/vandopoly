@@ -18,13 +18,10 @@ package org.vandopoly.ui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Popup;
@@ -46,6 +43,8 @@ import org.vandopoly.messaging.NotificationManager;
 public class WaitingMessage extends JPanel {
 	
 	Popup popup;
+	
+	static final long serialVersionUID = 183;
 	
 	public WaitingMessage(String message) {  	
 		Vector<String> lines = processText(message);

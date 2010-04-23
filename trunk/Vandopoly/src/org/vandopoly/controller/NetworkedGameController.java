@@ -477,7 +477,7 @@ public class NetworkedGameController implements ActionListener {
 		}
 
 		// Enables easy testing
-		if (namesAndIcons_[1].equals("test") || namesAndIcons_[1].equals("James"))
+		if (namesAndIcons_[1].equals("test"))
 			cheatMode();
 	}
 
@@ -570,7 +570,7 @@ public class NetworkedGameController implements ActionListener {
 			// All should be updated correctly before trading, so send  
 			// an overwrite to the other player
 			filter_.addToQueue(players_, Notification.END_TURN_UPDATE, false);
-			tradeFrame_ = new TradeFrame(players_, currentPlayerNum_, true, filter_);
+			tradeFrame_ = new TradeFrame(new ArrayList<Player>(players_), currentPlayerNum_, true, filter_);
 			
 		} else if (action.getActionCommand().equals("End Turn")) {
 			// Change the current player
@@ -736,6 +736,7 @@ public class NetworkedGameController implements ActionListener {
 		// Sends no new players which indicates trade was denied.
 		filter_.addToQueue(null, Notification.TRADE_FINALIZED, false);
 	}
+	
 	
 	// Change the player's turn. Called by Notification END_TURN
 	public void endTurn(Object obj, String string, boolean isTerminal) {
