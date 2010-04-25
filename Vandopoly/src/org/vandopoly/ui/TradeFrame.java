@@ -110,7 +110,7 @@ public class TradeFrame implements ListSelectionListener {
 		
 		intro = new JLabel("Trade with");
 		intro.setFont(nameFont);
-		intro.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight - 30, 150, 30);
+		intro.setBounds((panelWidth - buttonWidth) / 2, ((panelHeight - 30) / 2) - buttonHeight - 30, buttonWidth, 30);
 		
 		comboBox = new JComboBox();
 		comboBox.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight, 150, 30);
@@ -143,51 +143,10 @@ public class TradeFrame implements ListSelectionListener {
 		frame.setVisible(true);
 	}
 	
-	public TradeFrame(ArrayList<Player> players, final int currentPlayer, boolean isNetworked, NetworkedMessageFilter filter) {
-		filter_ = filter; 
+	public TradeFrame(ArrayList<Player> players, final int currentPlayer, boolean isNetworked, NetworkedMessageFilter filter) {	
+		this(players, currentPlayer, isNetworked);
 		
-		players_ = players;
-		isNetworked_ = isNetworked;	
-		
-		frame = new JFrame("Trade Properties");
-		frame.setSize(panelWidth, panelHeight);
-		frame.setLayout(null);
-		
-		frame.setLocation((int)((DisplayAssembler.getScreenWidth() - panelWidth) / 2),
-				(int)((DisplayAssembler.getScreenHeight() - panelHeight) / 2));
-		
-		intro = new JLabel("Trade with");
-		intro.setFont(nameFont);
-		intro.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight - 30, 150, 30);
-		
-		comboBox = new JComboBox();
-		comboBox.setBounds((panelWidth - 150) / 2, ((panelHeight - 30) / 2) - buttonHeight, 150, 30);
-		comboBox.setFont(nameFont);
-		for (int i = 0; i < players_.size(); i++) {
-			if (currentPlayer != i)
-				comboBox.addItem(players_.get(i).getName());
-		}
-		
-		Font buttonFont = new Font("broadway", Font.PLAIN, 18);
-		trade = new JButton("Trade");
-		trade.setFont(buttonFont);
-		trade.setBounds(0, panelHeight - (buttonHeight + 40), panelWidth, buttonHeight);
-		trade.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				int i = 0;
-				
-				while (!players_.get(i).getName().equals(comboBox.getSelectedItem()))
-					i++;
-				
-				setUpTradeScreen(players_.get(currentPlayer), players_.get(i));
-			}
-		});
-		
-		frame.add(intro);
-		frame.add(comboBox);
-		frame.add(trade);
-		
-		frame.setVisible(true);
+		filter_ = filter;
 	}
 	
 	private void clearSetupScreen() {

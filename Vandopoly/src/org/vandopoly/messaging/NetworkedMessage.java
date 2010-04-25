@@ -24,6 +24,7 @@ import java.io.Serializable;
  * 
  *  @author Allie Mazzia
  */
+
 public class NetworkedMessage implements Serializable {
 	private static final long serialVersionUID = 213;
 
@@ -54,5 +55,4 @@ public class NetworkedMessage implements Serializable {
 	public String toString() {
 		return "Event: " + message_ + " Object: " + obj_;
 	}
-	
 }

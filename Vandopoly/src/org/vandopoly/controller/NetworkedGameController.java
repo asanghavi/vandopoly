@@ -179,8 +179,6 @@ public class NetworkedGameController implements ActionListener {
 							objectOutput_.reset();
 							System.out.println("Client: Sending object: " + tempMessage.getString());
 						}
-						else
-							Thread.yield();
 					} catch (SocketException e) {
 						System.out.println("Send to server: Server socket closed");
 						System.out.println("listen to server: Server Socket closed.");
@@ -337,10 +335,7 @@ public class NetworkedGameController implements ActionListener {
 												objectOutput_.writeObject(tempMessage);
 												objectOutput_.reset();
 												System.out.println("Server: Sending object: " + tempMessage.getString());
-											}
-											else
-												Thread.yield();
-											
+											}											
 										} catch (IOException e) {
 											e.printStackTrace();
 										}
