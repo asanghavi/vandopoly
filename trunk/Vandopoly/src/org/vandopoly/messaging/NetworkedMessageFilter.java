@@ -28,47 +28,58 @@ import java.util.concurrent.Semaphore;
 
 public class NetworkedMessageFilter {
 	public ArrayList<NetworkedMessage> messageQueue_ = null;
-	
+
 	// For ensuring that two methods are not both attempting to add/remove
 	// at the same time
 	private Semaphore addRemoveLock;
-	
-	public NetworkedMessageFilter () {
+
+	public NetworkedMessageFilter() {
 		messageQueue_ = new ArrayList<NetworkedMessage>(20);
-		
-		// Subscribe to all notifications and have each call 
+
+		// Subscribe to all notifications and have each call
 		// addToQueue()
 
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.ROLL_DICE, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY, this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.ROLL_DICE,
+		// this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.DONE_ROLLING,
+		// this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.UNOWNED_PROPERTY,
+		// this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND, this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.UPDATE_SCHOLARSHIP_FUND,
+		// this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.AWARD_SCHOLARSHIP_FUND,
+		// this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.UPDATE_PROPERTIES, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.UPDATE_CASH, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.SHOW_CARD, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.CARD_MOVE, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD, this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.SHOW_CARD,
+		// this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.CARD_MOVE,
+		// this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.REMOVE_CARD,
+		// this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.CHANGED_OWNER, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.GO_TO_JAIL, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.USED_JAIL_CARD, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.GAINED_JAIL_CARD, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_TO, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.PIECE_MOVE_SPACES, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY,
+		// this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.ACTION_MESSAGE, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT, this, "addToQueue");
-		//NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE, this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.UTILITY_RENT,
+		// this, "addToQueue");
+		// NotificationManager.getInstance().addObserver(Notification.DISABLE_PURCHASE,
+		// this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_UPDATE, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_PROPOSED, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.TRADE_ACCEPTED, this, "addToQueue");
 		NotificationManager.getInstance().addObserver(Notification.REMOVE_PLAYER, this, "addToQueue");
-		
+
 		addRemoveLock = new Semaphore(1);
 	}
-	
+
 	public void addToQueue(Object obj, String eventName, boolean isTerminal) {
 		// Encapsulate each object in a NetworkedMessage and
 		// add it to the queue
@@ -77,31 +88,24 @@ public class NetworkedMessageFilter {
 			queueAdd(temp);
 		}
 	}
-	
-	public void queueAdd(NetworkedMessage message) {
-		try {
-			addRemoveLock.acquire();
-			messageQueue_.add(message);
-			addRemoveLock.release();
-		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
+	public synchronized void queueAdd(NetworkedMessage message) {
+		messageQueue_.add(message);
+		this.notifyAll();
 	}
-	
-	public NetworkedMessage queueRemove() {
+
+	public synchronized NetworkedMessage queueRemove() {
 		NetworkedMessage temp = null;
-		try {
-			addRemoveLock.acquire();
-			if (!messageQueue_.isEmpty())
-				temp = messageQueue_.remove(0);
+
+		while (messageQueue_.isEmpty()) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		addRemoveLock.release();
-		
+		temp = messageQueue_.remove(0);
+
 		return temp;
 	}
 }
