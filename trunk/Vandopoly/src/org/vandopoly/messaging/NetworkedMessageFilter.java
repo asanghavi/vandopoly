@@ -36,7 +36,7 @@ public class NetworkedMessageFilter {
 	public NetworkedMessageFilter() {
 		messageQueue_ = new ArrayList<NetworkedMessage>(20);
 
-		// Subscribe to all notifications and have each call
+		// Subscribe to all NEEDED notifications and have each call
 		// addToQueue()
 
 		NotificationManager.getInstance().addObserver(Notification.START_GAME, this, "addToQueue");

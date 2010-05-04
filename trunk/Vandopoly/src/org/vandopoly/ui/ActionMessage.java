@@ -54,6 +54,7 @@ public class ActionMessage extends JLabel {
 		return INSTANCE;
 	}
 	
+	// Constructor
 	private ActionMessage() {
 		actionFont = new Font[numOfFonts];
 		

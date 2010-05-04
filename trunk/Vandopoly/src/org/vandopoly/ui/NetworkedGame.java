@@ -48,7 +48,8 @@ import org.vandopoly.messaging.Notification;
 import org.vandopoly.messaging.NotificationManager;
 
 /*
- * NetworkedGame JPanel that allows user to start a networked game
+ * NetworkedGame JPanel that allows user to start a networked game -
+ * extension of the GameOptions
  * 
  * @author Matt Gioia & Allie Mazzia
  */
@@ -84,6 +85,7 @@ public class NetworkedGame extends JPanel {
 	
 	NetworkedGameController networkedController_;
 
+	// Constructor
 	public NetworkedGame(MainMenu mainMenu) {
 
 		mainMenu_ = mainMenu;
@@ -475,6 +477,7 @@ public class NetworkedGame extends JPanel {
 				this, "backToMain");
 	}
 
+	// Called when the user attempts to connect to an existing game
 	public void createJoinGameSocket() {
 
 		new Thread("startClient") {
@@ -549,13 +552,14 @@ public class NetworkedGame extends JPanel {
 					e.printStackTrace();
 					unsuccessfulConnection_.setVisible(true);
 					connected_ = "NO";
-					
 				} 
 			}
 		}.start();
 
 	}
 
+	// Checks to make sure the joining player does not choose the same
+	// name as the existing player
 	public boolean noRepeatNames() {
 		System.out.println(namesAndIcons_[1] + " " + namesAndIcons_[2]);
 		if (namesAndIcons_[1].equals(namesAndIcons_[2])) {
@@ -566,6 +570,8 @@ public class NetworkedGame extends JPanel {
 		return true;
 	}
 
+	// Checks to make sure players have not entered a name longer than
+	// 20 characters
 	public boolean shortNames() {
 		if (namesAndIcons_[1].length() > 20) {
 			noNameError_.setVisible(false);
@@ -578,6 +584,7 @@ public class NetworkedGame extends JPanel {
 		return true;
 	}
 
+	// Checks to make sure both players have names
 	public boolean allHaveNames() {
 		if (namesAndIcons_[1].length() == 0) {
 			longNameError_.setVisible(false);
@@ -590,10 +597,12 @@ public class NetworkedGame extends JPanel {
 		return true;
 	}
 
+	// Used to disable the icon chosen by the existing player
 	public void disableIcon(int i) {
 		player_[i].setEnabled(false);
 	}
 
+	// Used to hide the panels on the first selection page
 	public void hidePlayerPagePanels() {
 		playerOne_.setVisible(false);
 		nameOne_.setVisible(false);
@@ -611,6 +620,7 @@ public class NetworkedGame extends JPanel {
 		hideFourthPagePanels();
 	}
 
+	// Used to show the panels on the first selection page
 	public void showPlayerPagePanels() {
 		playerOne_.setVisible(true);
 		nameOne_.setVisible(true);
@@ -627,6 +637,7 @@ public class NetworkedGame extends JPanel {
 		optionsPageNum_ = 5;
 	}
 
+	// Used to show the panels on the second selection page
 	public void showSecondPagePanels() {
 		choose_.setVisible(true);
 		createGame_.setVisible(true);
@@ -635,6 +646,7 @@ public class NetworkedGame extends JPanel {
 		optionsPageNum_ = 2;
 	}
 
+	// Used to hide the panels on the second selection page
 	public void hideSecondPagePanels() {
 		choose_.setVisible(false);
 		createGame_.setVisible(false);
@@ -642,6 +654,7 @@ public class NetworkedGame extends JPanel {
 		joinGame_.setVisible(false);
 	}
 
+	// Used to hide the panels on the third selection page
 	public void hideThirdPagePanels() {
 		loadPanel_.setVisible(false);
 		waiting_.setVisible(false);
@@ -649,6 +662,7 @@ public class NetworkedGame extends JPanel {
 		quit_.setVisible(false);
 	}
 
+	// Used to show the panels on the third selection page
 	public void showThirdPagePanels() {
 		// playGame_.setVisible(true);
 		loadPanel_.setVisible(true);
@@ -660,11 +674,13 @@ public class NetworkedGame extends JPanel {
 		startNetworkedGame();
 	}
 
+	// Used to begin the game and create the controller
 	public void startNetworkedGame() {
 		networkedController_ = new NetworkedGameController
 				(mainMenu_.display_, namesAndIcons_, true);
 	}
 
+	// Used to hide the panels on the fourth selection page
 	public void hideFourthPagePanels() {
 		selectGame_.setVisible(false);
 		gameIp_.setVisible(false);
@@ -672,6 +688,7 @@ public class NetworkedGame extends JPanel {
 		quit_.setVisible(false);
 	}
 
+	// Used to show the panels on the fourth selection page
 	public void showFourthPagePanels() {
 		selectGame_.setVisible(true);
 		gameIp_.setVisible(true);
@@ -681,6 +698,7 @@ public class NetworkedGame extends JPanel {
 
 	}
 
+	// Used to return to the main menu
 	public void backToMain() {
 		nameOne_.setText(null);
 
@@ -691,12 +709,15 @@ public class NetworkedGame extends JPanel {
 		quit_.setVisible(false);
 	}
 
+	// Used when the user presses "back" when on the third
+	// selection page
 	public void backToPlayerPage() {
 		hideThirdPagePanels();
 		showPlayerPagePanels();
-
 	}
 
+	// Used when the user presses "back" when on the fourth
+	// selection page
 	public void backToSecondPage() {
 		hideThirdPagePanels();
 		hideFourthPagePanels();

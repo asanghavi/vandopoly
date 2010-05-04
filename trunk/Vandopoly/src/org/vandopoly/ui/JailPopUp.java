@@ -45,6 +45,7 @@ public class JailPopUp {
 	static final long serialVersionUID = 102;
 	Player player_;
 	
+	// Constructor
 	public JailPopUp(Player p) {  	
 		player_ = p;
 		JPanel basePanel = new JPanel();
@@ -112,6 +113,7 @@ public class JailPopUp {
 		PopupFactory factory = PopupFactory.getSharedInstance();
 		final Popup popup = factory.getPopup(null, basePanel, xCoord, yCoord);
 		
+		// Action listener for pressing the 'Use Card' button
 		card.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {
 	        	popup.hide();
@@ -120,6 +122,8 @@ public class JailPopUp {
 	        	player_.usedGetOutOfJail();
 	        }
 		});
+		
+		// Action listener for pressing the 'Pay $50' button
 		pay.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {
 	        	popup.hide();
@@ -129,6 +133,7 @@ public class JailPopUp {
 	        }
 	    });
 		
+		// Action listener for pressing the 'Roll' button
 		roll.addActionListener(new ActionListener() {
 	        public void actionPerformed(ActionEvent event) {
 	        	popup.hide();

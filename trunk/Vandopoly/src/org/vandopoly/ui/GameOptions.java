@@ -74,6 +74,7 @@ public class GameOptions extends JPanel {
 
 	private MainMenu mainMenu_;
 
+	// Constructor
 	public GameOptions(final MainMenu mainMenu) {
 
 		mainMenu_ = mainMenu;
@@ -638,7 +639,7 @@ public class GameOptions extends JPanel {
 
 		NotificationManager.getInstance().addObserver(Notification.START_GAME,
 				this, "backToMain");
-	}
+	} // End constructor
 
 	// Sets all piece buttons to enabled or disabled based on current selections
 	public void refreshPieceButtons() {
@@ -665,6 +666,7 @@ public class GameOptions extends JPanel {
 		}
 	}
 
+	// Sets the panels on the first page to invisible
 	public void hideFirstPagePanels() {
 		playerOne_.setVisible(false);
 		nameOne_.setVisible(false);
@@ -684,6 +686,7 @@ public class GameOptions extends JPanel {
 		playersHeader_.setVisible(false);
 	}
 
+	// Sets all panels on the first page to visible
 	public void showFirstPagePanels() {
 
 		playerOne_.setVisible(true);
@@ -710,6 +713,7 @@ public class GameOptions extends JPanel {
 		playersHeader_.setVisible(true);
 	}
 
+	// Sets the panels on the second page to visible
 	public void showSecondPagePanels() {
 
 		selectPieces_.setVisible(true);
@@ -748,6 +752,7 @@ public class GameOptions extends JPanel {
 		}
 	}
 
+	// Sets the panels on the second page to be invisible
 	public void hideSecondPagePanels() {
 		playerThree_.setVisible(false);
 		nameThree_.setVisible(false);
@@ -815,6 +820,8 @@ public class GameOptions extends JPanel {
 		nameFour_.setVisible(true);
 	}
 
+	// Used to clear first page options and return to the
+	// main menu
 	public void backToMain() {
 
 		two_.setSelected(true);
@@ -831,6 +838,8 @@ public class GameOptions extends JPanel {
 		this.setVisible(false);
 	}
 
+	// Used to change between the second and first page
+	// of options
 	public void backToFirstPage() {
 		hideSecondPagePanels();
 		showFirstPagePanels();

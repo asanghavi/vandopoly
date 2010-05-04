@@ -58,6 +58,7 @@ public class Piece {
 	
 	final static long serialVersionUID = 20;
 	
+	// Constructor
 	public Piece(String name, int playerNum) {
 		
 		name_ = "images/Piece/"+name+".png";
