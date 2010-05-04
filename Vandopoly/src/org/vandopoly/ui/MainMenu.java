@@ -45,6 +45,7 @@ public class MainMenu extends JPanel {
 	
 	static final long serialVersionUID = 2;
 	
+	// Constructor
 	public MainMenu(Display d) {
 		display_ = d;
 		int frameWidth = 529, frameHeight = 480;
@@ -152,6 +153,7 @@ public class MainMenu extends JPanel {
 		setVisible(true);
 	}
 	
+	// Main function - entrance point for the game
 	public static void main(String[] args) {
 		Display display = new Display();
 		new MainMenu(display);

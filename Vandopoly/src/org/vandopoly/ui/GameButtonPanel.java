@@ -103,6 +103,7 @@ public class GameButtonPanel extends JPanel {
 		NotificationManager.getInstance().addObserver(Notification.END_TURN_EARLY, this, "playerState");
 	}
 
+	// Overloaded constructor - used for networking ONLY
 	public GameButtonPanel(NetworkedGameController networkedGameController) {
 		
 		networkedController_ = networkedGameController;
@@ -203,6 +204,8 @@ public class GameButtonPanel extends JPanel {
 		trade_.setEnabled(true);
 	}
 	
+	// Used to disable all buttons - saves state of each button so
+	// that setEnabled() can return them to their original state
 	public void setAllDisabled() {
 		purchaseState_ = purchase_.isEnabled();
 		purchase_.setEnabled(false);
@@ -217,6 +220,8 @@ public class GameButtonPanel extends JPanel {
 		endTurn_.setEnabled(false);
 	}
 	
+	// Returns the buttons to the state they were in before setAllDisabled()
+	// was called
 	public void setEnabled() {
 		purchase_.setEnabled(purchaseState_);
 		mortgage_.setEnabled(mortgageState_);

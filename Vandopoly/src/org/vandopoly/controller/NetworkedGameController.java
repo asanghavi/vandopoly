@@ -119,10 +119,14 @@ public class NetworkedGameController implements ActionListener {
 	public boolean isServer_;
 	Player localPlayer_;
 	
+	// Constructor
 	public NetworkedGameController(Display display, String[] namesAndIcons, boolean isServer) {
-			
-		isServer_ = isServer;
+		
 		namesAndIcons_ = namesAndIcons;
+		display_ = display;
+		
+		// Check to see if the player is the server 
+		isServer_ = isServer;
 		if (isServer) {
 			createServer();
 			localControl_ = true;
@@ -131,8 +135,6 @@ public class NetworkedGameController implements ActionListener {
 
 		dice_ = new Dice();
 		board_ = new Space[NUM_OF_SPACES];
-
-		display_ = display;
 		
 		tradeWait = new WaitingMessage("Waiting for opponent to make a decision regarding the trade");
 
@@ -158,14 +160,17 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().addObserver(Notification.TRADE_WAIT_MESSAGE, this, "showTradeWaitMessage");
 	}
 
-	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, ObjectOutputStream output) {
+	// Method used to create the threads used by the client to send and receive
+	// objects over the network
+	public void clientListen(BufferedReader reader, PrintWriter writer, ObjectInputStream input, 
+			ObjectOutputStream output) {
 
-		NetworkedMessage message = null;
 		readIn_ = reader;
 		printOut_ = writer;
 		objectInput_ = input;
 		objectOutput_ = output;
 		
+		NetworkedMessage message = null;
 		filter_ = new NetworkedMessageFilter();
 		
 		// Create a new thread to send objects as necessary
@@ -173,6 +178,7 @@ public class NetworkedGameController implements ActionListener {
 			public void run() {
 				while (true) {	
 					try {
+						// Remove a message from the queue
 						NetworkedMessage tempMessage = filter_.queueRemove();
 						if (tempMessage != null) {
 							objectOutput_.writeObject(tempMessage);
@@ -189,12 +195,12 @@ public class NetworkedGameController implements ActionListener {
 			}
 		}.start();
 
+		// Listen for objects being passed over the network 
+		// Thread creation for this while loop is done in NetworkedGame.java
 		while (true) {
-			// Create the object streams to pass messages along
 			try {
 				// Listen for objects (messages)
 				message = (NetworkedMessage) objectInput_.readObject();
-
 				System.out.println("Client: Notifying of:" + message.getString());
 				NotificationManager.getInstance().notifyObservers(message.getString(), message.getObject(), true);
 
@@ -213,7 +219,7 @@ public class NetworkedGameController implements ActionListener {
 
 	}
 
-	// Called by REMOVE_PLAYER to remove the current player
+	// Called by REMOVE_PLAYER notification to remove the current player
 	public void removePlayer() {
 		try {
 			pieces_.get(currentPlayerNum_).removePiece();
@@ -244,41 +250,45 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().notifyObservers(Notification.END_TURN, new Integer(currentPlayerNum_));
 	}
 
-	// Called by the START_GAME notification
+	// Called by the START_GAME notification to create the board and cards
 	public void startGame(Object obj) {
-		System.out.println("StartGame called");
+		
 		numOfPlayers_ = Integer.parseInt(namesAndIcons_[0]);
-		System.out.println("Called create Players");
+
 		createPlayers();
-		System.out.println("Returned from create Players");
+
 		if (isServer_)
 			localPlayer_ = players_.get(0);
 		else
 			localPlayer_ = players_.get(1);
 		
 		createSpaces();
-
 		shuffleCards();
 
 		playerPanel_ = new PlayerPanel(players_);
 		dicePanel_ = new DicePanel(dice_);
 		buttonPanel_ = new GameButtonPanel(this);
 
+		// Initialize the scholarship fund
 		scholarshipFund_ = 500;
 
+		// Initialization of gameButtonPanel - if you are not player 1,
+		// then all buttons should be disabled
 		if (localControl_ == false) {
 			dicePanel_.setDisabled();
 			buttonPanel_.setAllDisabled();
 		}
 	}
 
+	// Called when the game controller is running on the server's computer - 
+	// creates the ServerSocket and threads for sending objects and listening
+	// for objects
 	public void createServer() {
 		new Thread("startGame") {
 			public void run() {
 				String temp = null;
 
 				try {
-
 					// Initialize the ServerSocket, which listens to the socket
 					serverSocket_ = new ServerSocket(3913);
 					System.out.println("Created serversocket");
@@ -287,7 +297,7 @@ public class NetworkedGameController implements ActionListener {
 					clientSocket_ = serverSocket_.accept();
 					System.out.println("Recieved connection attempt");
 
-					// Create the object streams to pass messages along\
+					// Create the object streams to pass messages along
 					objectOutput_ = new ObjectOutputStream(clientSocket_.getOutputStream());
 					objectOutput_.flush();
 					objectInput_ = new ObjectInputStream(clientSocket_.getInputStream());
@@ -309,9 +319,6 @@ public class NetworkedGameController implements ActionListener {
 						// Receive player 2's name and piece info
 						namesAndIcons_[2] = readIn_.readLine();
 						namesAndIcons_[4] = readIn_.readLine();
-
-						System.out.println("Name: " + namesAndIcons_[2]);
-						System.out.println("Icon: " + namesAndIcons_[4]);
 
 						temp = readIn_.readLine();
 						if (temp.equals("START")) {
@@ -346,8 +353,12 @@ public class NetworkedGameController implements ActionListener {
 							// Read in from the client
 							while (true) {
 								NetworkedMessage tempMessage = null;
+								
+								// Read in an object
 								tempMessage = (NetworkedMessage) objectInput_.readObject();
 								System.out.println("Server: Notifying of: " + tempMessage.getString());
+								
+								// Send the object out to observers of the specific notification
 								NotificationManager.getInstance().notifyObservers(tempMessage.getString(), tempMessage.getObject(), true);
 							}
 						}
@@ -356,6 +367,7 @@ public class NetworkedGameController implements ActionListener {
 				} catch (SocketException e) { 
 					System.out.println("ServerSocket has closed");
 					new MessagePopUp("Your opponent has left the game!");
+					
 					buttonPanel_.setAllDisabled();
 					dicePanel_.setDisabled();
 				} catch (UnknownHostException e) {
@@ -369,6 +381,8 @@ public class NetworkedGameController implements ActionListener {
 		}.start();
 	}
 
+	// Used to move the current player's piece on the board, also used
+	// to land on a specific space
 	public void moveCurrentPlayer(Object obj) {
 
 		try {
@@ -430,6 +444,7 @@ public class NetworkedGameController implements ActionListener {
 		pieces_.get(currentPlayerNum_).move(spaceNum);
 	}
 
+	// Used to send a player to jail and display a message
 	public void sendPlayerToJail() {
 		players_.get(currentPlayerNum_).goToJail();
 		NotificationManager.getInstance().notifyObservers(Notification.ACTION_MESSAGE, 
@@ -446,7 +461,7 @@ public class NetworkedGameController implements ActionListener {
 			System.err.println("Attempted to remove more money from scholarship than there currently is");
 	}
 
-	// Called by the Award Scholarship Fund notification
+	// Called by the AwardScholarshipFund notification
 	public void awardFund(Object obj) {
 		Player player = (Player) obj;
 
@@ -458,6 +473,8 @@ public class NetworkedGameController implements ActionListener {
 		scholarshipFund_ = 500;
 	}
 
+	// Initialization method - used to create the players at the
+	// beginning of the game
 	private void createPlayers() {
 		players_ = new ArrayList<Player>();
 		pieces_ = new ArrayList<Piece>();
@@ -489,6 +506,8 @@ public class NetworkedGameController implements ActionListener {
 		property.getOwner().collectRent(fee, players_.get(currentPlayerNum_));
 	}
 
+	// Initialization method - used to create the board spaces
+	// at the beginning of the game
 	private void createSpaces() {
 		chance_ = ChanceCardSpace.Instance(players_);
 		commChest_ = CommCardSpace.Instance(players_);
@@ -539,6 +558,8 @@ public class NetworkedGameController implements ActionListener {
 
 	}
 
+	// Initialization method - used to shuffle the card decks 
+	// at the beginning of the game
 	public void shuffleCards() {
 		chance_.shuffleCards();
 		commChest_.shuffleCards();
@@ -620,6 +641,7 @@ public class NetworkedGameController implements ActionListener {
 		System.out.println("Player1 = " + players_.get(1).getName());
 		ArrayList<String[]> trades = (ArrayList<String[]>) obj;
 		
+		// Find the index of the proposing player and the receiving player
 		int proposingPlayerIndex = 0;
 		int receivingPlayerIndex = 0;
 		if (players_.get(0).getName() == trades.get(4)[0]) {
@@ -632,11 +654,14 @@ public class NetworkedGameController implements ActionListener {
 			proposingPlayerIndex = 1;
 			receivingPlayerIndex = 0;
 		}
+		
+		// Get the cash amounts and properties involved in the trade
 		int cash0 = Integer.parseInt(trades.get(0)[0]);
 		String[] properties0 = trades.get(1);
 		int cash1 = Integer.parseInt(trades.get(2)[0]);
 		String[] properties1 = trades.get(3);
 		
+		// Debugging code
 		System.out.println("Properties0:");
 		for (int i = 0; i < properties0.length; ++i) {
 			System.out.println(properties0[i]);
@@ -713,6 +738,7 @@ public class NetworkedGameController implements ActionListener {
 		playerPanel_.updateProperties(players_.get(proposingPlayerIndex));
 		playerPanel_.updateProperties(players_.get(receivingPlayerIndex));
 		
+		// Debugging code
 		System.out.println(players_.get(0).getName() + "'s Properties After Trade:");
 		for(int i = 0; i < players_.get(0).getProperties().size(); i++)
 			System.out.println(players_.get(0).getProperties().get(i).getNameAndStatus());
@@ -728,7 +754,7 @@ public class NetworkedGameController implements ActionListener {
 	// Called by notification Trade Rejected
 	// Used to remove opponents waiting screen
 	public void tradeRejected() {
-		// Sends no new players which indicates trade was denied.
+		// Sends no new players which indicates trade was denied
 		filter_.addToQueue(null, Notification.TRADE_FINALIZED, false);
 	}
 	
@@ -738,6 +764,8 @@ public class NetworkedGameController implements ActionListener {
 		int newPlayer = (Integer)obj;
 		currentPlayerNum_ = newPlayer;
 		
+		// Switch local control - if local control is now disabled,
+		// we want to disable all buttons (except the quit button) on the screen
 		localControl_ = !localControl_;
 		if (localControl_ == false) {
 			dicePanel_.setDisabled();
@@ -783,30 +811,7 @@ public class NetworkedGameController implements ActionListener {
 	public void overwrite(Object obj) {
 		ArrayList<Player> players = (ArrayList<Player>) obj;
 		
-		System.out.println("*******Current****************");
-		for (int i = 0; i < players_.size(); ++i) {
-			System.out.println("Player: " + players_.get(i).getName());
-			System.out.println("Cash: " + players_.get(i).getCash());
-			System.out.println("Properties: ");
-			for (int j = 0; j < players_.get(i).getProperties().size(); ++j) {
-				System.out.println(players_.get(i).getProperties().get(j).getName());
-			}
-			System.out.println("*******");
-		}
-		System.out.println("*********Received**************");
-		for (int i = 0; i < players.size(); ++i) {
-			System.out.println("Player: " + players.get(i).getName());
-			System.out.println("Cash: " + players.get(i).getCash());
-			System.out.println("Properties: ");
-			if (players.get(i).getProperties().isEmpty())
-				System.out.println("No properties owned");
-			for (int j = 0; j < players.get(i).getProperties().size(); ++j) {
-				System.out.println(players.get(i).getProperties().get(j).getName());
-			}
-			System.out.println("*******");
-		}
-		System.out.println("*****************************"); 
-		
+		// Iterate through players, updating the current list 
 		for (int i = 0; i < players.size(); ++i) {
 			//Update the player fields
 			players_.get(i).setCash(players.get(i).getCash());
@@ -833,18 +838,9 @@ public class NetworkedGameController implements ActionListener {
 			
 			players_.get(i).setProperties(currentProperties);
 			
+			// Call the update methods to ensure the playerPanel is updated
 			playerPanel_.updateCash(players_.get(i));
 			playerPanel_.updateProperties(players_.get(i));
-		}
-		System.out.println("*******Finished****************");
-		for (int i = 0; i < players_.size(); ++i) {
-			System.out.println("Player: " + players_.get(i).getName());
-			System.out.println("Cash: " + players_.get(i).getCash());
-			System.out.println("Properties: ");
-			for (int j = 0; j < players_.get(i).getProperties().size(); ++j) {
-				System.out.println(players_.get(i).getProperties().get(j).getName());
-			}
-			System.out.println("*****************************");
 		}
 	}
 	
@@ -927,6 +923,7 @@ public class NetworkedGameController implements ActionListener {
 		NotificationManager.getInstance().notifyObservers(Notification.SHOW_CARD, null);
 	}
 
+	// Called by the ACTION_MESSAGE notification
 	public void displayActionMessage(Object obj) {
 		try {
 			String message = (String) obj;
@@ -991,6 +988,7 @@ public class NetworkedGameController implements ActionListener {
 		DisplayAssembler.getInstance().addComponent(endTurn, DisplayAssembler.getScreenWidth() - totalX, DisplayAssembler.getScreenHeight() - buttonY, JLayeredPane.POPUP_LAYER);
 	}
 	
+	// Used to close all sockets that have been opened
 	public void closeSockets() {
 		try {
 			if (printOut_ != null)
@@ -1008,6 +1006,7 @@ public class NetworkedGameController implements ActionListener {
 		}
 	}
 	
+	// Called by the MESSAGE_POPUP notification
 	public void messagePopUp(Object obj, String eventName, boolean isTerminal) {
 		if (isTerminal) 
 			new MessagePopUp((String) obj);
