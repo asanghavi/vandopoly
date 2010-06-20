@@ -39,7 +39,7 @@ public class Dice implements Serializable {
 		
 		if (die1_ != die2_)
 			numInRowDoubles_ = 0;
-		else if (numInRowDoubles_ < 4)
+		else if (numInRowDoubles_ < 3)
 			numInRowDoubles_++;
 		
 		// Represents case where previous player went to Jail, counter must be reset
