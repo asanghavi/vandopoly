@@ -303,7 +303,6 @@ public class TradeFrame implements ListSelectionListener {
 					// Signifies this is the initial movement
 					if (cash_[0] == actualMovement) {
 						model[0][0].addElement("Cash: " + cash_[0]);
-						ActionMessage.getInstance().newMessage("Add to end");
 					}
 					else
 						model[0][0].set(property.get(0).size(), "Cash: " + cash_[0]);

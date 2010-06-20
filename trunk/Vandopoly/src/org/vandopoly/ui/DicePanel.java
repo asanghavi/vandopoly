@@ -51,6 +51,8 @@ public class DicePanel extends JPanel {
 
 	int buttonCounter = 0;
 	
+	private int savedState = 0;
+	
 	static final long serialVersionUID = 10;
 
 	public DicePanel(Dice dice) {
@@ -199,12 +201,17 @@ public class DicePanel extends JPanel {
 	}
 	
 	public void setDisabled() {
-		diceState_ = rollDice_.isEnabled();
-		rollDice_.setEnabled(false);
+		if (savedState == 0) {
+			diceState_ = rollDice_.isEnabled();
+			rollDice_.setEnabled(false);
+		}
+		savedState++;
 	}
 	
 	//Return to previous state
 	public void setEnabled() {
-		rollDice_.setEnabled(diceState_);
+		if (savedState == 1)
+			rollDice_.setEnabled(diceState_);
+		savedState--;
 	}
 }

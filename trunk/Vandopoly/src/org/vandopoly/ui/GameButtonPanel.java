@@ -48,6 +48,9 @@ public class GameButtonPanel extends JPanel {
 	
 	private boolean purchaseState_, endTurnState_, tradeState_, mortgageState_;
 	
+	// Indicates how many saved button states there are
+	private int currentlySavedState = 0;
+	
 	static final long serialVersionUID = 11;
 	
 	// Will handle all controls in the actual GameController class
@@ -207,26 +210,34 @@ public class GameButtonPanel extends JPanel {
 	// Used to disable all buttons - saves state of each button so
 	// that setEnabled() can return them to their original state
 	public void setAllDisabled() {
-		purchaseState_ = purchase_.isEnabled();
-		purchase_.setEnabled(false);
+		if (currentlySavedState == 0) {
+			purchaseState_ = purchase_.isEnabled();
+			purchase_.setEnabled(false);
 		
-		mortgageState_ = mortgage_.isEnabled();
-		mortgage_.setEnabled(false);
+			mortgageState_ = mortgage_.isEnabled();
+			mortgage_.setEnabled(false);
 		
-		tradeState_ = trade_.isEnabled();
-		trade_.setEnabled(false);
+			tradeState_ = trade_.isEnabled();
+			trade_.setEnabled(false);
 		
-		endTurnState_ = endTurn_.isEnabled();
-		endTurn_.setEnabled(false);
+			endTurnState_ = endTurn_.isEnabled();
+			endTurn_.setEnabled(false);
+		}
+		
+		currentlySavedState++;
 	}
 	
 	// Returns the buttons to the state they were in before setAllDisabled()
 	// was called
 	public void setEnabled() {
-		purchase_.setEnabled(purchaseState_);
-		mortgage_.setEnabled(mortgageState_);
-		trade_.setEnabled(tradeState_);
-		endTurn_.setEnabled(endTurnState_);
+		if (currentlySavedState == 1) {
+			purchase_.setEnabled(purchaseState_);
+			mortgage_.setEnabled(mortgageState_);
+			trade_.setEnabled(tradeState_);
+			endTurn_.setEnabled(endTurnState_);
+		}
+		
+		currentlySavedState--;
 	}
 	
 }
